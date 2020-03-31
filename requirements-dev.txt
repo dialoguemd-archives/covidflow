@@ -1,0 +1,6 @@
+pytest==5.3.4
+pytest-cov==2.8.1
+black==19.10b0
+flake8==3.7.9
+pep8-naming==0.10.0
+mypy==0.770

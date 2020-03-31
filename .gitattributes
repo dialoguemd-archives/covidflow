@@ -1,0 +1,101 @@
+# Definition of a custom attribute that reverse binary attribute
+[attr]textfile text diff merge
+
+# Declare files as binary by default preventing potential problematic end-of-line conversion
+* binary
+
+# Declare files that will always have native line endings on checkout.
+.buildpath textfile
+.env textfile
+.env.example textfile
+.eslintrc textfile
+*.abnf textfile
+*.ac textfile
+*.accentuated textfile
+*.c textfile
+*.cc textfile
+*.cfg textfile
+*.cfxml textfile
+*.checkstyle textfile
+*.classpath textfile
+*.conf textfile
+*.cpp textfile
+*.css textfile
+*.csv textfile
+*.dat textfile
+*.erl textfile
+*.gcloudignore textfile
+*.gitattributes textfile
+*.gitignore textfile
+*.gradle textfile
+*.grd textfile
+*.groovy textfile
+*.grxml textfile
+*.gsl textfile
+*.h textfile
+*.hpp textfile
+*.htm textfile
+*.html textfile
+*.in textfile
+*.inf textfile
+*.ini textfile
+*.java textfile
+*.jinja textfile
+*.jjt textfile
+*.js textfile
+*.json textfile
+*.jsp textfile
+*.kt textfile
+*.launch textfile
+*.lexicon textfile
+*.md textfile
+*.meta textfile
+*.MF textfile
+*.mk textfile
+*.nuecho textfile
+*.pl textfile
+*.plist textfile
+*.prefs textfile
+*.prettierignore textfile
+*.product textfile
+*.project textfile
+*.properties textfile
+*.psf textfile
+*.py textfile
+*.raml textfile
+*.rb textfile
+*.rsxml textfile
+*.rxml textfile
+*.scm textfile
+*.sed textfile
+*.snap textfile
+*.sql textfile
+*.st textfile
+*.sxml textfile
+*.tdxml textfile
+*.testset textfile
+*.tf textfile
+*.tmpl textfile
+*.translationRules textfile
+*.txt textfile
+*.version textfile
+*.vxml textfile
+*.wsdl textfile
+*.xlsm textfile
+*.xml textfile
+*.xsd textfile
+*.xsl textfile
+*.yaml textfile
+*.yml textfile
+Dockerfile.* textfile
+Makefile textfile
+.dockerignore textfile
+.flake8 textfile
+
+
+# Declare files that will always have LF line endings on checkout.
+*.sh textfile eol=lf
+
+# Declare files that will always have CRLF line endings on checkout.
+*.bat textfile eol=crlf
+*.cmd textfile eol=crlf

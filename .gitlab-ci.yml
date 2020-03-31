@@ -1,0 +1,37 @@
+stages:
+  - check
+  - publish
+
+include:
+  - project: continuous-integration/templates
+    file: "/v1/version.yml"
+  - project: continuous-integration/templates
+    file: "/v1/commitlint.yml"
+  - project: continuous-integration/templates
+    file: "/v1/changelog.yml"
+  - project: continuous-integration/templates
+    file: "/v3/.docker-check.yml"
+
+check:docker:core:
+  stage: check
+  extends: .check:docker
+  variables:
+    DOCKERFILE_LOCATION: deployment/docker/Dockerfile.core
+
+check:docker:action_server:
+  stage: check
+  extends: .check:docker
+  variables:
+    DOCKERFILE_LOCATION: deployment/docker/Dockerfile.actions
+
+check:python:
+  image: python:3.6.8
+  stage: check
+  script:
+    - make install-dev
+    - make lint
+    - make test
+  coverage: /Total coverage:\s([0-9.]+%)/
+  artifacts:
+    paths:
+      - htmlcov/

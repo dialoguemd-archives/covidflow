@@ -1,0 +1,31 @@
+version: "3.2"
+
+services:
+  core:
+    build:
+      context: .
+      dockerfile: deployment/docker/Dockerfile.core
+    ports:
+      - 5005:8080
+    volumes:
+      - ./models:/app/models
+      - ./config.yml:/app/config.yml
+      - ./credentials.yml:/app/credentials.yml
+      - ./domain.yml:/app/domain.yml
+      - ./endpoints.yml:/app/endpoints.yml
+
+  action_server:
+    build:
+      context: .
+      dockerfile: deployment/docker/Dockerfile.actions
+    ports:
+      - 5055:8080
+    volumes:
+      - ./actions:/app/actions
+
+  tracker_store:
+    image: postgres:11
+    environment:
+      - POSTGRES_PASSWORD=password
+    ports:
+      - 5432:5432

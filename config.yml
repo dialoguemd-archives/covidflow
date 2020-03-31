@@ -1,0 +1,23 @@
+# Configuration for Rasa NLU.
+# https://rasa.com/docs/rasa/nlu/components/
+language: en
+
+pipeline:
+  - name: "SpacyNLP"
+  - name: "SpacyTokenizer"
+  - name: "SpacyFeaturizer"
+  - name: "RegexFeaturizer"
+  - name: "LexicalSyntacticFeaturizer"
+  - name: "DIETClassifier"
+    epochs: 100
+  - name: "EntitySynonymMapper"
+
+# Configuration for Rasa Core.
+# https://rasa.com/docs/rasa/core/policies/
+policies:
+  - name: FormPolicy
+  - name: MemoizationPolicy
+  - name: TEDPolicy
+    max_history: 5
+    epochs: 100
+  - name: MappingPolicy

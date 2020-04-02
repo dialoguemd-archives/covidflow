@@ -1,5 +1,7 @@
 stages:
   - check
+  - train
+  - build
   - publish
 
 include:
@@ -11,6 +13,8 @@ include:
     file: "/v1/changelog.yml"
   - project: continuous-integration/templates
     file: "/v3/.docker-check.yml"
+  - project: continuous-integration/templates
+    file: "/v3/.docker-build-publish.yml"
 
 check:docker:core:
   stage: check
@@ -18,7 +22,7 @@ check:docker:core:
   variables:
     DOCKERFILE_LOCATION: deployment/docker/Dockerfile.core
 
-check:docker:action_server:
+check:docker:actions:
   stage: check
   extends: .check:docker
   variables:
@@ -36,3 +40,58 @@ check:python:
   artifacts:
     paths:
       - htmlcov/
+
+train:rasa:
+  image:
+    name: rasa/rasa:1.9.4-full
+    entrypoint: [""]
+  stage: train
+  script:
+    - rasa train --augmentation 0
+  artifacts:
+    paths:
+      - models/
+
+.docker:base:
+  variables:
+    DOCKER_PUBLISH_TARGETS: NUECHO
+    DOCKER_IMAGE_PATH_NUECHO: covid19
+    DOCKER_REGISTRY_TOKEN_NUECHO: $DOCKER_REGISTRY_TOKEN
+
+.docker:core:
+  extends: .docker:base
+  variables:
+    RASA_COMPONENT_NAME: core
+    DOCKER_IMAGE_NAME: core
+    DOCKERFILE_LOCATION: deployment/docker/Dockerfile.core
+
+.docker:actions:
+  extends: .docker:base
+  variables:
+    RASA_COMPONENT_NAME: actions
+    DOCKER_IMAGE_NAME: actions
+    DOCKERFILE_LOCATION: deployment/docker/Dockerfile.actions
+
+build:docker:core:
+  stage: build
+  extends:
+    - .build:docker
+    - .docker:core
+
+build:docker:actions:
+  stage: build
+  extends:
+    - .build:docker
+    - .docker:actions
+
+publish:docker:core:
+  stage: publish
+  extends:
+    - .publish:docker
+    - .docker:core
+
+publish:docker:actions:
+  stage: publish
+  extends:
+    - .publish:docker
+    - .docker:actions

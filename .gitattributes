@@ -87,7 +87,7 @@
 *.xsl textfile
 *.yaml textfile
 *.yml textfile
-Dockerfile.* textfile
+deployment/docker/Dockerfile.* textfile
 Makefile textfile
 .dockerignore textfile
 .flake8 textfile

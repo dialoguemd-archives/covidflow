@@ -34,6 +34,9 @@ help:
 	@echo "        Run py.test (use TEST_FILE variable to test a single file)"
 	@echo "    train"
 	@echo "        Train Rasa models"
+	@echo "    shell"
+	@echo "        Start a Rasa shell"
+
 
 init:
 	python3 -m venv ${VENV_LOCATION}
@@ -60,8 +63,17 @@ test:
 	${ACTIVATE_VENV} py.test "${TESTS_FOLDER}/${TEST_FILE}" \
 		--cov-report term-missing:skip-covered \
 		--cov-report html \
-		--cov-fail-under=85 \
+		--cov-fail-under=80 \
 		--cov ${SOURCE_FOLDER}
 
 train:
 	docker run -v ${PWD}:/app rasa/rasa:${RASA_VERSION}-full train --augmentation 0
+
+shell:
+	docker run \
+		--rm -it \
+		-v ${PWD}:/app \
+		--env ACTION_SERVER_ENDPOINT=http://action_server:8080/webhook \
+		--env TRACKER_STORE_ENDPOINT=tracker_store \
+		--network rasa-covid19_default \
+		rasa/rasa:${RASA_VERSION}-full shell --debug

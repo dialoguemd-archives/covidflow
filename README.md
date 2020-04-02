@@ -4,9 +4,20 @@ Flow for covid-19 assessment, navigation and follow-ups.
 
 ## Development
 
-## Python version
+### Make
 
-Python version 3.6.8 is required to properly install Rasa.
+Make is expected to be installed on the developer workstation.
+
+### Docker
+
+Docker is expected to be installed on the developer workstation.
+
+- _Windows_: Docker Desktop 2.1.0.5 is recommended
+- _Linux_: docker >= 19.03.5 and docker-compose >= 1.24.0
+
+### Python version
+
+Python version 3.6.8 is required to properly install Rasa components. It should be installed using [pyenv](https://github.com/pyenv/pyenv).
 
 ### Environment initialization
 
@@ -68,12 +79,4 @@ The tracker store database is volatile.
 
 You can still access the bot using `rasa shell` by spawning a new core instance like this:
 
-```
-docker run \
-  --rm -it \
-  -v ${PWD}:/app \
-  --env ACTION_SERVER_ENDPOINT=http://action_server:8080/webhook \
-  --env TRACKER_STORE_ENDPOINT=tracker_store \
-  --network rasa-covid19_default \
-  rasa/rasa:1.9.4-full shell --debug
-```
+`make shell`

@@ -29,6 +29,7 @@ check:python:
   stage: check
   script:
     - make install-dev
+    - make install-rasa-sdk
     - make lint
     - make test
   coverage: /Total coverage:\s([0-9.]+%)/

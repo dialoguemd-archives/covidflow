@@ -16,11 +16,23 @@ include:
   - project: continuous-integration/templates
     file: "/v3/.docker-build-publish.yml"
 
-check:docker:core:
+check:shell:
+  image: rdeavila/docker-shellcheck:0.4.4
+  stage: check
+  script:
+    - shellcheck bin/*.sh
+
+check:docker:core:en:
   stage: check
   extends: .check:docker
   variables:
-    DOCKERFILE_LOCATION: deployment/docker/Dockerfile.core
+    DOCKERFILE_LOCATION: deployment/docker/Dockerfile.core.en
+
+check:docker:core:fr:
+  stage: check
+  extends: .check:docker
+  variables:
+    DOCKERFILE_LOCATION: deployment/docker/Dockerfile.core.fr
 
 check:docker:actions:
   stage: check
@@ -41,16 +53,27 @@ check:python:
     paths:
       - htmlcov/
 
-train:rasa:
+.train:rasa:
   image:
     name: rasa/rasa:1.9.4-full
     entrypoint: [""]
   stage: train
   script:
-    - rasa train --augmentation 0
+    - sh bin/prepare-training-data.sh ${LANGUAGE}
+    - rasa train --augmentation 0 --out models/${LANGUAGE}
   artifacts:
     paths:
-      - models/
+      - models/${LANGUAGE}
+
+train:rasa:en:
+  extends: .train:rasa
+  variables:
+    LANGUAGE: en
+
+train:rasa:fr:
+  extends: .train:rasa
+  variables:
+    LANGUAGE: fr
 
 .docker:base:
   variables:
@@ -58,25 +81,37 @@ train:rasa:
     DOCKER_IMAGE_PATH_NUECHO: covid19
     DOCKER_REGISTRY_TOKEN_NUECHO: $DOCKER_REGISTRY_TOKEN
 
-.docker:core:
+.docker:core:en:
   extends: .docker:base
   variables:
-    RASA_COMPONENT_NAME: core
-    DOCKER_IMAGE_NAME: core
-    DOCKERFILE_LOCATION: deployment/docker/Dockerfile.core
+    LANGUAGE: en
+    DOCKER_IMAGE_NAME: core/en
+    DOCKERFILE_LOCATION: deployment/docker/Dockerfile.core.en
+
+.docker:core:fr:
+  extends: .docker:base
+  variables:
+    LANGUAGE: fr
+    DOCKER_IMAGE_NAME: core/fr
+    DOCKERFILE_LOCATION: deployment/docker/Dockerfile.core.fr
 
 .docker:actions:
   extends: .docker:base
   variables:
-    RASA_COMPONENT_NAME: actions
     DOCKER_IMAGE_NAME: actions
     DOCKERFILE_LOCATION: deployment/docker/Dockerfile.actions
 
-build:docker:core:
+build:docker:core:en:
   stage: build
   extends:
     - .build:docker
-    - .docker:core
+    - .docker:core:en
+
+build:docker:core:fr:
+  stage: build
+  extends:
+    - .build:docker
+    - .docker:core:fr
 
 build:docker:actions:
   stage: build
@@ -84,11 +119,17 @@ build:docker:actions:
     - .build:docker
     - .docker:actions
 
-publish:docker:core:
+publish:docker:core:en:
   stage: publish
   extends:
     - .publish:docker
-    - .docker:core
+    - .docker:core:en
+
+publish:docker:core:fr:
+  stage: publish
+  extends:
+    - .publish:docker
+    - .docker:core:fr
 
 publish:docker:actions:
   stage: publish

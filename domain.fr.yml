@@ -1,0 +1,23 @@
+responses:
+  utter_greet:
+    - text: "Hey! Comment ça va?"
+      buttons:
+        - title: "Très bien!"
+          payload: "/mood_great"
+        - title: "Vraiment triste..."
+          payload: "/mood_unhappy"
+
+  utter_cheer_up:
+    - text: "Voici un petit quelque chose pour t'encourager:"
+
+  utter_did_that_help:
+    - text: "Est-ce que ça aide?"
+
+  utter_happy:
+    - text: "Parfait, lâche pas!"
+
+  utter_goodbye:
+    - text: "Au revoir"
+
+  utter_iamabot:
+    - text: "Je suis un robot à la puissance Rasa."

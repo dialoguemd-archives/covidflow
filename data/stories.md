@@ -8,6 +8,7 @@
 * greet
   - utter_greet             <!-- action of the bot to execute -->
 * mood_unhappy
+  - utter_cheer_up
   - action_cheer_up
   - utter_did_that_help
 * affirm
@@ -17,6 +18,7 @@
 * greet
   - utter_greet
 * mood_unhappy
+  - utter_cheer_up
   - action_cheer_up
   - utter_did_that_help
 * deny

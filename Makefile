@@ -66,14 +66,36 @@ test:
 		--cov-fail-under=80 \
 		--cov ${SOURCE_FOLDER}
 
-train:
-	docker run -v ${PWD}:/app rasa/rasa:${RASA_VERSION}-full train --augmentation 0
+train-en:
+	sh bin/prepare-training-data.sh en
+	docker run -v ${PWD}:/app rasa/rasa:${RASA_VERSION}-full train \
+		--out models/en \
+		--augmentation 0
 
-shell:
+train-fr:
+	sh bin/prepare-training-data.sh fr
+	docker run -v ${PWD}:/app rasa/rasa:${RASA_VERSION}-full train \
+		--out models/fr \
+		--augmentation 0
+
+shell-en:
 	docker run \
 		--rm -it \
 		-v ${PWD}:/app \
-		--env ACTION_SERVER_ENDPOINT=http://action_server:8080/webhook \
+		--env ACTION_SERVER_ENDPOINT=http://actions:8080/webhook \
 		--env TRACKER_STORE_ENDPOINT=tracker_store \
 		--network rasa-covid19_default \
-		rasa/rasa:${RASA_VERSION}-full shell --debug
+		rasa/rasa:${RASA_VERSION}-full shell \
+		--model models/en
+		--debug
+
+shell-fr:
+	docker run \
+		--rm -it \
+		-v ${PWD}:/app \
+		--env ACTION_SERVER_ENDPOINT=http://actions:8080/webhook \
+		--env TRACKER_STORE_ENDPOINT=tracker_store \
+		--network rasa-covid19_default \
+		rasa/rasa:${RASA_VERSION}-full shell \
+		--model models/fr
+		--debug

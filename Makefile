@@ -15,6 +15,9 @@ SOURCE_FOLDER=actions
 TESTS_FOLDER=tests
 ENV_VARS=`grep -v '^\#' .env | grep -Eo '\w+=\S+'`
 
+UID:=$(shell id -u)
+GID:=$(shell id -g)
+
 help:
 	@echo "    init"
 	@echo "        Initialize virtual environment"
@@ -32,11 +35,14 @@ help:
 	@echo "        Format code with black"
 	@echo "    test"
 	@echo "        Run py.test (use TEST_FILE variable to test a single file)"
-	@echo "    train"
-	@echo "        Train Rasa models"
-	@echo "    shell"
-	@echo "        Start a Rasa shell"
-
+	@echo "    train-en"
+	@echo "        Train English Rasa models"
+	@echo "    train-fr"
+	@echo "        Train French Rasa models"
+	@echo "    shell-en"
+	@echo "        Start a Rasa shell using English models"
+	@echo "    shell-fr"
+	@echo "        Start a Rasa shell using French models"
 
 init:
 	python3 -m venv ${VENV_LOCATION}
@@ -68,13 +74,19 @@ test:
 
 train-en:
 	sh bin/prepare-training-data.sh en
-	docker run -v ${PWD}:/app rasa/rasa:${RASA_VERSION}-full train \
+	docker run \
+	    -v ${PWD}:/app \
+		--user ${UID}:${GID} \
+		rasa/rasa:${RASA_VERSION}-full train \
 		--out models/en \
 		--augmentation 0
 
 train-fr:
 	sh bin/prepare-training-data.sh fr
-	docker run -v ${PWD}:/app rasa/rasa:${RASA_VERSION}-full train \
+	docker run \
+	    -v ${PWD}:/app \
+		--user ${UID}:${GID} \
+		rasa/rasa:${RASA_VERSION}-full train \
 		--out models/fr \
 		--augmentation 0
 

@@ -47,14 +47,15 @@ To allow the IDE to perform autocompletion and to run unit tests, Rasa SDK must 
 
 Windows / Mac: [Docker Desktop](https://www.docker.com/products/docker-desktop) must be installed on your machine.
 
-### Train the model
+### Train the models
 
 Before running the bot, the model must be trained.
 
-Run the following command:
+Run the following commands:
 
 ```
-make train
+make train-en
+make train-fr
 ```
 
 ### Interact with the bot
@@ -69,7 +70,8 @@ docker-compose up
 
 This will start the following services:
 
-- _core_(`localhost:5005`): The actual Rasa application.
+- _core-en_(`localhost:5005`): The Rasa application with the English model.
+- _core-fr_(`localhost:5006`): The Rasa application with the French model.
 - _action_server_(`localhost:5055`): The Rasa action server that executes forms and custom code.
 - _tracker_store_(`localhost:5432`): The PostgreSQL backed Rasa tracker store.
 
@@ -79,4 +81,4 @@ The tracker store database is volatile.
 
 You can still access the bot using `rasa shell` by spawning a new core instance like this:
 
-`make shell`
+`make shell-en` or `make shell-fr` depending on the model you want to use.

@@ -164,6 +164,7 @@ jobs:
           name: Prepare NLU training files
           command: |
             mkdir ${COMPONENT_PATH}
+            cp requirements.txt ${COMPONENT_PATH}
             cp Dockerfile ${COMPONENT_PATH}
             cp credentials.yml ${COMPONENT_PATH}
             cp endpoints.yml ${COMPONENT_PATH}

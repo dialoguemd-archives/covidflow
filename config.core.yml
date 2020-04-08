@@ -2,7 +2,8 @@
 # https://rasa.com/docs/rasa/core/policies/
 policies:
   - name: FormPolicy
-  - name: MemoizationPolicy
+  - name: AugmentedMemoizationPolicy
+    max_history: 6
   - name: TEDPolicy
     max_history: 5
     epochs: 100

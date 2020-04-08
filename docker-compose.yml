@@ -11,6 +11,9 @@ services:
       - ./models/en:/app/models
       - ./credentials.yml:/app/credentials.yml
       - ./endpoints.yml:/app/endpoints.yml
+    depends_on:
+      - actions
+      - tracker_store
 
   core-fr:
     build:
@@ -22,6 +25,9 @@ services:
       - ./models/fr:/app/models
       - ./credentials.yml:/app/credentials.yml
       - ./endpoints.yml:/app/endpoints.yml
+    depends_on:
+      - actions
+      - tracker_store
 
   actions:
     build:

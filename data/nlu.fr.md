@@ -26,22 +26,11 @@
 - je ne pense pas
 - pantoute
 
-## intent:mood_great
-- parfait
-- super
-- bien
-- très bien
-- numéro un
+## intent:checkin_return
+- placeholder
 
-## intent:mood_unhappy
-- mauvaise journée
-- je suis triste
-- je ne me sens pas bien
-- je suis déçu
-- super triste
+## intent:suspect
+- placeholder
 
-## intent:bot_challenge
-- es-tu un robot?
-- es-tu un humain?
-- est-ce que je parle à un robot?
-- est-ce que je parle à un humain?
+## intent:tested_positive
+- placeholder

@@ -40,40 +40,16 @@
 - don't like that
 - no way
 
-## intent:mood_great
-- perfect
-- great
-- amazing
-- feeling like a king
-- wonderful
-- I am feeling very good
-- I am great
-- I am amazing
-- I am going to save the world
-- super stoked
-- extremely good
-- so so perfect
-- so good
-- so perfect
+## intent:checkin_return
+- I am returning for my check-in on my Covid-19
+- I want to do a check-in
 
-## intent:mood_unhappy
-- my day was horrible
-- I am sad
-- I don't feel very well
-- I am disappointed
-- super sad
-- I'm so sad
-- sad
-- very sad
-- unhappy
-- not good
-- not very good
-- extremly sad
-- so saad
-- so sad
+## intent:suspect
+- I suspect I have Covid-19
+- I think I have covid-19
+- i might have covid-19
+- i think i have the coronavirus
 
-## intent:bot_challenge
-- are you a bot?
-- are you a human?
-- am I talking to a bot?
-- am I talking to a human?
+## intent:tested_positive
+- I have been tested positive for Covid-19
+- I tested positive

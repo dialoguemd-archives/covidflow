@@ -1,23 +1,111 @@
 responses:
   utter_greet:
-    - text: "Hey! How are you?"
+    - text: "Hi, I′m Chloe, your medical assistant, I′m here to help you assess your symptoms and provide information about Covid-19."
+
+  utter_how_may_i_help:
+    - text: How may I help you today?
       buttons:
-        - title: "great"
-          payload: "/mood_great"
-        - title: "super sad"
-          payload: "/mood_unhappy"
+        - title: "I am returning for my check-in on my Covid-19"
+          payload: "/checkin_return"
+        - title: "I suspect I have Covid-19"
+          payload: "/suspect"
+        - title: "I have been tested positive for Covid-19"
+          payload: "/tested_positive"
 
-  utter_cheer_up:
-    - text: "Here is something to cheer you up:"
+  utter_returning_for_checkin:
+    - text: (check-in flow)
 
-  utter_did_that_help:
-    - text: "Did that help you?"
+  utter_tested_positive:
+    - text: (tested positive flow)
 
-  utter_happy:
-    - text: "Great, carry on!"
+  utter_enquire_severe_symptoms:
+    - text: "First, do you have fever (higher than 38C or 100.4F) and are you experiencing any of the following symptoms:\n- Severe difficulty breathing\n- Severe chest pain\n- Having a hard time waking up\n- Feeling confused\n- Losing consciousness"
+      buttons:
+        - title: yes
+          payload: "/affirm"
+        - title: no
+          payload: "/deny"
+
+  utter_call_911:
+    - text: These symptoms require immediate response, so please call 911 immediately, or go to your nearest emergency department.
+
+  utter_enquire_moderate_symptoms:
+    - text: "OK, do you have any of the following:\n- Mild to moderate shortness of breath\n- Inability to lie down because of difficulty breathing\n- Chronic health conditions that you are having difficulty managing because of difficulty breathing\n- Sudden loss of taste or smell"
+      buttons:
+        - title: yes
+          payload: "/affirm"
+        - title: no
+          payload: "/deny"
+
+  utter_self_isolate:
+    - text: "In this case, *you need to self-isolate for at least 14 days*. It is extremely important that you follow this directive."
+
+  utter_monitor_symptoms_long_1:
+    - text: "If your symptoms worsen or if you have difficulty breathing, you will need to get to your nearest emergency or call 911."
+
+  utter_monitor_symptoms_long_2:
+    - text: "Please monitor your symptoms. If you need assistance, you should:\n- Contact your family doctor if possible, or\n- Call 811 for assistance"
+
+  utter_offer_checkin:
+    - text: "Would you like me to check-in with you daily to help monitor your symptoms?"
+      buttons:
+        - title: yes
+          payload: "/affirm"
+        - title: no
+          payload: "/deny"
+
+  utter_daily_checkin_enroll:
+    - text: (Check-in enrollment flow)
+
+  utter_no_checkin_instruction_1:
+    - text: "OK, please make sure that you stay home and self-isolate for at least 14 days."
+
+  utter_no_checkin_instruction_2:
+    - text: "Take your temperature regularly and monitor your symptoms for any changes."
+
+  utter_remind_possible_checkin:
+    - text: "At any time, you can check-in with me to monitor your symptoms."
+
+  utter_propose_websites:
+    - text: "You can also visit [canada.ca/covid-19](https://ca.thrive.health/covid19/en) or [quebec.ca/covid-19](https://www.quebec.ca/sante/problemes-de-sante/a-z/coronavirus-2019/) for additional information on the Covid-19."
 
   utter_goodbye:
-    - text: "Bye"
+    - text: "Thanks and take care of yourself!"
 
-  utter_iamabot:
-    - text: "I am a bot, powered by Rasa."
+  # Mild symptoms flow
+
+  utter_enquire_mild_symptoms:
+    - text: "Are you experiencing one of the following:\n- Fever\n- Cough\n- Sneezing\n- Sore throat"
+      buttons:
+        - title: yes
+          payload: "/affirm"
+        - title: no
+          payload: "/deny"
+
+  utter_monitor_symptoms_short:
+    - text: "Please monitor your symptoms for any changes or in case you get new symptoms, or if they worsen."
+
+  utter_enquire_contact:
+    - text: "Have you recently been in close contact with someone who has Covid-19?\nBy close contact I mean any of the following:\n- Providing care for infected patients, visiting, or staying with them in the same close environment\n- Working in close proximity with an infected person\n- Living in the same household as an infected person"
+      buttons:
+        - title: yes
+          payload: "/affirm"
+        - title: no
+          payload: "/deny"
+
+  utter_enquire_travel:
+    - text: "Have you traveled in any country outside of Canada within the last 14 days (including passing through an airport)?"
+      buttons:
+        - title: yes
+          payload: "/affirm"
+        - title: no
+          payload: "/deny"
+
+  utter_probaly_not_covid:
+    - text: In this case, you probably don’t have Covid-19.
+
+  utter_social_distancing:
+    - text: "Please ensure that you practice social distancing and that you don’t leave your home unless you really need to."
+
+  utter_checkin_if_developments:
+    - text: "If you develop any symptoms in the future, or if you get in contact with someone who has the Covid-19, please check-in with me for an assessment and recommendations."

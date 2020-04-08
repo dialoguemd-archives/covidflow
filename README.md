@@ -79,6 +79,6 @@ The tracker store database is volatile.
 
 #### Using rasa shell
 
-You can still access the bot using `rasa shell` by spawning a new core instance like this:
+You can still access the bot using `rasa shell` by starting the application like this:
 
-`make shell-en` or `make shell-fr` depending on the model you want to use.
+`docker-compose run core-en shell` or `docker-compose run core-fr shell`

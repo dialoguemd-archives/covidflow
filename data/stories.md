@@ -1,33 +1,164 @@
-## happy path               <!-- name of the story - just for debugging -->
+## greet
 * greet
   - utter_greet
-* mood_great               <!-- user utterance, in the following format: * intent{"entity_name": value} -->
-  - utter_happy
+  - utter_how_may_i_help
 
-## sad path 1               <!-- this is already the start of the next story -->
-* greet
-  - utter_greet             <!-- action of the bot to execute -->
-* mood_unhappy
-  - utter_cheer_up
-  - action_cheer_up
-  - utter_did_that_help
+## return for check-in
+* checkin_return
+  - utter_returning_for_checkin
+
+## tested positive
+* tested_positive
+ - utter_tested_positive
+
+## severe symptoms
+* suspect
+ - utter_enquire_severe_symptoms
 * affirm
-  - utter_happy
+  - utter_call_911
 
-## sad path 2
-* greet
-  - utter_greet
-* mood_unhappy
-  - utter_cheer_up
-  - action_cheer_up
-  - utter_did_that_help
+## moderate symptoms
+* suspect
+  - utter_enquire_severe_symptoms
 * deny
+  - utter_enquire_moderate_symptoms
+* affirm
+  - utter_self_isolate
+  - utter_monitor_symptoms_long_1
+  - utter_monitor_symptoms_long_2
+  - utter_offer_checkin
+* affirm
+  - utter_daily_checkin_enroll
+
+## moderate symptoms no checkin
+* suspect
+  - utter_enquire_severe_symptoms
+* deny
+  - utter_enquire_moderate_symptoms
+* affirm
+  - utter_self_isolate
+  - utter_monitor_symptoms_long_1
+  - utter_monitor_symptoms_long_2
+  - utter_offer_checkin
+* deny
+  - utter_no_checkin_instruction_1
+  - utter_no_checkin_instruction_2
+  - utter_remind_possible_checkin
+  - utter_propose_websites
+  - utter_goodbye
+
+## mild symptoms no checkin
+* suspect
+  - utter_enquire_severe_symptoms
+* deny
+  - utter_enquire_moderate_symptoms
+* deny
+  - utter_enquire_mild_symptoms
+* affirm
+  - utter_self_isolate
+  - utter_monitor_symptoms_short
+  - utter_offer_checkin
+* deny
+  - utter_no_checkin_instruction_1
+  - utter_no_checkin_instruction_2
+  - utter_remind_possible_checkin
+  - utter_propose_websites
+  - utter_goodbye
+
+## no symptoms contact
+* suspect
+  - utter_enquire_severe_symptoms
+* deny
+  - utter_enquire_moderate_symptoms
+* deny
+  - utter_enquire_mild_symptoms
+* deny
+  - utter_enquire_contact
+* affirm
+  - utter_self_isolate
+  - utter_monitor_symptoms_short
+  - utter_offer_checkin
+* affirm
+  - utter_daily_checkin_enroll
+
+## no symptoms contact no checkin
+* suspect
+  - utter_enquire_severe_symptoms
+* deny
+  - utter_enquire_moderate_symptoms
+* deny
+  - utter_enquire_mild_symptoms
+* deny
+  - utter_enquire_contact
+* affirm
+  - utter_self_isolate
+  - utter_monitor_symptoms_short
+  - utter_offer_checkin
+* deny
+  - utter_no_checkin_instruction_1
+  - utter_no_checkin_instruction_2
+  - utter_remind_possible_checkin
+  - utter_propose_websites
+  - utter_goodbye
+
+## no symptoms no contact travel
+* suspect
+  - utter_enquire_severe_symptoms
+* deny
+  - utter_enquire_moderate_symptoms
+* deny
+  - utter_enquire_mild_symptoms
+* deny
+  - utter_enquire_contact
+* deny
+  - utter_enquire_travel
+* affirm
+  - utter_self_isolate
+  - utter_monitor_symptoms_short
+  - utter_offer_checkin
+* affirm
+  - utter_daily_checkin_enroll
+
+## no symptoms no contact travel no checkin
+* suspect
+  - utter_enquire_severe_symptoms
+* deny
+  - utter_enquire_moderate_symptoms
+* deny
+  - utter_enquire_mild_symptoms
+* deny
+  - utter_enquire_contact
+* deny
+  - utter_enquire_travel
+* affirm
+  - utter_self_isolate
+  - utter_monitor_symptoms_short
+  - utter_offer_checkin
+* deny
+  - utter_no_checkin_instruction_1
+  - utter_no_checkin_instruction_2
+  - utter_remind_possible_checkin
+  - utter_propose_websites
+  - utter_goodbye
+
+## no symptoms no contact no travel
+* suspect
+  - utter_enquire_severe_symptoms
+* deny
+  - utter_enquire_moderate_symptoms
+* deny
+  - utter_enquire_mild_symptoms
+* deny
+  - utter_enquire_contact
+* deny
+  - utter_enquire_travel
+* deny
+  - utter_probaly_not_covid
+  - utter_social_distancing
+  - utter_checkin_if_developments
+  - utter_propose_websites
   - utter_goodbye
 
 ## say goodbye
 * goodbye
   - utter_goodbye
-
-## bot challenge
-* bot_challenge
-  - utter_iamabot

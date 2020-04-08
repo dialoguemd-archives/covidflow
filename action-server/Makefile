@@ -4,9 +4,7 @@
 export PYTHONPATH = .
 
 VENV_LOCATION=.venv
-ACTIVATE_VENV=test -d ${VENV_LOCATION} \
-  && echo "Using .venv" \
-  && . ${VENV_LOCATION}/bin/activate;
+ACTIVATE_VENV=poetry run
 
 RASA_VERSION=1.9.4
 RASA_SDK_VERSION=1.9.0

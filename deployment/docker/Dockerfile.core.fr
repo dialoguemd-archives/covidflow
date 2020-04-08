@@ -7,4 +7,4 @@ ENV TRACKER_STORE_ENDPOINT=tracker_store
 COPY credentials.yml endpoints.yml ./
 COPY models/fr models
 
-CMD [ "run", "--port", "8080", "--enable-api", "--debug"]
+CMD [ "run", "--port", "8080", "--enable-api", "--cors", "*", "--debug"]

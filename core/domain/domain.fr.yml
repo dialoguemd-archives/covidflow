@@ -22,7 +22,7 @@ responses:
     - text: "Premièrement, faites-vous de la fièvre (plus de 38°C ou 100,4°F) et avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Avoir beaucoup de mal à se réveiller\n- Être confus\n- Perte de conscience"
       buttons:
         - title: oui
-          payload: "/affirm"
+          payload: '/affirm{"symptoms": "severe"}'
         - title: non
           payload: "/deny"
 
@@ -33,7 +33,7 @@ responses:
     - text: "Avez-vous les symptômes suivants:\n- Essoufflement léger à modéré\n- Incapacité à vous allonger en raison de difficultés respiratoires\n- Problèmes de santé chroniques que vous avez du mal à gérer en raison de difficultés respiratoires\n- Perte soudaine du goût ou de l'odorat"
       buttons:
         - title: oui
-          payload: "/affirm"
+          payload: '/affirm{"symptoms": "moderate"}'
         - title: non
           payload: "/deny"
 
@@ -66,8 +66,8 @@ responses:
   utter_remind_possible_checkin:
     - text: "À tout moment, vous pouvez communiquer avec moi pour faire un suivi de vos symptômes."
 
-  utter_propose_websites:
-    - text: "Vous pouvez aussi visiter le [canada.ca/covid-19](https://ca.thrive.health/covid19/en) ou encore [quebec.ca/covid-19](https://www.quebec.ca/sante/problemes-de-sante/a-z/coronavirus-2019/) pour de l'information supplémentaire au sujet de la Covid-19."
+  utter_visit_package:
+    - text: "Vous pouvez aussi consulter [votre trousse d'information personnalisée](https://covid19.dialogue.co/#/info?id=ca-{province},{risk_level})."
 
   utter_goodbye:
     - text: "Merci, et prenez bien soin de vous!"
@@ -78,9 +78,9 @@ responses:
     - text: "Avez-vous les symptômes suivants:\n- Fièvre\n- Toux\n- Éternuements\n- Mal de gorge"
       buttons:
         - title: oui
-          payload: "/affirm"
+          payload: '/affirm{"symptoms": "mild"}'
         - title: non
-          payload: "/deny"
+          payload: '/deny{"symptoms": "none"}'
 
   utter_monitor_symptoms_short:
     - text: "Veuillez suivre l'évolution de vos symptômes et notez tout changement, en particulier si vous développez de nouveaux symptômes ou s'ils empirent."
@@ -89,9 +89,9 @@ responses:
     - text: "Avez-vous récemment été en contact étroit avec une personne atteinte de la Covid-19?\nUne personne ayant eu des contacts étroits est définie comme:\n- Une personne qui a fourni des soins à la personne malade sans équipement de protection adéquat\n- Une personne qui a vécu ou travaillé avec la personne malade pendant qu’elle était contagieuse\n- Une personne qui a eu un contact direct avec des fluides corporels infectieux de la personne malade (qui était, par exemple, à proximité lorsque la personne malade a toussé ou éternué)"
       buttons:
         - title: oui
-          payload: "/affirm"
+          payload: '/affirm{"contact": true}'
         - title: non
-          payload: "/deny"
+          payload: '/deny{"contact": false}'
 
   utter_enquire_travel:
     - text: "Avez-vous voyagé à l'extérieur du Canada durant les 14 derniers jours (Ceci inclut le passage dans un aéroport étranger)?"
@@ -101,7 +101,7 @@ responses:
         - title: non
           payload: "/deny"
 
-  utter_probaly_not_covid:
+  utter_probably_not_covid:
     - text: Dans ce cas, vous n'avez probablement pas la Covid-19.
 
   utter_social_distancing:
@@ -109,3 +109,42 @@ responses:
 
   utter_checkin_if_developments:
     - text: "Si vous développez des symptômes, ou si vous entrez en contact avec une personne atteinte de la Covid-19, veuillez communiquer avec moi pour obtenir une évaluation et des recommandations."
+
+  # province age form
+  utter_ask_province:
+    - text: Dans quelle province ou quel territoire résidez-vous présentement?
+      buttons:
+        - title: C.B.
+          payload: '/inform{"province": "bc"}'
+        - title: Alb.
+          payload: '/inform{"province": "ab"}'
+        - title: Sask.
+          payload: '/inform{"province": "sk"}'
+        - title: Man.
+          payload: '/inform{"province": "mb"}'
+        - title: Ont.
+          payload: '/inform{"province": "on"}'
+        - title: Qc
+          payload: '/inform{"province": "qc"}'
+        - title: N.-B.
+          payload: '/inform{"province": "nb"}'
+        - title: N.-É.
+          payload: '/inform{"province": "ns"}'
+        - title: Î.-P.-É.
+          payload: '/inform{"province": "pe"}'
+        - title: T.-N.-L.
+          payload: '/inform{"province": "nl"}'
+        - title: Yn
+          payload: '/inform{"province": "yu"}'
+        - title: T.N.-O.
+          payload: '/inform{"province": "nt"}'
+        - title: Nt
+          payload: '/inform{"province": "nu"}'
+
+  utter_ask_age_over_65:
+    - text: Avez-vous plus de 65 ans?
+      buttons:
+        - title: oui
+          payload: "/affirm"
+        - title: non
+          payload: "/deny"

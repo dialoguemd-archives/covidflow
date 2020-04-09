@@ -22,7 +22,7 @@ responses:
     - text: "First, do you have fever (higher than 38°C or 100.4°F) and are you experiencing any of the following symptoms:\n- Severe difficulty breathing\n- Severe chest pain\n- Having a hard time waking up\n- Feeling confused\n- Losing consciousness"
       buttons:
         - title: yes
-          payload: "/affirm"
+          payload: '/affirm{"symptoms": "severe"}'
         - title: no
           payload: "/deny"
 
@@ -33,7 +33,7 @@ responses:
     - text: "OK, do you have any of the following:\n- Mild to moderate shortness of breath\n- Inability to lie down because of difficulty breathing\n- Chronic health conditions that you are having difficulty managing because of difficulty breathing\n- Sudden loss of taste or smell"
       buttons:
         - title: yes
-          payload: "/affirm"
+          payload: '/affirm{"symptoms": "moderate"}'
         - title: no
           payload: "/deny"
 
@@ -66,8 +66,8 @@ responses:
   utter_remind_possible_checkin:
     - text: "At any time, you can check-in with me to monitor your symptoms."
 
-  utter_propose_websites:
-    - text: "You can also visit [canada.ca/covid-19](https://ca.thrive.health/covid19/en) or [quebec.ca/covid-19](https://www.quebec.ca/sante/problemes-de-sante/a-z/coronavirus-2019/) for additional information on the Covid-19."
+  utter_visit_package:
+    - text: "You can also consult [your personal information package](https://covid19.dialogue.co/#/info?id=ca-{province},{risk_level})."
 
   utter_goodbye:
     - text: "Thanks and take care of yourself!"
@@ -78,9 +78,9 @@ responses:
     - text: "Are you experiencing one of the following:\n- Fever\n- Cough\n- Sneezing\n- Sore throat"
       buttons:
         - title: yes
-          payload: "/affirm"
+          payload: '/affirm{"symptoms": "mild"}'
         - title: no
-          payload: "/deny"
+          payload: '/deny{"symptoms": "none"}'
 
   utter_monitor_symptoms_short:
     - text: "Please monitor your symptoms for any changes or in case you get new symptoms, or if they worsen."
@@ -89,9 +89,9 @@ responses:
     - text: "Have you recently been in close contact with someone who has Covid-19?\nBy close contact I mean any of the following:\n- Providing care for infected patients, visiting, or staying with them in the same close environment\n- Working in close proximity with an infected person\n- Living in the same household as an infected person"
       buttons:
         - title: yes
-          payload: "/affirm"
+          payload: '/affirm{"contact": true}'
         - title: no
-          payload: "/deny"
+          payload: '/deny{"contact": false}'
 
   utter_enquire_travel:
     - text: "Have you traveled in any country outside of Canada within the last 14 days (including passing through an airport)?"
@@ -101,7 +101,7 @@ responses:
         - title: no
           payload: "/deny"
 
-  utter_probaly_not_covid:
+  utter_probably_not_covid:
     - text: In this case, you probably don’t have Covid-19.
 
   utter_social_distancing:
@@ -109,3 +109,42 @@ responses:
 
   utter_checkin_if_developments:
     - text: "If you develop any symptoms in the future, or if you get in contact with someone who has the Covid-19, please check-in with me for an assessment and recommendations."
+
+  # province age form
+  utter_ask_province:
+    - text: In which province or territory do you currently reside?
+      buttons:
+        - title: B.C.
+          payload: '/inform{"province": "bc"}'
+        - title: Alta.
+          payload: '/inform{"province": "ab"}'
+        - title: Sask.
+          payload: '/inform{"province": "sk"}'
+        - title: Man.
+          payload: '/inform{"province": "mb"}'
+        - title: Ont.
+          payload: '/inform{"province": "on"}'
+        - title: Que.
+          payload: '/inform{"province": "qc"}'
+        - title: N.B.
+          payload: '/inform{"province": "nb"}'
+        - title: N.S.
+          payload: '/inform{"province": "ns"}'
+        - title: P.E.I.
+          payload: '/inform{"province": "pe"}'
+        - title: N.L.
+          payload: '/inform{"province": "nl"}'
+        - title: Y.T.
+          payload: '/inform{"province": "yu"}'
+        - title: N.W.T.
+          payload: '/inform{"province": "nt"}'
+        - title: Nvt.
+          payload: '/inform{"province": "nu"}'
+
+  utter_ask_age_over_65:
+    - text: Are you older than 65?
+      buttons:
+        - title: yes
+          payload: "/affirm"
+        - title: no
+          payload: "/deny"

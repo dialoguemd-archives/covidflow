@@ -30,7 +30,7 @@ help:
 	@echo "    clean"
 	@echo "        Remove Python artifacts"
 	@echo "    lint"
-	@echo "        Check style with flake8, mypy and black"
+	@echo "        Check style with pylama, mypy and black"
 	@echo "    format"
 	@echo "        Format code with black"
 	@echo "    test"
@@ -58,7 +58,7 @@ install-rasa-sdk:
 	${ACTIVATE_VENV} pip install rasa-sdk==${RASA_SDK_VERSION}
 
 lint:
-	${ACTIVATE_VENV} flake8 ${SOURCE_FOLDER} ${TESTS_FOLDER}
+	${ACTIVATE_VENV} pylama ${SOURCE_FOLDER} ${TESTS_FOLDER}
 	${ACTIVATE_VENV} mypy ${SOURCE_FOLDER} ${TESTS_FOLDER}
 	${ACTIVATE_VENV} black --check ${SOURCE_FOLDER} ${TESTS_FOLDER}
 

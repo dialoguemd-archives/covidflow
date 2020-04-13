@@ -4,10 +4,6 @@
 export PYTHONPATH = .
 
 VENV_LOCATION=.venv
-ACTIVATE_VENV=poetry run
-
-RASA_VERSION=1.9.4
-RASA_SDK_VERSION=1.9.0
 
 UID:=$(shell id -u)
 GID:=$(shell id -g)
@@ -19,8 +15,6 @@ help:
 	@echo "        Install dependencies"
 	@echo "    install-dev"
 	@echo "        Install dev dependencies"
-	@echo "    install-rasa-sdk"
-	@echo "        Install Rasa SDK"
 	@echo "    clean"
 	@echo "        Remove Python artifacts"
 	@echo "    lint"
@@ -31,29 +25,25 @@ help:
 	@echo "        Run py.test (use TEST_FILE variable to test a single file)"
 
 init:
-	python3 -m venv ${VENV_LOCATION}
-	${ACTIVATE_VENV} pip install --upgrade pip
+	curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 
 install:
-	${ACTIVATE_VENV} pip install -r requirements.txt
+	poetry install
 
 install-dev:
-	${ACTIVATE_VENV} pip install -r requirements-dev.txt
-
-install-rasa-sdk:
-	${ACTIVATE_VENV} pip install rasa-sdk==${RASA_SDK_VERSION}
+	poetry install --no-root
 
 lint:
-	${ACTIVATE_VENV} pylama
-	${ACTIVATE_VENV} mypy .
-	${ACTIVATE_VENV} black --check .
-	${ACTIVATE_VENV} isort --check
+	poetry run pylama
+	poetry run mypy .
+	poetry run black --check .
+	poetry run isort --check
 
 format:
-	${ACTIVATE_VENV} black .
-	${ACTIVATE_VENV} isort
+	poetry run black .
+	poetry run isort
 
 test:
-	${ACTIVATE_VENV} py.test \
+	poetry run py.test \
 		--cov-report term-missing:skip-covered \
 		--cov-report html

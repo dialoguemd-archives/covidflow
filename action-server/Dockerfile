@@ -1,11 +1,25 @@
-FROM rasa/rasa:1.9.4
+FROM rasa/rasa:1.9.4 as base
 EXPOSE 8080
 
-COPY requirements.txt requirements.txt
-COPY actions actions
+COPY poetry.lock poetry.lock
+COPY pyproject.toml pyproject.toml
 
 USER root
-RUN pip install -r requirements.txt
+ARG POETRY_VERSION="1.0.0"
+ENV \
+  PYTHONFAULTHANDLER=TRUE \
+  PYTHONUNBUFFERED=TRUE \
+  PIP_DISABLE_PIP_VERSION_CHECK=on \
+  PIP_NO_CACHE_DIR=off
+RUN \
+  pip install --upgrade pip \
+  && pip install "poetry==${POETRY_VERSION}" \
+  && poetry config virtualenvs.create false
+RUN poetry install
 USER 1001
+
+FROM base as final
+
+COPY actions actions
 
 CMD [ "run", "actions", "--port", "8080" ]

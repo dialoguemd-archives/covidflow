@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "rasa-covid19"
+name = "covidflow"
 version = "0.1.0"
 description = ""
 authors = [""]

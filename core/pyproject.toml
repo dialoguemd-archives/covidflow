@@ -1,12 +1,11 @@
 [tool.poetry]
-name = "rasa-covid19"
+name = "covidflow"
 version = "0.1.0"
 description = ""
 authors = [""]
 
 [tool.poetry.dependencies]
 python = "^3.6"
-rasa-sdk = "^1.9.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "5.3.4"

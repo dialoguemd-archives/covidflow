@@ -9,6 +9,6 @@ models
 reports
 
 # Those files are generated at build time
-domain.yml
-config.yml
+/domain.yml
+/config.yml
 data/nlu.md

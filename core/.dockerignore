@@ -1,9 +1,5 @@
-.coverage
-.env
 .mypy_cache
 .pytest_cache
 .venv
-
-__pycache__
+.vscode
 htmlcov
-reports

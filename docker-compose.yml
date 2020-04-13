@@ -3,40 +3,40 @@ version: "3.2"
 services:
   core-en:
     build:
-      context: .
-      dockerfile: deployment/docker/Dockerfile.core.en
+      context: ./core
+      dockerfile: Dockerfile.en
     ports:
       - 5005:8080
     volumes:
-      - ./models/en:/app/models
-      - ./credentials.yml:/app/credentials.yml
-      - ./endpoints.yml:/app/endpoints.yml
+      - ./core/models/en:/app/models
+      - ./core/credentials.yml:/app/credentials.yml
+      - ./core/endpoints.yml:/app/endpoints.yml
     depends_on:
       - actions
       - tracker_store
 
   core-fr:
     build:
-      context: .
-      dockerfile: deployment/docker/Dockerfile.core.fr
+      context: ./core
+      dockerfile: Dockerfile.fr
     ports:
       - 5006:8080
     volumes:
-      - ./models/fr:/app/models
-      - ./credentials.yml:/app/credentials.yml
-      - ./endpoints.yml:/app/endpoints.yml
+      - ./core/models/fr:/app/models
+      - ./core/credentials.yml:/app/credentials.yml
+      - ./core/endpoints.yml:/app/endpoints.yml
     depends_on:
       - actions
       - tracker_store
 
   actions:
     build:
-      context: .
-      dockerfile: deployment/docker/Dockerfile.actions
+      context: ./action-server
+      dockerfile: Dockerfile
     ports:
       - 5055:8080
     volumes:
-      - ./actions:/app/actions
+      - ./action-server/actions:/app/actions
 
   tracker_store:
     image: postgres:11

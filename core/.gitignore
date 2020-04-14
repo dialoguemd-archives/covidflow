@@ -1,0 +1,5 @@
+# Those files are generated at build time
+/config.yml
+/data/nlu.md
+/domain.yml
+/models

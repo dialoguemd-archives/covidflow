@@ -11,13 +11,13 @@ fi
 LANGUAGE=$1
 
 # domain.yml
-cat "${ROOT_DIR}/domain.core.yml" \
-    "${ROOT_DIR}/domain.${LANGUAGE}.yml" \
+cat "${ROOT_DIR}/domain/domain.core.yml" \
+    "${ROOT_DIR}/domain/domain.${LANGUAGE}.yml" \
     > "${ROOT_DIR}/domain.yml"
 
 # config.yml
-cat "${ROOT_DIR}/config.${LANGUAGE}.yml" \
-    "${ROOT_DIR}/config.core.yml" \
+cat "${ROOT_DIR}/config/config.${LANGUAGE}.yml" \
+    "${ROOT_DIR}/config/config.core.yml" \
     > "${ROOT_DIR}/config.yml"
 
 # data/nlu.md

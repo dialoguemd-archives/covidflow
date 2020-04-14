@@ -1,4 +1,4 @@
-.PHONY: init install install-dev install-rasa-sdk clean lint format test test-integration train
+.PHONY: init install install-dev install-rasa-sdk clean lint format test
 
 # include source code in any python subprocess
 export PYTHONPATH = .
@@ -35,14 +35,6 @@ help:
 	@echo "        Format code with black"
 	@echo "    test"
 	@echo "        Run py.test (use TEST_FILE variable to test a single file)"
-	@echo "    train-en"
-	@echo "        Train English Rasa models"
-	@echo "    train-fr"
-	@echo "        Train French Rasa models"
-	@echo "    shell-en"
-	@echo "        Start a Rasa shell using English models"
-	@echo "    shell-fr"
-	@echo "        Start a Rasa shell using French models"
 
 init:
 	python3 -m venv ${VENV_LOCATION}
@@ -71,43 +63,3 @@ test:
 		--cov-report html \
 		--cov-fail-under=80 \
 		--cov ${SOURCE_FOLDER}
-
-train-en:
-	sh bin/prepare-training-data.sh en
-	docker run \
-	    -v ${PWD}:/app \
-		--user ${UID}:${GID} \
-		rasa/rasa:${RASA_VERSION}-full train \
-		--out models/en \
-		--augmentation 0
-
-train-fr:
-	sh bin/prepare-training-data.sh fr
-	docker run \
-	    -v ${PWD}:/app \
-		--user ${UID}:${GID} \
-		rasa/rasa:${RASA_VERSION}-full train \
-		--out models/fr \
-		--augmentation 0
-
-shell-en:
-	docker run \
-		--rm -it \
-		-v ${PWD}:/app \
-		--env ACTION_SERVER_ENDPOINT=http://actions:8080/webhook \
-		--env TRACKER_STORE_ENDPOINT=tracker_store \
-		--network rasa-covid19_default \
-		rasa/rasa:${RASA_VERSION}-full shell \
-		--model models/en
-		--debug
-
-shell-fr:
-	docker run \
-		--rm -it \
-		-v ${PWD}:/app \
-		--env ACTION_SERVER_ENDPOINT=http://actions:8080/webhook \
-		--env TRACKER_STORE_ENDPOINT=tracker_store \
-		--network rasa-covid19_default \
-		rasa/rasa:${RASA_VERSION}-full shell \
-		--model models/fr
-		--debug

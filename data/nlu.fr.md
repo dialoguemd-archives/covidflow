@@ -27,10 +27,12 @@
 - pantoute
 
 ## intent:checkin_return
-- placeholder
+- Je veux faire le suivi de mes symptômes
 
 ## intent:suspect
-- placeholder
+- Je crois avoir la Covid-19
+- Je pense que j'ai le coronavirus
 
 ## intent:tested_positive
-- placeholder
+- J'ai eu un résultat positif au test de Covid-19
+- J'ai testé positif

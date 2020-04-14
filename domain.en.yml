@@ -19,7 +19,7 @@ responses:
     - text: (tested positive flow)
 
   utter_enquire_severe_symptoms:
-    - text: "First, do you have fever (higher than 38C or 100.4F) and are you experiencing any of the following symptoms:\n- Severe difficulty breathing\n- Severe chest pain\n- Having a hard time waking up\n- Feeling confused\n- Losing consciousness"
+    - text: "First, do you have fever (higher than 38°C or 100.4°F) and are you experiencing any of the following symptoms:\n- Severe difficulty breathing\n- Severe chest pain\n- Having a hard time waking up\n- Feeling confused\n- Losing consciousness"
       buttons:
         - title: yes
           payload: "/affirm"

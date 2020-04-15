@@ -2,7 +2,8 @@
   core: &core
     port: 8080
     public:
-      ingress: true
+      ingress:
+        websocket: true
     scale:
       horizontal: 3-12
       vertical: large

@@ -16,7 +16,7 @@
       readiness:
         initialDelaySeconds: 15
 
-engine: 0.0.0-pr115+bb729ff
+engine: ~1
 name: covidflow
 components:
   core-en:

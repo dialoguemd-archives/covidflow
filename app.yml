@@ -1,0 +1,28 @@
+.aliases:
+  core: &core
+    port: 8080
+    public:
+      ingress: true
+    scale:
+      horizontal: 3-12
+      vertical: large
+      cpuThreshold: 30
+    healthcheck:
+      path: /
+      liveness:
+        initialDelaySeconds: 15
+        timeoutSeconds: 30
+      readiness:
+        initialDelaySeconds: 15
+
+engine: ~1
+name: covidflow
+components:
+  core-en:
+    <<: *core
+  core-fr:
+    <<: *core
+scale:
+  memThreshold: false
+environment:
+  COUNTRY_CODE: ca

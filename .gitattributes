@@ -87,11 +87,10 @@
 *.xsl textfile
 *.yaml textfile
 *.yml textfile
-deployment/docker/Dockerfile.* textfile
+Dockerfile textfile
 Makefile textfile
 .dockerignore textfile
 .flake8 textfile
-
 
 # Declare files that will always have LF line endings on checkout.
 *.sh textfile eol=lf

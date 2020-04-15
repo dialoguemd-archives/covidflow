@@ -2,7 +2,8 @@
   core: &core
     port: 8080
     public:
-      ingress: true
+      ingress:
+        websocket: true
     scale:
       horizontal: 3-12
       vertical: large
@@ -15,7 +16,7 @@
       readiness:
         initialDelaySeconds: 15
 
-engine: ~1
+engine: 0.0.0-pr115+bb729ff
 name: covidflow
 components:
   core-en:

@@ -6,9 +6,35 @@ intents:
   - checkin_return
   - suspect
   - tested_positive
+  - inform
+
+entities:
+  - province
+  - age_over_65
+  - contact
+  - symptoms
 
 actions:
-  - action_cheer_up
+  - action_set_risk_level
+
+forms:
+  - province_age_form
+
+slots:
+  province:
+    type: unfeaturized
+
+  age_over_65:
+    type: unfeaturized
+
+  contact:
+    type: unfeaturized
+
+  risk_level:
+    type: unfeaturized
+
+  symptoms:
+    type: unfeaturized
 
 session_config:
   session_expiration_time: 60 # value in minutes

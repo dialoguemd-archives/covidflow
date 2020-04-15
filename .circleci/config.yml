@@ -1,13 +1,117 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-# Use a package of configuration called an orb.
+
 orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
-# Orchestrate or schedule a set of jobs
+  app: dialogue/helm-app@1.0.5
+  base: dialogue/base@1.8.0
+  release: dialogue/release@2.1.4
+
 workflows:
-  # Name the workflow "welcome"
-  welcome:
-    # Run the welcome/run job in its own container
+  cicd:
     jobs:
-      - welcome/run
+      - prepare_core_build:
+          name: (core-en) Prepare build
+          context: org-global-v2
+          language: en
+      - app/build:
+          name: (core-en) build
+          component: core-en
+          context: org-global-v2
+          before_build_steps:
+            - attach_workspace:
+                at: ~/project/
+          requires:
+            - (core-en) Prepare build
+
+      - prepare_core_build:
+          name: (core-fr) Prepare build
+          context: org-global-v2
+          language: fr
+      - app/build:
+          name: (core-fr) build
+          component: core-fr
+          context: org-global-v2
+          before_build_steps:
+            - attach_workspace:
+                at: ~/project/
+          requires:
+            - (core-fr) Prepare build
+
+      - release/release:
+          name: release
+          context: org-global-v2
+          requires:
+            - (core-en) build
+            - (core-fr) build
+
+      # dev deployments
+      - app/deploy:
+          name: deploy-dev-ca2-ephemeral
+          stage: dev
+          place: ca2
+          ephemeral: yes
+          requires:
+            - (core-en) build
+            - (core-fr) build
+          context: org-global-v2
+          filters:
+            branches:
+              ignore: master
+      # master deployments
+      - app/deploy:
+          name: deploy-dev-ca2
+          stage: dev
+          place: ca2
+          requires:
+            - (core-en) build
+            - (core-fr) build
+          context: org-global-v2
+          filters:
+            branches:
+              only: master
+      - app/deploy:
+          name: deploy-prod-ca
+          stage: prod
+          place: ca
+          requires:
+            - deploy-dev-ca2
+          context: org-global-v2
+          filters:
+            branches:
+              only: master
+
+aliases:
+  - &param__language
+    language:
+      type: string
+      description: Specifies which model language to build/use
+
+jobs:
+  prepare_core_build:
+    description: Prepare core help-app component (rasa-core models and docker assets)
+    parameters:
+      <<: *param__language
+    environment:
+      COMPONENT_PATH: /app/core-<<parameters.language>>
+    working_directory: /app/core
+    docker:
+      - image: rasa/rasa:1.9.4-full
+        entrypoint: ["/bin/bash"]
+    steps:
+      - checkout:
+          path: /app
+      - run:
+          name: Prepare NLU training files
+          command: |
+            mkdir ${COMPONENT_PATH}
+            cp Dockerfile ${COMPONENT_PATH}
+            cp credentials.yml ${COMPONENT_PATH}
+            cp endpoints.yml ${COMPONENT_PATH}
+      - run:
+          name: Train the NLU model
+          command: |
+            sh scripts/prepare-training-data.sh <<parameters.language>>
+            rasa train --augmentation 0 --out ${COMPONENT_PATH}/models
+      - persist_to_workspace:
+          root: /app
+          paths:
+            - core-<<parameters.language>>

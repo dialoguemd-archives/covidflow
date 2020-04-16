@@ -3,11 +3,38 @@ version: 2.1
 orbs:
   app: dialogue/helm-app@1.0.5
   base: dialogue/base@1.8.0
+  python: dialogue/python@2.6.2
   release: dialogue/release@2.1.4
 
 workflows:
   cicd:
     jobs:
+      - mypy:
+          name: (AS) mypy
+          working_directory: action-server
+          context: org-global-v2
+      - python/pylama:
+          name: (AS) pylama
+          working_directory: action-server
+          context: org-global-v2
+      - python/isort:
+          name: (AS) isort
+          working_directory: action-server
+          context: org-global-v2
+      - python/black:
+          name: (AS) black
+          working_directory: action-server
+          context: org-global-v2
+      - python/test:
+          name: (AS) test
+          working_directory: action-server
+          codecov_flag: action_server
+          context: org-global-v2
+      - app/build:
+          name: (AS) build
+          component: action-server
+          context: org-global-v2
+
       - prepare_core_build:
           name: (core-en) Prepare build
           context: org-global-v2
@@ -40,6 +67,12 @@ workflows:
           name: release
           context: org-global-v2
           requires:
+            - (AS) mypy
+            - (AS) pylama
+            - (AS) isort
+            - (AS) black
+            - (AS) test
+            - (AS) build
             - (core-en) build
             - (core-fr) build
 
@@ -50,6 +83,12 @@ workflows:
           place: ca2
           ephemeral: yes
           requires:
+            - (AS) mypy
+            - (AS) pylama
+            - (AS) isort
+            - (AS) black
+            - (AS) test
+            - (AS) build
             - (core-en) build
             - (core-fr) build
           context: org-global-v2
@@ -62,6 +101,12 @@ workflows:
           stage: dev
           place: ca2
           requires:
+            - (AS) mypy
+            - (AS) pylama
+            - (AS) isort
+            - (AS) black
+            - (AS) test
+            - (AS) build
             - (core-en) build
             - (core-fr) build
           context: org-global-v2
@@ -84,8 +129,24 @@ aliases:
     language:
       type: string
       description: Specifies which model language to build/use
+  - &param__working_directory
+    working_directory:
+      type: string
+      default: "."
+      description: Directory to run post-checkout steps
 
 jobs:
+  mypy:
+    description: Checks static typing with mypy
+    parameters:
+      <<: *param__working_directory
+    working_directory: ~/project/<<parameters.working_directory>>
+    executor: python/python
+    steps:
+      - setup-project
+      - run:
+          name: Run mypy
+          command: mypy .
   prepare_core_build:
     description: Prepare core help-app component (rasa-core models and docker assets)
     parameters:
@@ -115,3 +176,10 @@ jobs:
           root: /app
           paths:
             - core-<<parameters.language>>
+
+commands:
+  setup-project:
+    steps:
+      - base/setup
+      - python/setup
+      - python/install_deps

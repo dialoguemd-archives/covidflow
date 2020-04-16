@@ -11,10 +11,6 @@ ACTIVATE_VENV=test -d ${VENV_LOCATION} \
 RASA_VERSION=1.9.4
 RASA_SDK_VERSION=1.9.0
 
-SOURCE_FOLDER=actions
-TESTS_FOLDER=tests
-ENV_VARS=`grep -v '^\#' .env | grep -Eo '\w+=\S+'`
-
 UID:=$(shell id -u)
 GID:=$(shell id -g)
 
@@ -50,16 +46,16 @@ install-rasa-sdk:
 	${ACTIVATE_VENV} pip install rasa-sdk==${RASA_SDK_VERSION}
 
 lint:
-	${ACTIVATE_VENV} pylama ${SOURCE_FOLDER} ${TESTS_FOLDER}
-	${ACTIVATE_VENV} mypy ${SOURCE_FOLDER} ${TESTS_FOLDER}
-	${ACTIVATE_VENV} black --check ${SOURCE_FOLDER} ${TESTS_FOLDER}
+	${ACTIVATE_VENV} pylama
+	${ACTIVATE_VENV} mypy .
+	${ACTIVATE_VENV} black --check .
+	${ACTIVATE_VENV} isort --check
 
 format:
-	${ACTIVATE_VENV} black ${SOURCE_FOLDER} ${TESTS_FOLDER}
+	${ACTIVATE_VENV} black .
+	${ACTIVATE_VENV} isort
 
 test:
-	${ACTIVATE_VENV} py.test "${TESTS_FOLDER}/${TEST_FILE}" \
+	${ACTIVATE_VENV} py.test \
 		--cov-report term-missing:skip-covered \
-		--cov-report html \
-		--cov-fail-under=80 \
-		--cov ${SOURCE_FOLDER}
+		--cov-report html

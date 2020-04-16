@@ -1,9 +1,9 @@
 action_endpoint:
-  url: ${ACTION_SERVER_ENDPOINT}
+  url: http://action-server:8080/webhook
 tracker_store:
- type: SQL
- dialect: postgresql
- url: ${SQL_TRACKER_STORE_URL}
- db: chloe
- username: chloe
- password: ${SQL_TRACKER_STORE_PASSWORD}
+  type: SQL
+  dialect: postgresql
+  url: ${SQL_TRACKER_STORE_URL}
+  db: chloe
+  username: chloe
+  password: ${SQL_TRACKER_STORE_PASSWORD}

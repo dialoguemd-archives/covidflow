@@ -23,6 +23,16 @@ components:
     <<: *core
   core-fr:
     <<: *core
+  action-server:
+    port: 8080
+    scale:
+      horizontal: 2-4
+      vertical: medium
+    healthcheck:
+      liveness:
+        timeoutSeconds: 15
+      readiness:
+        initialDelaySeconds: 25
 scale:
   memThreshold: false
 environment:

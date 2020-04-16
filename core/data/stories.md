@@ -1,51 +1,47 @@
 ## greet
 * greet
   - utter_greet
-  - utter_how_may_i_help
+  - utter_ask_how_may_i_help
 
 ## return for check-in
 * checkin_return
   - utter_returning_for_checkin
 
-## tested positive
-* tested_positive
- - utter_tested_positive
-
-## severe symptoms
+## suspect - severe symptoms
 * suspect
- - utter_enquire_severe_symptoms
+ - utter_ask_severe_symptoms
 * affirm
   - utter_call_911
 
-## moderate symptoms
+## suspect - moderate symptoms
 * suspect
-  - utter_enquire_severe_symptoms
+  - utter_ask_severe_symptoms
 * deny
   - province_age_form
   - form{"name": "province_age_form"}
   - form{"name": null}
-  - utter_enquire_moderate_symptoms
+  - utter_ask_moderate_symptoms
 * affirm
   - utter_self_isolate
   - utter_monitor_symptoms_long_1
   - utter_monitor_symptoms_long_2
-  - utter_offer_checkin
+  - utter_ask_want_checkin
 * affirm
   - utter_daily_checkin_enroll
 
-## moderate symptoms no checkin
+## suspect - moderate symptoms no checkin
 * suspect
-  - utter_enquire_severe_symptoms
+  - utter_ask_severe_symptoms
 * deny
   - province_age_form
   - form{"name": "province_age_form"}
   - form{"name": null}
-  - utter_enquire_moderate_symptoms
+  - utter_ask_moderate_symptoms
 * affirm
   - utter_self_isolate
   - utter_monitor_symptoms_long_1
   - utter_monitor_symptoms_long_2
-  - utter_offer_checkin
+  - utter_ask_want_checkin
 * deny
   - utter_no_checkin_instruction_1
   - utter_no_checkin_instruction_2
@@ -54,20 +50,20 @@
   - utter_visit_package
   - utter_goodbye
 
-## mild symptoms no checkin
+## suspect - mild symptoms no checkin
 * suspect
-  - utter_enquire_severe_symptoms
+  - utter_ask_severe_symptoms
 * deny
   - province_age_form
   - form{"name": "province_age_form"}
   - form{"name": null}
-  - utter_enquire_moderate_symptoms
+  - utter_ask_moderate_symptoms
 * deny
-  - utter_enquire_mild_symptoms
+  - utter_ask_mild_symptoms
 * affirm
   - utter_self_isolate
   - utter_monitor_symptoms_short
-  - utter_offer_checkin
+  - utter_ask_want_checkin
 * deny
   - utter_no_checkin_instruction_1
   - utter_no_checkin_instruction_2
@@ -76,41 +72,41 @@
   - utter_visit_package
   - utter_goodbye
 
-## no symptoms contact
+## suspect - no symptoms contact
 * suspect
-  - utter_enquire_severe_symptoms
+  - utter_ask_severe_symptoms
 * deny
   - province_age_form
   - form{"name": "province_age_form"}
   - form{"name": null}
-  - utter_enquire_moderate_symptoms
+  - utter_ask_moderate_symptoms
 * deny
-  - utter_enquire_mild_symptoms
+  - utter_ask_mild_symptoms
 * deny
-  - utter_enquire_contact
+  - utter_ask_contact
 * affirm
   - utter_self_isolate
   - utter_monitor_symptoms_short
-  - utter_offer_checkin
+  - utter_ask_want_checkin
 * affirm
   - utter_daily_checkin_enroll
 
-## no symptoms contact no checkin
+## suspect - no symptoms contact no checkin
 * suspect
-  - utter_enquire_severe_symptoms
+  - utter_ask_severe_symptoms
 * deny
   - province_age_form
   - form{"name": "province_age_form"}
   - form{"name": null}
-  - utter_enquire_moderate_symptoms
+  - utter_ask_moderate_symptoms
 * deny
-  - utter_enquire_mild_symptoms
+  - utter_ask_mild_symptoms
 * deny
-  - utter_enquire_contact
+  - utter_ask_contact
 * affirm
   - utter_self_isolate
   - utter_monitor_symptoms_short
-  - utter_offer_checkin
+  - utter_ask_want_checkin
 * deny
   - utter_no_checkin_instruction_1
   - utter_no_checkin_instruction_2
@@ -119,45 +115,45 @@
   - utter_visit_package
   - utter_goodbye
 
-## no symptoms no contact travel
+## suspect - no symptoms no contact travel
 * suspect
-  - utter_enquire_severe_symptoms
+  - utter_ask_severe_symptoms
 * deny
   - province_age_form
   - form{"name": "province_age_form"}
   - form{"name": null}
-  - utter_enquire_moderate_symptoms
+  - utter_ask_moderate_symptoms
 * deny
-  - utter_enquire_mild_symptoms
+  - utter_ask_mild_symptoms
 * deny
-  - utter_enquire_contact
+  - utter_ask_contact
 * deny
-  - utter_enquire_travel
+  - utter_ask_travel
 * affirm
   - utter_self_isolate
   - utter_monitor_symptoms_short
-  - utter_offer_checkin
+  - utter_ask_want_checkin
 * affirm
   - utter_daily_checkin_enroll
 
-## no symptoms no contact travel no checkin
+## suspect - no symptoms no contact travel no checkin
 * suspect
-  - utter_enquire_severe_symptoms
+  - utter_ask_severe_symptoms
 * deny
   - province_age_form
   - form{"name": "province_age_form"}
   - form{"name": null}
-  - utter_enquire_moderate_symptoms
+  - utter_ask_moderate_symptoms
 * deny
-  - utter_enquire_mild_symptoms
+  - utter_ask_mild_symptoms
 * deny
-  - utter_enquire_contact
+  - utter_ask_contact
 * deny
-  - utter_enquire_travel
+  - utter_ask_travel
 * affirm
   - utter_self_isolate
   - utter_monitor_symptoms_short
-  - utter_offer_checkin
+  - utter_ask_want_checkin
 * deny
   - utter_no_checkin_instruction_1
   - utter_no_checkin_instruction_2
@@ -166,20 +162,20 @@
   - utter_visit_package
   - utter_goodbye
 
-## no symptoms no contact no travel
+## suspect - no symptoms no contact no travel
 * suspect
-  - utter_enquire_severe_symptoms
+  - utter_ask_severe_symptoms
 * deny
   - province_age_form
   - form{"name": "province_age_form"}
   - form{"name": null}
-  - utter_enquire_moderate_symptoms
+  - utter_ask_moderate_symptoms
 * deny
-  - utter_enquire_mild_symptoms
+  - utter_ask_mild_symptoms
 * deny
-  - utter_enquire_contact
+  - utter_ask_contact
 * deny
-  - utter_enquire_travel
+  - utter_ask_travel
 * deny
   - utter_probably_not_covid
   - utter_social_distancing
@@ -188,6 +184,180 @@
   - utter_visit_package
   - utter_goodbye
 
-## say goodbye
-* goodbye
+## tested positive - severe symptoms
+* tested_positive
+  - utter_self_isolate_tested_positive_1
+  - utter_self_isolate_tested_positive_2
+  - utter_self_isolate_tested_positive_3
+  - utter_self_isolate_tested_positive_4
+  - utter_ask_severe_symptoms
+* affirm
+  - utter_call_911
+
+## tested positive - moderate symptoms no check-in
+* tested_positive
+  - utter_self_isolate_tested_positive_1
+  - utter_self_isolate_tested_positive_2
+  - utter_self_isolate_tested_positive_3
+  - utter_self_isolate_tested_positive_4
+  - utter_ask_severe_symptoms
+* deny
+  - utter_ask_moderate_symptoms
+* affirm
+  - utter_moderate_worsen
+  - utter_ask_want_checkin
+* deny
+  - utter_checkin_instructions_tested_positive
+  - utter_remind_possible_checkin
+  - utter_goodbye
+
+## tested positive - moderate symptoms
+* tested_positive
+  - utter_self_isolate_tested_positive_1
+  - utter_self_isolate_tested_positive_2
+  - utter_self_isolate_tested_positive_3
+  - utter_self_isolate_tested_positive_4
+  - utter_ask_severe_symptoms
+* deny
+  - utter_ask_moderate_symptoms
+* affirm
+  - utter_moderate_worsen
+  - utter_ask_want_checkin
+* affirm
+  - utter_daily_checkin_enroll
+
+## tested positive - mild symptoms worse no check-in
+* tested_positive
+  - utter_self_isolate_tested_positive_1
+  - utter_self_isolate_tested_positive_2
+  - utter_self_isolate_tested_positive_3
+  - utter_self_isolate_tested_positive_4
+  - utter_ask_severe_symptoms
+* deny
+  - utter_ask_moderate_symptoms
+* deny
+  - utter_ask_mild_symptoms
+* affirm
+  - utter_ask_did_symptoms_worsen
+* affirm
+  - utter_moderate_worsen
+  - utter_ask_want_checkin
+* deny
+  - utter_checkin_instructions_tested_positive
+  - utter_remind_possible_checkin
+  - utter_goodbye
+
+## tested positive - mild symptoms worse
+* tested_positive
+  - utter_self_isolate_tested_positive_1
+  - utter_self_isolate_tested_positive_2
+  - utter_self_isolate_tested_positive_3
+  - utter_self_isolate_tested_positive_4
+  - utter_ask_severe_symptoms
+* deny
+  - utter_ask_moderate_symptoms
+* deny
+  - utter_ask_mild_symptoms
+* affirm
+  - utter_ask_did_symptoms_worsen
+* affirm
+  - utter_moderate_worsen
+  - utter_ask_want_checkin
+* affirm
+  - utter_daily_checkin_enroll
+
+## tested positive - mild symptoms not worse no check-in
+* tested_positive
+  - utter_self_isolate_tested_positive_1
+  - utter_self_isolate_tested_positive_2
+  - utter_self_isolate_tested_positive_3
+  - utter_self_isolate_tested_positive_4
+  - utter_ask_severe_symptoms
+* deny
+  - utter_ask_moderate_symptoms
+* deny
+  - utter_ask_mild_symptoms
+* affirm
+  - utter_ask_did_symptoms_worsen
+* deny
+  - utter_ask_want_checkin
+* deny
+  - utter_checkin_instructions_tested_positive
+  - utter_remind_possible_checkin
+  - utter_goodbye
+
+## tested positive - mild symptoms not worse
+* tested_positive
+  - utter_self_isolate_tested_positive_1
+  - utter_self_isolate_tested_positive_2
+  - utter_self_isolate_tested_positive_3
+  - utter_self_isolate_tested_positive_4
+  - utter_ask_severe_symptoms
+* deny
+  - utter_ask_moderate_symptoms
+* deny
+  - utter_ask_mild_symptoms
+* affirm
+  - utter_ask_did_symptoms_worsen
+* deny
+  - utter_ask_want_checkin
+* affirm
+  - utter_daily_checkin_enroll
+
+# tested positive - no symptoms tested less than 14 days no check-in
+* tested_positive
+  - utter_self_isolate_tested_positive_1
+  - utter_self_isolate_tested_positive_2
+  - utter_self_isolate_tested_positive_3
+  - utter_self_isolate_tested_positive_4
+  - utter_ask_severe_symptoms
+* deny
+  - utter_ask_moderate_symptoms
+* deny
+  - utter_ask_mild_symptoms
+* deny
+  - utter_no_symptoms
+  - utter_ask_when_tested
+* less
+  - utter_ask_want_checkin_no_symptoms
+* deny
+  - utter_checkin_instructions_tested_positive
+  - utter_remind_possible_checkin
+  - utter_goodbye
+
+# tested positive - no symptoms tested less than 14 days
+* tested_positive
+  - utter_self_isolate_tested_positive_1
+  - utter_self_isolate_tested_positive_2
+  - utter_self_isolate_tested_positive_3
+  - utter_self_isolate_tested_positive_4
+  - utter_ask_severe_symptoms
+* deny
+  - utter_ask_moderate_symptoms
+* deny
+  - utter_ask_mild_symptoms
+* deny
+  - utter_no_symptoms
+  - utter_ask_when_tested
+* less
+  - utter_ask_want_checkin_no_symptoms
+* affirm
+  - utter_daily_checkin_enroll
+
+# tested positive - cured
+* tested_positive
+  - utter_self_isolate_tested_positive_1
+  - utter_self_isolate_tested_positive_2
+  - utter_self_isolate_tested_positive_3
+  - utter_self_isolate_tested_positive_4
+  - utter_ask_severe_symptoms
+* deny
+  - utter_ask_moderate_symptoms
+* deny
+  - utter_ask_mild_symptoms
+* affirm
+  - utter_no_symptoms
+  - utter_ask_when_tested
+* more
+  - utter_maybe_cured
   - utter_goodbye

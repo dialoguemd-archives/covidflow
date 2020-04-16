@@ -2,7 +2,7 @@ responses:
   utter_greet:
     - text: "Bonjour, je m'appelle Chloé, votre assistante médicale. Je peux vous aider à évaluer vos symptômes et vous donner de l'information en lien avec la Covid-19."
 
-  utter_how_may_i_help:
+  utter_ask_how_may_i_help:
     - text: Que puis-je faire pour vous aujourd'hui?
       buttons:
         - title: "Je veux faire le suivi de mes symptômes"
@@ -18,7 +18,7 @@ responses:
   utter_tested_positive:
     - text: (tested positive flow)
 
-  utter_enquire_severe_symptoms:
+  utter_ask_severe_symptoms:
     - text: "Premièrement, faites-vous de la fièvre (plus de 38°C ou 100,4°F) et avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Avoir beaucoup de mal à se réveiller\n- Être confus\n- Perte de conscience"
       buttons:
         - title: oui
@@ -29,7 +29,7 @@ responses:
   utter_call_911:
     - text: Ces symptômes exigent une attention immédiate. Vous devriez appeler le 911 immédiatement ou vous rendre directement au service d’urgence le plus proche.
 
-  utter_enquire_moderate_symptoms:
+  utter_ask_moderate_symptoms:
     - text: "Avez-vous les symptômes suivants:\n- Essoufflement léger à modéré\n- Incapacité à vous allonger en raison de difficultés respiratoires\n- Problèmes de santé chroniques que vous avez du mal à gérer en raison de difficultés respiratoires\n- Perte soudaine du goût ou de l'odorat"
       buttons:
         - title: oui
@@ -46,7 +46,7 @@ responses:
   utter_monitor_symptoms_long_2:
     - text: "Assurez-vous de suivre l'évolution de vos symptômes. Si vous avez besoin d'assistance, vous devriez: \n- Communiquer avec votre médecin de famille, si c'est possible, ou \n- Appeler le 811"
 
-  utter_offer_checkin:
+  utter_ask_want_checkin:
     - text: "Aimeriez-vous que je communique avec vous quotidiennement pour vous aider à suivre l'évolution de vos symptômes?"
       buttons:
         - title: oui
@@ -74,7 +74,7 @@ responses:
 
   # Mild symptoms flow
 
-  utter_enquire_mild_symptoms:
+  utter_ask_mild_symptoms:
     - text: "Avez-vous les symptômes suivants:\n- Fièvre\n- Toux\n- Éternuements\n- Mal de gorge"
       buttons:
         - title: oui
@@ -85,7 +85,7 @@ responses:
   utter_monitor_symptoms_short:
     - text: "Veuillez suivre l'évolution de vos symptômes et notez tout changement, en particulier si vous développez de nouveaux symptômes ou s'ils empirent."
 
-  utter_enquire_contact:
+  utter_ask_contact:
     - text: "Avez-vous récemment été en contact étroit avec une personne atteinte de la Covid-19?\nUne personne ayant eu des contacts étroits est définie comme:\n- Une personne qui a fourni des soins à la personne malade sans équipement de protection adéquat\n- Une personne qui a vécu ou travaillé avec la personne malade pendant qu’elle était contagieuse\n- Une personne qui a eu un contact direct avec des fluides corporels infectieux de la personne malade (qui était, par exemple, à proximité lorsque la personne malade a toussé ou éternué)"
       buttons:
         - title: oui
@@ -93,7 +93,7 @@ responses:
         - title: non
           payload: '/deny{"contact": false}'
 
-  utter_enquire_travel:
+  utter_ask_travel:
     - text: "Avez-vous voyagé à l'extérieur du Canada durant les 14 derniers jours (Ceci inclut le passage dans un aéroport étranger)?"
       buttons:
         - title: oui
@@ -143,6 +143,56 @@ responses:
 
   utter_ask_age_over_65:
     - text: Avez-vous plus de 65 ans?
+      buttons:
+        - title: oui
+          payload: "/affirm"
+        - title: non
+          payload: "/deny"
+
+  ## Tested positive
+
+  utter_self_isolate_tested_positive_1:
+    - text: "Dans ce cas, *vous devez vous isoler pendant au moins 14 jours*. Cela signifie non seulement de rester à la maison, mais si possible dans une pièce séparée des autres personnes de votre domicile afin d’éviter de transmettre le virus."
+
+  utter_self_isolate_tested_positive_2:
+    - text: "Vous ne devez pas quitter votre domicile, à moins que vos symptômes ne s’aggravent et que vous deviez vous rendre à l’urgence."
+
+  utter_self_isolate_tested_positive_3:
+    - text: "Si vous n’avez personne pour faire vos courses ou acheter vos médicaments, alors vous devrez les faire livrer."
+
+  utter_self_isolate_tested_positive_4:
+    - text: "J’aimerais maintenant évaluer vos symptômes."
+
+  utter_moderate_worsen:
+    - text: "Si vos symptômes s’aggravent, vous pourriez devoir vous rendre à l’urgence la plus près ou appeler le 911. Si vous avez besoin d’aide, vous devriez:\n- Communiquer avec votre médecin de famille, si c′est possible, ou\n- Appeler le 811"
+
+  utter_ask_did_symptoms_worsen:
+    - text: "Est-ce que vos symptômes ont empiré dans les 24 dernières heures?"
+      buttons:
+        - title: oui
+          payload: "/affirm"
+        - title: non
+          payload: "/deny"
+
+  utter_checkin_instructions_tested_positive:
+    - text: "D’accord. Assurez-vous de prendre votre température régulièrement et surveillez vos symptômes pour tout changement."
+
+  utter_no_symptoms:
+    - text: "Il semble que vous n’ayez pas de symptômes de la Covid-19."
+
+  utter_ask_when_tested:
+    - text: "Quand avez-vous reçu votre diagnostic?"
+      buttons:
+        - title: "Il y a plus de 14 jours"
+          payload: "/more"
+        - title: "Il y a 14 jours ou moins"
+          payload: "/less"
+
+  utter_maybe_cured:
+    - text: "Il se peut que vous soyez guéri(e). Nous vous invitons à rester à la maison et suivre les consignes de distanciation sociale. Si vous sortez, je vous recommande fortement de porter un masque."
+
+  utter_ask_want_checkin_no_symptoms:
+    - text: "Aimeriez-vous que je communique avec vous à chaque jour pour surveiller l’apparition de nouveaux symptômes?"
       buttons:
         - title: oui
           payload: "/affirm"

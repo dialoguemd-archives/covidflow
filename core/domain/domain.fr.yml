@@ -11,6 +11,8 @@ responses:
           payload: "/suspect"
         - title: "J'ai eu un résultat positif au test de Covid-19"
           payload: "/tested_positive"
+        - title: "J'ai des questions à propos de la Covid-19"
+          payload: "/ask_question"
 
   utter_tested_positive:
     - text: (tested positive flow)
@@ -192,6 +194,7 @@ responses:
           payload: "/affirm"
         - title: non
           payload: "/deny"
+
   # Daily CI enroll flow
 
   utter_daily_checkin_enroll:
@@ -286,7 +289,7 @@ responses:
     - text: "Merci de me contacter pour un suivi. Voyons voir comment vous vous portez aujourd'hui."
 
   utter_ask_want_checkin_returning:
-    - text: Très bien. Avant d'aller plus loin, aimeriez-vous que *je* vous contacte quotidiennement pour un suivi?
+    - text: Aimeriez-vous que *je* vous contacte quotidiennement pour un suivi?
       buttons:
         - title: oui
           payload: "/affirm"
@@ -294,7 +297,7 @@ responses:
           payload: "/deny"
 
   utter_no_checkin_instruction_1_returning:
-    - text: N'oubliez pas de *rester à la maison et de vous isoler*. Il est extrêmement important de suivre cette consigne.
+    - text: C'est noté. N'oubliez pas de *rester à la maison et de vous isoler*. Il est extrêmement important de suivre cette consigne.
 
   utter_no_checkin_instruction_2_returning:
     - text: Pour obtenir de l'aide à domicile, vous pouvez *appeler au 211* ou consulter le site web 211 de votre province.
@@ -322,7 +325,7 @@ responses:
     - text: "Vous devriez: \n- Communiquer avec votre médecin de famille, si c'est possible, ou \n- Appeler le 811"
 
   utter_monitor_symptoms_returning:
-    - text: Vous devriez prendre votre température régulièrement et surveiller vos symptômes pour tout changement.
+    - text: Assurez-vous de prendre votre température régulièrement et surveiller vos symptômes pour tout changement.
 
   utter_visit_package_returning:
     - text: "Vous pouvez consulter [votre trousse d'information personnalisée](https://covid19.dialogue.co/#/info?id=ca-{province},{risk_level})."
@@ -340,3 +343,82 @@ responses:
 
   utter_recent_first_symptoms_instructions:
     - text: Dans ce cas, continuez à vous isoler jusqu'à ce que vous ayez passé au moins 7 jours sans symptômes.
+
+  # QA flow
+
+  utter_ask_anything_else:
+    - text: "Puis-je faire autre chose pour vous aider?"
+      buttons:
+        - title: J'ai d'autres questions
+          payload: "/ask_question"
+        - title: Non merci
+          payload: "/done"
+
+  utter_can_help_with_questions:
+    - text: "Je peux aider à répondre à vos questions sur une variété de sujets entourant la Covid-19."
+
+  utter_ask_active_question:
+    - text: "Veuillez écrire votre question au sujet de la Covid-19:"
+
+  utter_ask_feedback:
+    - text: "Est-ce que cette réponse était utile?"
+      buttons:
+        - title: oui
+          payload: "/affirm"
+        - title: non
+          payload: "/deny"
+
+  utter_post_feedback:
+    - text: "C’est noté. Nous travaillons constamment à améliorer notre système."
+
+  utter_question_answering_error:
+    - text: "Je suis désolée, il n’est pas possible d’obtenir de réponse à vos questions en ce moment."
+
+  utter_ask_assessment_after_error:
+    - text: "Voudriez-vous que je vous aide à évaluer vos symptômes?"
+      buttons:
+        - title: oui
+          payload: "/affirm"
+        - title: non
+          payload: "/deny"
+
+  utter_ok:
+    - text: "D'accord."
+
+  utter_try_again_later:
+    - text: "Veuillez essayer de poser vos questions un peu plus tard."
+
+  utter_cant_answer:
+    - text: "Je suis désolée, je ne peux pas répondre à votre question. Veuillez essayer de nouveau."
+
+  utter_need_assessment:
+    - text: "Il semble que vous ayez besoin d’aide pour évaluer vos symptômes."
+
+  utter_ask_assess_to_answer:
+    - text: "Voulez-vous que j’évalue/je réévalue vos symptômes?"
+      buttons:
+        - title: oui
+          payload: "/affirm"
+        - title: non
+          payload: "/deny"
+
+  utter_please_visit_again:
+    - text: "Très bien. N’hésitez pas à revenir si vous avez besoin d’aide ou si vous avez d’autres questions."
+
+  utter_ask_what_next_after_answer:
+    - text: "Que voulez-vous faire maintenant?"
+      buttons:
+        - title: "Poser une autre question"
+          payload: "/ask_question"
+        - title: "Évaluation de mes symptômes"
+          payload: "/get_assessment"
+        - title: "J'ai terminé"
+          payload: "/done"
+
+  utter_ask_another_question:
+    - text: "Avez-vous d'autres questions?"
+      buttons:
+        - title: Oui
+          payload: "/ask_question"
+        - title: "Non j'ai terminé"
+          payload: "/done"

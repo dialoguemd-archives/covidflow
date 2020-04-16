@@ -27,3 +27,11 @@ scale:
   memThreshold: false
 environment:
   COUNTRY_CODE: ca
+
+environments:
+  dev-ca2:
+    environment:
+      SQL_TRACKER_STORE_URL: chloe.db.dev.dialoguecorp.com
+  prod-ca:
+    environment:
+      SQL_TRACKER_STORE_URL: chloe.db.dialoguecorp.com

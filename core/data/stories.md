@@ -28,6 +28,10 @@
   - utter_ask_want_checkin
 * affirm
   - utter_daily_checkin_enroll
+  - daily_ci_enroll_form
+  - form{"name": "daily_ci_enroll_form"}
+  - form{"name": null}
+  - utter_goodbye
 
 ## suspect - moderate symptoms no checkin
 * suspect
@@ -90,6 +94,10 @@
   - utter_ask_want_checkin
 * affirm
   - utter_daily_checkin_enroll
+  - daily_ci_enroll_form
+  - form{"name": "daily_ci_enroll_form"}
+  - form{"name": null}
+  - utter_goodbye
 
 ## suspect - no symptoms contact no checkin
 * suspect
@@ -135,6 +143,10 @@
   - utter_ask_want_checkin
 * affirm
   - utter_daily_checkin_enroll
+  - daily_ci_enroll_form
+  - form{"name": "daily_ci_enroll_form"}
+  - form{"name": null}
+  - utter_goodbye
 
 ## suspect - no symptoms no contact travel no checkin
 * suspect
@@ -225,6 +237,10 @@
   - utter_ask_want_checkin
 * affirm
   - utter_daily_checkin_enroll
+  - daily_ci_enroll_form
+  - form{"name": "daily_ci_enroll_form"}
+  - form{"name": null}
+  - utter_goodbye
 
 ## tested positive - mild symptoms worse no check-in
 * tested_positive
@@ -265,6 +281,10 @@
   - utter_ask_want_checkin
 * affirm
   - utter_daily_checkin_enroll
+  - daily_ci_enroll_form
+  - form{"name": "daily_ci_enroll_form"}
+  - form{"name": null}
+  - utter_goodbye
 
 ## tested positive - mild symptoms not worse no check-in
 * tested_positive
@@ -303,6 +323,10 @@
   - utter_ask_want_checkin
 * affirm
   - utter_daily_checkin_enroll
+  - daily_ci_enroll_form
+  - form{"name": "daily_ci_enroll_form"}
+  - form{"name": null}
+  - utter_goodbye
 
 # tested positive - no symptoms tested less than 14 days no check-in
 * tested_positive
@@ -343,6 +367,10 @@
   - utter_ask_want_checkin_no_symptoms
 * affirm
   - utter_daily_checkin_enroll
+  - daily_ci_enroll_form
+  - form{"name": "daily_ci_enroll_form"}
+  - form{"name": null}
+  - utter_goodbye
 
 # tested positive - cured
 * tested_positive
@@ -360,4 +388,13 @@
   - utter_ask_when_tested
 * more
   - utter_maybe_cured
+  - utter_goodbye
+
+## daily ci enroll digression
+* help_pre_existing_conditions
+  - utter_explain_pre_existing_conditions
+  - utter_ask_pre_existing_conditions_again
+* affirm OR deny OR dont_know
+  - daily_ci_enroll_form
+  - form{"name": null}
   - utter_goodbye

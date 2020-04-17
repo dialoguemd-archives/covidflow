@@ -3,10 +3,6 @@
   - utter_greet
   - utter_ask_how_may_i_help
 
-## return for check-in
-* checkin_return
-  - utter_returning_for_checkin
-
 ## suspect - severe symptoms
 * suspect
  - utter_ask_severe_symptoms
@@ -397,4 +393,130 @@
 * affirm OR deny OR dont_know
   - daily_ci_enroll_form
   - form{"name": null}
+  - utter_goodbye
+
+## return for check-in - severe symptoms
+* checkin_return
+  - utter_returning_for_checkin
+  - utter_ask_severe_symptoms
+* affirm
+  - utter_call_911
+
+## return for check-in - enroll daily checkin
+* checkin_return
+  - utter_returning_for_checkin
+  - utter_ask_severe_symptoms
+* deny
+  - utter_ask_want_checkin_returning
+* affirm
+  - daily_ci_enroll_form
+  - form{"name": "daily_ci_enroll_form"}
+  - form{"name": null}
+
+## return for check-in - moderate symptoms worse
+* checkin_return
+  - utter_returning_for_checkin
+  - utter_ask_severe_symptoms
+* deny
+  - utter_ask_want_checkin_returning
+* deny
+  - utter_no_checkin_instruction_1_returning
+  - utter_no_checkin_instruction_2_returning
+  - province_age_form
+  - form{"name": "province_age_form"}
+  - form{"name": null}
+  - utter_ask_moderate_symptoms_returning
+* affirm
+  - action_set_risk_level
+  - utter_ask_symptoms_worsen_returning
+* affirm
+  - utter_symptoms_worsened_instruction_1_returning
+  - utter_symptoms_worsened_instruction_2_returning
+  - utter_goodbye
+
+## return for check-in - moderate symptoms
+* checkin_return
+  - utter_returning_for_checkin
+  - utter_ask_severe_symptoms
+* deny
+  - utter_ask_want_checkin_returning
+* deny
+  - utter_no_checkin_instruction_1_returning
+  - utter_no_checkin_instruction_2_returning
+  - province_age_form
+  - form{"name": "province_age_form"}
+  - form{"name": null}
+  - utter_ask_moderate_symptoms_returning
+* affirm
+  - action_set_risk_level
+  - utter_ask_symptoms_worsen_returning
+* deny
+  - utter_monitor_symptoms_long_1
+  - utter_monitor_symptoms_returning
+  - utter_remind_possible_checkin
+  - utter_visit_package_returning
+  - utter_goodbye
+
+## return for check-in - mild symptoms
+* checkin_return
+  - utter_returning_for_checkin
+  - utter_ask_severe_symptoms
+* deny
+  - utter_ask_want_checkin_returning
+* deny
+  - utter_no_checkin_instruction_1_returning
+  - utter_no_checkin_instruction_2_returning
+  - province_age_form
+  - form{"name": "province_age_form"}
+  - form{"name": null}
+  - utter_ask_moderate_symptoms_returning
+* deny
+  - utter_ask_mild_symptoms
+* affirm
+  - utter_monitor_symptoms_returning
+  - utter_remind_possible_checkin
+  - utter_visit_package_returning
+
+## return for check-in - no symptoms - first symptoms >= 14 days ago
+* checkin_return
+  - utter_returning_for_checkin
+  - utter_ask_severe_symptoms
+* deny
+  - utter_ask_want_checkin_returning
+* deny
+  - utter_no_checkin_instruction_1_returning
+  - utter_no_checkin_instruction_2_returning
+  - province_age_form
+  - form{"name": "province_age_form"}
+  - form{"name": null}
+  - utter_ask_moderate_symptoms_returning
+* deny
+  - utter_ask_mild_symptoms
+* deny
+  - utter_no_symptoms
+  - utter_ask_when_first_symptoms
+* more
+  - utter_not_recent_first_symptoms_instructions
+  - utter_goodbye
+
+## return for check-in - no symptoms - first symptoms < 14 days ago
+* checkin_return
+  - utter_returning_for_checkin
+  - utter_ask_severe_symptoms
+* deny
+  - utter_ask_want_checkin_returning
+* deny
+  - utter_no_checkin_instruction_1_returning
+  - utter_no_checkin_instruction_2_returning
+  - province_age_form
+  - form{"name": "province_age_form"}
+  - form{"name": null}
+  - utter_ask_moderate_symptoms_returning
+* deny
+  - utter_ask_mild_symptoms
+* deny
+  - utter_no_symptoms
+  - utter_ask_when_first_symptoms
+* less
+  - utter_recent_first_symptoms_instructions
   - utter_goodbye

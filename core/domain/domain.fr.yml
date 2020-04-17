@@ -12,9 +12,6 @@ responses:
         - title: "J'ai eu un résultat positif au test de Covid-19"
           payload: "/tested_positive"
 
-  utter_returning_for_checkin:
-    - text: (check-in flow)
-
   utter_tested_positive:
     - text: (tested positive flow)
 
@@ -41,7 +38,7 @@ responses:
     - text: "Dans ce cas, *vous devez vous isoler pour au moins 14 jours*. Il est extrêmement important de suivre cette consigne."
 
   utter_monitor_symptoms_long_1:
-    - text: "Si vos symptômes empirent, oui si vous avez de la difficulté à respirer, vous devrez vous rendre à l'urgence la plus près ou appeler le 911"
+    - text: "Si vos symptômes empirent, ou si vous avez de la difficulté à respirer, vous devrez vous rendre à l'urgence la plus près ou appeler le 911"
 
   utter_monitor_symptoms_long_2:
     - text: "Assurez-vous de suivre l'évolution de vos symptômes. Si vous avez besoin d'assistance, vous devriez: \n- Communiquer avec votre médecin de famille, si c'est possible, ou \n- Appeler le 811"
@@ -282,3 +279,64 @@ responses:
 
   utter_acknowledge_checkin_time_evening:
     - text: C'est noté. Je vais vous contacter demain soir.
+
+  ## Return for check-in
+
+  utter_returning_for_checkin:
+    - text: "Merci de me contacter pour un suivi. Voyons voir comment vous vous portez aujourd'hui."
+
+  utter_ask_want_checkin_returning:
+    - text: Très bien. Avant d'aller plus loin, aimeriez-vous que *je* vous contacte quotidiennement pour un suivi?
+      buttons:
+        - title: oui
+          payload: "/affirm"
+        - title: non
+          payload: "/deny"
+
+  utter_no_checkin_instruction_1_returning:
+    - text: N'oubliez pas de *rester à la maison et de vous isoler*. Il est extrêmement important de suivre cette consigne.
+
+  utter_no_checkin_instruction_2_returning:
+    - text: Pour obtenir de l'aide à domicile, vous pouvez *appeler au 211* ou consulter le site web 211 de votre province.
+
+  utter_ask_moderate_symptoms_returning:
+    - text: "Avez-vous les symptômes suivants:\n- Essoufflement léger à modéré\n- Incapacité à vous allonger en raison de difficultés respiratoires\n- Problèmes de santé chroniques que vous avez du mal à gérer en raison de difficultés respiratoires\n- Perte soudaine du goût ou de l'odorat"
+      buttons:
+        - title: oui
+          payload: '/affirm{"symptoms": "moderate"}'
+        - title: non
+          payload: "/deny"
+
+  utter_ask_symptoms_worsen_returning:
+    - text: Est-ce que vos symptômes ont empiré dans les 24 dernières heures?
+      buttons:
+        - title: oui
+          payload: "/affirm"
+        - title: non
+          payload: "/deny"
+
+  utter_symptoms_worsened_instruction_1_returning:
+    - text: Dans ce cas, vous devriez discuter de votre situation avec un professionnel de la santé.
+
+  utter_symptoms_worsened_instruction_2_returning:
+    - text: "Vous devriez: \n- Communiquer avec votre médecin de famille, si c'est possible, ou \n- Appeler le 811"
+
+  utter_monitor_symptoms_returning:
+    - text: Vous devriez prendre votre température régulièrement et surveiller vos symptômes pour tout changement.
+
+  utter_visit_package_returning:
+    - text: "Vous pouvez consulter [votre trousse d'information personnalisée](https://covid19.dialogue.co/#/info?id=ca-{province},{risk_level})."
+
+  utter_ask_when_first_symptoms:
+    - text: Quand avez-vous commencé à avoir vos premiers symptômes?
+      buttons:
+        - title: Il y a 14 jours ou plus
+          payload: "/more"
+        - title: Il y a moins de 14 jours
+          payload: "/less"
+
+  utter_not_recent_first_symptoms_instructions:
+    - text: D'accord. Assurez-vous de suivre les consignes de distanciation sociale, et si vous devez sortir, je vous recommande de porter un masque.
+
+  utter_recent_first_symptoms_instructions:
+    - text: Dans ce cas, continuez à vous isoler jusqu'à ce que vous ayez passé au moins 7 jours sans symptômes.

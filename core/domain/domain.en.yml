@@ -12,9 +12,6 @@ responses:
         - title: "I have been tested positive for Covid-19"
           payload: "/tested_positive"
 
-  utter_returning_for_checkin:
-    - text: (check-in flow)
-
   utter_tested_positive:
     - text: (tested positive flow)
 
@@ -72,7 +69,7 @@ responses:
   # Mild symptoms flow
 
   utter_ask_mild_symptoms:
-    - text: "Are you experiencing one of the following:\n- Fever\n- Cough\n- Sneezing\n- Sore throat"
+    - text: "Are you experiencing any of the following:\n- Fever\n- Cough\n- Sneezing\n- Sore throat"
       buttons:
         - title: yes
           payload: '/affirm{"symptoms": "mild"}'
@@ -282,3 +279,64 @@ responses:
 
   utter_acknowledge_checkin_time_evening:
     - text: Got it. I will check-in with you tomorrow evening.
+
+  ## Return for check-in
+
+  utter_returning_for_checkin:
+    - text: Thanks for checking in. Let's see how you're doing today.
+
+  utter_ask_want_checkin_returning:
+    - text: OK, before we continue, would you like *me* to check-in with you on a daily basis?
+      buttons:
+        - title: yes
+          payload: "/affirm"
+        - title: no
+          payload: "/deny"
+
+  utter_no_checkin_instruction_1_returning:
+    - text: Keep in mind that you must *keep self-isolating*. It is extremely important that you follow this directive.
+
+  utter_no_checkin_instruction_2_returning:
+    - text: If you need home assistance, you can *call 211* or visit your provincial 211 website.
+
+  utter_ask_moderate_symptoms_returning:
+    - text: "Now, do you have any (or a combination) of the following:\n- Mild to moderate shortness of breath\n- Inability to lie down because of difficulty breathing\n- Chronic health conditions that you are having difficulty managing because of difficulty breathing\n- Sudden loss of taste or smell"
+      buttons:
+        - title: yes
+          payload: '/affirm{"symptoms": "moderate"}'
+        - title: no
+          payload: "/deny"
+
+  utter_ask_symptoms_worsen_returning:
+    - text: Have your symptoms worsened in the last 24 hours?
+      buttons:
+        - title: yes
+          payload: "/affirm"
+        - title: no
+          payload: "/deny"
+
+  utter_symptoms_worsened_instruction_1_returning:
+    - text: In this case, you should speak to a healthcare professional to discuss your situation.
+
+  utter_symptoms_worsened_instruction_2_returning:
+    - text: "You should: \n- Contact your family doctor if possible, or\n- Call 811 for assistance"
+
+  utter_monitor_symptoms_returning:
+    - text: You should take your temperature regularly and monitor your symptoms for any changes.
+
+  utter_visit_package_returning:
+    - text: "You can consult [your personal information package](https://covid19.dialogue.co/#/info?id=ca-{province},{risk_level})."
+
+  utter_ask_when_first_symptoms:
+    - text: When did you experience your first symptoms?
+      buttons:
+        - title: More than 14 days ago
+          payload: "/more"
+        - title: Less than 14 days ago
+          payload: "/less"
+
+  utter_not_recent_first_symptoms_instructions:
+    - text: OK, you should keep complying with social distancing rules, and if you leave your home, we recommend that you wear a mask.
+
+  utter_recent_first_symptoms_instructions:
+    - text: In this case, you should keep self-isolating until you have been symptom-free for at least 7 days.

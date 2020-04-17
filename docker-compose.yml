@@ -9,6 +9,7 @@ services:
     environment:
       - SQL_TRACKER_STORE_URL=tracker-store
       - SQL_TRACKER_STORE_PASSWORD=password
+      - LOG_LEVEL=DEBUG
     volumes:
       - ./core/models/en:/app/models
       - ./core/credentials.yml:/app/credentials.yml
@@ -25,6 +26,7 @@ services:
     environment:
       - SQL_TRACKER_STORE_URL=tracker-store
       - SQL_TRACKER_STORE_PASSWORD=password
+      - LOG_LEVEL=DEBUG
     volumes:
       - ./core/models/fr:/app/models
       - ./core/credentials.yml:/app/credentials.yml

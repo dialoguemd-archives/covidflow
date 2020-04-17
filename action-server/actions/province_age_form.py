@@ -1,4 +1,4 @@
-from typing import Dict, Text, Any, List, Union
+from typing import Any, Dict, List, Text, Union
 
 from rasa_sdk import Tracker
 from rasa_sdk.executor import CollectingDispatcher
@@ -19,8 +19,8 @@ class ProvinceAgeForm(FormAction):
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {
             "age_over_65": [
-                    self.from_intent(intent="affirm", value=True),
-                    self.from_intent(intent="deny", value=False),
+                self.from_intent(intent="affirm", value=True),
+                self.from_intent(intent="deny", value=False),
             ]
         }
 

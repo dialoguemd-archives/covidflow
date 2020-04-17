@@ -3,22 +3,30 @@ intents:
   - goodbye
   - affirm
   - deny
+  - dont_know
   - checkin_return
   - suspect
   - tested_positive
   - inform
+  - less
+  - more
+  - help_pre_existing_conditions
 
 entities:
   - province
   - age_over_65
   - contact
   - symptoms
+  - age_group
+  - checkin_time
+  - contact_mode
 
 actions:
   - action_set_risk_level
 
 forms:
   - province_age_form
+  - daily_ci_enroll_form
 
 slots:
   province:
@@ -34,6 +42,27 @@ slots:
     type: unfeaturized
 
   symptoms:
+    type: unfeaturized
+
+  first_name:
+    type: unfeaturized
+
+  contact_mode:
+    type: unfeaturized
+
+  phone_number:
+    type: unfeaturized
+
+  email:
+    type: unfeaturized
+
+  age_group:
+    type: unfeaturized
+
+  pre_existing_conditions:
+    type: unfeaturized
+
+  checkin_time:
     type: unfeaturized
 
 session_config:

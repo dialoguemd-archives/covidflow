@@ -6,28 +6,34 @@ services:
       context: ./core
     ports:
       - 5005:8080
+    environment:
+      - SQL_TRACKER_STORE_URL=tracker-store
+      - SQL_TRACKER_STORE_PASSWORD=password
     volumes:
       - ./core/models/en:/app/models
       - ./core/credentials.yml:/app/credentials.yml
       - ./core/endpoints.yml:/app/endpoints.yml
     depends_on:
-      - actions
-      - tracker_store
+      - action-server
+      - tracker-store
 
   core-fr:
     build:
       context: ./core
     ports:
       - 5006:8080
+    environment:
+      - SQL_TRACKER_STORE_URL=tracker-store
+      - SQL_TRACKER_STORE_PASSWORD=password
     volumes:
       - ./core/models/fr:/app/models
       - ./core/credentials.yml:/app/credentials.yml
       - ./core/endpoints.yml:/app/endpoints.yml
     depends_on:
-      - actions
-      - tracker_store
+      - action-server
+      - tracker-store
 
-  actions:
+  action-server:
     build:
       context: ./action-server
       dockerfile: Dockerfile
@@ -36,9 +42,10 @@ services:
     volumes:
       - ./action-server/actions:/app/actions
 
-  tracker_store:
+  tracker-store:
     image: postgres:11
     environment:
+      - POSTGRES_USER=chloe
       - POSTGRES_PASSWORD=password
     ports:
       - 5432:5432

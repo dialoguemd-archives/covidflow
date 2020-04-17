@@ -2,7 +2,7 @@ responses:
   utter_greet:
     - text: "Hi, I′m Chloe, your medical assistant, I′m here to help you assess your symptoms and provide information about Covid-19."
 
-  utter_how_may_i_help:
+  utter_ask_how_may_i_help:
     - text: How may I help you today?
       buttons:
         - title: "I am returning for my check-in on my Covid-19"
@@ -18,7 +18,7 @@ responses:
   utter_tested_positive:
     - text: (tested positive flow)
 
-  utter_enquire_severe_symptoms:
+  utter_ask_severe_symptoms:
     - text: "First, do you have fever (higher than 38°C or 100.4°F) and are you experiencing any of the following symptoms:\n- Severe difficulty breathing\n- Severe chest pain\n- Having a hard time waking up\n- Feeling confused\n- Losing consciousness"
       buttons:
         - title: yes
@@ -29,7 +29,7 @@ responses:
   utter_call_911:
     - text: These symptoms require immediate response, so please call 911 immediately, or go to your nearest emergency department.
 
-  utter_enquire_moderate_symptoms:
+  utter_ask_moderate_symptoms:
     - text: "OK, do you have any of the following:\n- Mild to moderate shortness of breath\n- Inability to lie down because of difficulty breathing\n- Chronic health conditions that you are having difficulty managing because of difficulty breathing\n- Sudden loss of taste or smell"
       buttons:
         - title: yes
@@ -46,16 +46,13 @@ responses:
   utter_monitor_symptoms_long_2:
     - text: "Please monitor your symptoms. If you need assistance, you should:\n- Contact your family doctor if possible, or\n- Call 811 for assistance"
 
-  utter_offer_checkin:
+  utter_ask_want_checkin:
     - text: "Would you like me to check-in with you daily to help monitor your symptoms?"
       buttons:
         - title: yes
           payload: "/affirm"
         - title: no
           payload: "/deny"
-
-  utter_daily_checkin_enroll:
-    - text: (Check-in enrollment flow)
 
   utter_no_checkin_instruction_1:
     - text: "OK, please make sure that you stay home and self-isolate for at least 14 days."
@@ -74,7 +71,7 @@ responses:
 
   # Mild symptoms flow
 
-  utter_enquire_mild_symptoms:
+  utter_ask_mild_symptoms:
     - text: "Are you experiencing one of the following:\n- Fever\n- Cough\n- Sneezing\n- Sore throat"
       buttons:
         - title: yes
@@ -85,7 +82,7 @@ responses:
   utter_monitor_symptoms_short:
     - text: "Please monitor your symptoms for any changes or in case you get new symptoms, or if they worsen."
 
-  utter_enquire_contact:
+  utter_ask_contact:
     - text: "Have you recently been in close contact with someone who has Covid-19?\nBy close contact I mean any of the following:\n- Providing care for infected patients, visiting, or staying with them in the same close environment\n- Working in close proximity with an infected person\n- Living in the same household as an infected person"
       buttons:
         - title: yes
@@ -93,7 +90,7 @@ responses:
         - title: no
           payload: '/deny{"contact": false}'
 
-  utter_enquire_travel:
+  utter_ask_travel:
     - text: "Have you traveled in any country outside of Canada within the last 14 days (including passing through an airport)?"
       buttons:
         - title: yes
@@ -148,3 +145,140 @@ responses:
           payload: "/affirm"
         - title: no
           payload: "/deny"
+
+  ## Tested positive
+
+  utter_self_isolate_tested_positive_1:
+    - text: "In this case, you must self-isolate for at least 14 days. This means not only staying home, but in a separate room from the other people in your home to avoid transmitting the virus."
+
+  utter_self_isolate_tested_positive_2:
+    - text: "You must not leave your home, unless your symptoms worsen and you need to go to the ER."
+
+  utter_self_isolate_tested_positive_3:
+    - text: "If you don’t have anyone to get food or go to the drugstore for you, you should get your grocery or medications delivered."
+
+  utter_self_isolate_tested_positive_4:
+    - text: "Now, I’d like to assess your symptoms."
+
+  utter_moderate_worsen:
+    - text: "If your symptoms worsen, you may need to go to the ER. If you need assistance, you should:\n- Contact your family doctor if possible, or\n- Call 811 for assistance"
+
+  utter_ask_did_symptoms_worsen:
+    - text: "Did your symptoms worsen in the last 24 hours?"
+      buttons:
+        - title: yes
+          payload: "/affirm"
+        - title: no
+          payload: "/deny"
+
+  utter_checkin_instructions_tested_positive:
+    - text: "OK, don’t forget to take your temperature regularly and monitor your symptoms for any changes."
+
+  utter_no_symptoms:
+    - text: "It looks like you’re not experiencing any significant Covid-19 symptoms."
+
+  utter_ask_when_tested:
+    - text: "When have you been diagnosed?"
+      buttons:
+        - title: "More than 14 days ago"
+          payload: "/more"
+        - title: "Less than 14 days ago"
+          payload: "/less"
+
+  utter_maybe_cured:
+    - text: "You might be cured. We invite you to continue staying home and comply with social distancing rules. If you go outside, we recommend wearing a mask."
+
+  utter_ask_want_checkin_no_symptoms:
+    - text: "Would you like me to check-in with you daily to monitor any new symptoms?"
+      buttons:
+        - title: yes
+          payload: "/affirm"
+        - title: no
+          payload: "/deny"
+  # Daily CI enroll flow
+
+  utter_daily_checkin_enroll:
+    - text: Great! So that I can follow up with you daily and provide personalized recommendations, I need to ask you a few questions.
+
+  utter_ask_first_name:
+    - text: First, what is your first name?
+
+  utter_thanks_first_name:
+    - text: "Thanks, {first_name}."
+
+  utter_ask_contact_mode:
+    - text: Next, how would you like me to contact you?
+      buttons:
+        - title: Mobile phone
+          payload: '/inform{"contact_mode": "phone"}'
+        - title: Email
+          payload: '/inform{"contact_mode": "email"}'
+
+  utter_ask_phone_number:
+    - text: OK, what is your phone number?
+
+  utter_ask_email:
+    - text: OK, what is your email?
+
+  utter_ask_age_group:
+    - text: What is your age group?
+      buttons:
+        - title: 65 and +
+          payload: '/inform{"age_group": "65_plus"}'
+        - title: 50-64
+          payload: '/inform{"age_group": "50_64"}'
+        - title: 30-49
+          payload: '/inform{"age_group": "30_49"}'
+        - title: Under 30
+          payload: '/inform{"age_group": "under_30"}'
+
+  utter_ask_pre_existing_conditions:
+    - text: Do you have any pre-existing conditions that may affect your immunity?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+        - title: What are pre-existing conditions?
+          payload: "/help_pre_existing_conditions"
+
+  utter_explain_pre_existing_conditions:
+    - text: You may be more at risk if you have underlying medical conditions (e.g. heart disease, hypertension, diabetes, chronic respiratory disease, cancer) or if your immune system is compromised from a medical condition or treatment (e.g. chemotherapy).
+
+  utter_ask_pre_existing_conditions_again:
+    - text: Do you have such risk factors or pre-existing conditions?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+        - title: I don't know
+          payload: "/dont_know"
+
+  utter_note_pre_existing_conditions:
+    - text: If you're not sure, I will put a note in your profile that you might be at risk.
+
+  utter_daily_ci_enroll_done:
+    - text: Thanks. I have recorded all your answers in your personal profile.
+
+  utter_daily_ci_enroll_follow_up:
+    - text: I will check-in with you everyday to see how you're doing, monitor your symptoms and direct you to the right resources.
+
+  utter_ask_checkin_time:
+    - text: When would be a good time to check-in?
+      buttons:
+        - title: "In the morning [8AM-12PM]"
+          payload: '/inform{"checkin_time": "morning"}'
+        - title: "In the afternoon [12PM-6PM]"
+          payload: '/inform{"checkin_time": "afternoon"}'
+        - title: "In the evening [6PM-10PM]"
+          payload: '/inform{"checkin_time": "evening"}'
+
+  utter_acknowledge_checkin_time_morning:
+    - text: Got it. I will check-in with you tomorrow morning.
+
+  utter_acknowledge_checkin_time_afternoon:
+    - text: Got it. I will check-in with you tomorrow afternoon.
+
+  utter_acknowledge_checkin_time_evening:
+    - text: Got it. I will check-in with you tomorrow evening.

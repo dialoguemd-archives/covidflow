@@ -23,7 +23,25 @@ components:
     <<: *core
   core-fr:
     <<: *core
+  action-server:
+    port: 8080
+    scale:
+      horizontal: 2-4
+      vertical: medium
+    healthcheck:
+      liveness:
+        timeoutSeconds: 15
+      readiness:
+        initialDelaySeconds: 25
 scale:
   memThreshold: false
 environment:
   COUNTRY_CODE: ca
+
+environments:
+  dev-ca2:
+    environment:
+      SQL_TRACKER_STORE_URL: chloe.db.dev.dialoguecorp.com
+  prod-ca:
+    environment:
+      SQL_TRACKER_STORE_URL: chloe.db.dialoguecorp.com

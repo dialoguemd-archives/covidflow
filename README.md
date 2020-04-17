@@ -79,6 +79,10 @@ The tracker store database is volatile.
 
 #### Using rasa shell
 
-You can still access the bot using `rasa shell` by starting the application like this:
+You can also start services and access the bot using `rasa shell` by starting the application like this:
 
-`docker-compose run core-en shell` or `docker-compose run core-fr shell`
+`docker-compose run core-en shell --debug` or `docker-compose run core-fr shell --debug`
+
+To see the tracker-store and action-server logs:
+
+`docker-compose logs -ft`

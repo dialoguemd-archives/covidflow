@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List
+from typing import List, Optional
 
 import requests
 from pydantic import BaseModel
@@ -17,7 +17,7 @@ class QuestionAnsweringStatus(str, Enum):
 
 
 class QuestionAnsweringResponse(BaseModel):
-    answers: List[str]
+    answers: Optional[List[str]]
     status: QuestionAnsweringStatus
 
 
@@ -33,9 +33,11 @@ class QuestionAnsweringProtocol:
             params={QUESTION_KEY: question},
             headers={HEADER_ACCEPT_LANGUAGE_KEY: language},
         )
-        status = (
-            QuestionAnsweringStatus.SUCCESS
+
+        return (
+            QuestionAnsweringResponse(
+                **response.json(), status=QuestionAnsweringStatus.SUCCESS
+            )
             if response.status_code == HTTP_OK
-            else QuestionAnsweringStatus.FAILURE
+            else QuestionAnsweringResponse(status=QuestionAnsweringStatus.FAILURE)
         )
-        return QuestionAnsweringResponse(**response.json(), status=status)

@@ -11,6 +11,8 @@ responses:
           payload: "/suspect"
         - title: "I have been tested positive for Covid-19"
           payload: "/tested_positive"
+        - title: "I have a question about Covid-19"
+          payload: "/ask_question"
 
   utter_tested_positive:
     - text: (tested positive flow)
@@ -192,6 +194,7 @@ responses:
           payload: "/affirm"
         - title: no
           payload: "/deny"
+
   # Daily CI enroll flow
 
   utter_daily_checkin_enroll:
@@ -286,7 +289,7 @@ responses:
     - text: Thanks for checking in. Let's see how you're doing today.
 
   utter_ask_want_checkin_returning:
-    - text: OK, before we continue, would you like *me* to check-in with you on a daily basis?
+    - text: OK, would you like *me* to check-in with you on a daily basis?
       buttons:
         - title: yes
           payload: "/affirm"
@@ -294,7 +297,7 @@ responses:
           payload: "/deny"
 
   utter_no_checkin_instruction_1_returning:
-    - text: Keep in mind that you must *keep self-isolating*. It is extremely important that you follow this directive.
+    - text: Ok, keep in mind that you must *keep self-isolating*. It is extremely important that you follow this directive.
 
   utter_no_checkin_instruction_2_returning:
     - text: If you need home assistance, you can *call 211* or visit your provincial 211 website.
@@ -322,7 +325,7 @@ responses:
     - text: "You should: \n- Contact your family doctor if possible, or\n- Call 811 for assistance"
 
   utter_monitor_symptoms_returning:
-    - text: You should take your temperature regularly and monitor your symptoms for any changes.
+    - text: Don't forget to take your temperature regularly and monitor your symptoms for any changes.
 
   utter_visit_package_returning:
     - text: "You can consult [your personal information package](https://covid19.dialogue.co/#/info?id=ca-{province},{risk_level})."
@@ -340,3 +343,82 @@ responses:
 
   utter_recent_first_symptoms_instructions:
     - text: In this case, you should keep self-isolating until you have been symptom-free for at least 7 days.
+
+  # QA flow
+
+  utter_ask_anything_else:
+    - text: "Is there anything else I can help you with?"
+      buttons:
+        - title: I have other questions
+          payload: "/ask_question"
+        - title: No thanks
+          payload: "/done"
+
+  utter_can_help_with_questions:
+    - text: "I can help answer your questions about Covid-19, on many different topics."
+
+  utter_ask_active_question:
+    - text: "Please write your question about Covid-19:"
+
+  utter_ask_feedback:
+    - text: "Was this answer useful?"
+      buttons:
+        - title: yes
+          payload: "/affirm"
+        - title: no
+          payload: "/deny"
+
+  utter_ok:
+    - text: "OK."
+
+  utter_post_feedback:
+    - text: "Got it, please note that we work on improving our system constantly."
+
+  utter_question_answering_error:
+    - text: "I’m sorry, I’m not able to get an answer to your question at this time."
+
+  utter_ask_assessment_after_error:
+    - text: "Do you want me to help you assess your symptoms?"
+      buttons:
+        - title: yes
+          payload: "/affirm"
+        - title: no
+          payload: "/deny"
+
+  utter_try_again_later:
+    - text: "Please try again later if you have questions."
+
+  utter_cant_answer:
+    - text: "I’m sorry, I can’t answer your question, please try again."
+
+  utter_need_assessment:
+    - text: "It seems like you need help with your symptoms."
+
+  utter_ask_assess_to_answer:
+    - text: "Do you want me to assess/reassess your symptoms?"
+      buttons:
+        - title: yes
+          payload: "/affirm"
+        - title: no
+          payload: "/deny"
+
+  utter_please_visit_again:
+    - text: "Got it. Please visit us again if you need help or have additional questions."
+
+  utter_ask_what_next_after_answer:
+    - text: "What would you like to do next?"
+      buttons:
+        - title: "Ask another question"
+          payload: "/ask_question"
+        - title: "Get self-assessment"
+          payload: "/get_assessment"
+        - title: "I'm done"
+          payload: "/done"
+
+  utter_ask_another_question:
+    - text: "Do you have another question?"
+      buttons:
+        - title: Yes
+          payload: "/ask_question"
+        - title: "No I'm done"
+          payload: "/done"

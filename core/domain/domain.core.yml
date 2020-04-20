@@ -7,10 +7,13 @@ intents:
   - checkin_return
   - suspect
   - tested_positive
+  - ask_question
   - inform
   - less
   - more
-  - help_pre_existing_conditions
+  - help_pre_existing_conditions:
+      triggers: action_explain_pre_existing_conditions
+  - done
 
 entities:
   - province
@@ -23,10 +26,12 @@ entities:
 
 actions:
   - action_set_risk_level
+  - action_explain_pre_existing_conditions
 
 forms:
   - province_age_form
   - daily_ci_enroll_form
+  - question_answering_form
 
 slots:
   province:
@@ -64,6 +69,24 @@ slots:
 
   checkin_time:
     type: unfeaturized
+
+  active_question:
+    type: unfeaturized
+
+  feedback:
+    type: unfeaturized
+
+  answers:
+    type: unfeaturized
+
+  asked_question:
+    type: unfeaturized
+
+  question_answering_status:
+    type: categorical
+    values:
+      - success
+      - failure
 
 session_config:
   session_expiration_time: 60 # value in minutes

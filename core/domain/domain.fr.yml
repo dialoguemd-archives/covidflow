@@ -39,10 +39,10 @@ responses:
   utter_self_isolate:
     - text: "Dans ce cas, *vous devez vous isoler pour au moins 14 jours*. Il est extrêmement important de suivre cette consigne."
 
-  utter_monitor_symptoms_long_1:
+  utter_symptoms_worsen_emergency:
     - text: "Si vos symptômes empirent, ou si vous avez de la difficulté à respirer, vous devrez vous rendre à l'urgence la plus près ou appeler le 911"
 
-  utter_monitor_symptoms_long_2:
+  utter_monitor_symptoms_assistance:
     - text: "Assurez-vous de suivre l'évolution de vos symptômes. Si vous avez besoin d'assistance, vous devriez: \n- Communiquer avec votre médecin de famille, si c'est possible, ou \n- Appeler le 811"
 
   utter_ask_want_checkin:
@@ -53,10 +53,10 @@ responses:
         - title: non
           payload: "/deny"
 
-  utter_no_checkin_instruction_1:
+  utter_remind_stay_home_self_isolate:
     - text: "D'accord. Veuillez vous assurer de rester à la maison et de vous isoler pendant au moins 14 jours."
 
-  utter_no_checkin_instruction_2:
+  utter_monitor_symptoms_temperature:
     - text: "Prenez votre température régulièrement, surveillez l'évolution de vos symptômes et notez tout changement."
 
   utter_remind_possible_checkin:
@@ -78,7 +78,7 @@ responses:
         - title: non
           payload: '/deny{"symptoms": "none"}'
 
-  utter_monitor_symptoms_short:
+  utter_monitor_symptoms_changes:
     - text: "Veuillez suivre l'évolution de vos symptômes et notez tout changement, en particulier si vous développez de nouveaux symptômes ou s'ils empirent."
 
   utter_ask_contact:
@@ -147,22 +147,22 @@ responses:
 
   ## Tested positive
 
-  utter_self_isolate_tested_positive_1:
+  utter_self_isolate_separate_room:
     - text: "Dans ce cas, *vous devez vous isoler pendant au moins 14 jours*. Cela signifie non seulement de rester à la maison, mais si possible dans une pièce séparée des autres personnes de votre domicile afin d’éviter de transmettre le virus."
 
-  utter_self_isolate_tested_positive_2:
+  utter_dont_leave_home:
     - text: "Vous ne devez pas quitter votre domicile, à moins que vos symptômes ne s’aggravent et que vous deviez vous rendre à l’urgence."
 
-  utter_self_isolate_tested_positive_3:
+  utter_deliver_food_medications:
     - text: "Si vous n’avez personne pour faire vos courses ou acheter vos médicaments, alors vous devrez les faire livrer."
 
-  utter_self_isolate_tested_positive_4:
+  utter_assess_symptoms:
     - text: "J’aimerais maintenant évaluer vos symptômes."
 
-  utter_moderate_worsen:
+  utter_symptoms_worsen_emergency_assistance:
     - text: "Si vos symptômes s’aggravent, vous pourriez devoir vous rendre à l’urgence la plus près ou appeler le 911. Si vous avez besoin d’aide, vous devriez:\n- Communiquer avec votre médecin de famille, si c′est possible, ou\n- Appeler le 811"
 
-  utter_ask_did_symptoms_worsen:
+  utter_ask_symptoms_worsened:
     - text: "Est-ce que vos symptômes ont empiré dans les 24 dernières heures?"
       buttons:
         - title: oui
@@ -170,7 +170,7 @@ responses:
         - title: non
           payload: "/deny"
 
-  utter_checkin_instructions_tested_positive:
+  utter_acknowledge_remind_monitor_symptoms_temperature:
     - text: "D’accord. Assurez-vous de prendre votre température régulièrement et surveillez vos symptômes pour tout changement."
 
   utter_no_symptoms:
@@ -288,7 +288,7 @@ responses:
   utter_returning_for_checkin:
     - text: "Merci de me contacter pour un suivi. Voyons voir comment vous vous portez aujourd'hui."
 
-  utter_ask_want_checkin_returning:
+  utter_ask_want_checkin_acknowledge:
     - text: Aimeriez-vous que *je* vous contacte quotidiennement pour un suivi?
       buttons:
         - title: oui
@@ -296,39 +296,20 @@ responses:
         - title: non
           payload: "/deny"
 
-  utter_no_checkin_instruction_1_returning:
+  utter_self_isolate_reminder:
     - text: C'est noté. N'oubliez pas de *rester à la maison et de vous isoler*. Il est extrêmement important de suivre cette consigne.
 
-  utter_no_checkin_instruction_2_returning:
+  utter_home_assistance:
     - text: Pour obtenir de l'aide à domicile, vous pouvez *appeler au 211* ou consulter le site web 211 de votre province.
 
-  utter_ask_moderate_symptoms_returning:
-    - text: "Avez-vous les symptômes suivants:\n- Essoufflement léger à modéré\n- Incapacité à vous allonger en raison de difficultés respiratoires\n- Problèmes de santé chroniques que vous avez du mal à gérer en raison de difficultés respiratoires\n- Perte soudaine du goût ou de l'odorat"
-      buttons:
-        - title: oui
-          payload: '/affirm{"symptoms": "moderate"}'
-        - title: non
-          payload: "/deny"
-
-  utter_ask_symptoms_worsen_returning:
-    - text: Est-ce que vos symptômes ont empiré dans les 24 dernières heures?
-      buttons:
-        - title: oui
-          payload: "/affirm"
-        - title: non
-          payload: "/deny"
-
-  utter_symptoms_worsened_instruction_1_returning:
+  utter_contact_healthcare_professional:
     - text: Dans ce cas, vous devriez discuter de votre situation avec un professionnel de la santé.
 
-  utter_symptoms_worsened_instruction_2_returning:
+  utter_contact_healthcare_professional_options:
     - text: "Vous devriez: \n- Communiquer avec votre médecin de famille, si c'est possible, ou \n- Appeler le 811"
 
-  utter_monitor_symptoms_returning:
+  utter_remind_monitor_symptoms_temperature:
     - text: Assurez-vous de prendre votre température régulièrement et surveiller vos symptômes pour tout changement.
-
-  utter_visit_package_returning:
-    - text: "Vous pouvez consulter [votre trousse d'information personnalisée](https://covid19.dialogue.co/#/info?id=ca-{province},{risk_level})."
 
   utter_ask_when_first_symptoms:
     - text: Quand avez-vous commencé à avoir vos premiers symptômes?
@@ -338,10 +319,10 @@ responses:
         - title: Il y a moins de 14 jours
           payload: "/less"
 
-  utter_not_recent_first_symptoms_instructions:
+  utter_social_distancing_leave_home:
     - text: D'accord. Assurez-vous de suivre les consignes de distanciation sociale, et si vous devez sortir, je vous recommande de porter un masque.
 
-  utter_recent_first_symptoms_instructions:
+  utter_self_isolate_symptom_free:
     - text: Dans ce cas, continuez à vous isoler jusqu'à ce que vous ayez passé au moins 7 jours sans symptômes.
 
   # QA flow

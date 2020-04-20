@@ -26,24 +26,44 @@ actions:
   - action_explain_pre_existing_conditions
 
 forms:
-  - province_age_form
+  - assessment_form
   - daily_ci_enroll_form
   - question_answering_form
 
 slots:
+  assessment_type:
+    type: unfeaturized
+
+  severe_symptoms:
+    type: unfeaturized
+
+  moderate_symptoms:
+    type: unfeaturized
+
+  has_fever:
+    type: unfeaturized
+
   province:
     type: unfeaturized
 
   age_over_65:
     type: unfeaturized
 
+  symptoms:
+    type: categorical
+    values:
+      - severe
+      - moderate
+      - mild
+      - none
+
+  has_cough:
+    type: unfeaturized
+
   contact:
     type: unfeaturized
 
   risk_level:
-    type: unfeaturized
-
-  symptoms:
     type: unfeaturized
 
   first_name:

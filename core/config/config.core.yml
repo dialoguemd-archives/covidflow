@@ -3,8 +3,9 @@
 policies:
   - name: FormPolicy
   - name: AugmentedMemoizationPolicy
-    max_history: 6
+    max_history: 10
   - name: TEDPolicy
-    max_history: 5
+    max_history: 10
     epochs: 100
+    evaluate_on_number_of_examples: 0
   - name: MappingPolicy

@@ -9,19 +9,18 @@
 
 ## suspect - severe symptoms
 * suspect
-  - utter_ask_severe_symptoms
-* affirm{"symptoms": "severe"}
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"symptoms": "severe"}
   - utter_call_911
 
 ## suspect - moderate symptoms
 * suspect
-  - utter_ask_severe_symptoms
-* deny
-  - province_age_form
-  - form{"name": "province_age_form"}
+  - assessment_form
+  - form{"name": "assessment_form"}
   - form{"name": null}
-  - utter_ask_moderate_symptoms
-* affirm{"symptoms": "moderate"}
+  - slot{"symptoms": "moderate"}
   - utter_self_isolate
   - utter_home_assistance
   - utter_symptoms_worsen_emergency
@@ -41,13 +40,10 @@
 
 ## suspect - moderate symptoms no checkin
 * suspect
-  - utter_ask_severe_symptoms
-* deny
-  - province_age_form
-  - form{"name": "province_age_form"}
+  - assessment_form
+  - form{"name": "assessment_form"}
   - form{"name": null}
-  - utter_ask_moderate_symptoms
-* affirm{"symptoms": "moderate"}
+  - slot{"symptoms": "moderate"}
   - utter_self_isolate
   - utter_home_assistance
   - utter_symptoms_worsen_emergency
@@ -63,15 +59,10 @@
 
 ## suspect - mild symptoms no checkin
 * suspect
-  - utter_ask_severe_symptoms
-* deny
-  - province_age_form
-  - form{"name": "province_age_form"}
+  - assessment_form
+  - form{"name": "assessment_form"}
   - form{"name": null}
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* affirm{"symptoms": "mild"}
+  - slot{"symptoms": "mild"}
   - utter_self_isolate
   - utter_home_assistance
   - utter_monitor_symptoms_changes
@@ -85,15 +76,10 @@
 
 ## suspect - no symptoms contact
 * suspect
-  - utter_ask_severe_symptoms
-* deny
-  - province_age_form
-  - form{"name": "province_age_form"}
+  - assessment_form
+  - form{"name": "assessment_form"}
   - form{"name": null}
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* deny{"symptoms": "none"}
+  - slot{"symptoms": "none"}
   - utter_ask_contact
 * affirm{"contact": true}
   - utter_self_isolate
@@ -113,15 +99,10 @@
 
 ## suspect - no symptoms contact no checkin
 * suspect
-  - utter_ask_severe_symptoms
-* deny
-  - province_age_form
-  - form{"name": "province_age_form"}
+  - assessment_form
+  - form{"name": "assessment_form"}
   - form{"name": null}
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* deny{"symptoms": "none"}
+  - slot{"symptoms": "none"}
   - utter_ask_contact
 * affirm{"contact": true}
   - utter_self_isolate
@@ -137,15 +118,10 @@
 
 ## suspect - no symptoms no contact travel
 * suspect
-  - utter_ask_severe_symptoms
-* deny
-  - province_age_form
-  - form{"name": "province_age_form"}
+  - assessment_form
+  - form{"name": "assessment_form"}
   - form{"name": null}
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* deny{"symptoms": "none"}
+  - slot{"symptoms": "none"}
   - utter_ask_contact
 * deny{"contact": false}
   - utter_ask_travel
@@ -167,15 +143,10 @@
 
 ## suspect - no symptoms no contact travel no checkin
 * suspect
-  - utter_ask_severe_symptoms
-* deny
-  - province_age_form
-  - form{"name": "province_age_form"}
+  - assessment_form
+  - form{"name": "assessment_form"}
   - form{"name": null}
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* deny{"symptoms": "none"}
+  - slot{"symptoms": "none"}
   - utter_ask_contact
 * deny{"contact": false}
   - utter_ask_travel
@@ -193,15 +164,10 @@
 
 ## suspect - no symptoms no contact no travel
 * suspect
-  - utter_ask_severe_symptoms
-* deny
-  - province_age_form
-  - form{"name": "province_age_form"}
+  - assessment_form
+  - form{"name": "assessment_form"}
   - form{"name": null}
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* deny{"symptoms": "none"}
+  - slot{"symptoms": "none"}
   - utter_ask_contact
 * deny{"contact": false}
   - utter_ask_travel
@@ -215,26 +181,18 @@
 
 ## tested positive - severe symptoms
 * tested_positive
-  - utter_self_isolate_separate_room
-  - utter_dont_leave_home
-  - utter_deliver_food_medications
-  - utter_home_assistance
-  - utter_assess_symptoms
-  - utter_ask_severe_symptoms
-* affirm{"symptoms": "severe"}
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"symptoms": "severe"}
   - utter_call_911
 
 ## tested positive - moderate symptoms no check-in
 * tested_positive
-  - utter_self_isolate_separate_room
-  - utter_dont_leave_home
-  - utter_deliver_food_medications
-  - utter_home_assistance
-  - utter_assess_symptoms
-  - utter_ask_severe_symptoms
-* deny
-  - utter_ask_moderate_symptoms
-* affirm{"symptoms": "moderate"}
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"symptoms": "moderate"}
   - utter_symptoms_worsen_emergency_assistance
   - utter_ask_want_checkin
 * deny
@@ -244,15 +202,10 @@
 
 ## tested positive - moderate symptoms
 * tested_positive
-  - utter_self_isolate_separate_room
-  - utter_dont_leave_home
-  - utter_deliver_food_medications
-  - utter_home_assistance
-  - utter_assess_symptoms
-  - utter_ask_severe_symptoms
-* deny
-  - utter_ask_moderate_symptoms
-* affirm{"symptoms": "moderate"}
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"symptoms": "moderate"}
   - utter_symptoms_worsen_emergency_assistance
   - utter_ask_want_checkin
 * affirm
@@ -266,17 +219,10 @@
 
 ## tested positive - mild symptoms worse no check-in
 * tested_positive
-  - utter_self_isolate_separate_room
-  - utter_dont_leave_home
-  - utter_deliver_food_medications
-  - utter_home_assistance
-  - utter_assess_symptoms
-  - utter_ask_severe_symptoms
-* deny
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* affirm{"symptoms": "mild"}
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"symptoms": "mild"}
   - utter_ask_symptoms_worsened
 * affirm
   - utter_symptoms_worsen_emergency_assistance
@@ -288,17 +234,10 @@
 
 ## tested positive - mild symptoms worse
 * tested_positive
-  - utter_self_isolate_separate_room
-  - utter_dont_leave_home
-  - utter_deliver_food_medications
-  - utter_home_assistance
-  - utter_assess_symptoms
-  - utter_ask_severe_symptoms
-* deny
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* affirm{"symptoms": "mild"}
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"symptoms": "mild"}
   - utter_ask_symptoms_worsened
 * affirm
   - utter_symptoms_worsen_emergency_assistance
@@ -314,17 +253,10 @@
 
 ## tested positive - mild symptoms not worse no check-in
 * tested_positive
-  - utter_self_isolate_separate_room
-  - utter_dont_leave_home
-  - utter_deliver_food_medications
-  - utter_home_assistance
-  - utter_assess_symptoms
-  - utter_ask_severe_symptoms
-* deny
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* affirm{"symptoms": "mild"}
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"symptoms": "mild"}
   - utter_ask_symptoms_worsened
 * deny
   - utter_ask_want_checkin
@@ -335,17 +267,10 @@
 
 ## tested positive - mild symptoms not worse
 * tested_positive
-  - utter_self_isolate_separate_room
-  - utter_dont_leave_home
-  - utter_deliver_food_medications
-  - utter_home_assistance
-  - utter_assess_symptoms
-  - utter_ask_severe_symptoms
-* deny
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* affirm{"symptoms": "mild"}
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"symptoms": "mild"}
   - utter_ask_symptoms_worsened
 * deny
   - utter_ask_want_checkin
@@ -360,17 +285,10 @@
 
 # tested positive - no symptoms tested less than 14 days no check-in
 * tested_positive
-  - utter_self_isolate_separate_room
-  - utter_dont_leave_home
-  - utter_deliver_food_medications
-  - utter_home_assistance
-  - utter_assess_symptoms
-  - utter_ask_severe_symptoms
-* deny
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* deny{"symptoms": "none"}
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"symptoms": "none"}
   - utter_no_symptoms
   - utter_ask_when_tested
 * less
@@ -382,17 +300,10 @@
 
 # tested positive - no symptoms tested less than 14 days
 * tested_positive
-  - utter_self_isolate_separate_room
-  - utter_dont_leave_home
-  - utter_deliver_food_medications
-  - utter_home_assistance
-  - utter_assess_symptoms
-  - utter_ask_severe_symptoms
-* deny
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* deny{"symptoms": "none"}
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"symptoms": "none"}
   - utter_no_symptoms
   - utter_ask_when_tested
 * less
@@ -408,17 +319,10 @@
 
 # tested positive - cured
 * tested_positive
-  - utter_self_isolate_separate_room
-  - utter_dont_leave_home
-  - utter_deliver_food_medications
-  - utter_home_assistance
-  - utter_assess_symptoms
-  - utter_ask_severe_symptoms
-* deny
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* deny{"symptoms": "none"}
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"symptoms": "none"}
   - utter_no_symptoms
   - utter_ask_when_tested
 * more
@@ -446,23 +350,18 @@
 
 ## return for check-in - severe symptoms
 * checkin_return
-  - utter_returning_for_checkin
-  - utter_ask_severe_symptoms
-* affirm{"symptoms": "severe"}
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"symptoms": "severe"}
   - utter_call_911
 
 ## return for check-in - moderate symptoms worse
 * checkin_return
-  - utter_returning_for_checkin
-  - utter_ask_severe_symptoms
-* deny
-  - utter_self_isolate_reminder
-  - utter_home_assistance
-  - province_age_form
-  - form{"name": "province_age_form"}
+  - assessment_form
+  - form{"name": "assessment_form"}
   - form{"name": null}
-  - utter_ask_moderate_symptoms
-* affirm{"symptoms": "moderate"}
+  - slot{"symptoms": "moderate"}
   - action_set_risk_level
   - utter_ask_symptoms_worsened
 * affirm
@@ -472,16 +371,10 @@
 
 ## return for check-in - moderate symptoms - with check-in
 * checkin_return
-  - utter_returning_for_checkin
-  - utter_ask_severe_symptoms
-* deny
-  - utter_self_isolate_reminder
-  - utter_home_assistance
-  - province_age_form
-  - form{"name": "province_age_form"}
+  - assessment_form
+  - form{"name": "assessment_form"}
   - form{"name": null}
-  - utter_ask_moderate_symptoms
-* affirm{"symptoms": "moderate"}
+  - slot{"symptoms": "moderate"}
   - action_set_risk_level
   - utter_ask_symptoms_worsened
 * deny
@@ -498,16 +391,10 @@
 
 ## return for check-in - moderate symptoms - no check-in
 * checkin_return
-  - utter_returning_for_checkin
-  - utter_ask_severe_symptoms
-* deny
-  - utter_self_isolate_reminder
-  - utter_home_assistance
-  - province_age_form
-  - form{"name": "province_age_form"}
+  - assessment_form
+  - form{"name": "assessment_form"}
   - form{"name": null}
-  - utter_ask_moderate_symptoms
-* affirm{"symptoms": "moderate"}
+  - slot{"symptoms": "moderate"}
   - action_set_risk_level
   - utter_ask_symptoms_worsened
 * deny
@@ -522,18 +409,10 @@
 
 ## return for check-in - mild symptoms - with check-in
 * checkin_return
-  - utter_returning_for_checkin
-  - utter_ask_severe_symptoms
-* deny
-  - utter_self_isolate_reminder
-  - utter_home_assistance
-  - province_age_form
-  - form{"name": "province_age_form"}
+  - assessment_form
+  - form{"name": "assessment_form"}
   - form{"name": null}
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* affirm{"symptoms": "mild"}
+  - slot{"symptoms": "mild"}
   - utter_ask_want_checkin_acknowledge
 * affirm
   - daily_ci_enroll_form
@@ -546,18 +425,10 @@
 
 ## return for check-in - mild symptoms - no check-in
 * checkin_return
-  - utter_returning_for_checkin
-  - utter_ask_severe_symptoms
-* deny
-  - utter_self_isolate_reminder
-  - utter_home_assistance
-  - province_age_form
-  - form{"name": "province_age_form"}
+  - assessment_form
+  - form{"name": "assessment_form"}
   - form{"name": null}
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* affirm{"symptoms": "mild"}
+  - slot{"symptoms": "mild"}
   - utter_ask_want_checkin_acknowledge
 * deny
   - utter_ok
@@ -568,18 +439,10 @@
 
 ## return for check-in - no symptoms - first symptoms >= 14 days ago
 * checkin_return
-  - utter_returning_for_checkin
-  - utter_ask_severe_symptoms
-* deny
-  - utter_self_isolate_reminder
-  - utter_home_assistance
-  - province_age_form
-  - form{"name": "province_age_form"}
+  - assessment_form
+  - form{"name": "assessment_form"}
   - form{"name": null}
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* deny{"symptoms": "none"}
+  - slot{"symptoms": "none"}
   - utter_no_symptoms
   - utter_ask_when_first_symptoms
 * more
@@ -588,18 +451,10 @@
 
 ## return for check-in - no symptoms - first symptoms < 14 days ago
 * checkin_return
-  - utter_returning_for_checkin
-  - utter_ask_severe_symptoms
-* deny
-  - utter_self_isolate_reminder
-  - utter_home_assistance
-  - province_age_form
-  - form{"name": "province_age_form"}
+  - assessment_form
+  - form{"name": "assessment_form"}
   - form{"name": null}
-  - utter_ask_moderate_symptoms
-* deny
-  - utter_ask_mild_symptoms
-* deny{"symptoms": "none"}
+  - slot{"symptoms": "none"}
   - utter_no_symptoms
   - utter_ask_when_first_symptoms
 * less

@@ -18,22 +18,30 @@ responses:
     - text: (tested positive flow)
 
   utter_ask_severe_symptoms:
-    - text: "First, do you have fever (higher than 38°C or 100.4°F) and are you experiencing any of the following symptoms:\n- Severe difficulty breathing\n- Severe chest pain\n- Having a hard time waking up\n- Feeling confused\n- Losing consciousness"
+    - text: "First, are you experiencing any of the following symptoms:\n- Severe difficulty breathing\n- Severe chest pain\n- Having a hard time waking up\n- Feeling confused\n- Losing consciousness"
       buttons:
-        - title: yes
-          payload: '/affirm{"symptoms": "severe"}'
-        - title: no
+        - title: Yes
+          payload: "/affirm"
+        - title: No
           payload: "/deny"
 
   utter_call_911:
     - text: These symptoms require immediate response, so please call 911 immediately, or go to your nearest emergency department.
 
+  utter_ask_has_fever:
+    - text: Do you have fever (higher than 38°C or 100.4°F)?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
   utter_ask_moderate_symptoms:
     - text: "OK, do you have any of the following:\n- Mild to moderate shortness of breath\n- Inability to lie down because of difficulty breathing\n- Chronic health conditions that you are having difficulty managing because of difficulty breathing\n- Sudden loss of taste or smell"
       buttons:
-        - title: yes
-          payload: '/affirm{"symptoms": "moderate"}'
-        - title: no
+        - title: Yes
+          payload: "/affirm"
+        - title: No
           payload: "/deny"
 
   utter_self_isolate:
@@ -48,9 +56,9 @@ responses:
   utter_ask_want_checkin:
     - text: "Would you like me to check-in with you daily to help monitor your symptoms?"
       buttons:
-        - title: yes
+        - title: Yes
           payload: "/affirm"
-        - title: no
+        - title: No
           payload: "/deny"
 
   utter_remind_stay_home_self_isolate:
@@ -70,13 +78,13 @@ responses:
 
   # Mild symptoms flow
 
-  utter_ask_mild_symptoms:
-    - text: "Are you experiencing any of the following:\n- Fever\n- Cough\n- Sneezing\n- Sore throat"
+  utter_ask_has_cough:
+    - text: "Do you have a cough or a sore throat"
       buttons:
-        - title: yes
-          payload: '/affirm{"symptoms": "mild"}'
-        - title: no
-          payload: '/deny{"symptoms": "none"}'
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
 
   utter_monitor_symptoms_changes:
     - text: "Please monitor your symptoms for any changes or in case you get new symptoms, or if they worsen."
@@ -84,17 +92,17 @@ responses:
   utter_ask_contact:
     - text: "Have you recently been in close contact with someone who has Covid-19?\nBy close contact I mean any of the following:\n- Providing care for infected patients, visiting, or staying with them in the same close environment\n- Working in close proximity with an infected person\n- Living in the same household as an infected person"
       buttons:
-        - title: yes
+        - title: Yes
           payload: '/affirm{"contact": true}'
-        - title: no
+        - title: No
           payload: '/deny{"contact": false}'
 
   utter_ask_travel:
     - text: "Have you traveled in any country outside of Canada within the last 14 days (including passing through an airport)?"
       buttons:
-        - title: yes
+        - title: Yes
           payload: "/affirm"
-        - title: no
+        - title: No
           payload: "/deny"
 
   utter_probably_not_covid:
@@ -140,9 +148,9 @@ responses:
   utter_ask_age_over_65:
     - text: Are you older than 65?
       buttons:
-        - title: yes
+        - title: Yes
           payload: "/affirm"
-        - title: no
+        - title: No
           payload: "/deny"
 
   ## Tested positive
@@ -165,9 +173,9 @@ responses:
   utter_ask_symptoms_worsened:
     - text: "Have your symptoms worsened in the last 24 hours?"
       buttons:
-        - title: yes
+        - title: Yes
           payload: "/affirm"
-        - title: no
+        - title: No
           payload: "/deny"
 
   utter_acknowledge_remind_monitor_symptoms_temperature:
@@ -190,9 +198,9 @@ responses:
   utter_ask_want_checkin_no_symptoms:
     - text: "Would you like me to check-in with you daily to monitor any new symptoms?"
       buttons:
-        - title: yes
+        - title: Yes
           payload: "/affirm"
-        - title: no
+        - title: No
           payload: "/deny"
 
   # Daily CI enroll flow
@@ -258,9 +266,9 @@ responses:
   utter_ask_want_checkin_acknowledge:
     - text: OK, would you like *me* to check-in with you on a daily basis?
       buttons:
-        - title: yes
+        - title: Yes
           payload: "/affirm"
-        - title: no
+        - title: No
           payload: "/deny"
 
   utter_self_isolate_reminder:
@@ -311,9 +319,9 @@ responses:
   utter_ask_feedback:
     - text: "Was this answer useful?"
       buttons:
-        - title: yes
+        - title: Yes
           payload: "/affirm"
-        - title: no
+        - title: No
           payload: "/deny"
 
   utter_ok:
@@ -328,9 +336,9 @@ responses:
   utter_ask_assessment_after_error:
     - text: "Do you want me to help you assess your symptoms?"
       buttons:
-        - title: yes
+        - title: Yes
           payload: "/affirm"
-        - title: no
+        - title: No
           payload: "/deny"
 
   utter_try_again_later:
@@ -345,9 +353,9 @@ responses:
   utter_ask_assess_to_answer:
     - text: "Do you want me to assess/reassess your symptoms?"
       buttons:
-        - title: yes
+        - title: Yes
           payload: "/affirm"
-        - title: no
+        - title: No
           payload: "/deny"
 
   utter_please_visit_again:

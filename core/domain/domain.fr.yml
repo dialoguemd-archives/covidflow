@@ -18,11 +18,19 @@ responses:
     - text: (tested positive flow)
 
   utter_ask_severe_symptoms:
-    - text: "Premièrement, faites-vous de la fièvre (plus de 38°C ou 100,4°F) et avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Avoir beaucoup de mal à se réveiller\n- Être confus\n- Perte de conscience"
+    - text: "Premièrement, avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Avoir beaucoup de mal à se réveiller\n- Être confus\n- Perte de conscience"
       buttons:
-        - title: oui
-          payload: '/affirm{"symptoms": "severe"}'
-        - title: non
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_ask_has_fever:
+    - text: Faites-vous de la fièvre (plus de 38°C ou 100,4°F)?
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
           payload: "/deny"
 
   utter_call_911:
@@ -31,9 +39,9 @@ responses:
   utter_ask_moderate_symptoms:
     - text: "Avez-vous les symptômes suivants:\n- Essoufflement léger à modéré\n- Incapacité à vous allonger en raison de difficultés respiratoires\n- Problèmes de santé chroniques que vous avez du mal à gérer en raison de difficultés respiratoires\n- Perte soudaine du goût ou de l'odorat"
       buttons:
-        - title: oui
-          payload: '/affirm{"symptoms": "moderate"}'
-        - title: non
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
           payload: "/deny"
 
   utter_self_isolate:
@@ -48,13 +56,13 @@ responses:
   utter_ask_want_checkin:
     - text: "Aimeriez-vous que je communique avec vous quotidiennement pour vous aider à suivre l'évolution de vos symptômes?"
       buttons:
-        - title: oui
+        - title: Oui
           payload: "/affirm"
-        - title: non
+        - title: Non
           payload: "/deny"
 
   utter_remind_stay_home_self_isolate:
-    - text: "D'accord. Veuillez vous assurer de rester à la maison et de vous isoler pendant au moins 14 jours."
+    - text: "Veuillez vous assurer de rester à la maison et de vous isoler pendant au moins 14 jours."
 
   utter_monitor_symptoms_temperature:
     - text: "Prenez votre température régulièrement, surveillez l'évolution de vos symptômes et notez tout changement."
@@ -70,13 +78,13 @@ responses:
 
   # Mild symptoms flow
 
-  utter_ask_mild_symptoms:
-    - text: "Avez-vous les symptômes suivants:\n- Fièvre\n- Toux\n- Éternuements\n- Mal de gorge"
+  utter_ask_has_cough:
+    - text: "Est-ce que vous toussez ou avez mal à la gorge?"
       buttons:
-        - title: oui
-          payload: '/affirm{"symptoms": "mild"}'
-        - title: non
-          payload: '/deny{"symptoms": "none"}'
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
 
   utter_monitor_symptoms_changes:
     - text: "Veuillez suivre l'évolution de vos symptômes et notez tout changement, en particulier si vous développez de nouveaux symptômes ou s'ils empirent."
@@ -84,17 +92,17 @@ responses:
   utter_ask_contact:
     - text: "Avez-vous récemment été en contact étroit avec une personne atteinte de la Covid-19?\nUne personne ayant eu des contacts étroits est définie comme:\n- Une personne qui a fourni des soins à la personne malade sans équipement de protection adéquat\n- Une personne qui a vécu ou travaillé avec la personne malade pendant qu’elle était contagieuse\n- Une personne qui a eu un contact direct avec des fluides corporels infectieux de la personne malade (qui était, par exemple, à proximité lorsque la personne malade a toussé ou éternué)"
       buttons:
-        - title: oui
+        - title: Oui
           payload: '/affirm{"contact": true}'
-        - title: non
+        - title: Non
           payload: '/deny{"contact": false}'
 
   utter_ask_travel:
     - text: "Avez-vous voyagé à l'extérieur du Canada durant les 14 derniers jours (Ceci inclut le passage dans un aéroport étranger)?"
       buttons:
-        - title: oui
+        - title: Oui
           payload: "/affirm"
-        - title: non
+        - title: Non
           payload: "/deny"
 
   utter_probably_not_covid:
@@ -140,9 +148,9 @@ responses:
   utter_ask_age_over_65:
     - text: Avez-vous plus de 65 ans?
       buttons:
-        - title: oui
+        - title: Oui
           payload: "/affirm"
-        - title: non
+        - title: Non
           payload: "/deny"
 
   ## Tested positive
@@ -165,9 +173,9 @@ responses:
   utter_ask_symptoms_worsened:
     - text: "Est-ce que vos symptômes ont empiré dans les 24 dernières heures?"
       buttons:
-        - title: oui
+        - title: Oui
           payload: "/affirm"
-        - title: non
+        - title: Non
           payload: "/deny"
 
   utter_acknowledge_remind_monitor_symptoms_temperature:
@@ -190,9 +198,9 @@ responses:
   utter_ask_want_checkin_no_symptoms:
     - text: "Aimeriez-vous que je communique avec vous à chaque jour pour surveiller l’apparition de nouveaux symptômes?"
       buttons:
-        - title: oui
+        - title: Oui
           payload: "/affirm"
-        - title: non
+        - title: Non
           payload: "/deny"
 
   # Daily CI enroll flow
@@ -206,31 +214,14 @@ responses:
   utter_thanks_first_name:
     - text: "Merci, {first_name}."
 
-  utter_ask_contact_mode:
-    - text: Ensuite, comment voulez-vous que je communique avec vous?
-      buttons:
-        - title: Téléphone mobile
-          payload: '/inform{"contact_mode": "phone"}'
-        - title: Courriel
-          payload: '/inform{"contact_mode": "email"}'
+  utter_text_message_checkin:
+    - text: "Je vais communiquer avec vous par message texte à chaque jour pour faire votre suivi."
 
   utter_ask_phone_number:
-    - text: Très bien, quel est votre numéro de téléphone?
+    - text: Pour que je puisse vous joindre, quel est votre numéro de téléphone?
 
-  utter_ask_email:
-    - text: Très bien, quelle est votre adresse de courriel?
-
-  utter_ask_age_group:
-    - text: Quel est votre groupe d'âge?
-      buttons:
-        - title: 65 ans et +
-          payload: '/inform{"age_group": "65_plus"}'
-        - title: 50-64 ans
-          payload: '/inform{"age_group": "50_64"}'
-        - title: 30-49 ans
-          payload: '/inform{"age_group": "30_49"}'
-        - title: Moins de 30 ans
-          payload: '/inform{"age_group": "under_30"}'
+  utter_acknowledge:
+    - text: "C'est noté."
 
   utter_ask_pre_existing_conditions:
     - text: Avez-vous des problèmes de santé qui pourraient affecter votre système immunitaire?
@@ -246,7 +237,7 @@ responses:
     - text: "Vous pourriez être plus à risque si vous avez certains problèmes médicaux (par ex.: problèmes cardiaques, hypertension, diabète, maladie respiratoire chronique, cancer) ou si votre système immunitaire est affaibli en raison d'une condition ou d'un traitement médical (par ex.: chimiothérapie)"
 
   utter_ask_pre_existing_conditions_again:
-    - text: Présentez-vous ces facteurs de risque?
+    - text: Présentez-vous des facteurs de risque?
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -258,30 +249,14 @@ responses:
   utter_note_pre_existing_conditions:
     - text: Si vous ne savez pas, je vais mettre une note à votre profil indiquant que vous pourriez être à risque.
 
-  utter_daily_ci_enroll_done:
+  utter_daily_ci_answers_recorded:
     - text: Merci. J'ai enregistré toutes vos réponses dans votre profil personnel.
 
+  utter_daily_ci_enroll_done:
+    - text: Votre inscription au suivi quotidien est maintenant complétée.
+
   utter_daily_ci_enroll_follow_up:
-    - text: Je vais faire un suivi avec vous à chaque jour pour voir comment vous allez, vérifier vos symptômes et vous diriger vers les bonnes ressources au besoin.
-
-  utter_ask_checkin_time:
-    - text: Quel moment de la journée vous conviendrait le mieux pour votre suivi?
-      buttons:
-        - title: "L'avant-midi [entre 8h et midi]"
-          payload: '/inform{"checkin_time": "morning"}'
-        - title: "L'après-midi [entre midi et 18h]"
-          payload: '/inform{"checkin_time": "afternoon"}'
-        - title: "Le soir [entre 18h et 22h]"
-          payload: '/inform{"checkin_time": "evening"}'
-
-  utter_acknowledge_checkin_time_morning:
-    - text: C'est noté. Je vais vous contacter demain matin.
-
-  utter_acknowledge_checkin_time_afternoon:
-    - text: C'est noté. Je vais vous contacter demain après-midi.
-
-  utter_acknowledge_checkin_time_evening:
-    - text: C'est noté. Je vais vous contacter demain soir.
+    - text: Je vais faire un suivi avec vous à chaque jour environ à cette heure-ci pour voir comment vous allez, vérifier vos symptômes et vous diriger vers les bonnes ressources au besoin.
 
   ## Return for check-in
 
@@ -291,9 +266,9 @@ responses:
   utter_ask_want_checkin_acknowledge:
     - text: Aimeriez-vous que *je* vous contacte quotidiennement pour un suivi?
       buttons:
-        - title: oui
+        - title: Oui
           payload: "/affirm"
-        - title: non
+        - title: Non
           payload: "/deny"
 
   utter_self_isolate_reminder:
@@ -344,9 +319,9 @@ responses:
   utter_ask_feedback:
     - text: "Est-ce que cette réponse était utile?"
       buttons:
-        - title: oui
+        - title: Oui
           payload: "/affirm"
-        - title: non
+        - title: Non
           payload: "/deny"
 
   utter_post_feedback:
@@ -358,9 +333,9 @@ responses:
   utter_ask_assessment_after_error:
     - text: "Voudriez-vous que je vous aide à évaluer vos symptômes?"
       buttons:
-        - title: oui
+        - title: Oui
           payload: "/affirm"
-        - title: non
+        - title: Non
           payload: "/deny"
 
   utter_ok:
@@ -378,9 +353,9 @@ responses:
   utter_ask_assess_to_answer:
     - text: "Voulez-vous que j’évalue/je réévalue vos symptômes?"
       buttons:
-        - title: oui
+        - title: Oui
           payload: "/affirm"
-        - title: non
+        - title: Non
           payload: "/deny"
 
   utter_please_visit_again:

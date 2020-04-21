@@ -333,11 +333,11 @@ responses:
   utter_question_answering_error:
     - text: "I’m sorry, I’m not able to get an answer to your question at this time."
 
-  utter_ask_assessment_after_error:
+  utter_ask_assess_after_error:
     - text: "Do you want me to help you assess your symptoms?"
       buttons:
         - title: Yes
-          payload: "/affirm"
+          payload: "/get_assessment"
         - title: No
           payload: "/deny"
 
@@ -351,12 +351,15 @@ responses:
     - text: "It seems like you need help with your symptoms."
 
   utter_ask_assess_to_answer:
-    - text: "Do you want me to assess/reassess your symptoms?"
+    - text: "Do you want me to assess your symptoms?"
       buttons:
         - title: Yes
-          payload: "/affirm"
+          payload: "/get_assessment"
         - title: No
           payload: "/deny"
+
+  utter_need_assessment_already_done:
+    - text: It seems that to answer your question, I would need to assess your symptoms. However, we have already done that.
 
   utter_please_visit_again:
     - text: "Got it. Please visit us again if you need help or have additional questions."
@@ -367,12 +370,12 @@ responses:
         - title: "Ask another question"
           payload: "/ask_question"
         - title: "Get self-assessment"
-          payload: "/get_assessment"
+          payload: "/suspect"
         - title: "I'm done"
           payload: "/done"
 
   utter_ask_another_question:
-    - text: "Do you have another question?"
+    - text: "Would you like to ask another question?"
       buttons:
         - title: Yes
           payload: "/ask_question"

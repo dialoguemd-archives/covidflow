@@ -54,7 +54,7 @@ responses:
           payload: "/deny"
 
   utter_remind_stay_home_self_isolate:
-    - text: "D'accord. Veuillez vous assurer de rester à la maison et de vous isoler pendant au moins 14 jours."
+    - text: "Veuillez vous assurer de rester à la maison et de vous isoler pendant au moins 14 jours."
 
   utter_monitor_symptoms_temperature:
     - text: "Prenez votre température régulièrement, surveillez l'évolution de vos symptômes et notez tout changement."
@@ -206,31 +206,14 @@ responses:
   utter_thanks_first_name:
     - text: "Merci, {first_name}."
 
-  utter_ask_contact_mode:
-    - text: Ensuite, comment voulez-vous que je communique avec vous?
-      buttons:
-        - title: Téléphone mobile
-          payload: '/inform{"contact_mode": "phone"}'
-        - title: Courriel
-          payload: '/inform{"contact_mode": "email"}'
+  utter_text_message_checkin:
+    - text: "Je vais communiquer avec vous par message texte à chaque jour pour faire votre suivi."
 
   utter_ask_phone_number:
-    - text: Très bien, quel est votre numéro de téléphone?
+    - text: Pour que je puisse vous joindre, quel est votre numéro de téléphone?
 
-  utter_ask_email:
-    - text: Très bien, quelle est votre adresse de courriel?
-
-  utter_ask_age_group:
-    - text: Quel est votre groupe d'âge?
-      buttons:
-        - title: 65 ans et +
-          payload: '/inform{"age_group": "65_plus"}'
-        - title: 50-64 ans
-          payload: '/inform{"age_group": "50_64"}'
-        - title: 30-49 ans
-          payload: '/inform{"age_group": "30_49"}'
-        - title: Moins de 30 ans
-          payload: '/inform{"age_group": "under_30"}'
+  utter_acknowledge:
+    - text: "C'est noté."
 
   utter_ask_pre_existing_conditions:
     - text: Avez-vous des problèmes de santé qui pourraient affecter votre système immunitaire?
@@ -246,7 +229,7 @@ responses:
     - text: "Vous pourriez être plus à risque si vous avez certains problèmes médicaux (par ex.: problèmes cardiaques, hypertension, diabète, maladie respiratoire chronique, cancer) ou si votre système immunitaire est affaibli en raison d'une condition ou d'un traitement médical (par ex.: chimiothérapie)"
 
   utter_ask_pre_existing_conditions_again:
-    - text: Présentez-vous ces facteurs de risque?
+    - text: Présentez-vous des facteurs de risque?
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -258,30 +241,14 @@ responses:
   utter_note_pre_existing_conditions:
     - text: Si vous ne savez pas, je vais mettre une note à votre profil indiquant que vous pourriez être à risque.
 
-  utter_daily_ci_enroll_done:
+  utter_daily_ci_answers_recorded:
     - text: Merci. J'ai enregistré toutes vos réponses dans votre profil personnel.
 
+  utter_daily_ci_enroll_done:
+    - text: Votre inscription au suivi quotidien est maintenant complétée.
+
   utter_daily_ci_enroll_follow_up:
-    - text: Je vais faire un suivi avec vous à chaque jour pour voir comment vous allez, vérifier vos symptômes et vous diriger vers les bonnes ressources au besoin.
-
-  utter_ask_checkin_time:
-    - text: Quel moment de la journée vous conviendrait le mieux pour votre suivi?
-      buttons:
-        - title: "L'avant-midi [entre 8h et midi]"
-          payload: '/inform{"checkin_time": "morning"}'
-        - title: "L'après-midi [entre midi et 18h]"
-          payload: '/inform{"checkin_time": "afternoon"}'
-        - title: "Le soir [entre 18h et 22h]"
-          payload: '/inform{"checkin_time": "evening"}'
-
-  utter_acknowledge_checkin_time_morning:
-    - text: C'est noté. Je vais vous contacter demain matin.
-
-  utter_acknowledge_checkin_time_afternoon:
-    - text: C'est noté. Je vais vous contacter demain après-midi.
-
-  utter_acknowledge_checkin_time_evening:
-    - text: C'est noté. Je vais vous contacter demain soir.
+    - text: Je vais faire un suivi avec vous à chaque jour environ à cette heure-ci pour voir comment vous allez, vérifier vos symptômes et vous diriger vers les bonnes ressources au besoin.
 
   ## Return for check-in
 

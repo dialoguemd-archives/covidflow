@@ -9,6 +9,9 @@ services:
     environment:
       - SQL_TRACKER_STORE_URL=tracker-store
       - SQL_TRACKER_STORE_PASSWORD=password
+      - TWILIO_ACCOUNT_SID
+      - TWILIO_AUTH_TOKEN
+      - TWILIO_NUMBER
       - LOG_LEVEL=DEBUG
     volumes:
       - ./core/models/en:/app/models
@@ -26,6 +29,9 @@ services:
     environment:
       - SQL_TRACKER_STORE_URL=tracker-store
       - SQL_TRACKER_STORE_PASSWORD=password
+      - TWILIO_ACCOUNT_SID
+      - TWILIO_AUTH_TOKEN
+      - TWILIO_NUMBER
       - LOG_LEVEL=DEBUG
     volumes:
       - ./core/models/fr:/app/models

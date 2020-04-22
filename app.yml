@@ -42,6 +42,8 @@ environments:
   dev-ca2:
     environment:
       SQL_TRACKER_STORE_URL: chloe.db.dev.dialoguecorp.com
+      TWILIO_NUMBER: "+14382996778"
   prod-ca:
     environment:
       SQL_TRACKER_STORE_URL: chloe.db.dialoguecorp.com
+      TWILIO_NUMBER: "+14382996828"

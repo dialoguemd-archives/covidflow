@@ -31,6 +31,10 @@ forms:
   - question_answering_form
 
 slots:
+  language:
+    type: unfeaturized
+    initial_value: *language
+
   assessment_type:
     type: unfeaturized
 

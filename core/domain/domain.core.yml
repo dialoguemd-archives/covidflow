@@ -15,12 +15,17 @@ intents:
       triggers: action_explain_pre_existing_conditions
   - done
   - get_assessment
+  - better
+  - worse
+  - no_change
+  - daily_checkin
 
 entities:
   - province
   - age_over_65
   - contact
   - symptoms
+  - metadata
 
 actions:
   - action_set_risk_level

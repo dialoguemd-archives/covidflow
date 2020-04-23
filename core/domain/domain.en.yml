@@ -381,3 +381,18 @@ responses:
           payload: "/ask_question"
         - title: "No I'm done"
           payload: "/done"
+
+## Daily check-in
+
+  utter_greet_daily_checkin:
+    - text: Hello, Linda, this is Chloe, and I'm checking in to see how you're doing today.
+
+  utter_ask_how_do_you_feel:
+    - text: First, compared to yesterday, how do you feel today?
+      buttons:
+        - title: Better
+          payload: "/better"
+        - title: Worse
+          payload: "/worse"
+        - title: No change
+          payload: "/no_change"

@@ -13,7 +13,7 @@
   - form{"name": "assessment_form"}
   - form{"name": null}
   - slot{"symptoms": "severe"}
-  - utter_call_911
+  - action_severe_symptoms_recommendations
 
 ## suspect - moderate symptoms
 * suspect
@@ -21,19 +21,14 @@
   - form{"name": "assessment_form"}
   - form{"name": null}
   - slot{"symptoms": "moderate"}
-  - utter_self_isolate
-  - utter_home_assistance
-  - utter_symptoms_worsen_emergency
-  - utter_monitor_symptoms_assistance
+  - action_suspect_moderate_symptoms_recommendations
   - utter_ask_want_checkin
 * affirm
   - utter_daily_checkin_enroll
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
-  - utter_remind_stay_home_self_isolate
-  - utter_monitor_symptoms_temperature
-  - utter_remind_possible_checkin
+  - action_suspect_moderate_symptoms_final_recommendations
   - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else
@@ -44,15 +39,10 @@
   - form{"name": "assessment_form"}
   - form{"name": null}
   - slot{"symptoms": "moderate"}
-  - utter_self_isolate
-  - utter_home_assistance
-  - utter_symptoms_worsen_emergency
-  - utter_monitor_symptoms_assistance
+  - action_suspect_moderate_symptoms_recommendations
   - utter_ask_want_checkin
 * deny
-  - utter_remind_stay_home_self_isolate
-  - utter_monitor_symptoms_temperature
-  - utter_remind_possible_checkin
+  - action_suspect_moderate_symptoms_final_recommendations
   - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else
@@ -63,13 +53,10 @@
   - form{"name": "assessment_form"}
   - form{"name": null}
   - slot{"symptoms": "mild"}
-  - utter_self_isolate
-  - utter_home_assistance
-  - utter_monitor_symptoms_changes
+  - action_suspect_mild_symptoms_exposure_recommendations
   - utter_ask_want_checkin
 * deny
-  - utter_remind_stay_home_self_isolate
-  - utter_remind_possible_checkin
+  - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else
@@ -82,17 +69,14 @@
   - slot{"symptoms": "none"}
   - utter_ask_contact
 * affirm{"contact": true}
-  - utter_self_isolate
-  - utter_home_assistance
-  - utter_monitor_symptoms_changes
+  - action_suspect_mild_symptoms_exposure_recommendations
   - utter_ask_want_checkin
 * affirm
   - utter_daily_checkin_enroll
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
-  - utter_remind_stay_home_self_isolate
-  - utter_remind_possible_checkin
+  - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else
@@ -105,13 +89,10 @@
   - slot{"symptoms": "none"}
   - utter_ask_contact
 * affirm{"contact": true}
-  - utter_self_isolate
-  - utter_home_assistance
-  - utter_monitor_symptoms_changes
+  - action_suspect_mild_symptoms_exposure_recommendations
   - utter_ask_want_checkin
 * deny
-  - utter_remind_stay_home_self_isolate
-  - utter_remind_possible_checkin
+  - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else
@@ -126,17 +107,14 @@
 * deny{"contact": false}
   - utter_ask_travel
 * affirm
-  - utter_self_isolate
-  - utter_home_assistance
-  - utter_monitor_symptoms_changes
+  - action_suspect_mild_symptoms_exposure_recommendations
   - utter_ask_want_checkin
 * affirm
   - utter_daily_checkin_enroll
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
-  - utter_remind_stay_home_self_isolate
-  - utter_remind_possible_checkin
+  - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else
@@ -151,13 +129,10 @@
 * deny{"contact": false}
   - utter_ask_travel
 * affirm
-  - utter_self_isolate
-  - utter_home_assistance
-  - utter_monitor_symptoms_changes
+  - action_suspect_mild_symptoms_exposure_recommendations
   - utter_ask_want_checkin
 * deny
-  - utter_remind_stay_home_self_isolate
-  - utter_remind_possible_checkin
+  - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else
@@ -172,9 +147,7 @@
 * deny{"contact": false}
   - utter_ask_travel
 * deny
-  - utter_probably_not_covid
-  - utter_social_distancing
-  - utter_checkin_if_developments
+  - action_suspect_no_symptoms_recommendations
   - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else

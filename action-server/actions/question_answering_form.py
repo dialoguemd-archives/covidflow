@@ -32,7 +32,7 @@ class QuestionAnsweringForm(FormAction):
     def required_slots(tracker: Tracker) -> List[Text]:
         status = tracker.get_slot(STATUS_SLOT)
         if status == QuestionAnsweringStatus.SUCCESS:
-            return [FEEDBACK_SLOT]
+            return [QUESTION_SLOT, FEEDBACK_SLOT]
 
         return [QUESTION_SLOT]
 
@@ -59,6 +59,19 @@ class QuestionAnsweringForm(FormAction):
         language = tracker.get_slot(LANGUAGE_SLOT)
         result: QuestionAnsweringResponse = protocol.get_response(value, language)
 
+        if result.status == QuestionAnsweringStatus.OUT_OF_DISTRIBUTION:
+            full_result = {
+                "question": value,
+                "status": result.status,
+            }
+            dispatcher.utter_message(template="utter_cant_answer")
+
+            return {
+                ASKED_QUESTION_SLOT: full_result,
+                QUESTION_SLOT: None,
+                STATUS_SLOT: None,
+            }
+
         if result.status == QuestionAnsweringStatus.SUCCESS and result.answers:
             dispatcher.utter_message(result.answers[0])
 
@@ -71,7 +84,8 @@ class QuestionAnsweringForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        dispatcher.utter_template("utter_post_feedback", tracker)
+        if not value:
+            dispatcher.utter_message(template="utter_post_feedback")
 
         return {FEEDBACK_SLOT: value}
 

@@ -14,6 +14,7 @@ intents:
   - help_pre_existing_conditions:
       triggers: action_explain_pre_existing_conditions
   - done
+  - get_assessment
 
 entities:
   - province
@@ -102,6 +103,9 @@ slots:
     values:
       - success
       - failure
+
+  self_assess_done:
+    type: bool
 
 session_config:
   session_expiration_time: 60 # value in minutes

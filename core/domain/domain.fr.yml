@@ -330,11 +330,11 @@ responses:
   utter_question_answering_error:
     - text: "Je suis désolée, il n’est pas possible d’obtenir de réponse à vos questions en ce moment."
 
-  utter_ask_assessment_after_error:
+  utter_ask_assess_after_error:
     - text: "Voudriez-vous que je vous aide à évaluer vos symptômes?"
       buttons:
         - title: Oui
-          payload: "/affirm"
+          payload: "/get_assessment"
         - title: Non
           payload: "/deny"
 
@@ -351,12 +351,15 @@ responses:
     - text: "Il semble que vous ayez besoin d’aide pour évaluer vos symptômes."
 
   utter_ask_assess_to_answer:
-    - text: "Voulez-vous que j’évalue/je réévalue vos symptômes?"
+    - text: "Voulez-vous que j’évalue vos symptômes?"
       buttons:
         - title: Oui
-          payload: "/affirm"
+          payload: "/get_assessment"
         - title: Non
           payload: "/deny"
+
+  utter_need_assessment_already_done:
+    - text: "Il semble que pour répondre à votre question, j’aurais besoin d’évaluer vos symptômes. Or, c’est ce que nous venons de faire."
 
   utter_please_visit_again:
     - text: "Très bien. N’hésitez pas à revenir si vous avez besoin d’aide ou si vous avez d’autres questions."
@@ -367,12 +370,12 @@ responses:
         - title: "Poser une autre question"
           payload: "/ask_question"
         - title: "Évaluation de mes symptômes"
-          payload: "/get_assessment"
+          payload: "/suspect"
         - title: "J'ai terminé"
           payload: "/done"
 
   utter_ask_another_question:
-    - text: "Avez-vous d'autres questions?"
+    - text: "Aimeriez-vous poser une autre question?"
       buttons:
         - title: Oui
           payload: "/ask_question"

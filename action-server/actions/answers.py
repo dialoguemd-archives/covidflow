@@ -17,6 +17,8 @@ HTTP_OK = 200
 class QuestionAnsweringStatus(str, Enum):
     SUCCESS = "success"
     FAILURE = "failure"
+    NEED_ASSESSMENT = "need_assessment"
+    OUT_OF_DISTRIBUTION = "out_of_distribution"
 
 
 class QuestionAnsweringResponse(BaseModel):

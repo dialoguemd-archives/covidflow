@@ -195,7 +195,7 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "severe"}
-  - utter_call_911
+  - action_severe_symptoms_recommendations
 
 ## tested positive - moderate symptoms no check-in
 * tested_positive
@@ -204,11 +204,10 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
-  - utter_symptoms_worsen_emergency_assistance
+  - action_tested_positive_mild_moderate_symptoms_recommendations
   - utter_ask_want_checkin
 * deny
-  - utter_acknowledge_remind_monitor_symptoms_temperature
-  - utter_remind_possible_checkin
+  - action_tested_positive_not_cured_final_recommendations
   - utter_ask_anything_else
 
 ## tested positive - moderate symptoms
@@ -218,15 +217,14 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
-  - utter_symptoms_worsen_emergency_assistance
+  - action_tested_positive_mild_moderate_symptoms_recommendations
   - utter_ask_want_checkin
 * affirm
   - utter_daily_checkin_enroll
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
-  - utter_acknowledge_remind_monitor_symptoms_temperature
-  - utter_remind_possible_checkin
+  - action_tested_positive_not_cured_final_recommendations
   - utter_ask_anything_else
 
 ## tested positive - mild symptoms worse no check-in
@@ -238,11 +236,10 @@
   - slot{"symptoms": "mild"}
   - utter_ask_symptoms_worsened
 * affirm
-  - utter_symptoms_worsen_emergency_assistance
+  - action_tested_positive_mild_moderate_symptoms_recommendations
   - utter_ask_want_checkin
 * deny
-  - utter_acknowledge_remind_monitor_symptoms_temperature
-  - utter_remind_possible_checkin
+  - action_tested_positive_not_cured_final_recommendations
   - utter_ask_anything_else
 * ask_question
   - utter_can_help_with_questions
@@ -268,15 +265,14 @@
   - slot{"symptoms": "mild"}
   - utter_ask_symptoms_worsened
 * affirm
-  - utter_symptoms_worsen_emergency_assistance
+  - action_tested_positive_mild_moderate_symptoms_recommendations
   - utter_ask_want_checkin
 * affirm
   - utter_daily_checkin_enroll
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
-  - utter_acknowledge_remind_monitor_symptoms_temperature
-  - utter_remind_possible_checkin
+  - action_tested_positive_not_cured_final_recommendations
   - utter_ask_anything_else
 
 ## tested positive - mild symptoms not worse no check-in
@@ -290,8 +286,7 @@
 * deny
   - utter_ask_want_checkin
 * deny
-  - utter_acknowledge_remind_monitor_symptoms_temperature
-  - utter_remind_possible_checkin
+  - action_tested_positive_not_cured_final_recommendations
   - utter_ask_anything_else
 
 ## tested positive - mild symptoms not worse
@@ -309,8 +304,7 @@
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
-  - utter_acknowledge_remind_monitor_symptoms_temperature
-  - utter_remind_possible_checkin
+  - action_tested_positive_not_cured_final_recommendations
   - utter_ask_anything_else
 
 # tested positive - no symptoms tested less than 14 days no check-in
@@ -320,13 +314,12 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
-  - utter_no_symptoms
+  - action_tested_positive_no_symptoms_recommendations
   - utter_ask_when_tested
 * less
   - utter_ask_want_checkin_no_symptoms
 * deny
-  - utter_acknowledge_remind_monitor_symptoms_temperature
-  - utter_remind_possible_checkin
+  - action_tested_positive_not_cured_final_recommendations
   - utter_ask_anything_else
 * ask_question
   - utter_can_help_with_questions
@@ -345,7 +338,7 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
-  - utter_no_symptoms
+  - action_tested_positive_no_symptoms_recommendations
   - utter_ask_when_tested
 * less
   - utter_ask_want_checkin_no_symptoms
@@ -354,8 +347,7 @@
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
-  - utter_acknowledge_remind_monitor_symptoms_temperature
-  - utter_remind_possible_checkin
+  - action_tested_positive_not_cured_final_recommendations
   - utter_ask_anything_else
 
 # tested positive - cured
@@ -365,10 +357,10 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
-  - utter_no_symptoms
+  - action_tested_positive_no_symptoms_recommendations
   - utter_ask_when_tested
 * more
-  - utter_maybe_cured
+  - action_tested_positive_maybe_cured_final_recommendations
   - utter_ask_anything_else
 * ask_question
   - utter_can_help_with_questions
@@ -395,7 +387,7 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "severe"}
-  - utter_call_911
+  - action_severe_symptoms_recommendations
 
 ## return for check-in - moderate symptoms worse
 * checkin_return

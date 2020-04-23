@@ -1,0 +1,8 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "Are you older than 65?",
+        {{ bot.confirmation_buttons() }}
+    }
+]

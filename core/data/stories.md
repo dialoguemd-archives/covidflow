@@ -1,5 +1,5 @@
 ## greet
-* greet
+* greet{"metadata":{}}
   - utter_greet
   - utter_ask_how_may_i_help
 
@@ -537,7 +537,7 @@
   - utter_goodbye
 
 ## QA - failure - no assessment after
-* greet
+* greet{"metadata":{}}
   - utter_greet
   - utter_ask_how_may_i_help
 * ask_question
@@ -553,7 +553,7 @@
   - utter_goodbye
 
 ## QA - success
-* greet
+* greet{"metadata":{}}
   - utter_greet
   - utter_ask_how_may_i_help
 * ask_question
@@ -565,7 +565,7 @@
   - utter_ask_what_next_after_answer
 
 ## QA - success - another question
-* greet
+* greet{"metadata":{}}
   - utter_greet
   - utter_ask_how_may_i_help
 * ask_question
@@ -583,7 +583,7 @@
   - utter_ask_what_next_after_answer
 
 ## QA - need_assessment - no assessment after
-* greet
+* greet{"metadata":{}}
   - utter_greet
   - utter_ask_how_may_i_help
 * ask_question
@@ -599,6 +599,6 @@
   - utter_goodbye
 
 ## daily check-in
-* daily_checkin{"metadata": "data"}
+* daily_checkin{"metadata":{}}
   - utter_greet_daily_checkin
   - utter_ask_how_do_you_feel

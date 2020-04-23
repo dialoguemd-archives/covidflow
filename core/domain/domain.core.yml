@@ -43,6 +43,9 @@ forms:
   - question_answering_form
 
 slots:
+  metadata:
+    type: unfeaturized
+
   language:
     type: unfeaturized
     initial_value: *language

@@ -35,6 +35,10 @@ actions:
   - action_suspect_moderate_symptoms_recommendations
   - action_suspect_moderate_symptoms_final_recommendations
   - action_suspect_no_symptoms_recommendations
+  - action_tested_positive_mild_moderate_symptoms_recommendations
+  - action_tested_positive_no_symptoms_recommendations
+  - action_tested_positive_maybe_cured_final_recommendations
+  - action_tested_positive_not_cured_final_recommendations
   - action_severe_symptoms_recommendations
 
 forms:

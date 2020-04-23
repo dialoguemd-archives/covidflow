@@ -597,3 +597,8 @@
 * done
   - utter_please_visit_again
   - utter_goodbye
+
+## daily check-in
+* daily_checkin{"metadata": "data"}
+  - utter_greet_daily_checkin
+  - utter_ask_how_do_you_feel

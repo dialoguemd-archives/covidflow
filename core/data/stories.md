@@ -602,3 +602,5 @@
 * daily_checkin{"metadata":{}}
   - utter_greet_daily_checkin
   - utter_ask_how_do_you_feel
+* better OR worse OR no_change
+  - utter_to_be_continued

@@ -385,10 +385,10 @@ responses:
 ## Daily check-in
 
   utter_greet_daily_checkin:
-    - text: Hello, Linda, this is Chloe, and I'm checking in to see how you're doing today.
+    - text: Hello Linda, this is Chloe, and I'm checking in to see how you're doing today.
 
   utter_ask_how_do_you_feel:
-    - text: First, compared to yesterday, how do you feel today?
+    - text: First, compared to yesterday, how do you feel?
       buttons:
         - title: Better
           payload: "/better"
@@ -396,3 +396,6 @@ responses:
           payload: "/worse"
         - title: No change
           payload: "/no_change"
+
+  utter_to_be_continued:
+    - text: To be continued...

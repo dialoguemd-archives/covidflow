@@ -2,6 +2,7 @@ responses:
   utter_greet:
     - text: "Bonjour, je m'appelle Chloé, votre assistante médicale. Je peux vous aider à évaluer vos symptômes et vous donner de l'information en lien avec la Covid-19."
 
+  ## to be translated - not really but missing one option that was not translated
   utter_ask_how_may_i_help:
     - text: Que puis-je faire pour vous aujourd'hui?
       buttons:
@@ -13,9 +14,6 @@ responses:
           payload: "/tested_positive"
         - title: "J'ai des questions à propos de la Covid-19"
           payload: "/ask_question"
-
-  utter_tested_positive:
-    - text: (tested positive flow)
 
   utter_ask_severe_symptoms:
     - text: "Premièrement, avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Avoir beaucoup de mal à se réveiller\n- Être confus\n- Perte de conscience"
@@ -52,6 +50,16 @@ responses:
 
   utter_monitor_symptoms_assistance:
     - text: "Assurez-vous de suivre l'évolution de vos symptômes. Si vous avez besoin d'assistance, vous devriez: \n- Communiquer avec votre médecin de famille, si c'est possible, ou \n- Appeler le 811"
+
+  ## next 3 to be translated
+  utter_offer_checkin:
+    - text: "If you'd like, you can enroll in our daily check-in."
+
+  utter_explain_checkin_contact:
+    - text: "If you do, I will contact you everyday to see how you’re doing, monitor your symptoms, evaluate your general health, and provide recommendations to help take care of yourself and relieve your symptoms."
+
+  utter_explain_checkin_assessment:
+    - text: "The daily check-in offers you an updated assessment of your condition everyday, so that you receive the most relevant guidance and recommendations for your condition."
 
   utter_ask_want_checkin:
     - text: "Aimeriez-vous que je communique avec vous quotidiennement pour vous aider à suivre l'évolution de vos symptômes?"
@@ -113,6 +121,10 @@ responses:
 
   utter_checkin_if_developments:
     - text: "Si vous développez des symptômes, ou si vous entrez en contact avec une personne atteinte de la Covid-19, veuillez communiquer avec moi pour obtenir une évaluation et des recommandations."
+
+  ## to be translated
+  utter_link_if_anxious:
+    - text: If you feel anxious about Covid-19 or your own wellbeing, please visit [Wellness Together Canada](https://ca.portal.gs/)
 
   # province age form
   utter_ask_province:
@@ -382,7 +394,60 @@ responses:
         - title: "Non j'ai terminé"
           payload: "/done"
 
-## Daily check-in (to be translated)
+  ## action self-isolation (to be translated)
+
+  utter_symptoms_self_isolate:
+    - text: "Since you have symptoms, you need to self-isolate for at least 14 days. It is extremely important that you follow this directive."
+
+  utter_ask_lives_alone:
+    - text: "Are you the only person in your household?"
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_dont_leave_home_unless_appointment:
+    - text: "In this case, I recommend that you don’t leave your home unless you have a doctor’s appointment, or if you need to go to the hospital."
+
+  utter_stay_separate_room:
+    - text: "In this case, you should stay in a separate room and use a different bathroom from others, if possible."
+
+  utter_distance_clean_surfaces:
+    - text: "If it’s not possible, ensure you stay at least 2 meters, or six feet, away from others in your home at all times, wash your hands often, and make sure every surface and object are cleaned after use."
+
+  utter_wear_mask_same_room:
+    - text: "You should also wear a mask every time you are in the same room as others."
+
+  utter_self_isolation_link:
+    - text: "For more information about self-isolation, and to learn what you can do to protect others, visit [canada.ca](https://www.canada.ca/en/public-health/services/publications/diseases-conditions/covid-19-how-to-isolate-at-home.html)"
+
+  ## action home-assistance (to be translated)
+
+  utter_ask_has_assistance:
+    - text: "Do you have help from someone to run errands for you (a parent, spouse, a friend or neighbour), like going to the grocery store or get medications?"
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_remind_delivery_services:
+    - text: "Don’t forget that most pharmacies and many grocery stores offer delivery services. Check with your local pharmacy or grocery store if they deliver."
+
+  utter_check_delivery_services:
+    - text: "Most pharmacies and many grocery stores offer delivery services. You can check with your local pharmacy or grocery store if they offer this service."
+
+  utter_may_call_211:
+    - text: "If that’s not possible for you, you may call 211 or visit 211.ca for assistance."
+
+  utter_explain_211:
+    - text: "The 211 service can direct you to a variety of local resources for assistance with food, health, or community services."
+
+  utter_remind_pharmacist_services:
+    - text: "Your pharmacist can also provide recommendations and advice on how to relieve your symptoms and which over-the-counter medications you can safely take."
+
+  ## Daily check-in (to be translated)
 
   utter_greet_daily_checkin:
     - text: Hello Linda, this is Chloe, and I'm checking in to see how you're doing today.

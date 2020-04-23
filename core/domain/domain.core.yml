@@ -40,11 +40,14 @@ actions:
   - action_tested_positive_maybe_cured_final_recommendations
   - action_tested_positive_not_cured_final_recommendations
   - action_severe_symptoms_recommendations
+  - action_offer_daily_checkin
 
 forms:
   - assessment_form
   - daily_ci_enroll_form
   - question_answering_form
+  - self_isolation_form
+  - home_assistance_form
 
 slots:
   metadata:
@@ -118,6 +121,12 @@ slots:
 
   self_assess_done:
     type: bool
+
+  lives_alone:
+    type: unfeaturized
+
+  has_assistance:
+    type: unfeaturized
 
 session_config:
   session_expiration_time: 60 # value in minutes

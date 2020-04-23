@@ -15,8 +15,6 @@ class ActionSuspectMildSymptomsExposureRecommendations(Action):
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
 
-        dispatcher.utter_message(template="utter_self_isolate")
-        dispatcher.utter_message(template="utter_home_assistance")
         dispatcher.utter_message(template="utter_monitor_symptoms_changes")
 
         return []

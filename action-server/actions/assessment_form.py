@@ -26,6 +26,7 @@ class AssessmentForm(FormAction):
 
         return "assessment_form"
 
+    ## Order corresponds to v8 entry and mild flows updated - may not match returning and tested_positive flows
     @staticmethod
     def required_slots(tracker: Tracker) -> List[Text]:
         if tracker.get_slot(SEVERE_SYMPTOMS_SLOT):
@@ -34,18 +35,18 @@ class AssessmentForm(FormAction):
             return [
                 ASSESSMENT_TYPE_SLOT,
                 SEVERE_SYMPTOMS_SLOT,
-                HAS_FEVER_SLOT,
                 PROVINCE_SLOT,
                 AGE_OVER_65_SLOT,
+                HAS_FEVER_SLOT,
                 MODERATE_SYMPTOMS_SLOT,
             ]
 
         return [
             ASSESSMENT_TYPE_SLOT,
             SEVERE_SYMPTOMS_SLOT,
-            HAS_FEVER_SLOT,
             PROVINCE_SLOT,
             AGE_OVER_65_SLOT,
+            HAS_FEVER_SLOT,
             MODERATE_SYMPTOMS_SLOT,
             HAS_COUGH_SLOT,
         ]
@@ -89,8 +90,6 @@ class AssessmentForm(FormAction):
     ) -> Dict[Text, Any]:
 
         if value == GET_ASSESSMENT:
-            dispatcher.utter_message(template="utter_ok")
-
             return {ASSESSMENT_TYPE_SLOT: SUSPECT}
 
         if value == CHECKIN_RETURN:

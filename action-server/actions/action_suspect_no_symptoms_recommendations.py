@@ -18,5 +18,6 @@ class ActionSuspectNoSymptomsRecommendations(Action):
         dispatcher.utter_message(template="utter_probably_not_covid")
         dispatcher.utter_message(template="utter_social_distancing")
         dispatcher.utter_message(template="utter_checkin_if_developments")
+        dispatcher.utter_message(template="utter_link_if_anxious")
 
         return []

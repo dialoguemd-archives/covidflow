@@ -9,9 +9,9 @@ services:
     environment:
       - SQL_TRACKER_STORE_URL=tracker-store
       - SQL_TRACKER_STORE_PASSWORD=password
-      - TWILIO_ACCOUNT_SID
-      - TWILIO_AUTH_TOKEN
-      - TWILIO_NUMBER
+      - TWILIO_ACCOUNT_SID=ACc7bba1b7564596612f0e844bd6afe1f0
+      - TWILIO_AUTH_TOKEN=c109097072bac851ae06ffbe412f771c
+      - TWILIO_NUMBER=+14503006090
       - LOG_LEVEL=DEBUG
     volumes:
       - ./core/models/en:/app/models
@@ -29,9 +29,9 @@ services:
     environment:
       - SQL_TRACKER_STORE_URL=tracker-store
       - SQL_TRACKER_STORE_PASSWORD=password
-      - TWILIO_ACCOUNT_SID
-      - TWILIO_AUTH_TOKEN
-      - TWILIO_NUMBER
+      - TWILIO_ACCOUNT_SID=ACc7bba1b7564596612f0e844bd6afe1f0
+      - TWILIO_AUTH_TOKEN=c109097072bac851ae06ffbe412f771c
+      - TWILIO_NUMBER=+14503006090
       - LOG_LEVEL=DEBUG
     volumes:
       - ./core/models/fr:/app/models
@@ -57,3 +57,14 @@ services:
       - POSTGRES_PASSWORD=password
     ports:
       - 5432:5432
+
+  db-migration:
+    build:
+      context: ./action-server
+      dockerfile: Dockerfile
+    command: ["./wait-for-it.sh", "tracker-store:5432", "-s", "-t", "120", "--", "alembic", "upgrade", "head"]
+    volumes:
+      - ./action-server/alembic.ini:/app/alembic.ini
+      - ./action-server/alembic:/app/alembic
+    depends_on:
+      - tracker-store

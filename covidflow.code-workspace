@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "action-server"
+		},
+		{
+			"path": "db-migration"
 		}
 	],
 	"settings": {}

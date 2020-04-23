@@ -32,10 +32,15 @@ components:
         timeoutSeconds: 15
       readiness:
         initialDelaySeconds: 25
+    # addons:
+    #   migrations: true
 scale:
   memThreshold: false
 environment:
   COUNTRY_CODE: ca
+  SQL_TRACKER_STORE_USER: chloe
+  SQL_TRACKER_STORE_DB: chloe
+  ALEMBIC_DATABASE_URI: postgresql+psycopg2://$(SQL_TRACKER_STORE_USER):$(SQL_TRACKER_STORE_PASSWORD)@$(SQL_TRACKER_STORE_URL):5432/$(SQL_TRACKER_STORE_DB)
 
 environments:
   dev-ca2:

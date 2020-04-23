@@ -8,18 +8,20 @@
   - utter_goodbye
 
 ## suspect - severe symptoms
-* suspect
+* suspect OR get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "severe"}
   - action_severe_symptoms_recommendations
 
 ## suspect - moderate symptoms
-* suspect
+* suspect OR get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
   - action_suspect_moderate_symptoms_recommendations
   - utter_ask_want_checkin
@@ -32,12 +34,20 @@
   - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "success"}
+  - utter_ask_another_question
 
 ## suspect - moderate symptoms no checkin
-* suspect
+* suspect OR get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
   - action_suspect_moderate_symptoms_recommendations
   - utter_ask_want_checkin
@@ -48,10 +58,11 @@
   - utter_ask_anything_else
 
 ## suspect - mild symptoms no checkin
-* suspect
+* suspect OR get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
   - action_suspect_mild_symptoms_exposure_recommendations
   - utter_ask_want_checkin
@@ -60,12 +71,22 @@
   - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "failure"}
+  - utter_question_answering_error
+  - utter_try_again_later
+  - utter_goodbye
 
 ## suspect - no symptoms contact
-* suspect
+* suspect OR get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
   - utter_ask_contact
 * affirm{"contact": true}
@@ -82,10 +103,11 @@
   - utter_ask_anything_else
 
 ## suspect - no symptoms contact no checkin
-* suspect
+* suspect OR get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
   - utter_ask_contact
 * affirm{"contact": true}
@@ -98,10 +120,11 @@
   - utter_ask_anything_else
 
 ## suspect - no symptoms no contact travel
-* suspect
+* suspect OR get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
   - utter_ask_contact
 * deny{"contact": false}
@@ -118,12 +141,24 @@
   - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "need_assessment"}
+  - utter_need_assessment_already_done
+  - utter_ask_another_question
+* done
+  - utter_please_visit_again
+  - utter_goodbye
 
 ## suspect - no symptoms no contact travel no checkin
-* suspect
+* suspect OR get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
   - utter_ask_contact
 * deny{"contact": false}
@@ -138,10 +173,11 @@
   - utter_ask_anything_else
 
 ## suspect - no symptoms no contact no travel
-* suspect
+* suspect OR get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
   - utter_ask_contact
 * deny{"contact": false}
@@ -157,6 +193,7 @@
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "severe"}
   - utter_call_911
 
@@ -165,6 +202,7 @@
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
   - utter_symptoms_worsen_emergency_assistance
   - utter_ask_want_checkin
@@ -178,6 +216,7 @@
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
   - utter_symptoms_worsen_emergency_assistance
   - utter_ask_want_checkin
@@ -195,6 +234,7 @@
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
   - utter_ask_symptoms_worsened
 * affirm
@@ -204,12 +244,27 @@
   - utter_acknowledge_remind_monitor_symptoms_temperature
   - utter_remind_possible_checkin
   - utter_ask_anything_else
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "need_assessment"}
+  - utter_need_assessment_already_done
+  - utter_ask_another_question
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "success"}
+  - utter_ask_another_question
 
 ## tested positive - mild symptoms worse
 * tested_positive
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
   - utter_ask_symptoms_worsened
 * affirm
@@ -229,6 +284,7 @@
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
   - utter_ask_symptoms_worsened
 * deny
@@ -243,6 +299,7 @@
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
   - utter_ask_symptoms_worsened
 * deny
@@ -261,6 +318,7 @@
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
   - utter_no_symptoms
   - utter_ask_when_tested
@@ -270,12 +328,22 @@
   - utter_acknowledge_remind_monitor_symptoms_temperature
   - utter_remind_possible_checkin
   - utter_ask_anything_else
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "failure"}
+  - utter_question_answering_error
+  - utter_try_again_later
+  - utter_goodbye
 
 # tested positive - no symptoms tested less than 14 days
 * tested_positive
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
   - utter_no_symptoms
   - utter_ask_when_tested
@@ -295,24 +363,13 @@
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
   - utter_no_symptoms
   - utter_ask_when_tested
 * more
   - utter_maybe_cured
   - utter_ask_anything_else
-
-## QA - failure - ENDS LIKE IF ASSESSMENT ALREADY DONE
-* ask_question
-  - utter_can_help_with_questions
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_goodbye
-
-## QA - success - ENDS LIKE IF ASSESSMENT ALREADY DONE
 * ask_question
   - utter_can_help_with_questions
   - question_answering_form
@@ -320,12 +377,23 @@
   - form{"name": null}
   - slot{"question_answering_status": "success"}
   - utter_ask_another_question
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "need_assessment"}
+  - utter_need_assessment_already_done
+  - utter_ask_another_question
+* done
+  - utter_please_visit_again
+  - utter_goodbye
 
 ## return for check-in - severe symptoms
 * checkin_return
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "severe"}
   - utter_call_911
 
@@ -334,6 +402,7 @@
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
   - action_set_risk_level
   - utter_ask_symptoms_worsened
@@ -347,6 +416,7 @@
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
   - action_set_risk_level
   - utter_ask_symptoms_worsened
@@ -361,12 +431,24 @@
   - utter_remind_possible_checkin
   - utter_visit_package
   - utter_ask_anything_else
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "need_assessment"}
+  - utter_need_assessment_already_done
+  - utter_ask_another_question
+* done
+  - utter_please_visit_again
+  - utter_goodbye
 
 ## return for check-in - moderate symptoms - no check-in
 * checkin_return
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
   - action_set_risk_level
   - utter_ask_symptoms_worsened
@@ -385,6 +467,7 @@
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
   - utter_ask_want_checkin_acknowledge
 * affirm
@@ -401,6 +484,7 @@
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
   - utter_ask_want_checkin_acknowledge
 * deny
@@ -409,12 +493,20 @@
   - utter_remind_possible_checkin
   - utter_visit_package
   - utter_ask_anything_else
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "success"}
+  - utter_ask_another_question
 
 ## return for check-in - no symptoms - first symptoms >= 14 days ago
 * checkin_return
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
   - utter_no_symptoms
   - utter_ask_when_first_symptoms
@@ -427,9 +519,81 @@
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
+  - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
   - utter_no_symptoms
   - utter_ask_when_first_symptoms
 * less
   - utter_self_isolate_symptom_free
   - utter_ask_anything_else
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "failure"}
+  - utter_question_answering_error
+  - utter_try_again_later
+  - utter_goodbye
+
+## QA - failure - no assessment after
+* greet
+  - utter_greet
+  - utter_ask_how_may_i_help
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "failure"}
+  - utter_question_answering_error
+  - utter_ask_assess_after_error
+* deny
+  - utter_try_again_later
+  - utter_goodbye
+
+## QA - success
+* greet
+  - utter_greet
+  - utter_ask_how_may_i_help
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "success"}
+  - utter_ask_what_next_after_answer
+
+## QA - success - another question
+* greet
+  - utter_greet
+  - utter_ask_how_may_i_help
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "success"}
+  - utter_ask_what_next_after_answer
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "success"}
+  - utter_ask_what_next_after_answer
+
+## QA - need_assessment - no assessment after
+* greet
+  - utter_greet
+  - utter_ask_how_may_i_help
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "need_assessment"}
+  - utter_need_assessment
+  - utter_ask_assess_to_answer
+* done
+  - utter_please_visit_again
+  - utter_goodbye

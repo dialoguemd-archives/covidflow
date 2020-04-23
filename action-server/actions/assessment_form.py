@@ -13,6 +13,12 @@ PROVINCE_SLOT = "province"
 AGE_OVER_65_SLOT = "age_over_65"
 HAS_COUGH_SLOT = "has_cough"
 SYMPTOMS_SLOT = "symptoms"
+SELF_ASSESS_DONE_SLOT = "self_assess_done"
+
+TESTED_POSITIVE = "tested_positive"
+SUSPECT = "suspect"
+CHECKIN_RETURN = "checkin_return"
+GET_ASSESSMENT = "get_assessment"
 
 
 class AssessmentForm(FormAction):
@@ -47,13 +53,10 @@ class AssessmentForm(FormAction):
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {
             ASSESSMENT_TYPE_SLOT: [
-                self.from_trigger_intent(
-                    intent="tested_positive", value="tested_positive"
-                ),
-                self.from_trigger_intent(intent="suspect", value="suspect"),
-                self.from_trigger_intent(
-                    intent="checkin_return", value="checkin_return"
-                ),
+                self.from_trigger_intent(intent=TESTED_POSITIVE, value=TESTED_POSITIVE),
+                self.from_trigger_intent(intent=SUSPECT, value=SUSPECT),
+                self.from_trigger_intent(intent=CHECKIN_RETURN, value=CHECKIN_RETURN),
+                self.from_trigger_intent(intent=GET_ASSESSMENT, value=GET_ASSESSMENT),
             ],
             AGE_OVER_65_SLOT: [
                 self.from_intent(intent="affirm", value=True),
@@ -85,16 +88,21 @@ class AssessmentForm(FormAction):
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
 
-        if value == "checkin_return":
+        if value == GET_ASSESSMENT:
+            dispatcher.utter_message(template="utter_ok")
+
+            return {ASSESSMENT_TYPE_SLOT: SUSPECT}
+
+        if value == CHECKIN_RETURN:
             dispatcher.utter_message(template="utter_returning_for_checkin")
-        elif value == "tested_positive":
+        elif value == TESTED_POSITIVE:
             dispatcher.utter_message(template="utter_self_isolate_separate_room")
             dispatcher.utter_message(template="utter_dont_leave_home")
             dispatcher.utter_message(template="utter_deliver_food_medications")
             dispatcher.utter_message(template="utter_home_assistance")
             dispatcher.utter_message(template="utter_assess_symptoms")
 
-        return {"assessment_type": value}
+        return {ASSESSMENT_TYPE_SLOT: value}
 
     def validate_has_fever(
         self,
@@ -103,11 +111,11 @@ class AssessmentForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        if tracker.get_slot(ASSESSMENT_TYPE_SLOT) == "checkin_return":
+        if tracker.get_slot(ASSESSMENT_TYPE_SLOT) == CHECKIN_RETURN:
             dispatcher.utter_message(template="utter_self_isolate_reminder")
             dispatcher.utter_message(template="utter_home_assistance")
 
-        return {"has_fever": value}
+        return {HAS_FEVER_SLOT: value}
 
     def submit(
         self,
@@ -124,4 +132,7 @@ class AssessmentForm(FormAction):
         elif tracker.get_slot(HAS_COUGH_SLOT):
             symptoms_value = "mild"
 
-        return [SlotSet(SYMPTOMS_SLOT, symptoms_value)]
+        return [
+            SlotSet(SYMPTOMS_SLOT, symptoms_value),
+            SlotSet(SELF_ASSESS_DONE_SLOT, True),
+        ]

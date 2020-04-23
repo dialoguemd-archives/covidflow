@@ -24,6 +24,12 @@ entities:
 actions:
   - action_set_risk_level
   - action_explain_pre_existing_conditions
+  - action_suspect_mild_symptoms_exposure_recommendations
+  - action_suspect_mild_symptoms_exposure_final_recommendations
+  - action_suspect_moderate_symptoms_recommendations
+  - action_suspect_moderate_symptoms_final_recommendations
+  - action_suspect_no_symptoms_recommendations
+  - action_severe_symptoms_recommendations
 
 forms:
   - assessment_form

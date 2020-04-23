@@ -15,6 +15,7 @@ from actions.answers import (
 FAQ_URL_ENV_KEY = "COVID_FAQ_SERVICE_URL"
 DEFAULT_FAQ_URL = "https://covidfaq.dialoguecorp.com"
 
+LANGUAGE_SLOT = "language"
 QUESTION_SLOT = "active_question"
 FEEDBACK_SLOT = "feedback"
 STATUS_SLOT = "question_answering_status"
@@ -54,7 +55,9 @@ class QuestionAnsweringForm(FormAction):
         protocol = QuestionAnsweringProtocol(
             os.environ.get(FAQ_URL_ENV_KEY, DEFAULT_FAQ_URL)
         )
-        result: QuestionAnsweringResponse = protocol.get_response(value)
+
+        language = tracker.get_slot(LANGUAGE_SLOT)
+        result: QuestionAnsweringResponse = protocol.get_response(value, language)
 
         if result.status == QuestionAnsweringStatus.OUT_OF_DISTRIBUTION:
             full_result = {

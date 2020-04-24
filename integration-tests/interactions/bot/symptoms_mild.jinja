@@ -1,0 +1,8 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "Do you have a cough or a sore throat",
+        {{ bot.confirmation_buttons() }}
+    }
+]

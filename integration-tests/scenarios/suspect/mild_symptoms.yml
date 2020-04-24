@@ -1,0 +1,13 @@
+- suspect
+- user: deny
+  bot: select_province
+- user: province/qc
+  bot: older_65
+- user: deny
+  bot: symptoms_fever
+- user: deny
+  bot: symptoms_moderate
+- user: deny
+  bot: symptoms_mild
+- user: affirm
+  bot: self_isolate

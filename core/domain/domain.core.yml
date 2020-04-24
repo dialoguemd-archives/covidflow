@@ -89,6 +89,9 @@ slots:
   contact:
     type: unfeaturized
 
+  travel:
+    type: unfeaturized
+
   risk_level:
     type: unfeaturized
 

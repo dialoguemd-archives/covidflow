@@ -159,7 +159,7 @@
   - utter_ask_contact
 * deny{"contact": false}
   - utter_ask_travel
-* affirm
+* affirm{"travel": true}
   - self_isolation_form
   - form{"name": "self_isolation_form"}
   - form{"name": null}
@@ -199,7 +199,7 @@
   - utter_ask_contact
 * deny{"contact": false}
   - utter_ask_travel
-* affirm
+* affirm{"travel": true}
   - self_isolation_form
   - form{"name": "self_isolation_form"}
   - form{"name": null}
@@ -224,7 +224,7 @@
   - utter_ask_contact
 * deny{"contact": false}
   - utter_ask_travel
-* deny
+* deny{"travel": false}
   - action_suspect_no_symptoms_recommendations
   - action_set_risk_level
   - utter_visit_package

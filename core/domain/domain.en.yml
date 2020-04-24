@@ -109,9 +109,9 @@ responses:
     - text: "Have you traveled in any country outside of Canada within the last 14 days (including passing through an airport)?"
       buttons:
         - title: Yes
-          payload: "/affirm"
+          payload: '/affirm{"travel": true}'
         - title: No
-          payload: "/deny"
+          payload: '/deny{"travel": false}'
 
   utter_probably_not_covid:
     - text: In this case, you probably don’t have Covid-19.

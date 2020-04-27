@@ -5,6 +5,8 @@ from rasa_sdk import Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
+FORM_NAME = "daily_ci_enroll_form"
+
 FIRST_NAME_SLOT = "first_name"
 PHONE_NUMBER_SLOT = "phone_number"
 PRE_EXISTING_CONDITIONS_SLOT = "pre_existing_conditions"
@@ -15,7 +17,7 @@ NOT_DIGIT_REGEX = re.compile(r"\D")
 class DailyCiEnrollForm(FormAction):
     def name(self) -> Text:
 
-        return "daily_ci_enroll_form"
+        return FORM_NAME
 
     @staticmethod
     def required_slots(tracker: Tracker) -> List[Text]:
@@ -47,10 +49,15 @@ class DailyCiEnrollForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        dispatcher.utter_message(template="utter_thanks_first_name", first_name=value)
-        dispatcher.utter_message(template="utter_text_message_checkin")
+        first_name = _get_first_name(value)
 
-        return {FIRST_NAME_SLOT: value}
+        if first_name:
+            dispatcher.utter_message(
+                template="utter_thanks_first_name", first_name=first_name
+            )
+            dispatcher.utter_message(template="utter_text_message_checkin")
+
+        return {FIRST_NAME_SLOT: first_name}
 
     def validate_phone_number(
         self,
@@ -93,6 +100,12 @@ class DailyCiEnrollForm(FormAction):
         dispatcher.utter_message(template="utter_daily_ci_enroll_follow_up")
 
         return []
+
+
+def _get_first_name(text: Text) -> Optional[Text]:
+    first_name = text.rstrip()
+
+    return first_name if first_name else None
 
 
 def _get_phone_number(text: Text) -> Optional[Text]:

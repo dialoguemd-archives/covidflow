@@ -1,0 +1,11 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "Since you have symptoms, you need to *self-isolate for at least 14 days*. It is extremely important that you follow this directive."
+    },
+    {
+        "text": "Are you the only person in your household?",
+        {{ bot.confirmation_buttons() }}
+    }
+]

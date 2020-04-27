@@ -13,7 +13,7 @@ from actions.answers import (
 )
 
 FAQ_URL_ENV_KEY = "COVID_FAQ_SERVICE_URL"
-DEFAULT_FAQ_URL = "https://covidfaq.dialoguecorp.com"
+DEFAULT_FAQ_URL = "https://covidfaq.apps.dev.ca-central-1.dialoguecorp.com"
 
 LANGUAGE_SLOT = "language"
 QUESTION_SLOT = "active_question"

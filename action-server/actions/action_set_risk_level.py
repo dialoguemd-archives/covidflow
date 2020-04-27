@@ -16,13 +16,17 @@ class ActionSetRiskLevel(Action):
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
 
+        risk_level = []
+        if (
+            tracker.get_slot("age_over_65") is True
+            or tracker.get_slot("symptoms") == "moderate"
+        ):
+            risk_level.append("elevated-medical-risk")
+        if tracker.get_slot("contact") is True or tracker.get_slot("travel") is True:
+            risk_level.append("elevated-covid-risk")
+
         return [
             SlotSet(
-                "risk_level",
-                "elevated-covid-risk"
-                if tracker.get_slot("age_over_65")
-                or tracker.get_slot("contact")
-                or tracker.get_slot("symptoms") == "moderate"
-                else "common",
+                "risk_level", "common" if risk_level == [] else ",".join(risk_level)
             )
         ]

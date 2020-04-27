@@ -109,9 +109,9 @@ responses:
     - text: "Avez-vous voyagé à l'extérieur du Canada durant les 14 derniers jours (Ceci inclut le passage dans un aéroport étranger)?"
       buttons:
         - title: Oui
-          payload: "/affirm"
+          payload: '/affirm{"travel": true}'
         - title: Non
-          payload: "/deny"
+          payload: '/deny{"travel": false}'
 
   utter_probably_not_covid:
     - text: Dans ce cas, vous n'avez probablement pas la Covid-19.

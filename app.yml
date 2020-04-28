@@ -15,7 +15,7 @@
       readiness:
         initialDelaySeconds: 15
 
-engine: ~1
+engine: 0.0.0-pr121+4a5069f
 name: covidflow
 components:
   core-en:
@@ -32,8 +32,11 @@ components:
         timeoutSeconds: 15
       readiness:
         initialDelaySeconds: 25
-    # addons:
-    #   migrations: true
+
+addons:
+  migrations:
+    image:
+      repo: covidflow-action-server
 scale:
   memThreshold: false
 environment:

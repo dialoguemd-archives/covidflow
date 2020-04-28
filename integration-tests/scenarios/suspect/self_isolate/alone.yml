@@ -2,3 +2,5 @@
 - suspect_reach_moderate
 - user: affirm
   bot: self_isolate/ask_alone
+- user: affirm
+  bot: self_isolate/stay_home

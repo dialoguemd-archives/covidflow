@@ -13,5 +13,5 @@
   bot: close_contact
 - user: deny_contact
   bot: travel
-- user: deny
+- user: deny_travel
   bot: not_infected

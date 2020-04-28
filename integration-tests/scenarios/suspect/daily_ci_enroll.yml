@@ -1,0 +1,17 @@
+- suspect
+- suspect_reach_moderate
+- suspect_reach_home_assistance
+- user: affirm
+  bot: home_assistance/has_help
+- user: affirm
+  bot: daily_ci_enroll/ask_first_name
+- user: first_name
+  bot: daily_ci_enroll/ask_phone_number
+- user: phone_number
+  bot: daily_ci_enroll/ask_preconditions
+- user: deny
+#  bot: daily_ci_enroll/ask_has_dialogue
+#- user: affirm
+  bot: daily_ci_enroll/registration_complete
+- user: done
+  bot: thank_you_take_care

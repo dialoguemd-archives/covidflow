@@ -1,15 +1,8 @@
 - suspect
-- user: deny
-  bot: select_province
-- user: province/qc
-  bot: older_65
-- user: deny
-  bot: symptoms_fever
-- user: deny
-  bot: symptoms_moderate
+- suspect_reach_moderate
 - user: deny
   bot: symptoms_mild
 - user: deny
   bot: close_contact
 - user: affirm_contact
-  bot: self_isolate
+  bot: self_isolate/ask_alone

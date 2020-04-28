@@ -1,0 +1,14 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "In this case, I recommend that you don’t leave your home unless you have a doctor’s appointment, or if you need to go to the hospital."
+    },
+    {
+        "text": "For more information about self-isolation, and to learn what you can do to protect others, visit [canada.ca](https://www.canada.ca/en/public-health/services/publications/diseases-conditions/covid-19-how-to-isolate-at-home.html)"
+    },
+    {
+        "text": "Do you have help from someone to run errands for you (a parent, spouse, a friend or neighbour), like going to the grocery store or get medications?",
+        {{ bot.confirmation_buttons() }}
+    }
+]

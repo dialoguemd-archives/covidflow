@@ -55,12 +55,7 @@ def create_reminder_table():
             nullable=False,
         ),
         Column("last_reminded_at", DateTime(timezone=True),),
-        Column(
-            "timezone",
-            String(),
-            CheckConstraint("is_timezone(timezone)"),
-            nullable=False,
-        ),
+        Column("timezone", String(), CheckConstraint("is_timezone(timezone)"),),
         Column("is_canceled", Boolean(), nullable=False, server_default="false"),
         Column("attributes", JSONB, nullable=False),
     )

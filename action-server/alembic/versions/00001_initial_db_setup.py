@@ -1,6 +1,6 @@
 """Initial db setup.
 
-Revision ID: 2c2215d3e953
+Revision ID: 00001
 Revises:
 Create Date: 2020-04-21 13:32:44.422928
 
@@ -15,7 +15,7 @@ from alembic import op
 
 log = structlog.get_logger(__name__)
 
-revision = "2c2215d3e953"
+revision = "00001"
 down_revision = None
 branch_labels = None
 depends_on = None

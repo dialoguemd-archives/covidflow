@@ -49,23 +49,6 @@ responses:
   utter_monitor_symptoms_assistance:
     - text: "Please monitor your symptoms. If you need assistance, you should:\n- Contact your family doctor if possible, or\n- Call 811 for assistance"
 
-  utter_offer_checkin:
-    - text: "If you'd like, you can enroll in our daily check-in."
-
-  utter_explain_checkin_contact:
-    - text: "If you do, I will contact you everyday to see how you’re doing, monitor your symptoms, evaluate your general health, and provide recommendations to help take care of yourself and relieve your symptoms."
-
-  utter_explain_checkin_assessment:
-    - text: "The daily check-in offers you an updated assessment of your condition everyday, so that you receive the most relevant guidance and recommendations for your condition."
-
-  utter_ask_want_checkin:
-    - text: "Would you like me to check-in with you daily to help monitor your symptoms?"
-      buttons:
-        - title: Yes
-          payload: "/affirm"
-        - title: No
-          payload: "/deny"
-
   utter_remind_stay_home_self_isolate:
     - text: "Now, please make sure that you stay home and self-isolate for at least 14 days."
 
@@ -197,33 +180,80 @@ responses:
   utter_more_information:
     - text: "For more information, resources and recommendations about Covid-19, please visit [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common)"
 
-  utter_ask_want_checkin_no_symptoms:
-    - text: "Would you like me to check-in with you daily to monitor any new symptoms?"
+  # Daily CI enroll flow
+
+  utter_daily_ci_enroll__offer_checkin:
+    - text: "If you'd like, you can enroll in our daily check-in."
+
+  utter_daily_ci_enroll__explain_checkin_1:
+    - text: "If you do, I will contact you everyday to see how you’re doing, monitor your symptoms, evaluate your general health, and provide recommendations to help take care of yourself and relieve your symptoms."
+
+  utter_daily_ci_enroll__explain_checkin_2:
+    - text: "The daily check-in offers you an updated assessment of your condition everyday, so that you receive the most relevant guidance and recommendations for your condition."
+
+  utter_ask_daily_ci_enroll__do_enroll:
+    - text: "Would you like me to check-in with you daily to help monitor your symptoms?"
       buttons:
         - title: Yes
           payload: "/affirm"
         - title: No
           payload: "/deny"
 
-  # Daily CI enroll flow
-
-  utter_daily_checkin_enroll:
-    - text: Great! So that I can follow up with you daily and provide personalized recommendations, I need to ask you a few questions.
+  utter_daily_ci_enroll__start_enroll:
+    - text: Great! So that I can follow up with you daily and provide personalized recommendations, I need to ask you a few questions
 
   utter_ask_first_name:
     - text: First, what is your first name?
 
-  utter_thanks_first_name:
-    - text: "Thanks, {first_name}."
+  utter_daily_ci_enroll__thanks_first_name:
+    - text: "Thanks, {first_name}"
 
-  utter_text_message_checkin:
-    - text: "I will contact you by text message every day to check in on you."
+  utter_daily_ci_enroll__text_message_checkin:
+    - text: "I will contact you by text message every day to check in on you"
 
   utter_ask_phone_number:
     - text: So that I can reach you, what is your phone number?
 
-  utter_acknowledge:
-    - text: "Got it."
+  utter_daily_ci_enroll__no_phone_no_checkin:
+    - text: Unfortunately, if you don’t have a mobile phone, I won’t be able to enroll you for the daily check-in
+
+  utter_daily_ci_enroll__continue:
+    - text: Let’s continue
+
+  utter_ask_daily_ci_enroll__wants_cancel:
+    - text: Are you sure you don’t want to enroll in daily check-in?
+      buttons:
+        - title: Yes stop enrollment
+          payload: "/affirm"
+        - title: No I want to enroll
+          payload: "/deny"
+
+  utter_daily_ci_enroll__ok_continue:
+    - text: "OK, let’s continue!"
+
+  utter_daily_ci_enroll__no_problem_continue:
+    - text: No problem, let’s continue
+
+  utter_daily_ci_enroll__invalid_phone_number:
+    - text: Sorry, this isn’t a valid phone number, please try again
+
+  utter_ask_phone_number_error:
+    - text: Please enter your 10-digit mobile phone number
+
+  utter_daily_ci_enroll__invalid_phone_no_checkin:
+    - text: "I’m sorry, I won’t be able to complete your enrollment. Let’s continue"
+
+  utter_daily_ci_enroll__acknowledge:
+    - text: "Got it"
+
+  utter_ask_daily_ci_enroll__validation_code:
+    - text: I’m sending you a validation code on your mobile phone. When you receive it, please enter it
+
+  utter_daily_ci_enroll__thanks:
+    - text: Thanks
+
+  utter_ask_daily_ci_enroll__validation_code_error:
+    - text: I’m sorry, this is not a valid code. Please try again and enter the 4-digit code that you received by text
 
   utter_ask_pre_existing_conditions:
     - text: Do you have any pre-existing conditions that may affect your immunity?
@@ -248,30 +278,30 @@ responses:
         - title: I don't know
           payload: "/dont_know"
 
-  utter_note_pre_existing_conditions:
+  utter_daily_ci_enroll__note_pre_existing_conditions:
     - text: If you're not sure, I will put a note in your profile that you might be at risk.
 
-  utter_daily_ci_answers_recorded:
+  utter_ask_has_dialogue:
+    - text: Finally, do you have health services with Dialogue?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_daily_ci_enroll__enroll_done_1:
     - text: Thanks. I have recorded all your answers in your personal profile.
 
-  utter_daily_ci_enroll_done:
+  utter_daily_ci_enroll__enroll_done_2:
     - text: Your registration to the daily check-in is now completed.
 
-  utter_daily_ci_enroll_follow_up:
+  utter_daily_ci_enroll__enroll_done_3:
     - text: I will check-in with you everyday around this time to see how you're doing, monitor your symptoms and direct you to the right resources.
 
   ## Return for check-in
 
   utter_returning_for_checkin:
     - text: Thanks for checking in. Let's see how you're doing today.
-
-  utter_ask_want_checkin_acknowledge:
-    - text: OK, would you like *me* to check-in with you on a daily basis?
-      buttons:
-        - title: Yes
-          payload: "/affirm"
-        - title: No
-          payload: "/deny"
 
   utter_contact_healthcare_professional:
     - text: In this case, you should speak to a healthcare professional to discuss your situation.

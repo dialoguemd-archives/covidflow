@@ -6,6 +6,16 @@ from rasa_sdk import Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
+PHONE_TRY_COUNTER_SLOT = "daily_ci_enroll__phone_number_error_counter"
+CODE_TRY_COUNTER_SLOT = "daily_ci_enroll__validation_code_error_counter"
+WANTS_CANCEL_SLOT = "daily_ci_enroll__wants_cancel"
+
+INITIAL_SLOT_VALUES = {
+    PHONE_TRY_COUNTER_SLOT: 0,
+    CODE_TRY_COUNTER_SLOT: 0,
+    WANTS_CANCEL_SLOT: False,
+}
+
 
 class FormTestCase(TestCase):
     def setUp(self):
@@ -25,9 +35,12 @@ class FormTestCase(TestCase):
         active_form: bool = True,
         last_action: str = "action_listen",
     ) -> Tracker:
+        all_slots = {}
+        all_slots.update(INITIAL_SLOT_VALUES)
+        all_slots.update(slots or {})
         return Tracker(
             sender_id,
-            slots or {},
+            all_slots,
             {
                 "intent": {"name": intent or "none"},
                 "entities": entities or [],

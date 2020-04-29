@@ -35,6 +35,27 @@ workflows:
           component: action-server
           context: org-global-v2
 
+      - mypy:
+          name: (core) mypy
+          working_directory: core
+          context: org-global-v2
+      - python/pylama:
+          name: (core) pylama
+          working_directory: core
+          context: org-global-v2
+      - python/isort:
+          name: (core) isort
+          working_directory: core
+          context: org-global-v2
+      - python/black:
+          name: (core) black
+          working_directory: core
+          context: org-global-v2
+      - validate_domain:
+          name: (core) validate_domain
+          working_directory: core
+          context: org-global-v2
+
       - prepare_core_build:
           name: (core-en) Prepare build
           context: org-global-v2
@@ -73,6 +94,11 @@ workflows:
             - (AS) black
             - (AS) test
             - (AS) build
+            - (core) mypy
+            - (core) pylama
+            - (core) isort
+            - (core) black
+            - (core) validate_domain
             - (core-en) build
             - (core-fr) build
 
@@ -89,6 +115,11 @@ workflows:
             - (AS) black
             - (AS) test
             - (AS) build
+            - (core) mypy
+            - (core) pylama
+            - (core) isort
+            - (core) black
+            - (core) validate_domain
             - (core-en) build
             - (core-fr) build
           context: org-global-v2
@@ -107,6 +138,11 @@ workflows:
             - (AS) black
             - (AS) test
             - (AS) build
+            - (core) mypy
+            - (core) pylama
+            - (core) isort
+            - (core) black
+            - (core) validate_domain
             - (core-en) build
             - (core-fr) build
           context: org-global-v2
@@ -147,6 +183,17 @@ jobs:
       - run:
           name: Run mypy
           command: poetry run mypy .
+  validate_domain:
+    description: Validate Rasa domain file
+    parameters:
+      <<: *param__working_directory
+    working_directory: ~/project/<<parameters.working_directory>>
+    executor: python/python
+    steps:
+      - setup-project
+      - run:
+          name: Run validate_domain
+          command: poetry run python scripts/validate_domain.py
   prepare_core_build:
     description: Prepare core help-app component (rasa-core models and docker assets)
     parameters:

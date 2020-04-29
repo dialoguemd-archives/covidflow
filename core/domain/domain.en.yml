@@ -451,3 +451,87 @@ responses:
 
   utter_to_be_continued:
     - text: To be continued...
+
+  utter_daily_ci__acknowledge_fever:
+    - text: OK, I'm taking note that you have a fever today
+
+  utter_daily_ci__take_acetaminophen:
+    - text: You can take acetaminophen (Tylenol) to relieve fever or aches and pain
+
+  utter_daily_ci__avoid_ibuprofen:
+    - text: But you should *avoid taking ibuprofen* (such as Advil or Motrin), as it might have unwanted effects
+
+  utter_daily_ci__cough_syrup_may_help:
+    - text: Cough syrup may help, but please make sure that it doesn't interact with other medications you take or any underlying medical condition
+
+  utter_daily_ci__cough_syrup_pharmacist:
+    - text: If you're not sure, you should speak to your pharmacist
+
+  utter_daily_ci__acknowledge_no_cough:
+    - text: That's good news
+
+  ## Daily check-in - feel worse
+
+  utter_ask_daily_ci__feel_worse__severe_symptoms:
+    - text: "Are you experiencing any of the following symptoms:\n- Severe difficulty breathing\n- Severe chest pain\n- Having a hard time waking up\n- Feeling confused\n- Losing consciousness"
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_daily_ci__feel_worse__acknowledge_no_severe_symptoms:
+    - text: OK, now, let's check your symptoms
+
+  utter_ask_daily_ci__feel_worse__has_fever:
+    - text: Is your temperature higher than 38°C or 100.4°F? (You can take your temperature now if you're not sure)
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_daily_ci__feel_worse__acknowledge_no_fever:
+    - text: OK, I'm taking note that you don't have a fever today
+
+  utter_ask_daily_ci__feel_worse__has_diff_breathing:
+    - text: And are you experiencing shortness of breath or difficulty breathing?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_daily_ci__feel_worse__acknowledge_no_diff_breathing:
+    - text: That's good
+
+  utter_ask_daily_ci__feel_worse__has_cough:
+    - text: Do you have a cough?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_daily_ci__feel_worse__no_cough_recommendation:
+    - text: But since you're still feeling sick, you should keep staying isolated and continue to rest
+
+  utter_ask_daily_ci__feel_worse__has_diff_breathing_worsened:
+    - text: Has this worsened since yesterday?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_1:
+    - text: You may want to discuss your situation with your doctor, if that's possible, or call 811
+
+  utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_2:
+    - text: If your symptoms worsen, you will need to get to the nearest emergency department or call 911
+
+  utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_1:
+    - text: OK, if this gets worse, you should call your doctor, if that's possible, or call 811 to discuss your situation with a nurse
+
+  utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_2:
+    - text: In any case, make sure you keep staying isolated and continue to rest

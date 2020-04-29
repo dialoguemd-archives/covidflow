@@ -45,6 +45,7 @@ forms:
   - tested_positive_form
   - checkin_return_form
   - daily_ci_enroll_form
+  - daily_ci_feel_worse_form
   - question_answering_form
   - home_assistance_form
 
@@ -80,6 +81,9 @@ slots:
       - none
 
   has_cough:
+    type: unfeaturized
+
+  has_diff_breathing:
     type: unfeaturized
 
   contact:
@@ -128,6 +132,9 @@ slots:
     type: unfeaturized
 
   has_assistance:
+    type: unfeaturized
+
+  daily_ci__feel_worse__has_diff_breathing_worsened:
     type: unfeaturized
 
 session_config:

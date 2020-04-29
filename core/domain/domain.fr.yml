@@ -437,17 +437,101 @@ responses:
   ## Daily check-in
 
   utter_greet_daily_checkin:
-    - text: Hello Linda, this is Chloe, and I'm checking in to see how you're doing today.
+    - text: Bonjour Linda, ici Chloé, pour votre suivi quotidien. Voyons voir comment ça va aujourd'hui
 
   utter_ask_how_do_you_feel:
-    - text: First, compared to yesterday, how do you feel?
+    - text: D'abord, comment vous sentez-vous par rapport à hier?
       buttons:
-        - title: Better
+        - title: Mieux
           payload: "/better"
-        - title: Worse
+        - title: Plus mal
           payload: "/worse"
-        - title: No change
+        - title: Du pareil au même
           payload: "/no_change"
 
   utter_to_be_continued:
-    - text: To be continued...
+    - text: À continuer...
+
+  utter_daily_ci__acknowledge_fever:
+    - text: Entendu, je note que vous faites de la fièvre aujourd'hui
+
+  utter_daily_ci__take_acetaminophen:
+    - text: Vous pouvez prendre de l'acétaminophène (ex. Tylenol) pour soulager la fièvre et les douleurs
+
+  utter_daily_ci__avoid_ibuprofen:
+    - text: Vous devriez cependant *éviter l'ibuprofène* (ex. Advil ou Motrin), car cela pourrait causer des effets secondaires importants
+
+  utter_daily_ci__cough_syrup_may_help:
+    - text: Vous pouvez prendre du sirop pour la toux pour vous soulager, mais assurez-vous qu'il n'y ait pas de contre-indications en raison de votre état de santé, ou que ça n'interagisse pas avec vos médicaments
+
+  utter_daily_ci__cough_syrup_pharmacist:
+    - text: Dans le doute, n'hésitez pas à en parler avec votre pharmacien(ne)
+
+  utter_daily_ci__acknowledge_no_cough:
+    - text: C'est une bonne nouvelle
+
+  ## Daily check-in - feel worse
+
+  utter_ask_daily_ci__feel_worse__severe_symptoms:
+    - text: "Avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Avoir beaucoup de mal à se réveiller\n- Être confus\n- Perte de conscience"
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_daily_ci__feel_worse__acknowledge_no_severe_symptoms:
+    - text: D'accord, voyons voir vos symptômes
+
+  utter_ask_daily_ci__feel_worse__has_fever:
+    - text: Est-ce que vous faites de la fièvre? (plus de 38°C or 100.4°F) (Prenez votre température si vous ne savez pas)
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_daily_ci__feel_worse__acknowledge_no_fever:
+    - text: D'accord, je note que vous ne faites pas de fièvre aujourd'hui
+
+  utter_ask_daily_ci__feel_worse__has_diff_breathing:
+    - text: Avez-vous de l'essoufflement ou de la difficulté à respirer?
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_daily_ci__feel_worse__acknowledge_no_diff_breathing:
+    - text: Tant mieux
+
+  utter_ask_daily_ci__feel_worse__has_cough:
+    - text: Est-ce que vous toussez?
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_daily_ci__feel_worse__no_cough_recommendation:
+    - text: Mais puisque vous vous sentez encore malade, je vous conseille de continuer à vous isoler et à vous reposer
+
+  utter_ask_daily_ci__feel_worse__has_diff_breathing_worsened:
+    - text: Est-ce que ça a empiré depuis hier?
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_1:
+    - text: Vous devriez peut-être en discuter avec votre médecin, si c'est possible, ou appeler au 811
+
+  utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_2:
+    - text: Si vos symptômes empirent, vous pourriez devoir vous rendre à l'urgence ou appeler le 911
+
+  utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_1:
+    - text: Désolée de l'apprendre. Si cela empire, je vous conseille de contacter votre médecin, si possible, ou d'appeler le 811 pour discuter de vos symptômes
+
+  utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_2:
+    - text: Dans tous les cas, assurez-vous de continuer à vous isoler et à vous reposer

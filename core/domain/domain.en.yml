@@ -579,3 +579,71 @@ responses:
 
   utter_daily_ci__feel_no_change__mild_last_symptoms_recommendation:
     - text: Since you still feel sick, you should stay isolated, rest and continue monitoring your symptoms
+
+  ## Daily check-in - feel better
+
+  utter_daily_ci__feel_better__acknowledge:
+    - text: I'm glad to know you're feeling better.
+
+  utter_ask_daily_ci__feel_better__has_fever:
+    - text: Now, is your temperature higher than 38°C or 100.4°F? (You can take your temperature now if you're not sure)
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_daily_ci__feel_better__acknowledge_no_fever:
+    - text: That's good, I'm taking note that you don't have a fever today
+
+  utter_ask_daily_ci__feel_better__has_cough:
+    - text: Do you have a cough?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_ask_daily_ci__feel_better__has_diff_breathing:
+    - text: Do you still have other symptoms, like shortness of breath or some difficulty breathing?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_ask_daily_ci__feel_better__has_other_mild_symptoms_with_acknowledge:
+    - text: Good, and do you still have symptoms like fatigue or sore throat?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_ask_daily_ci__feel_better__has_other_mild_symptoms:
+    - text: Do you still have other symptoms, like fatigue or sore throat?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_ask_daily_ci__feel_better__is_symptom_free:
+    - text: Great, would you say that you are symptom-free, or do you still feel a little sick?
+      buttons:
+        - title: Symptom free
+          payload: "/symptom_free"
+        - title: Still sick
+          payload: "/still_sick"
+
+  utter_daily_ci__feel_better__breathing_difficulty_recommendation_1:
+    - text: Sorry about that. If this gets worse, I recommend that you contact your doctor or call 811 to discuss your symptoms
+
+  utter_daily_ci__feel_better__breathing_difficulty_recommendation_2:
+    - text: Since you are still sick, you should stay isolated, rest, and continue monitoring your symptoms
+
+  utter_daily_ci__feel_better__has_other_mild_symptoms_recommendation:
+    - text: OK, since you still have some symptoms, I recommend that you stay isolated and that you continue to rest
+
+  utter_daily_ci__feel_better__has_other_mild_symptoms_still_sick_recommendation:
+    - text: OK, since you still feel a little sick, I recommend that you stay isolated and that you continue to rest

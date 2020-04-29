@@ -21,6 +21,9 @@ intents:
   - no_change
   - daily_checkin:
       use_entities: []
+  - still_sick
+  - symptom_free
+
 entities:
   - province
   - metadata
@@ -46,6 +49,7 @@ forms:
   - checkin_return_form
   - daily_ci_enroll_form
   - daily_ci_feel_no_change_form
+  - daily_ci_feel_better_form
   - daily_ci_feel_worse_form
   - question_answering_form
   - home_assistance_form
@@ -139,6 +143,12 @@ slots:
     type: unfeaturized
 
   daily_ci__feel_worse__has_diff_breathing_worsened:
+    type: unfeaturized
+
+  daily_ci__feel_better__has_other_mild_symptoms:
+    type: unfeaturized
+
+  daily_ci__feel_better__is_symptom_free:
     type: unfeaturized
 
 session_config:

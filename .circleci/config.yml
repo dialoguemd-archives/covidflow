@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  app: dialogue/helm-app@1.1.1
+  app: dialogue/helm-app@dev:94e3e5a
   base: dialogue/base@1.8.0
   python: dialogue/python@2.7.0
   release: dialogue/release@2.1.4

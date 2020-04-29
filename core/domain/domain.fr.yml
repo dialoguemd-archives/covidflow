@@ -2,13 +2,12 @@ responses:
   utter_greet:
     - text: "Bonjour, je m'appelle Chloé, votre assistante médicale. Je peux vous aider à évaluer vos symptômes et vous donner de l'information en lien avec la Covid-19."
 
-  ## to be translated - not really but missing one option that was not translated
   utter_ask_how_may_i_help:
     - text: Que puis-je faire pour vous aujourd'hui?
       buttons:
         - title: "Je veux faire le suivi de mes symptômes"
           payload: "/checkin_return"
-        - title: "I want to take the Covid-19 self-assessment (to translate)"
+        - title: "Je veux faire une évaluation de mes symptômes"
           payload: "/get_assessment"
         - title: "Je crois avoir la Covid-19"
           payload: "/suspect"
@@ -44,27 +43,23 @@ responses:
         - title: Non
           payload: "/deny"
 
-  utter_self_isolate:
-    - text: "Dans ce cas, *vous devez vous isoler pour au moins 14 jours*. Il est extrêmement important de suivre cette consigne."
-
   utter_symptoms_worsen_emergency:
     - text: "Si vos symptômes empirent, ou si vous avez de la difficulté à respirer, vous devrez vous rendre à l'urgence la plus près ou appeler le 911"
 
   utter_monitor_symptoms_assistance:
     - text: "Assurez-vous de suivre l'évolution de vos symptômes. Si vous avez besoin d'assistance, vous devriez: \n- Communiquer avec votre médecin de famille, si c'est possible, ou \n- Appeler le 811"
 
-  ## next 3 to be translated
   utter_offer_checkin:
-    - text: "If you'd like, you can enroll in our daily check-in."
+    - text: "Si ça vous intéresse, vous pouvez vous inscrire à notre suivi quotidien"
 
   utter_explain_checkin_contact:
-    - text: "If you do, I will contact you everyday to see how you’re doing, monitor your symptoms, evaluate your general health, and provide recommendations to help take care of yourself and relieve your symptoms."
+    - text: "Ainsi, je vais vous contacter à chaque jour pour voir comment vous allez, évaluer vos symptômes et votre état de santé général, et vous donner des conseils et des recommandations pour vous aider à prendre soin de vous et à soulager vos symptômes"
 
   utter_explain_checkin_assessment:
-    - text: "The daily check-in offers you an updated assessment of your condition everyday, so that you receive the most relevant guidance and recommendations for your condition."
+    - text: "Notre suivi quotidien vous offre une évaluation de votre condition au jour le jour, de telle sorte que vous recevrez les conseils et les recommandations les plus pertinents en fonction de votre condition réelle"
 
   utter_ask_want_checkin:
-    - text: "Aimeriez-vous que je communique avec vous quotidiennement pour vous aider à suivre l'évolution de vos symptômes?"
+    - text: "Aimeriez-vous que je fasse un suivi quotidien pour vous aider à évaluer vos symptômes?"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -103,30 +98,29 @@ responses:
     - text: "Avez-vous récemment été en contact étroit avec une personne atteinte de la Covid-19?\nUne personne ayant eu des contacts étroits est définie comme:\n- Une personne qui a fourni des soins à la personne malade sans équipement de protection adéquat\n- Une personne qui a vécu ou travaillé avec la personne malade pendant qu’elle était contagieuse\n- Une personne qui a eu un contact direct avec des fluides corporels infectieux de la personne malade (qui était, par exemple, à proximité lorsque la personne malade a toussé ou éternué)"
       buttons:
         - title: Oui
-          payload: '/affirm{"contact": true}'
+          payload: "/affirm"
         - title: Non
-          payload: '/deny{"contact": false}'
+          payload: "/deny"
 
   utter_ask_travel:
     - text: "Avez-vous voyagé à l'extérieur du Canada durant les 14 derniers jours (Ceci inclut le passage dans un aéroport étranger)?"
       buttons:
         - title: Oui
-          payload: '/affirm{"travel": true}'
+          payload: "/affirm"
         - title: Non
-          payload: '/deny{"travel": false}'
+          payload: "/deny"
 
   utter_probably_not_covid:
     - text: Dans ce cas, vous n'avez probablement pas la Covid-19.
 
   utter_social_distancing:
-    - text: "Assurez-vous de suivre les consignes de distanciation sociale et ne sortez pas de chez vous à moins que ce soit vraiment nécessaire."
+    - text: "Assurez-vous de suivre les consignes de distanciation sociale et ne sortez pas de chez vous Ã  moins que ce soit vraiment nÃ©cessaire."
 
   utter_checkin_if_developments:
     - text: "Si vous développez des symptômes, ou si vous entrez en contact avec une personne atteinte de la Covid-19, veuillez communiquer avec moi pour obtenir une évaluation et des recommandations."
 
-  ## to be translated
   utter_link_if_anxious:
-    - text: If you feel anxious about Covid-19 or your own wellbeing, please visit [Wellness Together Canada](https://ca.portal.gs/)
+    - text: "Si vous êtes anxieux au sujet de la Covid-19 ou de votre propre bien-être, consultez Espace mieux-être Canada [https://ca.portal.gs/?lang=fr-ca]"
 
   # province age form
   utter_ask_province:
@@ -169,15 +163,6 @@ responses:
 
   ## Tested positive
 
-  utter_self_isolate_separate_room:
-    - text: "Dans ce cas, *vous devez vous isoler pendant au moins 14 jours*. Cela signifie non seulement de rester à la maison, mais si possible dans une pièce séparée des autres personnes de votre domicile afin d’éviter de transmettre le virus."
-
-  utter_dont_leave_home:
-    - text: "Vous ne devez pas quitter votre domicile, à moins que vos symptômes ne s’aggravent et que vous deviez vous rendre à l’urgence."
-
-  utter_deliver_food_medications:
-    - text: "Si vous n’avez personne pour faire vos courses ou acheter vos médicaments, alors vous devrez les faire livrer."
-
   utter_assess_symptoms:
     - text: "J’aimerais maintenant évaluer vos symptômes."
 
@@ -206,8 +191,11 @@ responses:
         - title: "Il y a 14 jours ou moins"
           payload: "/less"
 
-  utter_maybe_cured:
-    - text: "Il se peut que vous soyez guéri(e). Nous vous invitons à rester à la maison et suivre les consignes de distanciation sociale. Si vous sortez, je vous recommande fortement de porter un masque."
+  utter_maybe_recovered:
+    - text: "Il se peut que vous soyez guéri(e). Je vous invite à rester à la maison et à suivre les consignes de distanciation sociale. Si vous sortez, je vous recommande fortement de porter un masque"
+
+  utter_more_information:
+    - text: "Pour des informations, ressources et recommandations sur la Covid-19, consultez [dialogue](https://covid19.dialogue.co/#/)"
 
   utter_ask_want_checkin_no_symptoms:
     - text: "Aimeriez-vous que je communique avec vous à chaque jour pour surveiller l’apparition de nouveaux symptômes?"
@@ -285,12 +273,6 @@ responses:
         - title: Non
           payload: "/deny"
 
-  utter_self_isolate_reminder:
-    - text: C'est noté. N'oubliez pas de *rester à la maison et de vous isoler*. Il est extrêmement important de suivre cette consigne.
-
-  utter_home_assistance:
-    - text: Pour obtenir de l'aide à domicile, vous pouvez *appeler au 211* ou consulter le site web 211 de votre province.
-
   utter_contact_healthcare_professional:
     - text: Dans ce cas, vous devriez discuter de votre situation avec un professionnel de la santé.
 
@@ -352,9 +334,6 @@ responses:
         - title: Non
           payload: "/deny"
 
-  utter_ok:
-    - text: "D'accord."
-
   utter_try_again_later:
     - text: "Veuillez essayer de poser vos questions un peu plus tard."
 
@@ -396,60 +375,66 @@ responses:
         - title: "Non j'ai terminé"
           payload: "/done"
 
-  ## action self-isolation (to be translated)
+  ## action self-isolation
 
   utter_symptoms_self_isolate:
-    - text: "Since you have symptoms, you need to self-isolate for at least 14 days. It is extremely important that you follow this directive."
+    - text: "Étant donné que vous avez des symptômes, vous devez vous isoler pendant au moins 14 jours. Il est essentiel que vous suiviez cette consigne"
+
+  utter_tested_positive_self_isolate:
+    - text: "Étant donné que vous avez obtenu un résultat positif à la Covid-19, vous devez vous isoler pendant au moins 14 jours. Il est essentiel que vous suiviez cette consigne"
+
+  utter_contact_risk_self_isolate:
+    - text: "Étant donné que vous êtes à risque d’avoir contacté la Covid-19, vous devez vous isoler pendant au moins 14 jours. Il est essentiel que vous suiviez cette consigne"
 
   utter_ask_lives_alone:
-    - text: "Are you the only person in your household?"
+    - text: "Est-ce que vous habitez seul?"
       buttons:
-        - title: Yes
+        - title: Oui
           payload: "/affirm"
-        - title: No
+        - title: Non
           payload: "/deny"
 
-  utter_dont_leave_home_unless_appointment:
-    - text: "In this case, I recommend that you don’t leave your home unless you have a doctor’s appointment, or if you need to go to the hospital."
+  utter_dont_leave_home:
+    - text: "Dans ce cas, je vous conseille de ne pas quitter votre domicile, à part si vous avez un rendez-vous chez le médecin, ou si vous devez vous rendre à l’hôpital"
 
   utter_stay_separate_room:
-    - text: "In this case, you should stay in a separate room and use a different bathroom from others, if possible."
+    - text: "Dans ce cas, vous devriez, autant que possible, rester dans une pièce à part et utiliser une salle de bain séparée"
 
   utter_distance_clean_surfaces:
-    - text: "If it’s not possible, ensure you stay at least 2 meters, or six feet, away from others in your home at all times, wash your hands often, and make sure every surface and object are cleaned after use."
+    - text: "Si ce n’est pas possible, assurez-vous de toujours garder une distance d’au moins 2 mètres, ou six pieds, entre vous et les autres en tout temps. Lavez-vous les mains souvent, et nettoyez bien les surfaces et les objets après les avoir touchés"
 
   utter_wear_mask_same_room:
-    - text: "You should also wear a mask every time you are in the same room as others."
+    - text: "Vous devriez aussi porter un masque à chaque fois qu’il y a quelqu’un d’autre dans la même pièce que vous"
 
   utter_self_isolation_link:
-    - text: "For more information about self-isolation, and to learn what you can do to protect others, visit [canada.ca](https://www.canada.ca/en/public-health/services/publications/diseases-conditions/covid-19-how-to-isolate-at-home.html)"
+    - text: "Pour plus d’information, et pour en savoir davantage sur les façons de protéger les autres, rendez-vous au [canada.ca](https://www.canada.ca/fr/sante-publique/services/publications/maladies-et-affections/covid-19-comment-isoler-chez-soi.html)"
 
-  ## action home-assistance (to be translated)
+  ## action home-assistance
 
   utter_ask_has_assistance:
-    - text: "Do you have help from someone to run errands for you (a parent, spouse, a friend or neighbour), like going to the grocery store or get medications?"
+    - text: "Est-ce que quelqu’un peut faire des courses pour vous (un parent, un conjoint, un ami ou un voisin), comme aller à l’épicerie ou chercher vos médicaments?"
       buttons:
-        - title: Yes
+        - title: Oui
           payload: "/affirm"
-        - title: No
+        - title: Non
           payload: "/deny"
 
   utter_remind_delivery_services:
-    - text: "Don’t forget that most pharmacies and many grocery stores offer delivery services. Check with your local pharmacy or grocery store if they deliver."
+    - text: "N’oubliez pas que la plupart des pharmacies et plusieurs épiceries offrent la livraison. Renseignez-vous auprès de votre pharmacie ou de votre épicerie pour savoir s’ils offrent ce service"
 
   utter_check_delivery_services:
-    - text: "Most pharmacies and many grocery stores offer delivery services. You can check with your local pharmacy or grocery store if they offer this service."
+    - text: "La plupart des pharmacies et plusieurs épiceries offrent la livraison. Renseignez-vous auprès de votre pharmacie ou de votre épicerie pour savoir s’ils offrent ce service"
 
   utter_may_call_211:
-    - text: "If that’s not possible for you, you may call 211 or visit 211.ca for assistance."
+    - text: "Si cela n’est pas possible, vous pouvez appeler au 211 ou visiter le 211.ca pour de l’assistance"
 
   utter_explain_211:
-    - text: "The 211 service can direct you to a variety of local resources for assistance with food, health, or community services."
+    - text: "Le service 211 peut vous diriger vers une variété de ressources dans votre région pour de l’assistance alimentaire, des services de santé ou communautaires"
 
   utter_remind_pharmacist_services:
-    - text: "Your pharmacist can also provide recommendations and advice on how to relieve your symptoms and which over-the-counter medications you can safely take."
+    - text: "Votre pharmacien(nne) peut également vous offrir des conseils pour soulager vos symptômes, et vous indiquer quels médicaments en vente libre sont indiqués et sécuritaires pour vous"
 
-  ## Daily check-in (to be translated)
+  ## Daily check-in
 
   utter_greet_daily_checkin:
     - text: Hello Linda, this is Chloe, and I'm checking in to see how you're doing today.

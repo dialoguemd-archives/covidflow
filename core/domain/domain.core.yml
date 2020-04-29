@@ -1,5 +1,6 @@
 intents:
-  - greet
+  - greet:
+      use_entities: []
   - goodbye
   - affirm
   - deny
@@ -22,9 +23,6 @@ intents:
 
 entities:
   - province
-  - age_over_65
-  - contact
-  - symptoms
   - metadata
 
 actions:
@@ -44,9 +42,10 @@ actions:
 
 forms:
   - assessment_form
+  - tested_positive_form
+  - checkin_return_form
   - daily_ci_enroll_form
   - question_answering_form
-  - self_isolation_form
   - home_assistance_form
 
 slots:
@@ -56,9 +55,6 @@ slots:
   language:
     type: unfeaturized
     initial_value: *language
-
-  assessment_type:
-    type: unfeaturized
 
   severe_symptoms:
     type: unfeaturized
@@ -121,6 +117,9 @@ slots:
     values:
       - success
       - failure
+
+  has_contact_risk:
+    type: bool
 
   self_assess_done:
     type: bool

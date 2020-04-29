@@ -1,6 +1,7 @@
 FROM rasa/rasa:1.9.4 as base
 EXPOSE 8080
 
+COPY actions actions
 COPY poetry.lock poetry.lock
 COPY pyproject.toml pyproject.toml
 
@@ -27,8 +28,6 @@ FROM base as final
 
 COPY alembic alembic
 COPY alembic.ini alembic.ini
-
-COPY actions actions
 
 ENTRYPOINT [ ]
 CMD [ "rasa", "run", "actions", "--port", "8080" ]

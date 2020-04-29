@@ -8,6 +8,8 @@ responses:
       buttons:
         - title: "Je veux faire le suivi de mes symptômes"
           payload: "/checkin_return"
+        - title: "I want to take the Covid-19 self-assessment (to translate)"
+          payload: "/get_assessment"
         - title: "Je crois avoir la Covid-19"
           payload: "/suspect"
         - title: "J'ai eu un résultat positif au test de Covid-19"

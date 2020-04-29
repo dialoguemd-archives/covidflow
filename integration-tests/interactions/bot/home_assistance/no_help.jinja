@@ -1,5 +1,3 @@
-{% import 'bot/macros.jinja' as bot %}
-
 [
     {
         "text": "Most pharmacies and many grocery stores offer delivery services. You can check with your local pharmacy or grocery store if they offer this service."
@@ -19,17 +17,5 @@
     {
         "text": "Please monitor your symptoms. If you need assistance, you should:\n- Contact your family doctor if possible, or\n- Call 811 for assistance"
     },
-    {
-        "text": "If you'd like, you can enroll in our daily check-in."
-    },
-    {
-        "text": "If you do, I will contact you everyday to see how you’re doing, monitor your symptoms, evaluate your general health, and provide recommendations to help take care of yourself and relieve your symptoms."
-    },
-    {
-        "text": "The daily check-in offers you an updated assessment of your condition everyday, so that you receive the most relevant guidance and recommendations for your condition."
-    },
-    {
-        "text": "Would you like me to check-in with you daily to help monitor your symptoms?",
-        {{ bot.confirmation_buttons() }}
-    }
+    {% include 'bot/common/offer_daily_ci_enrollment.jinja' %}
 ]

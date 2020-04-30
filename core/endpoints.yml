@@ -4,6 +4,6 @@ tracker_store:
   type: SQL
   dialect: postgresql
   url: ${SQL_TRACKER_STORE_URL}
-  db: chloe
-  username: chloe
+  db: ${SQL_TRACKER_STORE_DB}
+  username: ${SQL_TRACKER_STORE_USER}
   password: ${SQL_TRACKER_STORE_PASSWORD}

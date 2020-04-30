@@ -28,12 +28,12 @@ class DailyCiFeelWorseForm(FormAction):
 
         slots = [SEVERE_SYMPTOMS_SLOT]
 
-        if tracker.get_slot(SEVERE_SYMPTOMS_SLOT) == True:
+        if tracker.get_slot(SEVERE_SYMPTOMS_SLOT) is True:
             return slots
 
         slots += [HAS_FEVER_SLOT, HAS_DIFF_BREATHING_SLOT]
 
-        if tracker.get_slot(HAS_DIFF_BREATHING_SLOT) == True:
+        if tracker.get_slot(HAS_DIFF_BREATHING_SLOT) is True:
             slots.append(HAS_DIFF_BREATHING_WORSENED_SLOT)
         else:
             slots.append(HAS_COUGH_SLOT)
@@ -92,7 +92,7 @@ class DailyCiFeelWorseForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        if value == True:
+        if value is True:
             dispatcher.utter_message(template="utter_call_911")
         else:
             dispatcher.utter_message(
@@ -108,7 +108,7 @@ class DailyCiFeelWorseForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        if value == True:
+        if value is True:
             dispatcher.utter_message(template="utter_daily_ci__acknowledge_fever")
             dispatcher.utter_message(template="utter_daily_ci__take_acetaminophen")
             dispatcher.utter_message(template="utter_daily_ci__avoid_ibuprofen")
@@ -140,7 +140,7 @@ class DailyCiFeelWorseForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        if value == True:
+        if value is True:
             dispatcher.utter_message(
                 template="utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_1"
             )
@@ -164,7 +164,7 @@ class DailyCiFeelWorseForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        if value == True:
+        if value is True:
             dispatcher.utter_message(template="utter_daily_ci__cough_syrup_may_help")
             dispatcher.utter_message(template="utter_daily_ci__cough_syrup_pharmacist")
         else:

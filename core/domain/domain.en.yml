@@ -535,3 +535,47 @@ responses:
 
   utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_2:
     - text: In any case, make sure you keep staying isolated and continue to rest
+
+  ## Daily check-in - feel no change
+
+  utter_ask_daily_ci__feel_no_change__has_fever:
+    - text: And is your temperature higher than 38°C or 100.4°F? (You can take your temperature now if you're not sure)
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_daily_ci__feel_no_change__acknowledge_no_fever:
+    - text: That's good, I'm taking note that you don't have a fever today
+
+  utter_ask_daily_ci__feel_no_change__has_cough:
+    - text: Do you have a cough?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_ask_daily_ci__feel_no_change__has_diff_breathing:
+    - text: Do you still have shortness of breath or difficulty breathing?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_daily_ci__feel_no_change__acknowledge_diff_breathing:
+    - text: I'm sorry to see that
+
+  utter_daily_ci__feel_no_change__diff_breathing_recommendation:
+    - text: "If your symptoms worsen, you may need to go to the ER. If you need assistance, you should:\n- Contact your family doctor if possible, or\n- Call 811 for assistance\nAnd make sure you inform them of your condition"
+
+  utter_daily_ci__feel_no_change__acknowledge_no_diff_breathing:
+    - text: That's good, I'm glad to hear that
+
+  utter_daily_ci__feel_no_change__no_diff_breathing_recommendation:
+    - text: You should continue to rest, stay isolated and monitor your symptoms for any change
+
+  utter_daily_ci__feel_no_change__mild_last_symptoms_recommendation:
+    - text: Since you still feel sick, you should stay isolated, rest and continue monitoring your symptoms

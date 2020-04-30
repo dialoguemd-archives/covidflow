@@ -86,3 +86,7 @@ You can also start services and access the bot using `rasa shell` by starting th
 To see the tracker-store and action-server logs:
 
 `docker-compose logs -ft`
+
+#### Action-server integration tests
+
+To execute the integration tests locally, run `make test-integration` in the action-server folder while the services are running. 

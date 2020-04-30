@@ -535,3 +535,47 @@ responses:
 
   utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_2:
     - text: Dans tous les cas, assurez-vous de continuer à vous isoler et à vous reposer
+
+  ## Daily check-in - feel no change
+
+  utter_ask_daily_ci__feel_no_change__has_fever:
+    - text: Et est-ce que vous faites de la fièvre? (plus de 38°C ou 100,4°F) (Prenez votre température si vous ne le savez pas)
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_daily_ci__feel_no_change__acknowledge_no_fever:
+    - text: Très bien, je note que vous ne faites pas de fièvre aujourd'hui
+
+  utter_ask_daily_ci__feel_no_change__has_cough:
+    - text: Est-ce que vous toussez?
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_ask_daily_ci__feel_no_change__has_diff_breathing:
+    - text: Avez-vous encore de l'essoufflement ou de la difficulté à respirer?
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_daily_ci__feel_no_change__acknowledge_diff_breathing:
+    - text: Je suis désolée que ce soit encore le cas
+
+  utter_daily_ci__feel_no_change__diff_breathing_recommendation:
+    - text: "Si vos symptômes empirent, vous pourriez devoir vous rendre à l'urgence. Pour de l'assistance, vous devriez: \n- Soit appeler votre médecin de famille, si c'est possible, ou \n- Appeler au 811\n Et assurez-vous de fournir les informations sur votre condition"
+
+  utter_daily_ci__feel_no_change__acknowledge_no_diff_breathing:
+    - text: Bonne nouvelle, je suis heureuse de l'apprendre
+
+  utter_daily_ci__feel_no_change__no_diff_breathing_recommendation:
+    - text: Je vous conseille de continuer à vous reposer, à vous isoler et à surveiller vos symptômes
+
+  utter_daily_ci__feel_no_change__mild_last_symptoms_recommendation:
+    - text: Puisque vous êtes encore malade, je vous conseille de continuer à vous reposer, à vous isoler et à surveiller vos symptômes

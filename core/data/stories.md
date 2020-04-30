@@ -620,7 +620,7 @@
 * daily_checkin{"metadata":{}}
   - utter_greet_daily_checkin
   - utter_ask_how_do_you_feel
-* better OR no_change
+* better
   - utter_to_be_continued
 
 ## daily check-in - feel worse
@@ -630,5 +630,15 @@
 * worse
   - daily_ci_feel_worse_form
   - form{"name": "daily_ci_feel_worse_form"}
+  - form{"name": null}
+  - utter_to_be_continued
+
+## daily check-in - feel no change
+* daily_checkin{"metadata":{}}
+  - utter_greet_daily_checkin
+  - utter_ask_how_do_you_feel
+* no_change
+  - daily_ci_feel_no_change_form
+  - form{"name": "daily_ci_feel_no_change_form"}
   - form{"name": null}
   - utter_to_be_continued

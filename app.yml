@@ -6,8 +6,7 @@
         websocket: true
     scale:
       horizontal: 3-12
-      vertical: large
-      cpuThreshold: 30
+      vertical: medium.mem
     healthcheck:
       path: /
       liveness:
@@ -27,7 +26,7 @@ components:
     port: 8080
     scale:
       horizontal: 2-4
-      vertical: medium
+      vertical: small.mem
     healthcheck:
       liveness:
         timeoutSeconds: 15

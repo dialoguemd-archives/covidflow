@@ -16,10 +16,20 @@ RUN \
   && pip install "poetry==${POETRY_VERSION}" \
   && poetry config virtualenvs.create false
 RUN poetry install
+
+# add wait-for-it (used to run db-migrations in dev)
+COPY scripts/wait-for-it.sh wait-for-it.sh 
+RUN chmod +x wait-for-it.sh
+
 USER 1001
 
 FROM base as final
 
+COPY alembic alembic
+COPY alembic.ini alembic.ini
+
 COPY actions actions
 
-CMD [ "run", "actions", "--port", "8080" ]
+ENTRYPOINT [ ]
+CMD [ "rasa", "run", "actions", "--port", "8080" ]
+

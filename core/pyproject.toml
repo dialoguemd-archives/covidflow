@@ -1,8 +1,11 @@
 [tool.poetry]
-name = "covidflow"
+name = "covidflow-core"
 version = "0.1.0"
-description = ""
-authors = [""]
+description = "Rasa Stack/Core Server for covidflow"
+authors = ["Nu Echo"]
+packages = [
+    { include = "scripts" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.6"

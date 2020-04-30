@@ -1,11 +1,15 @@
 [tool.poetry]
-name = "covidflow"
+name = "covidflow-action-server"
 version = "0.1.0"
-description = ""
-authors = [""]
+description = "Rasa Action Server for covidflow"
+authors = ["Nu Echo"]
+packages = [
+    { include = "actions" },
+]
 
 [tool.poetry.dependencies]
 rasa-integration-testing = "0.1.2"
+aiohttp = "^3.6.2"
 pydantic = "^1.4"
 python = "^3.6"
 rasa-sdk = "^1.9.0"

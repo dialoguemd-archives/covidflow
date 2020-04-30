@@ -1,6 +1,7 @@
 import os
 from typing import Any, Dict, List, Text, Union
 
+from aiohttp import ClientSession
 from rasa_sdk import Tracker
 from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
@@ -45,7 +46,7 @@ class QuestionAnsweringForm(FormAction):
             ],
         }
 
-    def validate_active_question(
+    async def validate_active_question(
         self,
         value: Text,
         dispatcher: CollectingDispatcher,
@@ -57,25 +58,28 @@ class QuestionAnsweringForm(FormAction):
         )
 
         language = tracker.get_slot(LANGUAGE_SLOT)
-        result: QuestionAnsweringResponse = protocol.get_response(value, language)
+        async with ClientSession() as session:
+            result: QuestionAnsweringResponse = await protocol.get_response(
+                session, value, language
+            )
 
-        if result.status == QuestionAnsweringStatus.OUT_OF_DISTRIBUTION:
-            full_result = {
-                "question": value,
-                "status": result.status,
-            }
-            dispatcher.utter_message(template="utter_cant_answer")
+            if result.status == QuestionAnsweringStatus.OUT_OF_DISTRIBUTION:
+                full_result = {
+                    "question": value,
+                    "status": result.status,
+                }
+                dispatcher.utter_message(template="utter_cant_answer")
 
-            return {
-                ASKED_QUESTION_SLOT: full_result,
-                QUESTION_SLOT: None,
-                STATUS_SLOT: None,
-            }
+                return {
+                    ASKED_QUESTION_SLOT: full_result,
+                    QUESTION_SLOT: None,
+                    STATUS_SLOT: None,
+                }
 
-        if result.status == QuestionAnsweringStatus.SUCCESS and result.answers:
-            dispatcher.utter_message(result.answers[0])
+            if result.status == QuestionAnsweringStatus.SUCCESS and result.answers:
+                dispatcher.utter_message(result.answers[0])
 
-        return {STATUS_SLOT: result.status, ANSWERS_SLOT: result.answers}
+            return {STATUS_SLOT: result.status, ANSWERS_SLOT: result.answers}
 
     def validate_feedback(
         self,

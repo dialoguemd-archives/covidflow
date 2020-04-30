@@ -11,7 +11,7 @@
   bot: symptoms_mild
 - user: deny
   bot: close_contact
-- user: deny_contact
+- user: deny
   bot: travel
-- user: deny_travel
+- user: deny
   bot: not_infected

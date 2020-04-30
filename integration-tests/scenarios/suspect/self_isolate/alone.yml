@@ -1,6 +1,6 @@
 - suspect
 - suspect_reach_moderate
 - user: affirm
-  bot: self_isolate/ask_alone
+  bot: self_isolate/ask_alone_symptoms
 - user: affirm
   bot: self_isolate/stay_home

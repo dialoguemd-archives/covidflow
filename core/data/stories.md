@@ -23,9 +23,6 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
-  - self_isolation_form
-  - form{"name": "self_isolation_form"}
-  - form{"name": null}
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
@@ -37,7 +34,6 @@
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
   - action_suspect_moderate_symptoms_final_recommendations
-  - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else
 * ask_question
@@ -55,9 +51,6 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
-  - self_isolation_form
-  - form{"name": "self_isolation_form"}
-  - form{"name": null}
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
@@ -65,7 +58,6 @@
   - action_offer_daily_checkin
 * deny
   - action_suspect_moderate_symptoms_final_recommendations
-  - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else
 
@@ -76,9 +68,6 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
-  - self_isolation_form
-  - form{"name": "self_isolation_form"}
-  - form{"name": null}
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
@@ -86,7 +75,6 @@
   - action_offer_daily_checkin
 * deny
   - action_suspect_mild_symptoms_exposure_final_recommendations
-  - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else
 * ask_question
@@ -99,18 +87,13 @@
   - utter_try_again_later
   - utter_goodbye
 
-## suspect - no symptoms contact
+## suspect - mild symptoms
 * suspect OR get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
-  - slot{"symptoms": "none"}
-  - utter_ask_contact
-* affirm{"contact": true}
-  - self_isolation_form
-  - form{"name": "self_isolation_form"}
-  - form{"name": null}
+  - slot{"symptoms": "mild"}
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
@@ -122,22 +105,48 @@
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
   - action_suspect_mild_symptoms_exposure_final_recommendations
-  - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "failure"}
+  - utter_question_answering_error
+  - utter_try_again_later
+  - utter_goodbye
 
-## suspect - no symptoms contact no checkin
+## suspect - no symptoms contact risk
 * suspect OR get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
-  - utter_ask_contact
-* affirm{"contact": true}
-  - self_isolation_form
-  - form{"name": "self_isolation_form"}
+  - slot{"has_contact_risk": true}
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
   - form{"name": null}
+  - action_suspect_mild_symptoms_exposure_recommendations
+  - action_offer_daily_checkin
+* affirm
+  - utter_daily_checkin_enroll
+  - daily_ci_enroll_form
+  - form{"name": "daily_ci_enroll_form"}
+  - form{"name": null}
+  - action_suspect_mild_symptoms_exposure_final_recommendations
+  - utter_visit_package
+  - utter_ask_anything_else
+
+## suspect - no symptoms contact risk no checkin
+* suspect OR get_assessment
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"self_assess_done": true}
+  - slot{"symptoms": "none"}
+  - slot{"has_contact_risk": true}
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
@@ -145,36 +154,17 @@
   - action_offer_daily_checkin
 * deny
   - action_suspect_mild_symptoms_exposure_final_recommendations
-  - action_set_risk_level
   - utter_visit_package
   - utter_ask_anything_else
 
-## suspect - no symptoms no contact travel
+## suspect - no symptoms no contact risk
 * suspect OR get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
-  - utter_ask_contact
-* deny{"contact": false}
-  - utter_ask_travel
-* affirm{"travel": true}
-  - self_isolation_form
-  - form{"name": "self_isolation_form"}
-  - form{"name": null}
-  - home_assistance_form
-  - form{"name": "home_assistance_form"}
-  - form{"name": null}
-  - action_suspect_mild_symptoms_exposure_recommendations
-  - action_offer_daily_checkin
-* affirm
-  - utter_daily_checkin_enroll
-  - daily_ci_enroll_form
-  - form{"name": "daily_ci_enroll_form"}
-  - form{"name": null}
-  - action_suspect_mild_symptoms_exposure_final_recommendations
-  - action_set_risk_level
+  - action_suspect_no_symptoms_recommendations
   - utter_visit_package
   - utter_ask_anything_else
 * ask_question
@@ -189,51 +179,10 @@
   - utter_please_visit_again
   - utter_goodbye
 
-## suspect - no symptoms no contact travel no checkin
-* suspect OR get_assessment
-  - assessment_form
-  - form{"name": "assessment_form"}
-  - form{"name": null}
-  - slot{"self_assess_done": true}
-  - slot{"symptoms": "none"}
-  - utter_ask_contact
-* deny{"contact": false}
-  - utter_ask_travel
-* affirm{"travel": true}
-  - self_isolation_form
-  - form{"name": "self_isolation_form"}
-  - form{"name": null}
-  - home_assistance_form
-  - form{"name": "home_assistance_form"}
-  - form{"name": null}
-  - action_suspect_mild_symptoms_exposure_recommendations
-  - action_offer_daily_checkin
-* deny
-  - action_suspect_mild_symptoms_exposure_final_recommendations
-  - action_set_risk_level
-  - utter_visit_package
-  - utter_ask_anything_else
-
-## suspect - no symptoms no contact no travel
-* suspect OR get_assessment
-  - assessment_form
-  - form{"name": "assessment_form"}
-  - form{"name": null}
-  - slot{"self_assess_done": true}
-  - slot{"symptoms": "none"}
-  - utter_ask_contact
-* deny{"contact": false}
-  - utter_ask_travel
-* deny{"travel": false}
-  - action_suspect_no_symptoms_recommendations
-  - action_set_risk_level
-  - utter_visit_package
-  - utter_ask_anything_else
-
 ## tested positive - severe symptoms
 * tested_positive
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - tested_positive_form
+  - form{"name": "tested_positive_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "severe"}
@@ -241,8 +190,8 @@
 
 ## tested positive - moderate symptoms no check-in
 * tested_positive
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - tested_positive_form
+  - form{"name": "tested_positive_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
@@ -250,12 +199,16 @@
   - utter_ask_want_checkin
 * deny
   - action_tested_positive_not_cured_final_recommendations
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
+  - form{"name": null}
+  - utter_visit_package
   - utter_ask_anything_else
 
 ## tested positive - moderate symptoms
 * tested_positive
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - tested_positive_form
+  - form{"name": "tested_positive_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
@@ -267,12 +220,16 @@
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
   - action_tested_positive_not_cured_final_recommendations
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
+  - form{"name": null}
+  - utter_visit_package
   - utter_ask_anything_else
 
 ## tested positive - mild symptoms worse no check-in
 * tested_positive
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - tested_positive_form
+  - form{"name": "tested_positive_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
@@ -282,6 +239,10 @@
   - utter_ask_want_checkin
 * deny
   - action_tested_positive_not_cured_final_recommendations
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
+  - form{"name": null}
+  - utter_visit_package
   - utter_ask_anything_else
 * ask_question
   - utter_can_help_with_questions
@@ -300,8 +261,8 @@
 
 ## tested positive - mild symptoms worse
 * tested_positive
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - tested_positive_form
+  - form{"name": "tested_positive_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
@@ -315,12 +276,16 @@
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
   - action_tested_positive_not_cured_final_recommendations
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
+  - form{"name": null}
+  - utter_visit_package
   - utter_ask_anything_else
 
 ## tested positive - mild symptoms not worse no check-in
 * tested_positive
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - tested_positive_form
+  - form{"name": "tested_positive_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
@@ -329,12 +294,16 @@
   - utter_ask_want_checkin
 * deny
   - action_tested_positive_not_cured_final_recommendations
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
+  - form{"name": null}
+  - utter_visit_package
   - utter_ask_anything_else
 
 ## tested positive - mild symptoms not worse
 * tested_positive
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - tested_positive_form
+  - form{"name": "tested_positive_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
@@ -347,12 +316,16 @@
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
   - action_tested_positive_not_cured_final_recommendations
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
+  - form{"name": null}
+  - utter_visit_package
   - utter_ask_anything_else
 
 # tested positive - no symptoms tested less than 14 days no check-in
 * tested_positive
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - tested_positive_form
+  - form{"name": "tested_positive_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
@@ -362,6 +335,10 @@
   - utter_ask_want_checkin_no_symptoms
 * deny
   - action_tested_positive_not_cured_final_recommendations
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
+  - form{"name": null}
+  - utter_visit_package
   - utter_ask_anything_else
 * ask_question
   - utter_can_help_with_questions
@@ -375,8 +352,8 @@
 
 # tested positive - no symptoms tested less than 14 days
 * tested_positive
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - tested_positive_form
+  - form{"name": "tested_positive_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
@@ -390,12 +367,16 @@
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
   - action_tested_positive_not_cured_final_recommendations
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
+  - form{"name": null}
+  - utter_visit_package
   - utter_ask_anything_else
 
 # tested positive - cured
 * tested_positive
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - tested_positive_form
+  - form{"name": "tested_positive_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
@@ -424,8 +405,8 @@
 
 ## return for check-in - severe symptoms
 * checkin_return
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - checkin_return_form
+  - form{"name": "checkin_return_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "severe"}
@@ -433,12 +414,11 @@
 
 ## return for check-in - moderate symptoms worse
 * checkin_return
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - checkin_return_form
+  - form{"name": "checkin_return_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
-  - action_set_risk_level
   - utter_ask_symptoms_worsened
 * affirm
   - utter_contact_healthcare_professional
@@ -447,12 +427,11 @@
 
 ## return for check-in - moderate symptoms - with check-in
 * checkin_return
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - checkin_return_form
+  - form{"name": "checkin_return_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
-  - action_set_risk_level
   - utter_ask_symptoms_worsened
 * deny
   - utter_symptoms_worsen_emergency
@@ -463,7 +442,9 @@
   - form{"name": null}
   - utter_remind_monitor_symptoms_temperature
   - utter_remind_possible_checkin
-  - utter_visit_package
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
+  - form{"name": null}
   - utter_ask_anything_else
 * ask_question
   - utter_can_help_with_questions
@@ -479,27 +460,27 @@
 
 ## return for check-in - moderate symptoms - no check-in
 * checkin_return
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - checkin_return_form
+  - form{"name": "checkin_return_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
-  - action_set_risk_level
   - utter_ask_symptoms_worsened
 * deny
   - utter_symptoms_worsen_emergency
   - utter_ask_want_checkin_acknowledge
 * deny
-  - utter_ok
   - utter_remind_monitor_symptoms_temperature
   - utter_remind_possible_checkin
-  - utter_visit_package
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
+  - form{"name": null}
   - utter_ask_anything_else
 
 ## return for check-in - mild symptoms - with check-in
 * checkin_return
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - checkin_return_form
+  - form{"name": "checkin_return_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
@@ -510,22 +491,25 @@
   - form{"name": null}
   - utter_remind_monitor_symptoms_temperature
   - utter_remind_possible_checkin
-  - utter_visit_package
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
+  - form{"name": null}
   - utter_ask_anything_else
 
 ## return for check-in - mild symptoms - no check-in
 * checkin_return
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - checkin_return_form
+  - form{"name": "checkin_return_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
   - utter_ask_want_checkin_acknowledge
 * deny
-  - utter_ok
   - utter_remind_monitor_symptoms_temperature
   - utter_remind_possible_checkin
-  - utter_visit_package
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
+  - form{"name": null}
   - utter_ask_anything_else
 * ask_question
   - utter_can_help_with_questions
@@ -537,8 +521,8 @@
 
 ## return for check-in - no symptoms - first symptoms >= 14 days ago
 * checkin_return
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - checkin_return_form
+  - form{"name": "checkin_return_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
@@ -550,8 +534,8 @@
 
 ## return for check-in - no symptoms - first symptoms < 14 days ago
 * checkin_return
-  - assessment_form
-  - form{"name": "assessment_form"}
+  - checkin_return_form
+  - form{"name": "checkin_return_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
@@ -636,5 +620,15 @@
 * daily_checkin{"metadata":{}}
   - utter_greet_daily_checkin
   - utter_ask_how_do_you_feel
-* better OR worse OR no_change
+* better OR no_change
+  - utter_to_be_continued
+
+## daily check-in - feel worse
+* daily_checkin{"metadata":{}}
+  - utter_greet_daily_checkin
+  - utter_ask_how_do_you_feel
+* worse
+  - daily_ci_feel_worse_form
+  - form{"name": "daily_ci_feel_worse_form"}
+  - form{"name": null}
   - utter_to_be_continued

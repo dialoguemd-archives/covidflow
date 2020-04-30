@@ -43,9 +43,6 @@ responses:
         - title: No
           payload: "/deny"
 
-  utter_self_isolate:
-    - text: "In this case, *you need to self-isolate for at least 14 days*. It is extremely important that you follow this directive."
-
   utter_symptoms_worsen_emergency:
     - text: "If your symptoms worsen or if you have difficulty breathing, you will need to get to your nearest emergency or call 911."
 
@@ -101,17 +98,17 @@ responses:
     - text: "Have you recently been in close contact with someone who has Covid-19?\nBy close contact I mean any of the following:\n- Providing care for infected patients, visiting, or staying with them in the same close environment\n- Working in close proximity with an infected person\n- Living in the same household as an infected person"
       buttons:
         - title: Yes
-          payload: '/affirm{"contact": true}'
+          payload: "/affirm"
         - title: No
-          payload: '/deny{"contact": false}'
+          payload: "/deny"
 
   utter_ask_travel:
     - text: "Have you traveled in any country outside of Canada within the last 14 days (including passing through an airport)?"
       buttons:
         - title: Yes
-          payload: '/affirm{"travel": true}'
+          payload: "/affirm"
         - title: No
-          payload: '/deny{"travel": false}'
+          payload: "/deny"
 
   utter_probably_not_covid:
     - text: In this case, you probably don’t have Covid-19.
@@ -166,15 +163,6 @@ responses:
 
   ## Tested positive
 
-  utter_self_isolate_separate_room:
-    - text: "In this case, you must self-isolate for at least 14 days. This means not only staying home, but in a separate room from the other people in your home to avoid transmitting the virus."
-
-  utter_dont_leave_home:
-    - text: "You must not leave your home, unless your symptoms worsen and you need to go to the ER."
-
-  utter_deliver_food_medications:
-    - text: "If you don’t have anyone to get food or go to the drugstore for you, you should get your grocery or medications delivered."
-
   utter_assess_symptoms:
     - text: "Now, I’d like to assess your symptoms."
 
@@ -203,8 +191,11 @@ responses:
         - title: "Less than 14 days ago"
           payload: "/less"
 
-  utter_maybe_cured:
-    - text: "You might be cured. We invite you to continue staying home and comply with social distancing rules. If you go outside, we recommend wearing a mask."
+  utter_maybe_recovered:
+    - text: "You might have recovered. I invite you to stay home as much as possible and comply with social distancing rules. If you go outside, I recommend that you wear a mask."
+
+  utter_more_information:
+    - text: "For more information, resources and recommendations about Covid-19, please visit [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common)"
 
   utter_ask_want_checkin_no_symptoms:
     - text: "Would you like me to check-in with you daily to monitor any new symptoms?"
@@ -282,12 +273,6 @@ responses:
         - title: No
           payload: "/deny"
 
-  utter_self_isolate_reminder:
-    - text: Ok, keep in mind that you must *keep self-isolating*. It is extremely important that you follow this directive.
-
-  utter_home_assistance:
-    - text: If you need home assistance, you can *call 211* or visit your provincial 211 website.
-
   utter_contact_healthcare_professional:
     - text: In this case, you should speak to a healthcare professional to discuss your situation.
 
@@ -334,9 +319,6 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
-
-  utter_ok:
-    - text: "OK."
 
   utter_post_feedback:
     - text: "Got it, please note that we work on improving our system constantly."
@@ -396,7 +378,13 @@ responses:
   ## action self-isolation
 
   utter_symptoms_self_isolate:
-    - text: "Since you have symptoms, you need to self-isolate for at least 14 days. It is extremely important that you follow this directive."
+    - text: "Since you have symptoms, you need to *self-isolate for at least 14 days*. It is extremely important that you follow this directive."
+
+  utter_tested_positive_self_isolate:
+    - text: "Since you have tested positive to the Covid-19, *you must self-isolate for at least 14 days*. It is extremely important that you follow this directive."
+
+  utter_contact_risk_self_isolate:
+    - text: "Since you are at risk of being infected, you need to *self-isolate for at least 14 days*. It is extremely important that you follow this directive."
 
   utter_ask_lives_alone:
     - text: "Are you the only person in your household?"
@@ -406,7 +394,7 @@ responses:
         - title: No
           payload: "/deny"
 
-  utter_dont_leave_home_unless_appointment:
+  utter_dont_leave_home:
     - text: "In this case, I recommend that you don’t leave your home unless you have a doctor’s appointment, or if you need to go to the hospital."
 
   utter_stay_separate_room:
@@ -463,3 +451,87 @@ responses:
 
   utter_to_be_continued:
     - text: To be continued...
+
+  utter_daily_ci__acknowledge_fever:
+    - text: OK, I'm taking note that you have a fever today
+
+  utter_daily_ci__take_acetaminophen:
+    - text: You can take acetaminophen (Tylenol) to relieve fever or aches and pain
+
+  utter_daily_ci__avoid_ibuprofen:
+    - text: But you should *avoid taking ibuprofen* (such as Advil or Motrin), as it might have unwanted effects
+
+  utter_daily_ci__cough_syrup_may_help:
+    - text: Cough syrup may help, but please make sure that it doesn't interact with other medications you take or any underlying medical condition
+
+  utter_daily_ci__cough_syrup_pharmacist:
+    - text: If you're not sure, you should speak to your pharmacist
+
+  utter_daily_ci__acknowledge_no_cough:
+    - text: That's good news
+
+  ## Daily check-in - feel worse
+
+  utter_ask_daily_ci__feel_worse__severe_symptoms:
+    - text: "Are you experiencing any of the following symptoms:\n- Severe difficulty breathing\n- Severe chest pain\n- Having a hard time waking up\n- Feeling confused\n- Losing consciousness"
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_daily_ci__feel_worse__acknowledge_no_severe_symptoms:
+    - text: OK, now, let's check your symptoms
+
+  utter_ask_daily_ci__feel_worse__has_fever:
+    - text: Is your temperature higher than 38°C or 100.4°F? (You can take your temperature now if you're not sure)
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_daily_ci__feel_worse__acknowledge_no_fever:
+    - text: OK, I'm taking note that you don't have a fever today
+
+  utter_ask_daily_ci__feel_worse__has_diff_breathing:
+    - text: And are you experiencing shortness of breath or difficulty breathing?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_daily_ci__feel_worse__acknowledge_no_diff_breathing:
+    - text: That's good
+
+  utter_ask_daily_ci__feel_worse__has_cough:
+    - text: Do you have a cough?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_daily_ci__feel_worse__no_cough_recommendation:
+    - text: But since you're still feeling sick, you should keep staying isolated and continue to rest
+
+  utter_ask_daily_ci__feel_worse__has_diff_breathing_worsened:
+    - text: Has this worsened since yesterday?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_1:
+    - text: You may want to discuss your situation with your doctor, if that's possible, or call 811
+
+  utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_2:
+    - text: If your symptoms worsen, you will need to get to the nearest emergency department or call 911
+
+  utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_1:
+    - text: OK, if this gets worse, you should call your doctor, if that's possible, or call 811 to discuss your situation with a nurse
+
+  utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_2:
+    - text: In any case, make sure you keep staying isolated and continue to rest

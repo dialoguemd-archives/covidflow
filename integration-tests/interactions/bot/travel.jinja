@@ -3,15 +3,6 @@
 [
     {
         "text": "Have you traveled in any country outside of Canada within the last 14 days (including passing through an airport)?",
-        "buttons": [
-            {
-                "payload": "/affirm{\"travel\": true}",
-                "title": "Yes"
-            },
-            {
-                "payload": "/deny{\"travel\": false}",
-                "title": "No"
-            }
-        ]
+        {{ bot.confirmation_buttons() }}
     }
 ]

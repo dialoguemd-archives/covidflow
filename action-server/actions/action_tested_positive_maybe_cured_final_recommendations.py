@@ -15,6 +15,7 @@ class ActionTestedPositiveMaybeCuredFinalRecommendations(Action):
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
 
-        dispatcher.utter_message(template="utter_maybe_cured")
+        dispatcher.utter_message(template="utter_maybe_recovered")
+        dispatcher.utter_message(template="utter_more_information")
 
         return []

@@ -4,5 +4,5 @@
   bot: symptoms_mild
 - user: deny
   bot: close_contact
-- user: affirm_contact
-  bot: self_isolate/ask_alone
+- user: affirm
+  bot: self_isolate/ask_alone_infection_risk

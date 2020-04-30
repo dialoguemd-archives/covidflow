@@ -4,7 +4,7 @@
   bot: symptoms_mild
 - user: deny
   bot: close_contact
-- user: deny_contact
+- user: deny
   bot: travel
-- user: affirm_travel
-  bot: self_isolate/ask_alone
+- user: affirm
+  bot: self_isolate/ask_alone_infection_risk

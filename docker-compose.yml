@@ -53,6 +53,7 @@ services:
       - 5055:8080
     volumes:
       - ./action-server/actions:/app/actions
+      - ./action-server/db:/app/db
 
   tracker-store:
     image: postgres:11

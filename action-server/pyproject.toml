@@ -3,9 +3,6 @@ name = "covidflow-action-server"
 version = "0.1.0"
 description = "Rasa Action Server for covidflow"
 authors = ["Nu Echo"]
-packages = [
-    { include = "actions" },
-]
 
 [tool.poetry.dependencies]
 rasa-integration-testing = "0.1.2"
@@ -16,6 +13,9 @@ rasa-sdk = "^1.9.0"
 alembic = "0.9.8"
 psycopg2-binary = "2.7.7"
 structlog = "^20.1.0"
+pytz = "^2020.1"
+sqlalchemy = "~1.3.3"
+sqlalchemy-stubs = "^0.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "5.3.4"

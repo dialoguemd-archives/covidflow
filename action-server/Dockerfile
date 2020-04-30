@@ -1,7 +1,6 @@
 FROM rasa/rasa:1.9.4 as base
 EXPOSE 8080
 
-COPY actions actions
 COPY poetry.lock poetry.lock
 COPY pyproject.toml pyproject.toml
 
@@ -19,7 +18,7 @@ RUN \
 RUN poetry install
 
 # add wait-for-it (used to run db-migrations in dev)
-COPY scripts/wait-for-it.sh wait-for-it.sh 
+COPY scripts/wait-for-it.sh wait-for-it.sh
 RUN chmod +x wait-for-it.sh
 
 USER 1001
@@ -29,6 +28,8 @@ FROM base as final
 COPY alembic alembic
 COPY alembic.ini alembic.ini
 
+COPY actions actions
+COPY db db
+
 ENTRYPOINT [ ]
 CMD [ "rasa", "run", "actions", "--port", "8080" ]
-

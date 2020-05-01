@@ -616,13 +616,6 @@
   - utter_please_visit_again
   - utter_goodbye
 
-## daily check-in
-* daily_checkin{"metadata":{}}
-  - utter_greet_daily_checkin
-  - utter_ask_how_do_you_feel
-* better
-  - utter_to_be_continued
-
 ## daily check-in - feel worse
 * daily_checkin{"metadata":{}}
   - utter_greet_daily_checkin
@@ -640,5 +633,15 @@
 * no_change
   - daily_ci_feel_no_change_form
   - form{"name": "daily_ci_feel_no_change_form"}
+  - form{"name": null}
+  - utter_to_be_continued
+
+## daily check-in - feel better
+* daily_checkin{"metadata":{}}
+  - utter_greet_daily_checkin
+  - utter_ask_how_do_you_feel
+* better
+  - daily_ci_feel_better_form
+  - form{"name": "daily_ci_feel_better_form"}
   - form{"name": null}
   - utter_to_be_continued

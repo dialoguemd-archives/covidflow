@@ -114,7 +114,7 @@ responses:
     - text: Dans ce cas, vous n'avez probablement pas la Covid-19.
 
   utter_social_distancing:
-    - text: "Assurez-vous de suivre les consignes de distanciation sociale et ne sortez pas de chez vous Ã  moins que ce soit vraiment nÃ©cessaire."
+    - text: "Assurez-vous de suivre les consignes de distanciation sociale et ne sortez pas de chez vous à moins que ce soit vraiment nécessaire."
 
   utter_checkin_if_developments:
     - text: "Si vous développez des symptômes, ou si vous entrez en contact avec une personne atteinte de la Covid-19, veuillez communiquer avec moi pour obtenir une évaluation et des recommandations."
@@ -579,3 +579,71 @@ responses:
 
   utter_daily_ci__feel_no_change__mild_last_symptoms_recommendation:
     - text: Puisque vous êtes encore malade, je vous conseille de continuer à vous reposer, à vous isoler et à surveiller vos symptômes
+
+  ## Daily check-in - feel better
+
+  utter_daily_ci__feel_better__acknowledge:
+    - text: Je suis heureuse d'apprendre que vous allez mieux
+
+  utter_ask_daily_ci__feel_better__has_fever:
+    - text: Est-ce que vous faites de la fièvre? (plus de 38°C ou 100,4°F) (Prenez votre température si vous ne savez pas)
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_daily_ci__feel_better__acknowledge_no_fever:
+    - text: Très bien, je note que vous ne faites pas de fièvre aujourd'hui
+
+  utter_ask_daily_ci__feel_better__has_cough:
+    - text: Est-ce que vous toussez?
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_ask_daily_ci__feel_better__has_diff_breathing:
+    - text: Avez-vous encore d'autres symptômes, comme de l'essoufflement ou de la difficulté à respirer?
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_ask_daily_ci__feel_better__has_other_mild_symptoms_with_acknowledge:
+    - text: Très bien, et avez-vous encore d'autres symptômes, comme des maux de gorge ou de la fatigue inhabituelle?
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_ask_daily_ci__feel_better__has_other_mild_symptoms:
+    - text: Avez-vous encore d'autres symptômes, comme des maux de gorge ou de la fatigue inhabituelle?
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_ask_daily_ci__feel_better__is_symptom_free:
+    - text: Bonne nouvelle! Vous sentez-vous encore un peu malade, ou est-ce que vous n'avez plus de symptômes du tout?
+      buttons:
+        - title: Plus de symptômes
+          payload: "/symptom_free"
+        - title: Encore malade
+          payload: "/still_sick"
+
+  utter_daily_ci__feel_better__breathing_difficulty_recommendation_1:
+    - text: Désolée de l'apprendre. Si cela empire, je vous conseille de contacter votre médecin, si c'est possible, ou d'appeler le 811 pour discuter de vos symptômes
+
+  utter_daily_ci__feel_better__breathing_difficulty_recommendation_2:
+    - text: Puisque vous êtes encore malade, je vous conseille de continuer à vous isoler et à vous reposer
+
+  utter_daily_ci__feel_better__has_other_mild_symptoms_recommendation:
+    - text: D'accord. Puisque vous avez encore certains symptômes, je vous conseille de continuer à vous isoler et à vous reposer
+
+  utter_daily_ci__feel_better__has_other_mild_symptoms_still_sick_recommendation:
+    - text: C'est noté. Puisque vous êtes encore malade, je vous conseille de continuer à vous isoler et à vous reposer

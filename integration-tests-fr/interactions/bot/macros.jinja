@@ -1,0 +1,17 @@
+{% macro buttons(buttons) -%}
+"buttons": [
+  {% for button in buttons %}
+    {
+        "payload": "{{button.payload}}",
+        "title": "{{button.title}}"
+    }{% if not loop.last %},{% endif %}
+  {% endfor %}
+]
+{%- endmacro %}
+
+{% macro confirmation_buttons() -%}
+  {{buttons([
+    {"title":"Oui", "payload":"/affirm"},
+    {"title":"Non", "payload":"/deny"}
+  ])}}
+{%- endmacro %}

@@ -5,7 +5,6 @@ description = "Rasa Action Server for covidflow"
 authors = ["Nu Echo"]
 
 [tool.poetry.dependencies]
-rasa-integration-testing = "0.1.2"
 aiohttp = "^3.6.2"
 pydantic = "^1.4"
 python = "^3.6"

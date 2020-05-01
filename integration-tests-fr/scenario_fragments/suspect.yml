@@ -1,0 +1,4 @@
+- user: greet
+  bot: welcome
+- user: suspect
+  bot: symptoms_severe

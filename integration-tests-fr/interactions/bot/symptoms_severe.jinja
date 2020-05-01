@@ -1,0 +1,8 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "Premièrement, avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Avoir beaucoup de mal à se réveiller\n- Être confus\n- Perte de conscience",
+        {{ bot.confirmation_buttons() }}
+    }
+]

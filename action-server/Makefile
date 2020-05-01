@@ -49,6 +49,3 @@ test:
 	poetry run py.test \
 		--cov-report term-missing:skip-covered \
 		--cov-report html
-
-test-integration:
-	python -m rasa_integration_testing ../integration-tests

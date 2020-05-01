@@ -23,10 +23,14 @@ intents:
       use_entities: []
   - still_sick
   - symptom_free
+  - send_validation_code:
+      triggers: action_send_validation_code
 
 entities:
   - province
   - metadata
+  - first_name
+  - validation_code
 
 actions:
   - action_set_risk_level
@@ -42,6 +46,7 @@ actions:
   - action_tested_positive_not_cured_final_recommendations
   - action_severe_symptoms_recommendations
   - action_offer_daily_checkin
+  - action_send_validation_code
 
 forms:
   - assessment_form

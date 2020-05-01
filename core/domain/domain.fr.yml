@@ -647,3 +647,5 @@ responses:
 
   utter_daily_ci__feel_better__has_other_mild_symptoms_still_sick_recommendation:
     - text: C'est noté. Puisque vous êtes encore malade, je vous conseille de continuer à vous isoler et à vous reposer
+  utter_daily_checkin_validation_code:
+      - text: "Bonjour {first_name}, voici le code de validation pour l’inscription au suivi quotidien : {validation_code}. Si vous n’avez pas demandé à vous inscrire au suivi quotidien, veuillez ignorer ce message"

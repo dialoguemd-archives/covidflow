@@ -57,6 +57,15 @@ class CheckinReturnForm(FormAction):
 
         return {AssessmentSlots.HAS_FEVER: value}
 
+    def validate_province(
+        self,
+        value: Text,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        return AssessmentCommon.validate_province(value, domain)
+
     def submit(
         self,
         dispatcher: CollectingDispatcher,

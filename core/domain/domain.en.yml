@@ -1,6 +1,6 @@
 responses:
   utter_greet:
-    - text: "Hi, I′m Chloe, your medical assistant, I′m here to help you assess your symptoms and provide information about Covid-19."
+    - text: "Hi, I′m Chloe, your medical assistant, I′m here to help you assess your symptoms and provide information about Covid-19"
 
   utter_ask_how_may_i_help:
     - text: How may I help you today?
@@ -25,7 +25,7 @@ responses:
           payload: "/deny"
 
   utter_call_911:
-    - text: These symptoms require immediate response, so please call 911 immediately, or go to your nearest emergency department.
+    - text: These symptoms require immediate response, so please call 911 immediately, or go to your nearest emergency department
 
   utter_ask_has_fever:
     - text: Do you have fever (higher than 38°C or 100.4°F)?
@@ -44,22 +44,22 @@ responses:
           payload: "/deny"
 
   utter_symptoms_worsen_emergency:
-    - text: "If your symptoms worsen or if you have difficulty breathing, you will need to get to your nearest emergency or call 911."
+    - text: "If your symptoms worsen or if you have difficulty breathing, you will need to get to your nearest emergency or call 911"
 
   utter_monitor_symptoms_assistance:
-    - text: "Please monitor your symptoms. If you need assistance, you should:\n- Contact your family doctor if possible, or\n- Call 811 for assistance"
+    - text: "Please monitor your symptoms. If you need assistance, you should:\n- Contact your family doctor if possible, or\n- Call {provincial_811} for assistance"
 
   utter_remind_stay_home_self_isolate:
-    - text: "Now, please make sure that you stay home and self-isolate for at least 14 days."
+    - text: "Now, please make sure that you stay home and self-isolate for at least 14 days"
 
   utter_monitor_symptoms_temperature:
-    - text: "Take your temperature regularly and monitor your symptoms for any changes."
+    - text: "Take your temperature regularly and monitor your symptoms for any changes"
 
   utter_remind_possible_checkin:
-    - text: "At any time, you can check-in with me to monitor your symptoms."
+    - text: "At any time, you can check-in with me to monitor your symptoms"
 
   utter_visit_package:
-    - text: "You can consult [your personal information package](https://covid19.dialogue.co/#/info?id=ca-{province},{risk_level})."
+    - text: "You can consult [your personal information package](https://covid19.dialogue.co/#/info?id=ca-{province},{risk_level})"
 
   utter_goodbye:
     - text: "Thanks and take care of yourself!"
@@ -75,7 +75,7 @@ responses:
           payload: "/deny"
 
   utter_monitor_symptoms_changes:
-    - text: "Please monitor your symptoms for any changes or in case you get new symptoms, or if they worsen."
+    - text: "Please monitor your symptoms for any changes or in case you get new symptoms, or if they worsen"
 
   utter_ask_contact:
     - text: "Have you recently been in close contact with someone who has Covid-19?\nBy close contact I mean any of the following:\n- Providing care for infected patients, visiting, or staying with them in the same close environment\n- Working in close proximity with an infected person\n- Living in the same household as an infected person"
@@ -94,13 +94,13 @@ responses:
           payload: "/deny"
 
   utter_probably_not_covid:
-    - text: In this case, you probably don’t have Covid-19.
+    - text: In this case, you probably don’t have Covid-19
 
   utter_social_distancing:
-    - text: "Please ensure that you practice social distancing and that you don’t leave your home unless you really need to."
+    - text: "Please ensure that you practice social distancing and that you don’t leave your home unless you really need to"
 
   utter_checkin_if_developments:
-    - text: "If you develop any symptoms in the future, or if you get in contact with someone who has the Covid-19, please check-in with me for an assessment and recommendations."
+    - text: "If you develop any symptoms in the future, or if you get in contact with someone who has the Covid-19, please check-in with me for an assessment and recommendations"
 
   utter_link_if_anxious:
     - text: If you feel anxious about Covid-19 or your own wellbeing, please visit [Wellness Together Canada](https://ca.portal.gs/)
@@ -109,32 +109,50 @@ responses:
   utter_ask_province:
     - text: In which province or territory do you currently reside?
       buttons:
-        - title: B.C.
+        - title: BC
           payload: '/inform{"province": "bc"}'
-        - title: Alta.
+        - title: AB
           payload: '/inform{"province": "ab"}'
-        - title: Sask.
+        - title: SK
           payload: '/inform{"province": "sk"}'
-        - title: Man.
+        - title: MB
           payload: '/inform{"province": "mb"}'
-        - title: Ont.
+        - title: ON
           payload: '/inform{"province": "on"}'
-        - title: Que.
+        - title: QC
           payload: '/inform{"province": "qc"}'
-        - title: N.B.
+        - title: NB
           payload: '/inform{"province": "nb"}'
-        - title: N.S.
+        - title: NS
           payload: '/inform{"province": "ns"}'
-        - title: P.E.I.
+        - title: PE
           payload: '/inform{"province": "pe"}'
-        - title: N.L.
+        - title: NL
           payload: '/inform{"province": "nl"}'
-        - title: Y.T.
+        - title: YU
           payload: '/inform{"province": "yu"}'
-        - title: N.W.T.
+        - title: NT
           payload: '/inform{"province": "nt"}'
-        - title: Nvt.
+        - title: NU
           payload: '/inform{"province": "nu"}'
+
+  provincial_811_mb:
+    - text: "1-866-999-9698 option 4 or 1-888-315-9257 in the Winnipeg area"
+
+  provincial_811_on:
+    - text: "1-866-797-0000"
+
+  provincial_811_qc:
+    - text: "811 or 1-877-644-4545"
+
+  provincial_811_nt:
+    - text: "1-800-265-3333"
+
+  provincial_811_nu:
+    - text: "1-867-767-9054"
+
+  provincial_811_default:
+    - text: "811"
 
   utter_ask_age_over_65:
     - text: Are you older than 65?
@@ -147,10 +165,10 @@ responses:
   ## Tested positive
 
   utter_assess_symptoms:
-    - text: "Now, I’d like to assess your symptoms."
+    - text: "Now, I’d like to assess your symptoms"
 
   utter_symptoms_worsen_emergency_assistance:
-    - text: "If your symptoms worsen, you may need to go to the ER. If you need assistance, you should:\n- Contact your family doctor if possible, or\n- Call 811 for assistance"
+    - text: "If your symptoms worsen, you may need to go to the ER. If you need assistance, you should:\n- Contact your family doctor if possible, or\n- Call {provincial_811} for assistance"
 
   utter_ask_symptoms_worsened:
     - text: "Have your symptoms worsened in the last 24 hours?"
@@ -161,10 +179,10 @@ responses:
           payload: "/deny"
 
   utter_acknowledge_remind_monitor_symptoms_temperature:
-    - text: "OK, don’t forget to take your temperature regularly and monitor your symptoms for any changes."
+    - text: "OK, don’t forget to take your temperature regularly and monitor your symptoms for any changes"
 
   utter_no_symptoms:
-    - text: "It looks like you’re not experiencing any significant Covid-19 symptoms."
+    - text: "It looks like you’re not experiencing any significant Covid-19 symptoms"
 
   utter_ask_when_tested:
     - text: "When have you been diagnosed?"
@@ -175,7 +193,7 @@ responses:
           payload: "/less"
 
   utter_maybe_recovered:
-    - text: "You might have recovered. I invite you to stay home as much as possible and comply with social distancing rules. If you go outside, I recommend that you wear a mask."
+    - text: "You might have recovered. I invite you to stay home as much as possible and comply with social distancing rules. If you go outside, I recommend that you wear a mask"
 
   utter_more_information:
     - text: "For more information, resources and recommendations about Covid-19, please visit [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common)"
@@ -183,13 +201,13 @@ responses:
   # Daily CI enroll flow
 
   utter_daily_ci_enroll__offer_checkin:
-    - text: "If you'd like, you can enroll in our daily check-in."
+    - text: "If you'd like, you can enroll in our daily check-in"
 
   utter_daily_ci_enroll__explain_checkin_1:
-    - text: "If you do, I will contact you everyday to see how you’re doing, monitor your symptoms, evaluate your general health, and provide recommendations to help take care of yourself and relieve your symptoms."
+    - text: "If you do, I will contact you everyday to see how you’re doing, monitor your symptoms, evaluate your general health, and provide recommendations to help take care of yourself and relieve your symptoms"
 
   utter_daily_ci_enroll__explain_checkin_2:
-    - text: "The daily check-in offers you an updated assessment of your condition everyday, so that you receive the most relevant guidance and recommendations for your condition."
+    - text: "The daily check-in offers you an updated assessment of your condition everyday, so that you receive the most relevant guidance and recommendations for your condition"
 
   utter_ask_daily_ci_enroll__do_enroll:
     - text: "Would you like me to check-in with you daily to help monitor your symptoms?"
@@ -266,7 +284,7 @@ responses:
           payload: "/help_pre_existing_conditions"
 
   utter_explain_pre_existing_conditions:
-    - text: You may be more at risk if you have underlying medical conditions (e.g. heart disease, hypertension, diabetes, chronic respiratory disease, cancer) or if your immune system is compromised from a medical condition or treatment (e.g. chemotherapy).
+    - text: You may be more at risk if you have underlying medical conditions (e.g. heart disease, hypertension, diabetes, chronic respiratory disease, cancer) or if your immune system is compromised from a medical condition or treatment (e.g. chemotherapy)
 
   utter_ask_pre_existing_conditions_again:
     - text: Do you have such risk factors or pre-existing conditions?
@@ -279,7 +297,7 @@ responses:
           payload: "/dont_know"
 
   utter_daily_ci_enroll__note_pre_existing_conditions:
-    - text: If you're not sure, I will put a note in your profile that you might be at risk.
+    - text: If you're not sure, I will put a note in your profile that you might be at risk
 
   utter_ask_has_dialogue:
     - text: Finally, do you have health services with Dialogue?
@@ -290,27 +308,27 @@ responses:
           payload: "/deny"
 
   utter_daily_ci_enroll__enroll_done_1:
-    - text: Thanks. I have recorded all your answers in your personal profile.
+    - text: Thanks. I have recorded all your answers in your personal profile
 
   utter_daily_ci_enroll__enroll_done_2:
-    - text: Your registration to the daily check-in is now completed.
+    - text: Your registration to the daily check-in is now completed
 
   utter_daily_ci_enroll__enroll_done_3:
-    - text: I will check-in with you everyday around this time to see how you're doing, monitor your symptoms and direct you to the right resources.
+    - text: I will check-in with you everyday around this time to see how you're doing, monitor your symptoms and direct you to the right resources
 
   ## Return for check-in
 
   utter_returning_for_checkin:
-    - text: Thanks for checking in. Let's see how you're doing today.
+    - text: Thanks for checking in. Let's see how you're doing today
 
   utter_contact_healthcare_professional:
-    - text: In this case, you should speak to a healthcare professional to discuss your situation.
+    - text: In this case, you should speak to a healthcare professional to discuss your situation
 
   utter_contact_healthcare_professional_options:
-    - text: "You should: \n- Contact your family doctor if possible, or\n- Call 811 for assistance"
+    - text: "You should: \n- Contact your family doctor if possible, or\n- Call {provincial_811} for assistance"
 
   utter_remind_monitor_symptoms_temperature:
-    - text: Don't forget to take your temperature regularly and monitor your symptoms for any changes.
+    - text: Don't forget to take your temperature regularly and monitor your symptoms for any changes
 
   utter_ask_when_first_symptoms:
     - text: When did you experience your first symptoms?
@@ -321,10 +339,10 @@ responses:
           payload: "/less"
 
   utter_social_distancing_leave_home:
-    - text: OK, you should keep complying with social distancing rules, and if you leave your home, we recommend that you wear a mask.
+    - text: OK, you should keep complying with social distancing rules, and if you leave your home, we recommend that you wear a mask
 
   utter_self_isolate_symptom_free:
-    - text: In this case, you should keep self-isolating until you have been symptom-free for at least 7 days.
+    - text: In this case, you should keep self-isolating until you have been symptom-free for at least 7 days
 
   # QA flow
 
@@ -337,7 +355,7 @@ responses:
           payload: "/done"
 
   utter_can_help_with_questions:
-    - text: "I can help answer your questions about Covid-19, on many different topics."
+    - text: "I can help answer your questions about Covid-19, on many different topics"
 
   utter_ask_active_question:
     - text: "Please write your question about Covid-19:"
@@ -351,10 +369,10 @@ responses:
           payload: "/deny"
 
   utter_post_feedback:
-    - text: "Got it, please note that we work on improving our system constantly."
+    - text: "Got it, sorry about that! I’m still learning so your feedback helps me improve and provide better answers"
 
   utter_question_answering_error:
-    - text: "I’m sorry, I’m not able to get an answer to your question at this time."
+    - text: "I’m sorry, I’m not able to get an answer to your question at this time"
 
   utter_ask_assess_after_error:
     - text: "Do you want me to help you assess your symptoms?"
@@ -365,13 +383,13 @@ responses:
           payload: "/deny"
 
   utter_try_again_later:
-    - text: "Please try again later if you have questions."
+    - text: "Please try again later if you have questions"
 
   utter_cant_answer:
-    - text: "I’m sorry, I can’t answer your question, please try again."
+    - text: "I’m sorry, I can’t answer your question, please try again"
 
   utter_need_assessment:
-    - text: "It seems like you need help with your symptoms."
+    - text: "It seems like you need help with your symptoms"
 
   utter_ask_assess_to_answer:
     - text: "Do you want me to assess your symptoms?"
@@ -382,10 +400,10 @@ responses:
           payload: "/deny"
 
   utter_need_assessment_already_done:
-    - text: It seems that to answer your question, I would need to assess your symptoms. However, we have already done that.
+    - text: It seems that to answer your question, I would need to assess your symptoms. However, we have already done that
 
   utter_please_visit_again:
-    - text: "Got it. Please visit us again if you need help or have additional questions."
+    - text: "Got it. Please visit us again if you need help or have additional questions"
 
   utter_ask_what_next_after_answer:
     - text: "What would you like to do next?"
@@ -408,13 +426,13 @@ responses:
   ## action self-isolation
 
   utter_symptoms_self_isolate:
-    - text: "Since you have symptoms, you need to *self-isolate for at least 14 days*. It is extremely important that you follow this directive."
+    - text: "Since you have symptoms, you need to *self-isolate for at least 14 days*. It is extremely important that you follow this directive"
 
   utter_tested_positive_self_isolate:
-    - text: "Since you have tested positive to the Covid-19, *you must self-isolate for at least 14 days*. It is extremely important that you follow this directive."
+    - text: "Since you have tested positive to the Covid-19, *you must self-isolate for at least 14 days*. It is extremely important that you follow this directive"
 
   utter_contact_risk_self_isolate:
-    - text: "Since you are at risk of being infected, you need to *self-isolate for at least 14 days*. It is extremely important that you follow this directive."
+    - text: "Since you are at risk of being infected, you need to *self-isolate for at least 14 days*. It is extremely important that you follow this directive"
 
   utter_ask_lives_alone:
     - text: "Are you the only person in your household?"
@@ -425,16 +443,16 @@ responses:
           payload: "/deny"
 
   utter_dont_leave_home:
-    - text: "In this case, I recommend that you don’t leave your home unless you have a doctor’s appointment, or if you need to go to the hospital."
+    - text: "In this case, I recommend that you don’t leave your home unless you have a doctor’s appointment, or if you need to go to the hospital"
 
   utter_stay_separate_room:
-    - text: "In this case, you should stay in a separate room and use a different bathroom from others, if possible."
+    - text: "In this case, you should stay in a separate room and use a different bathroom from others, if possible"
 
   utter_distance_clean_surfaces:
-    - text: "If it’s not possible, ensure you stay at least 2 meters, or six feet, away from others in your home at all times, wash your hands often, and make sure every surface and object are cleaned after use."
+    - text: "If it’s not possible, ensure you stay at least 2 meters, or six feet, away from others in your home at all times, wash your hands often, and make sure every surface and object are cleaned after use"
 
   utter_wear_mask_same_room:
-    - text: "You should also wear a mask every time you are in the same room as others."
+    - text: "You should also wear a mask every time you are in the same room as others"
 
   utter_self_isolation_link:
     - text: "For more information about self-isolation, and to learn what you can do to protect others, visit [canada.ca](https://www.canada.ca/en/public-health/services/publications/diseases-conditions/covid-19-how-to-isolate-at-home.html)"
@@ -450,19 +468,19 @@ responses:
           payload: "/deny"
 
   utter_remind_delivery_services:
-    - text: "Don’t forget that most pharmacies and many grocery stores offer delivery services. Check with your local pharmacy or grocery store if they deliver."
+    - text: "Don’t forget that most pharmacies and many grocery stores offer delivery services. Check with your local pharmacy or grocery store if they deliver"
 
   utter_check_delivery_services:
-    - text: "Most pharmacies and many grocery stores offer delivery services. You can check with your local pharmacy or grocery store if they offer this service."
+    - text: "Most pharmacies and many grocery stores offer delivery services. You can check with your local pharmacy or grocery store if they offer this service"
 
   utter_may_call_211:
-    - text: "If that’s not possible for you, you may call 211 or visit 211.ca for assistance."
+    - text: "If that’s not possible for you, you may call 211 or visit 211.ca for assistance"
 
   utter_explain_211:
-    - text: "The 211 service can direct you to a variety of local resources for assistance with food, health, or community services."
+    - text: "The 211 service can direct you to a variety of local resources for assistance with food, health, or community services"
 
   utter_remind_pharmacist_services:
-    - text: "Your pharmacist can also provide recommendations and advice on how to relieve your symptoms and which over-the-counter medications you can safely take."
+    - text: "Your pharmacist can also provide recommendations and advice on how to relieve your symptoms and which over-the-counter medications you can safely take"
 
   ## Daily check-in
 
@@ -470,7 +488,7 @@ responses:
     - text: "Hello {first_name}, this is Chloe, for your daily check-in. To continue, please follow that link: {check_in_url}"
 
   utter_greet_daily_checkin:
-    - text: Hello Linda, this is Chloe, and I'm checking in to see how you're doing today.
+    - text: Hello Linda, this is Chloe, and I'm checking in to see how you're doing today
 
   utter_ask_how_do_you_feel:
     - text: First, compared to yesterday, how do you feel?
@@ -558,13 +576,13 @@ responses:
           payload: "/deny"
 
   utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_1:
-    - text: You may want to discuss your situation with your doctor, if that's possible, or call 811
+    - text: You may want to discuss your situation with your doctor, if that's possible, or call {provincial_811}
 
   utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_2:
     - text: If your symptoms worsen, you will need to get to the nearest emergency department or call 911
 
   utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_1:
-    - text: OK, if this gets worse, you should call your doctor, if that's possible, or call 811 to discuss your situation with a nurse
+    - text: OK, if this gets worse, you should call your doctor, if that's possible, or call {provincial_811} to discuss your situation with a nurse
 
   utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_2:
     - text: In any case, make sure you keep staying isolated and continue to rest
@@ -602,7 +620,7 @@ responses:
     - text: I'm sorry to see that
 
   utter_daily_ci__feel_no_change__diff_breathing_recommendation:
-    - text: "If your symptoms worsen, you may need to go to the ER. If you need assistance, you should:\n- Contact your family doctor if possible, or\n- Call 811 for assistance\nAnd make sure you inform them of your condition"
+    - text: "If your symptoms worsen, you may need to go to the ER. If you need assistance, you should:\n- Contact your family doctor if possible, or\n- Call {provincial_811} for assistance\nAnd make sure you inform them of your condition"
 
   utter_daily_ci__feel_no_change__acknowledge_no_diff_breathing:
     - text: That's good, I'm glad to hear that
@@ -616,7 +634,7 @@ responses:
   ## Daily check-in - feel better
 
   utter_daily_ci__feel_better__acknowledge:
-    - text: I'm glad to know you're feeling better.
+    - text: I'm glad to know you're feeling better
 
   utter_ask_daily_ci__feel_better__has_fever:
     - text: Now, is your temperature higher than 38°C or 100.4°F? (You can take your temperature now if you're not sure)
@@ -687,7 +705,7 @@ responses:
   ## Daily check-in - keep or cancel
 
   utter_daily_ci__keep_or_cancel__no_symptoms_recommendation:
-    - text: It looks like you may have recovered from Covid-19. Make sure that you continue to take steps to protect yourself and others, like staying home and wearing a mask if you absolutely have to leave your house.
+    - text: It looks like you may have recovered from Covid-19. Make sure that you continue to take steps to protect yourself and others, like staying home and wearing a mask if you absolutely have to leave your house
 
   utter_ask_daily_ci__keep_or_cancel__cancel_ci_no_symptoms:
     - text: Would you like me to continue checking in on you everyday, or do you want to cancel the daily check-in?

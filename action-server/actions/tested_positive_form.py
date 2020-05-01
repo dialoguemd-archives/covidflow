@@ -44,6 +44,15 @@ class TestedPositiveForm(FormAction):
         dispatcher.utter_message(template="utter_assess_symptoms")
         return result
 
+    def validate_province(
+        self,
+        value: Text,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        return AssessmentCommon.validate_province(value, domain)
+
     def submit(
         self,
         dispatcher: CollectingDispatcher,

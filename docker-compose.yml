@@ -51,6 +51,14 @@ services:
       dockerfile: Dockerfile
     ports:
       - 5055:8080
+    environment:
+        - DAILY_CHECKIN_BASE_URL=http://localhost:3000/#/rasa/ci
+        - REMINDER_ID_HASHIDS_MIN_LENGTH=8
+        - REMINDER_ID_HASHIDS_SALT=abcd1234
+        - SQL_TRACKER_STORE_URL=tracker-store
+        - SQL_TRACKER_STORE_USER=chloe
+        - SQL_TRACKER_STORE_PASSWORD=password
+        - SQL_TRACKER_STORE_DB=chloe
     volumes:
       - ./action-server/actions:/app/actions
       - ./action-server/db:/app/db

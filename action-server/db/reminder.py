@@ -26,3 +26,11 @@ class Reminder(Base):
     def __init__(self, timezone, attributes):
         self.timezone = timezone
         self.attributes = attributes
+
+    @property
+    def first_name(self):
+        return self.attributes["first_name"]
+
+    @property
+    def phone_number(self):
+        return self.attributes["phone_number"]

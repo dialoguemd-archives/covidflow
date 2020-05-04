@@ -23,6 +23,8 @@ intents:
       use_entities: []
   - still_sick
   - symptom_free
+  - no_phone
+  - cancel
   - send_validation_code:
       triggers: action_send_validation_code
   - send_daily_checkin_reminder:
@@ -47,7 +49,6 @@ actions:
   - action_tested_positive_maybe_cured_final_recommendations
   - action_tested_positive_not_cured_final_recommendations
   - action_severe_symptoms_recommendations
-  - action_offer_daily_checkin
   - action_send_validation_code
   - action_send_daily_checkin_reminder
 
@@ -120,6 +121,9 @@ slots:
   pre_existing_conditions:
     type: unfeaturized
 
+  has_dialogue:
+    type: unfeaturized
+
   active_question:
     type: unfeaturized
 
@@ -149,6 +153,27 @@ slots:
 
   has_assistance:
     type: unfeaturized
+
+  daily_ci_enroll__do_enroll:
+    type: unfeaturized
+
+  daily_ci_enroll__validation_code_reference:
+    type: unfeaturized
+
+  daily_ci_enroll__validation_code:
+    type: unfeaturized
+
+  daily_ci_enroll__phone_number_error_counter:
+    type: unfeaturized
+    initial_value: 0
+
+  daily_ci_enroll__validation_code_error_counter:
+    type: unfeaturized
+    initial_value: 0
+
+  daily_ci_enroll__wants_cancel:
+    type: unfeaturized
+    initial_value: false
 
   daily_ci__feel_worse__has_diff_breathing_worsened:
     type: unfeaturized

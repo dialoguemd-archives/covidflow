@@ -49,16 +49,7 @@ responses:
   utter_monitor_symptoms_assistance:
     - text: "Assurez-vous de suivre l'évolution de vos symptômes. Si vous avez besoin d'assistance, vous devriez: \n- Communiquer avec votre médecin de famille, si c'est possible, ou \n- Appeler le 811"
 
-  utter_offer_checkin:
-    - text: "Si ça vous intéresse, vous pouvez vous inscrire à notre suivi quotidien"
-
-  utter_explain_checkin_contact:
-    - text: "Ainsi, je vais vous contacter à chaque jour pour voir comment vous allez, évaluer vos symptômes et votre état de santé général, et vous donner des conseils et des recommandations pour vous aider à prendre soin de vous et à soulager vos symptômes"
-
-  utter_explain_checkin_assessment:
-    - text: "Notre suivi quotidien vous offre une évaluation de votre condition au jour le jour, de telle sorte que vous recevrez les conseils et les recommandations les plus pertinents en fonction de votre condition réelle"
-
-  utter_ask_want_checkin:
+  utter_ask_daily_ci_enroll__do_enroll:
     - text: "Aimeriez-vous que je fasse un suivi quotidien pour vous aider à évaluer vos symptômes?"
       buttons:
         - title: Oui
@@ -197,33 +188,72 @@ responses:
   utter_more_information:
     - text: "Pour des informations, ressources et recommandations sur la Covid-19, consultez [dialogue](https://covid19.dialogue.co/#/)"
 
-  utter_ask_want_checkin_no_symptoms:
-    - text: "Aimeriez-vous que je communique avec vous à chaque jour pour surveiller l’apparition de nouveaux symptômes?"
-      buttons:
-        - title: Oui
-          payload: "/affirm"
-        - title: Non
-          payload: "/deny"
-
   # Daily CI enroll flow
 
-  utter_daily_checkin_enroll:
+  utter_daily_ci_enroll__offer_checkin:
+    - text: "Si ça vous intéresse, vous pouvez vous inscrire à notre suivi quotidien"
+
+  utter_daily_ci_enroll__explain_checkin_1:
+    - text: "Ainsi, je vais vous contacter à chaque jour pour voir comment vous allez, évaluer vos symptômes et votre état de santé général, et vous donner des conseils et des recommandations pour vous aider à prendre soin de vous et à soulager vos symptômes"
+
+  utter_daily_ci_enroll__explain_checkin_2:
+    - text: "Notre suivi quotidien vous offre une évaluation de votre condition au jour le jour, de telle sorte que vous recevrez les conseils et les recommandations les plus pertinents en fonction de votre condition réelle"
+
+  utter_daily_ci_enroll__start_enroll:
     - text: D'accord! Pour faire un suivi quotidien avec vous et vous donner des recommandations personnalisées, j'ai besoin de vous poser quelques questions.
 
   utter_ask_first_name:
     - text: D'abord, quel est votre prénom?
 
-  utter_thanks_first_name:
+  utter_daily_ci_enroll__thanks_first_name:
     - text: "Merci, {first_name}."
 
-  utter_text_message_checkin:
+  utter_daily_ci_enroll__text_message_checkin:
     - text: "Je vais communiquer avec vous par message texte à chaque jour pour faire votre suivi."
 
   utter_ask_phone_number:
     - text: Pour que je puisse vous joindre, quel est votre numéro de téléphone?
 
-  utter_acknowledge:
+  utter_daily_ci_enroll__no_phone_no_checkin:
+    - text: Malheureusement, si vous n’avez pas de téléphone mobile, il ne sera pas possible de vous inscrire au suivi quotidien
+
+  utter_daily_ci_enroll__continue:
+    - text: Continuons
+
+  utter_ask_daily_ci_enroll__wants_cancel:
+    - text: Voulez-vous vraiment annuler l’inscription au suivi quotidien?
+      buttons:
+        - title: Oui arrêter
+          payload: "/affirm"
+        - title: Non je veux m’inscrire
+          payload: "/deny"
+
+  utter_daily_ci_enroll__ok_continue:
+    - text: "D’accord, continuons!"
+
+  utter_daily_ci_enroll__no_problem_continue:
+    - text: Pas de problème, continuons
+
+  utter_daily_ci_enroll__invalid_phone_number:
+    - text: Désolée, ce numéro n’est pas valide. Essayons de nouveau
+
+  utter_ask_phone_number_error:
+    - text: Veuillez entrer votre numéro de téléphone, en incluant l’indicatif régional
+
+  utter_daily_ci_enroll__invalid_phone_no_checkin:
+    - text: "Désolée, je ne suis pas en mesure de compléter votre inscription. Continuons"
+
+  utter_daily_ci_enroll__acknowledge:
     - text: "C'est noté."
+
+  utter_ask_daily_ci_enroll__validation_code:
+    - text: Je vous ai envoyé un code de validation par texto. Dès que vous le recevez, inscrivez-le ici
+
+  utter_daily_ci_enroll__thanks:
+    - text: Merci
+
+  utter_ask_daily_ci_enroll__validation_code_error:
+    - text: Je suis désolée, ce code n’est pas valide. Veuillez entrer de nouveau le code à 4 chiffres que vous venez de recevoir
 
   utter_ask_pre_existing_conditions:
     - text: Avez-vous des problèmes de santé qui pourraient affecter votre système immunitaire?
@@ -248,30 +278,30 @@ responses:
         - title: Je ne sais pas
           payload: "/dont_know"
 
-  utter_note_pre_existing_conditions:
+  utter_daily_ci_enroll__note_pre_existing_conditions:
     - text: Si vous ne savez pas, je vais mettre une note à votre profil indiquant que vous pourriez être à risque.
 
-  utter_daily_ci_answers_recorded:
+  utter_ask_has_dialogue:
+    - text: Enfin, est-ce que vous avez le service de santé de Dialogue?
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_daily_ci_enroll__enroll_done_1:
     - text: Merci. J'ai enregistré toutes vos réponses dans votre profil personnel.
 
-  utter_daily_ci_enroll_done:
+  utter_daily_ci_enroll__enroll_done_2:
     - text: Votre inscription au suivi quotidien est maintenant complétée.
 
-  utter_daily_ci_enroll_follow_up:
+  utter_daily_ci_enroll__enroll_done_3:
     - text: Je vais faire un suivi avec vous à chaque jour environ à cette heure-ci pour voir comment vous allez, vérifier vos symptômes et vous diriger vers les bonnes ressources au besoin.
 
   ## Return for check-in
 
   utter_returning_for_checkin:
     - text: "Merci de me contacter pour un suivi. Voyons voir comment vous vous portez aujourd'hui."
-
-  utter_ask_want_checkin_acknowledge:
-    - text: Aimeriez-vous que *je* vous contacte quotidiennement pour un suivi?
-      buttons:
-        - title: Oui
-          payload: "/affirm"
-        - title: Non
-          payload: "/deny"
 
   utter_contact_healthcare_professional:
     - text: Dans ce cas, vous devriez discuter de votre situation avec un professionnel de la santé.

@@ -1,7 +1,7 @@
 from typing import Any, Dict, List, Optional, Text, Union
 
 from rasa_sdk import Tracker
-from rasa_sdk.events import EventType
+from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
@@ -11,6 +11,7 @@ FORM_NAME = "daily_ci_feel_no_change_form"
 
 LAST_SYMPTOMS_SLOT = "last_symptoms"
 
+FEEL_WORSE_SLOT = "feel_worse"
 SYMPTOMS_SLOT = "symptoms"
 HAS_FEVER_SLOT = "has_fever"
 HAS_DIFF_BREATHING_SLOT = "has_diff_breathing"
@@ -21,6 +22,20 @@ class DailyCiFeelNoChangeForm(FormAction):
     def name(self) -> Text:
 
         return FORM_NAME
+
+    ## override to set feel_worse slot
+    async def _activate_if_required(
+        self,
+        dispatcher: "CollectingDispatcher",
+        tracker: "Tracker",
+        domain: Dict[Text, Any],
+    ) -> List[EventType]:
+        events = []
+
+        if tracker.active_form.get("name") != FORM_NAME:
+            events.append(SlotSet(FEEL_WORSE_SLOT, False))
+
+        return await super()._activate_if_required(dispatcher, tracker, domain) + events
 
     @staticmethod
     def required_slots(tracker: Tracker) -> List[Text]:

@@ -8,6 +8,13 @@ from rasa_sdk.forms import REQUESTED_SLOT, FormAction
 from actions.assessment_common import AssessmentCommon
 from tests.form_helper import FormTestCase
 
+DOMAIN = {
+    "responses": {
+        "provincial_811_qc": [{"text": "811 qc"}],
+        "provincial_811_default": [{"text": "811 default"}],
+    }
+}
+
 
 class TestAssessmentForm(FormAction):
     def name(self) -> Text:
@@ -20,6 +27,16 @@ class TestAssessmentForm(FormAction):
 
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return AssessmentCommon.slot_mappings(self)
+
+    def validate_province(
+        self,
+        value: Text,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        # real domain should be passed in real form, overwritted here to insert test-specific keys
+        return AssessmentCommon.validate_province(value, DOMAIN)
 
     def submit(
         self,
@@ -65,7 +82,7 @@ class BaseTestAssessmentForm:
 
         self.assert_templates(["utter_ask_province"])
 
-    def test_provide_province(self):
+    def test_provide_province_specific_provincial_811(self):
         tracker = self.create_tracker(
             slots={"severe_symptoms": False, REQUESTED_SLOT: "province",},
             intent="inform",
@@ -75,7 +92,30 @@ class BaseTestAssessmentForm:
         self.run_form(tracker)
 
         self.assert_events(
-            [SlotSet("province", "qc"), SlotSet(REQUESTED_SLOT, "age_over_65"),],
+            [
+                SlotSet("province", "qc"),
+                SlotSet("provincial_811", "811 qc"),
+                SlotSet(REQUESTED_SLOT, "age_over_65"),
+            ],
+        )
+
+        self.assert_templates(["utter_ask_age_over_65"])
+
+    def test_provide_province_default_provincial_811(self):
+        tracker = self.create_tracker(
+            slots={"severe_symptoms": False, REQUESTED_SLOT: "province",},
+            intent="inform",
+            entities=[{"entity": "province", "value": "bc"}],
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet("province", "bc"),
+                SlotSet("provincial_811", "811 default"),
+                SlotSet(REQUESTED_SLOT, "age_over_65"),
+            ],
         )
 
         self.assert_templates(["utter_ask_age_over_65"])

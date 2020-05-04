@@ -161,6 +161,9 @@ slots:
   cancel_ci:
     type: unfeaturized
 
+  provincial_811:
+    type: unfeaturized
+
   daily_ci_enroll__do_enroll:
     type: unfeaturized
 

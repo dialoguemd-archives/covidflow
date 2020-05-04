@@ -38,6 +38,15 @@ class AssessmentForm(FormAction):
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return AssessmentCommon.slot_mappings(self)
 
+    def validate_province(
+        self,
+        value: Text,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        return AssessmentCommon.validate_province(value, domain)
+
     def validate_moderate_symptoms(
         self,
         value: Text,

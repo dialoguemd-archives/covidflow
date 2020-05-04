@@ -23,7 +23,7 @@ PHONE_TRY_COUNTER_SLOT = "daily_ci_enroll__phone_number_error_counter"
 VALIDATION_CODE_SLOT = "daily_ci_enroll__validation_code"
 VALIDATION_CODE_REFERENCE_SLOT = "daily_ci_enroll__validation_code_reference"
 CODE_TRY_COUNTER_SLOT = "daily_ci_enroll__validation_code_error_counter"
-PRE_EXISTING_CONDITIONS_SLOT = "pre_existing_conditions"
+PRE_EXISTING_CONDITIONS_SLOT = "preconditions"
 HAS_DIALOGUE_SLOT = "has_dialogue"
 
 WANTS_CANCEL_SLOT = "daily_ci_enroll__wants_cancel"
@@ -246,7 +246,7 @@ class DailyCiEnrollForm(FormAction):
 
         return {VALIDATION_CODE_SLOT: None, CODE_TRY_COUNTER_SLOT: try_counter + 1}
 
-    def validate_pre_existing_conditions(
+    def validate_preconditions(
         self,
         value: Union[bool, Text],
         dispatcher: CollectingDispatcher,
@@ -257,7 +257,7 @@ class DailyCiEnrollForm(FormAction):
 
         if value == "dont_know":
             dispatcher.utter_message(
-                template="utter_daily_ci_enroll__note_pre_existing_conditions"
+                template="utter_daily_ci_enroll__note_preconditions"
             )
 
             slot_values[PRE_EXISTING_CONDITIONS_SLOT] = True

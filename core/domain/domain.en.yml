@@ -279,7 +279,7 @@ responses:
   utter_ask_daily_ci_enroll__validation_code_error:
     - text: I’m sorry, this is not a valid code. Please try again and enter the 4-digit code that you received by text
 
-  utter_ask_pre_existing_conditions:
+  utter_ask_preconditions:
     - text: Do you have any pre-existing conditions that may affect your immunity?
       buttons:
         - title: Yes
@@ -287,12 +287,12 @@ responses:
         - title: No
           payload: "/deny"
         - title: What are pre-existing conditions?
-          payload: "/help_pre_existing_conditions"
+          payload: "/help_preconditions"
 
-  utter_explain_pre_existing_conditions:
+  utter_explain_preconditions:
     - text: You may be more at risk if you have underlying medical conditions (e.g. heart disease, hypertension, diabetes, chronic respiratory disease, cancer) or if your immune system is compromised from a medical condition or treatment (e.g. chemotherapy)
 
-  utter_ask_pre_existing_conditions_again:
+  utter_ask_preconditions_again:
     - text: Do you have such risk factors or pre-existing conditions?
       buttons:
         - title: Yes
@@ -302,7 +302,7 @@ responses:
         - title: I don't know
           payload: "/dont_know"
 
-  utter_daily_ci_enroll__note_pre_existing_conditions:
+  utter_daily_ci_enroll__note_preconditions:
     - text: If you're not sure, I will put a note in your profile that you might be at risk
 
   utter_ask_has_dialogue:

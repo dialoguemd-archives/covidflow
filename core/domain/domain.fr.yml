@@ -279,7 +279,7 @@ responses:
   utter_ask_daily_ci_enroll__validation_code_error:
     - text: Je suis désolée, ce code n’est pas valide. Veuillez entrer de nouveau le code à 4 chiffres que vous venez de recevoir
 
-  utter_ask_pre_existing_conditions:
+  utter_ask_preconditions:
     - text: Avez-vous des problèmes de santé qui pourraient affecter votre système immunitaire?
       buttons:
         - title: Oui
@@ -287,12 +287,12 @@ responses:
         - title: Non
           payload: "/deny"
         - title: Avez-vous des exemples?
-          payload: "/help_pre_existing_conditions"
+          payload: "/help_preconditions"
 
-  utter_explain_pre_existing_conditions:
+  utter_explain_preconditions:
     - text: "Vous pourriez être plus à risque si vous avez certains problèmes médicaux (par ex.: problèmes cardiaques, hypertension, diabète, maladie respiratoire chronique, cancer) ou si votre système immunitaire est affaibli en raison d'une condition ou d'un traitement médical (par ex.: chimiothérapie)"
 
-  utter_ask_pre_existing_conditions_again:
+  utter_ask_preconditions_again:
     - text: Présentez-vous des facteurs de risque?
       buttons:
         - title: Oui
@@ -302,7 +302,7 @@ responses:
         - title: Je ne sais pas
           payload: "/dont_know"
 
-  utter_daily_ci_enroll__note_pre_existing_conditions:
+  utter_daily_ci_enroll__note_preconditions:
     - text: Si vous ne savez pas, je vais mettre une note à votre profil indiquant que vous pourriez être à risque
 
   utter_ask_has_dialogue:

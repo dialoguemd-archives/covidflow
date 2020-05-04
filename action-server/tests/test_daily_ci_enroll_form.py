@@ -413,7 +413,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         )
 
         self.assert_templates(
-            ["utter_daily_ci_enroll__thanks", "utter_ask_pre_existing_conditions"]
+            ["utter_daily_ci_enroll__thanks", "utter_ask_preconditions"]
         )
 
     def test_provide_first_invalid_validation_code(self):
@@ -491,7 +491,7 @@ class TestDailyCiEnrollForm(FormTestCase):
 
         self.assert_templates(["utter_daily_ci_enroll__invalid_phone_no_checkin"])
 
-    def test_provide_pre_existing_conditions_affirm(self):
+    def test_provide_preconditions_affirm(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PRE_EXISTING_CONDITIONS_SLOT,
@@ -514,7 +514,7 @@ class TestDailyCiEnrollForm(FormTestCase):
 
         self.assert_templates(["utter_ask_has_dialogue"])
 
-    def test_provide_pre_existing_conditions_deny(self):
+    def test_provide_preconditions_deny(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PRE_EXISTING_CONDITIONS_SLOT,
@@ -537,7 +537,7 @@ class TestDailyCiEnrollForm(FormTestCase):
 
         self.assert_templates(["utter_ask_has_dialogue"],)
 
-    def test_provide_pre_existing_conditions_dont_know(self):
+    def test_provide_preconditions_dont_know(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PRE_EXISTING_CONDITIONS_SLOT,
@@ -559,13 +559,10 @@ class TestDailyCiEnrollForm(FormTestCase):
         )
 
         self.assert_templates(
-            [
-                "utter_daily_ci_enroll__note_pre_existing_conditions",
-                "utter_ask_has_dialogue",
-            ],
+            ["utter_daily_ci_enroll__note_preconditions", "utter_ask_has_dialogue",],
         )
 
-    def test_provide_pre_existing_conditions_explain(self):
+    def test_provide_preconditions_explain(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PRE_EXISTING_CONDITIONS_SLOT,
@@ -574,7 +571,7 @@ class TestDailyCiEnrollForm(FormTestCase):
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
                 VALIDATION_CODE_SLOT: VALIDATION_CODE,
             },
-            intent="help_pre_existing_conditions",
+            intent="help_preconditions",
         )
 
         with self.assertRaises(ActionExecutionRejection):

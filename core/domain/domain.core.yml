@@ -25,6 +25,8 @@ intents:
   - symptom_free
   - send_validation_code:
       triggers: action_send_validation_code
+  - send_daily_checkin_reminder:
+      triggers: action_send_daily_checkin_reminder
 
 entities:
   - province
@@ -47,6 +49,7 @@ actions:
   - action_severe_symptoms_recommendations
   - action_offer_daily_checkin
   - action_send_validation_code
+  - action_send_daily_checkin_reminder
 
 forms:
   - assessment_form

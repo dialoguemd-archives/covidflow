@@ -240,6 +240,14 @@ hyperframe = ">=5.2.0,<6"
 
 [[package]]
 category = "main"
+description = "Python implementation of hashids (http://www.hashids.org).Compatible with python 2.6-3."
+name = "hashids"
+optional = false
+python-versions = "*"
+version = "1.2.0"
+
+[[package]]
+category = "main"
 description = "Pure-Python HPACK header compression"
 name = "hpack"
 optional = false
@@ -966,7 +974,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "e473b3167ae07a1ac478dec72861d9b888f1d8319070d5f11b63b198b558bd57"
+content-hash = "a0c12750d944163b7a037690fc167c609e6f3165fec47f923c2c8f7dd1f6bff2"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1090,6 +1098,9 @@ h11 = [
 h2 = [
     {file = "h2-3.2.0-py2.py3-none-any.whl", hash = "sha256:61e0f6601fa709f35cdb730863b4e5ec7ad449792add80d1410d4174ed139af5"},
     {file = "h2-3.2.0.tar.gz", hash = "sha256:875f41ebd6f2c44781259005b157faed1a5031df3ae5aa7bcb4628a6c0782f14"},
+]
+hashids = [
+    {file = "hashids-1.2.0.tar.gz", hash = "sha256:6539b892a426e75747a9c0ad69409e9566f9c21b79310fc3424b5b6726f28da6"},
 ]
 hpack = [
     {file = "hpack-3.0.0-py2.py3-none-any.whl", hash = "sha256:0edd79eda27a53ba5be2dfabf3b15780928a0dff6eb0c60a3d6767720e970c89"},

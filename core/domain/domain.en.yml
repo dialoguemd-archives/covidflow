@@ -436,6 +436,9 @@ responses:
 
   ## Daily check-in
 
+  utter_checkin_reminder:
+    - text: "Hello {first_name}, this is Chloe, for your daily check-in. To continue, please follow that link: {check_in_url}"
+
   utter_greet_daily_checkin:
     - text: Hello Linda, this is Chloe, and I'm checking in to see how you're doing today.
 

@@ -436,6 +436,9 @@ responses:
 
   ## Daily check-in
 
+  utter_checkin_reminder:
+    - text: "Bonjour {first_name}, ici Chloé, pour votre suivi quotidien. Pour poursuivre, veuillez suivre ce lien: {check_in_url}"
+
   utter_greet_daily_checkin:
     - text: Bonjour Linda, ici Chloé, pour votre suivi quotidien. Voyons voir comment ça va aujourd'hui
 

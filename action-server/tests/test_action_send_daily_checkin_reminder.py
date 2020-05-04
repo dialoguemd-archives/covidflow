@@ -11,20 +11,27 @@ from actions.lib.exceptions import (
     ReminderNotFoundException,
 )
 
-CHECKIN_BASE_URL = "http://test.com/ci/"
+CHECKIN_URL_PATTERN = "http://test.com/?lng={language}#rasa/ci/{reminder_id}"
 HASHIDS_SALT = "abcd1234"
 HASHIDS_MIN_LENGTH = 4
 hashids = Hashids(HASHIDS_SALT, min_length=HASHIDS_MIN_LENGTH)
 
 DEFAULT_PHONE_NUMBER = "91112223333"
 DEFAULT_FIRST_NAME = "George"
+DEFAULT_LANGUAGE = "fr"
 DEFAULT_REMINDER_ID = 1
 DEFAULT_REMINDER_ID_HASH = hashids.encode(1)
 
 ENV = {
     "REMINDER_ID_HASHIDS_SALT": HASHIDS_SALT,
     "REMINDER_ID_HASHIDS_MIN_LENGTH": str(HASHIDS_MIN_LENGTH),
-    "DAILY_CHECKIN_BASE_URL": CHECKIN_BASE_URL,
+    "DAILY_CHECKIN_URL_PATTERN": CHECKIN_URL_PATTERN,
+}
+
+INVALID_PATTERN_ENV = {
+    "REMINDER_ID_HASHIDS_SALT": HASHIDS_SALT,
+    "REMINDER_ID_HASHIDS_MIN_LENGTH": str(HASHIDS_MIN_LENGTH),
+    "DAILY_CHECKIN_URL_PATTERN": "http://test.com/?lng={language}#rasa/ci/{rem}",
 }
 
 
@@ -49,6 +56,7 @@ def _mock_reminder(mock_session_factory, phone_number):
     )
     reminder_mock.first_name = DEFAULT_FIRST_NAME
     reminder_mock.phone_number = phone_number
+    reminder_mock.language = DEFAULT_LANGUAGE
 
 
 class TestActionSendDailyCheckinReminder(TestCase):
@@ -61,6 +69,11 @@ class TestActionSendDailyCheckinReminder(TestCase):
 
     def test_missing_environment_variables(self):
         with self.assertRaises(expected_exception=Exception):
+            ActionSendDailyCheckInReminder()
+
+    @patch.dict("os.environ", INVALID_PATTERN_ENV)
+    def test_invalid_url_pattern(self):
+        with self.assertRaises(expected_exception=KeyError):
             ActionSendDailyCheckInReminder()
 
     @patch.dict("os.environ", ENV)
@@ -79,7 +92,10 @@ class TestActionSendDailyCheckinReminder(TestCase):
         self.assertEqual(message["template"], "utter_checkin_reminder")
         self.assertEqual(message["first_name"], DEFAULT_FIRST_NAME)
         self.assertEqual(
-            message["check_in_url"], CHECKIN_BASE_URL + DEFAULT_REMINDER_ID_HASH,
+            message["check_in_url"],
+            CHECKIN_URL_PATTERN.format(
+                language=DEFAULT_LANGUAGE, reminder_id=DEFAULT_REMINDER_ID_HASH
+            ),
         )
 
     @patch.dict("os.environ", ENV)

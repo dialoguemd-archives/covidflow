@@ -34,3 +34,7 @@ class Reminder(Base):
     @property
     def phone_number(self):
         return self.attributes["phone_number"]
+
+    @property
+    def language(self):
+        return self.attributes["language"]

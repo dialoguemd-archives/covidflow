@@ -42,7 +42,7 @@ scale:
 environment:
   COUNTRY_CODE: ca
   ALEMBIC_DATABASE_URI: postgresql+psycopg2://$(SQL_TRACKER_STORE_USER):$(SQL_TRACKER_STORE_PASSWORD)@$(SQL_TRACKER_STORE_URL):5432/$(SQL_TRACKER_STORE_DB)
-  DAILY_CHECKIN_BASE_URL: "https://covid19.dialogue.co/#/rasa/ci"
+  DAILY_CHECKIN_URL_PATTERN: "https://covid19.dialogue.co/?lng={language}#/rasa/ci/{reminder_id}"
   REMINDER_ID_HASHIDS_MIN_LENGTH: 8
 
 environments:

@@ -1,6 +1,5 @@
 import logging
 import os
-import urllib.parse
 from typing import Any, Dict, List, Text
 
 from hashids import Hashids
@@ -17,7 +16,7 @@ logger = logging.getLogger(__name__)
 METADATA_ENTITY_NAME = "metadata"
 REMINDER_ID_PROPERTY_NAME = "reminder_id"
 
-CHECKIN_BASE_URL_ENV_KEY = "DAILY_CHECKIN_BASE_URL"
+CHECKIN_URL_PATTERN_ENV_KEY = "DAILY_CHECKIN_URL_PATTERN"
 HASHIDS_SALT_ENV_KEY = "REMINDER_ID_HASHIDS_SALT"
 HASHIDS_MIN_LENGTH_ENV_KEY = "REMINDER_ID_HASHIDS_MIN_LENGTH"
 
@@ -46,11 +45,17 @@ class ActionSendDailyCheckInReminder(Action):
     def __init__(self):
         salt = _get_env(HASHIDS_SALT_ENV_KEY)
         min_length = _get_env(HASHIDS_MIN_LENGTH_ENV_KEY)
-        base_url = _get_env(CHECKIN_BASE_URL_ENV_KEY)
 
-        # Always appending '/', `urljoin` will take care of removing superfluous slash.
-        self.base_url = base_url + "/"
+        self.url_pattern = _get_env(CHECKIN_URL_PATTERN_ENV_KEY)
         self.hashids = Hashids(salt, min_length=min_length)
+
+        try:
+            # Make sure url pattern contains all required keys
+            self.url_pattern.format(reminder_id="1", language="fr")
+        except KeyError as exception:
+            raise KeyError(
+                f"Invalid value for {CHECKIN_URL_PATTERN_ENV_KEY} environment variable ({self.url_pattern})"
+            ) from exception
 
     def name(self) -> Text:
         return "action_send_daily_checkin_reminder"
@@ -70,13 +75,14 @@ class ActionSendDailyCheckInReminder(Action):
         reminder = _query_reminder(reminder_id)
         first_name = reminder.first_name
         phone_number = reminder.phone_number
+        language = reminder.language
 
         if conversation_id != phone_number:
             raise InvalidExternalEventException(
                 f"Phone number does not match sender_id: reminder_id={reminder_id} sender_id={conversation_id} phone_number={phone_number}"
             )
 
-        checkin_url = urllib.parse.urljoin(self.base_url, hashed_id)
+        checkin_url = self.url_pattern.format(reminder_id=hashed_id, language=language)
 
         logger.debug(
             "Sending daily check-in reminder: checkin_url=%s first_name=%s.",

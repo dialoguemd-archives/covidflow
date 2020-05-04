@@ -52,7 +52,7 @@ services:
     ports:
       - 5055:8080
     environment:
-        - DAILY_CHECKIN_BASE_URL=http://localhost:3000/#/rasa/ci
+        - DAILY_CHECKIN_URL_PATTERN=http://localhost:3000/?lng={language}#/rasa/ci/{reminder_id}"
         - REMINDER_ID_HASHIDS_MIN_LENGTH=8
         - REMINDER_ID_HASHIDS_SALT=abcd1234
         - SQL_TRACKER_STORE_URL=tracker-store

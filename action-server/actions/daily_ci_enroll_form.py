@@ -7,9 +7,14 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
 from actions.form_helper import request_next_slot
-from actions.lib.phone_number_validation import VALIDATION_CODE_LENGTH
+from actions.lib.phone_number_validation import (
+    VALIDATION_CODE_LENGTH,
+    send_validation_code,
+)
 
 FORM_NAME = "daily_ci_enroll_form"
+
+LANGUAGE_SLOT = "language"
 
 DO_ENROLL_SLOT = "daily_ci_enroll__do_enroll"
 FIRST_NAME_SLOT = "first_name"
@@ -148,7 +153,7 @@ class DailyCiEnrollForm(FormAction):
 
         return {FIRST_NAME_SLOT: first_name}
 
-    def validate_phone_number(
+    async def validate_phone_number(
         self,
         value: Text,
         dispatcher: CollectingDispatcher,
@@ -171,8 +176,20 @@ class DailyCiEnrollForm(FormAction):
         if phone_number is not None:
             dispatcher.utter_message(template="utter_daily_ci_enroll__acknowledge")
 
-            # TODO: generate real code and send by text message here
-            validation_code = "5141"
+            first_name = tracker.get_slot(FIRST_NAME_SLOT)
+            language = tracker.get_slot(LANGUAGE_SLOT)
+
+            validation_code = await send_validation_code(
+                phone_number, language, first_name
+            )
+            if validation_code is None:
+                dispatcher.utter_message(
+                    template="utter_daily_ci_enroll__validation_code_not_sent_1"
+                )
+                dispatcher.utter_message(
+                    template="utter_daily_ci_enroll__validation_code_not_sent_2"
+                )
+                dispatcher.utter_message(template="utter_daily_ci_enroll__continue")
             return {
                 PHONE_NUMBER_SLOT: phone_number,
                 VALIDATION_CODE_REFERENCE_SLOT: validation_code,
@@ -269,9 +286,12 @@ def _get_first_name(text: Text) -> Optional[Text]:
 
 def _get_phone_number(text: Text) -> Optional[Text]:
     digits = NOT_DIGIT_REGEX.sub("", text)
-    valid_length = len(digits) == 10 or len(digits) == 11
+    if len(digits) == 11:
+        return digits
+    if len(digits) == 10:
+        return f"1{digits}"
 
-    return digits if valid_length else None
+    return None
 
 
 def _get_validation_code(text: Text) -> Optional[Text]:

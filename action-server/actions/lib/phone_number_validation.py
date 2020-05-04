@@ -1,5 +1,6 @@
 import logging
 from random import randrange
+from typing import Optional
 
 from aiohttp import ClientSession
 
@@ -25,13 +26,23 @@ CORE_SERVER_PREFIX = "core-"
 logger = logging.getLogger(__name__)
 
 
-def generate_validation_code() -> str:
+def _generate_validation_code() -> str:
     return str(randrange(10 ** VALIDATION_CODE_LENGTH)).zfill(VALIDATION_CODE_LENGTH)
 
 
 async def send_validation_code(
-    phone_number: str, language: str, first_name: str, validation_code: str
-) -> bool:
+    phone_number: str, language: str, first_name: str
+) -> Optional[str]:
+    if len(phone_number) != 11:
+        raise Exception(
+            f"Phone number should contain 11 numbers. Received: {phone_number}"
+        )
+
+    if phone_number[4:7] == "555":
+        logger.info("555 number: Not sending validation code")
+        return phone_number[7:]
+
+    validation_code = _generate_validation_code()
 
     base_url = f"http://{CORE_SERVER_PREFIX}{language}:8080"
     url = f"{base_url}/conversations/{phone_number}/trigger_intent"
@@ -53,4 +64,4 @@ async def send_validation_code(
                     "Error occured while sending validation code: %s", response.text
                 )
 
-            return response.status == HTTP_OK
+            return validation_code if response.status == HTTP_OK else None

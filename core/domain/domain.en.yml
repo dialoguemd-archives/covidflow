@@ -267,6 +267,12 @@ responses:
   utter_ask_daily_ci_enroll__validation_code:
     - text: I’m sending you a validation code on your mobile phone. When you receive it, please enter it
 
+  utter_daily_ci_enroll__validation_code_not_sent_1:
+    - text: I'm sorry, but a technical problem prevents me completing your enrollment to the Daily Check-in
+
+  utter_daily_ci_enroll__validation_code_not_sent_2:
+    - text: You may try to enroll at another time
+
   utter_daily_ci_enroll__thanks:
     - text: Thanks
 

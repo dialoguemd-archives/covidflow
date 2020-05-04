@@ -267,6 +267,12 @@ responses:
   utter_ask_daily_ci_enroll__validation_code:
     - text: Je vous ai envoyé un code de validation par texto. Dès que vous le recevez, inscrivez-le ici
 
+  utter_daily_ci_enroll__validation_code_not_sent_1:
+    - text: Je suis désolée, mais un problème technique m'empêche de compléter votre inscription au suivi quotidien
+
+  utter_daily_ci_enroll__validation_code_not_sent_2:
+    - text: You may try to enroll at another timeJe vous invite à réessayer plus tard
+
   utter_daily_ci_enroll__thanks:
     - text: Merci
 

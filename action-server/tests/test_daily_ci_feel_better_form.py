@@ -2,6 +2,7 @@ from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from actions.daily_ci_feel_better_form import (
+    FEEL_WORSE_SLOT,
     FORM_NAME,
     HAS_COUGH_SLOT,
     HAS_DIFF_BREATHING_SLOT,
@@ -33,7 +34,13 @@ class TestDailyCiFeelBetterForm(FormTestCase):
 
         self.run_form(tracker)
 
-        self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, HAS_FEVER_SLOT)])
+        self.assert_events(
+            [
+                Form(FORM_NAME),
+                SlotSet(FEEL_WORSE_SLOT, False),
+                SlotSet(REQUESTED_SLOT, HAS_FEVER_SLOT),
+            ]
+        )
 
         self.assert_templates(
             [

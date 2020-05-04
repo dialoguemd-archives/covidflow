@@ -680,5 +680,42 @@ responses:
 
   utter_daily_ci__feel_better__has_other_mild_symptoms_still_sick_recommendation:
     - text: C'est noté. Puisque vous êtes encore malade, je vous conseille de continuer à vous isoler et à vous reposer
+
   utter_daily_checkin_validation_code:
       - text: "Bonjour {first_name}, voici le code de validation pour l’inscription au suivi quotidien : {validation_code}. Si vous n’avez pas demandé à vous inscrire au suivi quotidien, veuillez ignorer ce message"
+
+  ## Daily check-in - keep or cancel
+
+  utter_daily_ci__keep_or_cancel__no_symptoms_recommendation:
+    - text: Il se peut que vous ayez récupéré de la Covid-19. Assurez-vous de continuer à prendre des mesures pour vous protéger et protéger les autres, comme rester à la maison et porter un masque si vous devez absolument sortir
+
+  utter_ask_daily_ci__keep_or_cancel__cancel_ci_no_symptoms:
+    - text: Voulez-vous que je continue à faire votre suivi à chaque jour, ou aimeriez-vous annuler le suivi quotidien?
+      buttons:
+        - title: Continuer
+          payload: "/continue"
+        - title: Annuler
+          payload: "/cancel"
+
+  utter_daily_ci__keep_or_cancel__acknowledge_continue_ci:
+    - text: Parfait, je vais continuer à faire votre suivi quotidien
+
+  utter_daily_ci__keep_or_cancel__acknowledge_cancel_ci:
+    - text: D'accord, j'annule votre suivi quotidien
+
+  utter_daily_ci__keep_or_cancel__cancel_ci_recommendation:
+    - text: Si vous remarquez des changements, ou si vous avez à nouveau des symptômes, n'hésitez pas à communiquer avec moi pour une évaluation
+
+  utter_ask_daily_ci__keep_or_cancel__cancel_ci_symptoms:
+    - text: Je vais continuer à vous contacter à chaque jour, à moins que vous ne souhaitiez annuler le suivi quotidien. Ça vous va?
+      buttons:
+        - title: Oui continuer le suivi
+          payload: "/continue"
+        - title: Non annuler le suivi
+          payload: "/cancel"
+
+  utter_daily_ci__keep_or_cancel__feel_worse_keep_ci:
+    - text: Puisque vous vous sentez moins bien qu'hier, je vais m'assurer de faire le suivi avec vous demain
+
+  utter_daily_ci__keep_or_cancel__feel_worse_recommendation:
+    - text: Entretemps, si votre condition change et que vous voulez réévaluer vos symptômes, n'hésitez pas à communiquer avec moi

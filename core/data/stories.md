@@ -600,7 +600,7 @@
   - utter_please_visit_again
   - utter_goodbye
 
-## daily check-in - feel worse
+## daily check-in - feel worse - moderate symptoms
 * daily_checkin{"metadata":{}}
   - utter_greet_daily_checkin
   - utter_ask_how_do_you_feel
@@ -608,9 +608,47 @@
   - daily_ci_feel_worse_form
   - form{"name": "daily_ci_feel_worse_form"}
   - form{"name": null}
-  - utter_to_be_continued
+  - slot{"symptoms": "moderate"}
+  - daily_ci_keep_or_cancel_form
+  - form{"name": "daily_ci_keep_or_cancel_form"}
+  - form{"name": null}
+  - utter_ask_anything_else
+* done
+  - utter_goodbye
 
-## daily check-in - feel no change
+## daily check-in - feel worse - mild symptoms
+* daily_checkin{"metadata":{}}
+  - utter_greet_daily_checkin
+  - utter_ask_how_do_you_feel
+* worse
+  - daily_ci_feel_worse_form
+  - form{"name": "daily_ci_feel_worse_form"}
+  - form{"name": null}
+  - slot{"symptoms": "mild"}
+  - daily_ci_keep_or_cancel_form
+  - form{"name": "daily_ci_keep_or_cancel_form"}
+  - form{"name": null}
+  - utter_ask_anything_else
+* done
+  - utter_goodbye
+
+## daily check-in - feel worse - no symptoms
+* daily_checkin{"metadata":{}}
+  - utter_greet_daily_checkin
+  - utter_ask_how_do_you_feel
+* worse
+  - daily_ci_feel_worse_form
+  - form{"name": "daily_ci_feel_worse_form"}
+  - form{"name": null}
+  - slot{"symptoms": "none"}
+  - daily_ci_keep_or_cancel_form
+  - form{"name": "daily_ci_keep_or_cancel_form"}
+  - form{"name": null}
+  - utter_ask_anything_else
+* done
+  - utter_goodbye
+
+## daily check-in - feel no change - moderate symptoms
 * daily_checkin{"metadata":{}}
   - utter_greet_daily_checkin
   - utter_ask_how_do_you_feel
@@ -618,9 +656,47 @@
   - daily_ci_feel_no_change_form
   - form{"name": "daily_ci_feel_no_change_form"}
   - form{"name": null}
-  - utter_to_be_continued
+  - slot{"symptoms": "moderate"}
+  - daily_ci_keep_or_cancel_form
+  - form{"name": "daily_ci_keep_or_cancel_form"}
+  - form{"name": null}
+  - utter_ask_anything_else
+* done
+  - utter_goodbye
 
-## daily check-in - feel better
+## daily check-in - feel no change - mild symptoms
+* daily_checkin{"metadata":{}}
+  - utter_greet_daily_checkin
+  - utter_ask_how_do_you_feel
+* no_change
+  - daily_ci_feel_no_change_form
+  - form{"name": "daily_ci_feel_no_change_form"}
+  - form{"name": null}
+  - slot{"symptoms": "mild"}
+  - daily_ci_keep_or_cancel_form
+  - form{"name": "daily_ci_keep_or_cancel_form"}
+  - form{"name": null}
+  - utter_ask_anything_else
+* done
+  - utter_goodbye
+
+## daily check-in - feel no change - no symptoms
+* daily_checkin{"metadata":{}}
+  - utter_greet_daily_checkin
+  - utter_ask_how_do_you_feel
+* no_change
+  - daily_ci_feel_no_change_form
+  - form{"name": "daily_ci_feel_no_change_form"}
+  - form{"name": null}
+  - slot{"symptoms": "none"}
+  - daily_ci_keep_or_cancel_form
+  - form{"name": "daily_ci_keep_or_cancel_form"}
+  - form{"name": null}
+  - utter_ask_anything_else
+* done
+  - utter_goodbye
+
+## daily check-in - feel better - moderate symptoms
 * daily_checkin{"metadata":{}}
   - utter_greet_daily_checkin
   - utter_ask_how_do_you_feel
@@ -628,4 +704,42 @@
   - daily_ci_feel_better_form
   - form{"name": "daily_ci_feel_better_form"}
   - form{"name": null}
-  - utter_to_be_continued
+  - slot{"symptoms": "moderate"}
+  - daily_ci_keep_or_cancel_form
+  - form{"name": "daily_ci_keep_or_cancel_form"}
+  - form{"name": null}
+  - utter_ask_anything_else
+* done
+  - utter_goodbye
+
+## daily check-in - feel better - mild symptoms
+* daily_checkin{"metadata":{}}
+  - utter_greet_daily_checkin
+  - utter_ask_how_do_you_feel
+* better
+  - daily_ci_feel_better_form
+  - form{"name": "daily_ci_feel_better_form"}
+  - form{"name": null}
+  - slot{"symptoms": "mild"}
+  - daily_ci_keep_or_cancel_form
+  - form{"name": "daily_ci_keep_or_cancel_form"}
+  - form{"name": null}
+  - utter_ask_anything_else
+* done
+  - utter_goodbye
+
+## daily check-in - feel better - no symptoms
+* daily_checkin{"metadata":{}}
+  - utter_greet_daily_checkin
+  - utter_ask_how_do_you_feel
+* better
+  - daily_ci_feel_better_form
+  - form{"name": "daily_ci_feel_better_form"}
+  - form{"name": null}
+  - slot{"symptoms": "none"}
+  - daily_ci_keep_or_cancel_form
+  - form{"name": "daily_ci_keep_or_cancel_form"}
+  - form{"name": null}
+  - utter_ask_anything_else
+* done
+  - utter_goodbye

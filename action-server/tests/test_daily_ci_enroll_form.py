@@ -1,3 +1,5 @@
+# type: ignore
+import pytest
 from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 from rasa_sdk.interfaces import ActionExecutionRejection
@@ -19,8 +21,8 @@ from actions.daily_ci_enroll_form import (
 from tests.form_helper import FormTestCase
 
 FIRST_NAME = "John"
-PHONE_NUMBER = "5141234567"
-VALIDATION_CODE = "5141"
+PHONE_NUMBER = "15145554567"
+VALIDATION_CODE = "4567"
 
 INITIAL_SLOT_VALUES = {
     PHONE_TRY_COUNTER_SLOT: 0,
@@ -50,23 +52,25 @@ class TestDailyCiEnrollForm(FormTestCase):
 
         self.assertEqual({FIRST_NAME_SLOT: expected_name}, slot_values)
 
-    def test_validate_phone_number(self):
+    @pytest.mark.asyncio
+    async def test_validate_phone_number(self):
         slot_mapping = self.form.slot_mappings()[PHONE_NUMBER_SLOT]
         self.assertEqual(slot_mapping[-1], self.form.from_text())
 
-        self._validate_phone_number("5141234567", "5141234567")
-        self._validate_phone_number("514-123-4567", "5141234567")
-        self._validate_phone_number("(514)-123-4567", "5141234567")
-        self._validate_phone_number("it's 514-123-4567!", "5141234567")
-        self._validate_phone_number("it's 514 123 4567", "5141234567")
+        await self._validate_phone_number("5145554567", "15145554567")
+        await self._validate_phone_number("15145554567", "15145554567")
+        await self._validate_phone_number("514-555-4567", "15145554567")
+        await self._validate_phone_number("1 (514)-555-4567", "15145554567")
+        await self._validate_phone_number("it's 514-555-4567!", "15145554567")
+        await self._validate_phone_number("it's 1 514 555 4567", "15145554567")
 
-        self._validate_phone_number("141234567", None)
+        await self._validate_phone_number("145554567", None)
 
-    def _validate_phone_number(self, text: str, expected_phone_number: str):
+    async def _validate_phone_number(self, text: str, expected_phone_number: str):
         tracker = self.create_tracker(
             slots={VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE}
         )
-        slot_values = self.form.validate_phone_number(
+        slot_values = await self.form.validate_phone_number(
             text, self.dispatcher, tracker, None
         )
 
@@ -78,10 +82,10 @@ class TestDailyCiEnrollForm(FormTestCase):
         slot_mapping = self.form.slot_mappings()[VALIDATION_CODE_SLOT]
         self.assertEqual(slot_mapping, self.form.from_text())
 
-        self._validate_validation_code("its 5141", "5141")
-        self._validate_validation_code("5141", "5141")
+        self._validate_validation_code("its 4567", "4567")
+        self._validate_validation_code("4567", "4567")
 
-        self._validate_validation_code("51418", None)
+        self._validate_validation_code("45678", None)
         self._validate_validation_code("514", None)
 
         self._validate_validation_code("4325", None)

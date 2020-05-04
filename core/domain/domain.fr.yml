@@ -249,6 +249,12 @@ responses:
   utter_ask_daily_ci_enroll__validation_code:
     - text: Je vous ai envoyé un code de validation par texto. Dès que vous le recevez, inscrivez-le ici
 
+  utter_daily_ci_enroll__validation_code_not_sent_1:
+    - text: Je suis désolée, mais un problème technique m'empêche de compléter votre inscription au suivi quotidien
+
+  utter_daily_ci_enroll__validation_code_not_sent_2:
+    - text: You may try to enroll at another timeJe vous invite à réessayer plus tard
+
   utter_daily_ci_enroll__thanks:
     - text: Merci
 
@@ -682,7 +688,7 @@ responses:
     - text: C'est noté. Puisque vous êtes encore malade, je vous conseille de continuer à vous isoler et à vous reposer
 
   utter_daily_checkin_validation_code:
-      - text: "Bonjour {first_name}, voici le code de validation pour l’inscription au suivi quotidien : {validation_code}. Si vous n’avez pas demandé à vous inscrire au suivi quotidien, veuillez ignorer ce message"
+    - text: "Bonjour {first_name}, voici le code de validation pour l’inscription au suivi quotidien : {validation_code}. Si vous n’avez pas demandé à vous inscrire au suivi quotidien, veuillez ignorer ce message"
 
   ## Daily check-in - keep or cancel
 

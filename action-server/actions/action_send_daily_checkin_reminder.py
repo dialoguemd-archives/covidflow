@@ -6,10 +6,12 @@ from hashids import Hashids
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
+from actions.lib.exceptions import (
+    InvalidExternalEventException,
+    ReminderNotFoundException,
+)
 from db.base import session_factory
 from db.reminder import Reminder
-
-from .lib.exceptions import InvalidExternalEventException, ReminderNotFoundException
 
 logger = logging.getLogger(__name__)
 

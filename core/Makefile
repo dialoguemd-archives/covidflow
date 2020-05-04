@@ -75,3 +75,6 @@ train-fr:
 		rasa/rasa:${RASA_VERSION}-full train \
 		--out models/fr \
 		--augmentation 0
+
+test-integration:
+	CORE_ENDPOINT_URL=http://localhost:5005 python -m rasa_integration_testing ../integration-tests-en

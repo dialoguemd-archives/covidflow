@@ -5,6 +5,7 @@ description = "Rasa Stack/Core Server for covidflow"
 authors = ["Nu Echo"]
 
 [tool.poetry.dependencies]
+rasa-integration-testing = "0.1.2"
 python = "^3.6"
 
 [tool.poetry.dev-dependencies]

@@ -1,3 +1,4 @@
+import logging
 import re
 from typing import Any, Dict, List, Optional, Text, Union
 
@@ -9,8 +10,13 @@ from rasa_sdk.forms import FormAction
 from actions.form_helper import request_next_slot
 from actions.lib.phone_number_validation import (
     VALIDATION_CODE_LENGTH,
+    is_test_phone_number,
     send_validation_code,
 )
+from db.base import session_factory
+from db.reminder import Reminder
+
+logger = logging.getLogger(__name__)
 
 FORM_NAME = "daily_ci_enroll_form"
 
@@ -271,11 +277,48 @@ class DailyCiEnrollForm(FormAction):
         domain: Dict[Text, Any],
     ) -> List[Dict]:
         if tracker.get_slot(DO_ENROLL_SLOT) is True:
-            dispatcher.utter_message(template="utter_daily_ci_enroll__enroll_done_1")
-            dispatcher.utter_message(template="utter_daily_ci_enroll__enroll_done_2")
-            dispatcher.utter_message(template="utter_daily_ci_enroll__enroll_done_3")
+            reminder = Reminder.create_from_slot_values(tracker.current_slot_values())
+
+            if _save_reminder(reminder):
+                dispatcher.utter_message(
+                    template="utter_daily_ci_enroll__enroll_done_1"
+                )
+                dispatcher.utter_message(
+                    template="utter_daily_ci_enroll__enroll_done_2"
+                )
+                dispatcher.utter_message(
+                    template="utter_daily_ci_enroll__enroll_done_3"
+                )
+            else:
+                dispatcher.utter_message(
+                    template="utter_daily_ci_enroll__enroll_fail_1"
+                )
+                dispatcher.utter_message(
+                    template="utter_daily_ci_enroll__enroll_fail_2"
+                )
+                dispatcher.utter_message(
+                    template="utter_daily_ci_enroll__enroll_fail_3"
+                )
 
         return []
+
+
+def _save_reminder(reminder):
+    if is_test_phone_number(reminder.phone_number):
+        logger.info("555 number: not saving reminder to database")
+        return True
+
+    session = session_factory()
+    try:
+        session.add(reminder)
+        session.commit()
+        return True
+    except:
+        logger.exception("Could not save reminder instance")
+        session.rollback()
+        return False
+    finally:
+        session.close()
 
 
 def _get_first_name(text: Text) -> Optional[Text]:

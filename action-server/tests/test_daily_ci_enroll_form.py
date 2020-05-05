@@ -1,4 +1,6 @@
 # type: ignore
+from unittest.mock import patch
+
 import pytest
 from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
@@ -17,7 +19,9 @@ from actions.daily_ci_enroll_form import (
     VALIDATION_CODE_SLOT,
     WANTS_CANCEL_SLOT,
     DailyCiEnrollForm,
+    _save_reminder,
 )
+from db.reminder import Reminder
 from tests.form_helper import FormTestCase
 
 FIRST_NAME = "John"
@@ -101,6 +105,25 @@ class TestDailyCiEnrollForm(FormTestCase):
         self.assertEqual(
             expected_validation_code, slot_values.get(VALIDATION_CODE_SLOT, None)
         )
+
+    @patch("actions.daily_ci_enroll_form.session_factory")
+    def test_save_reminder(self, mock_session_factory):
+        mock_session = mock_session_factory.return_value
+
+        reminder = Reminder(None)
+        reminder.phone_number = "12223334444"
+        _save_reminder(reminder)
+        mock_session.add.assert_called_with(reminder)
+        mock_session.commit.assert_called()
+        mock_session.rollback.assert_not_called()
+        mock_session.close.assert_called()
+
+        mock_session.commit.side_effect = Exception("not this time")
+        _save_reminder(reminder)
+        mock_session.add.assert_called_with(reminder)
+        mock_session.commit.assert_called()
+        mock_session.rollback.assert_called()
+        mock_session.close.assert_called()
 
     def test_form_activation(self):
         tracker = self.create_tracker(active_form=False)
@@ -638,3 +661,45 @@ class TestDailyCiEnrollForm(FormTestCase):
                 "utter_daily_ci_enroll__enroll_done_3",
             ],
         )
+
+    @patch("actions.daily_ci_enroll_form._save_reminder")
+    def test_provide_has_dialogue_enrollment_failed(self, mock_save_reminder):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: HAS_DIALOGUE_SLOT,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_SLOT: VALIDATION_CODE,
+                PRE_EXISTING_CONDITIONS_SLOT: True,
+            },
+            intent="affirm",
+        )
+
+        mock_save_reminder.return_value = False
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(HAS_DIALOGUE_SLOT, True),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ],
+        )
+
+        self.assert_templates(
+            [
+                "utter_daily_ci_enroll__enroll_fail_1",
+                "utter_daily_ci_enroll__enroll_fail_2",
+                "utter_daily_ci_enroll__enroll_fail_3",
+            ]
+        )
+
+        expected_reminder = Reminder(None)
+        expected_reminder.preconditions = True
+        expected_reminder.first_name = FIRST_NAME
+        expected_reminder.phone_number = PHONE_NUMBER
+        expected_reminder.has_dialogue = True
+
+        mock_save_reminder.assert_called_with(expected_reminder)

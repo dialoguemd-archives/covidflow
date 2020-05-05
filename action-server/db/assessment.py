@@ -3,9 +3,8 @@ from sqlalchemy.dialects.postgresql import JSONB
 
 from .base import Base
 
+
 # TODO: We might want to use auto-mapping instead of re-defining the actual tables.
-
-
 class Assessment(Base):
     __tablename__ = "assessment"
 

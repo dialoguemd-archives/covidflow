@@ -12,8 +12,8 @@ intents:
   - inform
   - less
   - more
-  - help_pre_existing_conditions:
-      triggers: action_explain_pre_existing_conditions
+  - help_preconditions:
+      triggers: action_explain_preconditions
   - done
   - get_assessment
   - better
@@ -38,7 +38,7 @@ entities:
 
 actions:
   - action_set_risk_level
-  - action_explain_pre_existing_conditions
+  - action_explain_preconditions
   - action_suspect_mild_symptoms_exposure_recommendations
   - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_suspect_moderate_symptoms_recommendations
@@ -119,7 +119,7 @@ slots:
   phone_number:
     type: unfeaturized
 
-  pre_existing_conditions:
+  preconditions:
     type: unfeaturized
 
   has_dialogue:

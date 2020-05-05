@@ -25,5 +25,26 @@ _SessionFactory = sessionmaker(bind=engine)
 Base = declarative_base()
 
 
+### Sample usage of a sqlalchemy session and the methods provided here.
+### Reference: https://docs.sqlalchemy.org/en/13/orm/session_basics.html
+#
+# from db.base import session_factory
+#
+# session = session_factory()
+# try:
+#     reminder = Reminder(...)
+#     session.add(reminder)
+#     session.flush()
+#
+#     assessment = Assesment(reminder.id, ...)
+#
+#     session.commit()   # All changes are commited, great!
+# except:
+#     session.rollback() # Something wrong happened, rolling back changes
+# finally:
+#     session.close()    # Releasing session to connection pool
+#
+
+
 def session_factory():
     return _SessionFactory()

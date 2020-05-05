@@ -30,15 +30,19 @@ def _generate_validation_code() -> str:
     return str(randrange(10 ** VALIDATION_CODE_LENGTH)).zfill(VALIDATION_CODE_LENGTH)
 
 
-async def send_validation_code(
-    phone_number: str, language: str, first_name: str
-) -> Optional[str]:
+def is_test_phone_number(phone_number):
     if len(phone_number) != 11:
         raise Exception(
             f"Phone number should contain 11 numbers. Received: {phone_number}"
         )
+    return phone_number[4:7] == "555"
 
-    if phone_number[4:7] == "555":
+
+async def send_validation_code(
+    phone_number: str, language: str, first_name: str
+) -> Optional[str]:
+
+    if is_test_phone_number(phone_number):
         logger.info("555 number: Not sending validation code")
         return phone_number[7:]
 

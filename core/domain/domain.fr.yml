@@ -322,6 +322,15 @@ responses:
   utter_daily_ci_enroll__enroll_done_3:
     - text: Je vais faire un suivi avec vous à chaque jour environ à cette heure-ci pour voir comment vous allez, vérifier vos symptômes et vous diriger vers les bonnes ressources au besoin
 
+  utter_daily_ci_enroll__enroll_fail_1:
+    - text: Je suis désolée, mais un problème technique m'empêche de compléter votre inscription au suivi quotidien
+
+  utter_daily_ci_enroll__enroll_fail_2:
+    - text: Je vous invite à réessayer plus tard
+
+  utter_daily_ci_enroll__enroll_fail_3:
+    - text: Continuons
+
   ## Return for check-in
 
   utter_returning_for_checkin:

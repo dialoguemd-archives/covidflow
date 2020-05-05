@@ -322,6 +322,15 @@ responses:
   utter_daily_ci_enroll__enroll_done_3:
     - text: I will check-in with you everyday around this time to see how you're doing, monitor your symptoms and direct you to the right resources
 
+  utter_daily_ci_enroll__enroll_fail_1:
+    - text: I'm sorry, but a technical problem prevents me completing your enrollment to the Daily Check-in
+
+  utter_daily_ci_enroll__enroll_fail_2:
+    - text: You may try to enroll at another time
+
+  utter_daily_ci_enroll__enroll_fail_3:
+    - text: Let's continue
+
   ## Return for check-in
 
   utter_returning_for_checkin:

@@ -21,7 +21,7 @@ class TestedPositiveForm(FormAction):
         domain: Dict[Text, Any],
     ) -> List[EventType]:
         if tracker.active_form.get("name") != "tested_positive_form":
-            dispatcher.utter_message(template="utter_symptoms_self_isolate")
+            dispatcher.utter_message(template="utter_tested_positive_self_isolate")
         return await super()._activate_if_required(dispatcher, tracker, domain)
 
     @staticmethod

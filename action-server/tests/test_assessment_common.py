@@ -59,7 +59,6 @@ class BaseTestAssessmentForm:
         self.assert_events(
             [
                 SlotSet("severe_symptoms", True),
-                SlotSet("risk_level", "common"),
                 SlotSet("symptoms", "severe"),
                 SlotSet("self_assess_done", True),
                 Form(None),
@@ -214,7 +213,6 @@ class BaseTestAssessmentForm:
         self.assert_events(
             [
                 SlotSet("moderate_symptoms", True),
-                SlotSet("risk_level", "elevated-medical-risk"),
                 SlotSet("symptoms", "moderate"),
                 SlotSet("self_assess_done", True),
                 Form(None),
@@ -265,7 +263,6 @@ class BaseTestAssessmentForm:
         self.assert_events(
             [
                 SlotSet("has_cough", True),
-                SlotSet("risk_level", "common"),
                 SlotSet("symptoms", "mild"),
                 SlotSet("self_assess_done", True),
                 Form(None),
@@ -293,7 +290,6 @@ class BaseTestAssessmentForm:
         self.assert_events(
             [
                 SlotSet("has_cough", False),
-                SlotSet("risk_level", "common"),
                 SlotSet("symptoms", "none"),
                 SlotSet("self_assess_done", True),
                 Form(None),
@@ -302,126 +298,6 @@ class BaseTestAssessmentForm:
         )
 
         self.assert_templates([])
-
-        def test_risk_level_no_symptoms_no_risk(self):
-            tracker = self.create_tracker(
-                slots={
-                    "severe_symptoms": False,
-                    "province": "qc",
-                    "age_over_65": False,
-                    "has_fever": False,
-                    "moderate_symptoms": False,
-                    "has_cough": False,
-                },
-            )
-
-            self.assertIn(
-                SlotSet("risk_level", "common"),
-                self.submit(tracker, self.dispatcher, {}),
-            )
-
-        def test_risk_level_over_65(self):
-            tracker = self.create_tracker(
-                slots={
-                    "severe_symptoms": False,
-                    "province": "qc",
-                    "age_over_65": True,
-                    "has_fever": False,
-                    "moderate_symptoms": False,
-                    "has_cough": False,
-                },
-            )
-
-            self.assertIn(
-                SlotSet("risk_level", "elevated-medical-risk"),
-                self.submit(tracker, self.dispatcher, {}),
-            )
-
-        def test_risk_level_moderate_symptoms(self):
-            tracker = self.create_tracker(
-                slots={
-                    "severe_symptoms": False,
-                    "province": "qc",
-                    "age_over_65": False,
-                    "has_fever": False,
-                    "moderate_symptoms": True,
-                },
-            )
-
-            assert self.submit(tracker, self.dispatcher, {}) == [
-                SlotSet("risk_level", "elevated-medical-risk")
-            ]
-
-        def test_risk_level_mild_symptoms(self):
-            tracker = self.create_tracker(
-                slots={
-                    "severe_symptoms": False,
-                    "province": "qc",
-                    "age_over_65": False,
-                    "has_fever": False,
-                    "moderate_symptoms": False,
-                    "has_cough": True,
-                },
-            )
-
-            self.assertIn(
-                SlotSet("risk_level", "common"),
-                self.submit(tracker, self.dispatcher, {}),
-            )
-
-        def test_risk_level_travel_risk(self):
-            tracker = self.create_tracker(
-                slots={
-                    "severe_symptoms": False,
-                    "province": "qc",
-                    "age_over_65": False,
-                    "has_fever": False,
-                    "moderate_symptoms": False,
-                    "has_cough": False,
-                    "travel": True,
-                },
-            )
-
-            self.assertIn(
-                SlotSet("risk_level", "elevated-covid-risk"),
-                self.submit(tracker, self.dispatcher, {}),
-            )
-
-        def test_risk_level_contact_risk(self):
-            tracker = self.create_tracker(
-                slots={
-                    "severe_symptoms": False,
-                    "province": "qc",
-                    "age_over_65": False,
-                    "has_fever": False,
-                    "moderate_symptoms": False,
-                    "has_cough": False,
-                    "contact": True,
-                },
-            )
-
-            self.assertIn(
-                SlotSet("risk_level", "elevated-covid-risk"),
-                self.submit(tracker, self.dispatcher, {}),
-            )
-
-        def test_risk_level_medical_and_covid_risk(self):
-            tracker = self.create_tracker(
-                slots={
-                    "severe_symptoms": False,
-                    "province": "qc",
-                    "age_over_65": True,
-                    "has_fever": False,
-                    "moderate_symptoms": False,
-                    "has_cough": False,
-                    "travel": True,
-                },
-            )
-
-            self.assertIn(
-                SlotSet("risk_level", "elevated-medical-risk,elevated-covid-risk"),
-                self.submit(tracker, self.dispatcher, {}),
-            )
 
 
 class TestAssessmentFormSuspect(BaseTestAssessmentForm, FormTestCase):

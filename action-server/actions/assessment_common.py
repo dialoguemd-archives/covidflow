@@ -77,14 +77,6 @@ class AssessmentCommon:
                 form.from_intent(intent="affirm", value=True),
                 form.from_intent(intent="deny", value=False),
             ],
-            AssessmentSlots.CONTACT: [
-                form.from_intent(intent="affirm", value=True),
-                form.from_intent(intent="deny", value=False),
-            ],
-            AssessmentSlots.TRAVEL: [
-                form.from_intent(intent="affirm", value=True),
-                form.from_intent(intent="deny", value=False),
-            ],
             AssessmentSlots.LIVES_ALONE: [
                 form.from_intent(intent="affirm", value=True),
                 form.from_intent(intent="deny", value=False),
@@ -128,10 +120,8 @@ class AssessmentCommon:
     ) -> List[Dict]:
 
         symptoms_value = _get_symptoms_value(tracker)
-        risk_level_value = _get_risk_level_value(tracker)
 
         return [
-            SlotSet(AssessmentSlots.RISK_LEVEL, risk_level_value),
             SlotSet(AssessmentSlots.SYMPTOMS, symptoms_value),
             SlotSet(AssessmentSlots.SELF_ASSESS_DONE, True),
         ]
@@ -147,19 +137,3 @@ def _get_symptoms_value(tracker: Tracker) -> str:
         symptoms_value = "mild"
 
     return symptoms_value
-
-
-def _get_risk_level_value(tracker: Tracker) -> str:
-    risk_level_value = []
-    if (
-        tracker.get_slot(AssessmentSlots.AGE_OVER_65) is True
-        or tracker.get_slot(AssessmentSlots.MODERATE_SYMPTOMS) is True
-    ):
-        risk_level_value.append("elevated-medical-risk")
-    if (
-        tracker.get_slot(AssessmentSlots.CONTACT) is True
-        or tracker.get_slot(AssessmentSlots.TRAVEL) is True
-    ):
-        risk_level_value.append("elevated-covid-risk")
-
-    return "common" if risk_level_value == [] else ",".join(risk_level_value)

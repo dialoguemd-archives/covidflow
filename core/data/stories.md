@@ -3,10 +3,6 @@
   - utter_greet
   - utter_ask_how_may_i_help
 
-## done
-* done
-  - utter_goodbye
-
 ## suspect - severe symptoms
 * suspect OR get_assessment
   - assessment_form
@@ -40,6 +36,8 @@
   - form{"name": null}
   - slot{"question_answering_status": "success"}
   - utter_ask_another_question
+* done
+  - action_qa_goodbye
 
 ## suspect - moderate symptoms no checkin
 * suspect OR get_assessment
@@ -58,6 +56,8 @@
   - action_suspect_moderate_symptoms_final_recommendations
   - utter_visit_package
   - utter_ask_anything_else
+* done
+  - utter_goodbye
 
 ## suspect - mild symptoms no checkin
 * suspect OR get_assessment
@@ -84,7 +84,7 @@
   - slot{"question_answering_status": "failure"}
   - utter_question_answering_error
   - utter_try_again_later
-  - utter_goodbye
+  - action_qa_goodbye
 
 ## suspect - mild symptoms
 * suspect OR get_assessment
@@ -111,7 +111,7 @@
   - slot{"question_answering_status": "failure"}
   - utter_question_answering_error
   - utter_try_again_later
-  - utter_goodbye
+  - action_qa_goodbye
 
 ## suspect - no symptoms contact risk
 * suspect OR get_assessment
@@ -131,6 +131,8 @@
   - action_suspect_mild_symptoms_exposure_final_recommendations
   - utter_visit_package
   - utter_ask_anything_else
+* done
+  - utter_goodbye
 
 ## suspect - no symptoms contact risk no checkin
 * suspect OR get_assessment
@@ -150,6 +152,8 @@
   - action_suspect_mild_symptoms_exposure_final_recommendations
   - utter_visit_package
   - utter_ask_anything_else
+* done
+  - utter_goodbye
 
 ## suspect - no symptoms no contact risk
 * suspect OR get_assessment
@@ -171,7 +175,7 @@
   - utter_ask_another_question
 * done
   - utter_please_visit_again
-  - utter_goodbye
+  - action_qa_goodbye
 
 ## tested positive - severe symptoms
 * tested_positive
@@ -199,6 +203,8 @@
   - form{"name": null}
   - utter_visit_package
   - utter_ask_anything_else
+* done
+  - utter_goodbye
 
 ## tested positive - moderate symptoms
 * tested_positive
@@ -217,6 +223,8 @@
   - form{"name": null}
   - utter_visit_package
   - utter_ask_anything_else
+* done
+  - utter_goodbye
 
 ## tested positive - mild symptoms worse no check-in
 * tested_positive
@@ -251,6 +259,8 @@
   - form{"name": null}
   - slot{"question_answering_status": "success"}
   - utter_ask_another_question
+* done
+  - action_qa_goodbye
 
 ## tested positive - mild symptoms worse
 * tested_positive
@@ -271,6 +281,8 @@
   - form{"name": null}
   - utter_visit_package
   - utter_ask_anything_else
+* done
+  - utter_goodbye
 
 ## tested positive - mild symptoms not worse no check-in
 * tested_positive
@@ -290,6 +302,8 @@
   - form{"name": null}
   - utter_visit_package
   - utter_ask_anything_else
+* done
+  - utter_goodbye
 
 ## tested positive - mild symptoms not worse
 * tested_positive
@@ -309,6 +323,8 @@
   - form{"name": null}
   - utter_visit_package
   - utter_ask_anything_else
+* done
+  - utter_goodbye
 
 # tested positive - no symptoms tested less than 14 days no check-in
 * tested_positive
@@ -337,7 +353,7 @@
   - slot{"question_answering_status": "failure"}
   - utter_question_answering_error
   - utter_try_again_later
-  - utter_goodbye
+  - action_qa_goodbye
 
 # tested positive - no symptoms tested less than 14 days
 * tested_positive
@@ -358,6 +374,8 @@
   - form{"name": null}
   - utter_visit_package
   - utter_ask_anything_else
+* done
+  - utter_goodbye
 
 # tested positive - cured
 * tested_positive
@@ -387,7 +405,7 @@
   - utter_ask_another_question
 * done
   - utter_please_visit_again
-  - utter_goodbye
+  - action_qa_goodbye
 
 ## return for check-in - severe symptoms
 * checkin_return
@@ -440,7 +458,7 @@
   - utter_ask_another_question
 * done
   - utter_please_visit_again
-  - utter_goodbye
+  - action_qa_goodbye
 
 ## return for check-in - moderate symptoms - no check-in
 * checkin_return
@@ -461,6 +479,8 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - utter_ask_anything_else
+* done
+  - utter_goodbye
 
 ## return for check-in - mild symptoms - with check-in
 * checkin_return
@@ -478,6 +498,8 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - utter_ask_anything_else
+* done
+  - utter_goodbye
 
 ## return for check-in - mild symptoms - no check-in
 * checkin_return
@@ -502,6 +524,8 @@
   - form{"name": null}
   - slot{"question_answering_status": "success"}
   - utter_ask_another_question
+* done
+  - action_qa_goodbye
 
 ## return for check-in - no symptoms - first symptoms >= 14 days ago
 * checkin_return
@@ -515,6 +539,8 @@
 * more
   - utter_social_distancing_leave_home
   - utter_ask_anything_else
+* done
+  - utter_goodbye
 
 ## return for check-in - no symptoms - first symptoms < 14 days ago
 * checkin_return
@@ -536,7 +562,7 @@
   - slot{"question_answering_status": "failure"}
   - utter_question_answering_error
   - utter_try_again_later
-  - utter_goodbye
+  - action_qa_goodbye
 
 ## QA - failure - no assessment after
 * greet{"metadata":{}}
@@ -552,7 +578,7 @@
   - utter_ask_assess_after_error
 * deny
   - utter_try_again_later
-  - utter_goodbye
+  - action_qa_goodbye
 
 ## QA - success
 * greet{"metadata":{}}
@@ -565,6 +591,8 @@
   - form{"name": null}
   - slot{"question_answering_status": "success"}
   - utter_ask_what_next_after_answer
+* done
+  - action_qa_goodbye
 
 ## QA - success - another question
 * greet{"metadata":{}}
@@ -583,6 +611,8 @@
   - form{"name": null}
   - slot{"question_answering_status": "success"}
   - utter_ask_what_next_after_answer
+* done
+  - action_qa_goodbye
 
 ## QA - need_assessment - no assessment after
 * greet{"metadata":{}}
@@ -598,7 +628,7 @@
   - utter_ask_assess_to_answer
 * done
   - utter_please_visit_again
-  - utter_goodbye
+  - action_qa_goodbye
 
 ## daily check-in - feel worse - moderate symptoms
 * daily_checkin{"metadata":{}}
@@ -609,12 +639,20 @@
   - form{"name": "daily_ci_feel_worse_form"}
   - form{"name": null}
   - slot{"symptoms": "moderate"}
+  - slot{"self_assess_done": true}
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
   - utter_ask_anything_else
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "success"}
+  - utter_ask_another_question
 * done
-  - utter_goodbye
+  - action_qa_goodbye
 
 ## daily check-in - feel worse - mild symptoms
 * daily_checkin{"metadata":{}}
@@ -625,12 +663,21 @@
   - form{"name": "daily_ci_feel_worse_form"}
   - form{"name": null}
   - slot{"symptoms": "mild"}
+  - slot{"self_assess_done": true}
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
   - utter_ask_anything_else
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "need_assessment"}
+  - utter_need_assessment_already_done
+  - utter_ask_another_question
 * done
-  - utter_goodbye
+  - action_qa_goodbye
 
 ## daily check-in - feel worse - no symptoms
 * daily_checkin{"metadata":{}}
@@ -641,6 +688,7 @@
   - form{"name": "daily_ci_feel_worse_form"}
   - form{"name": null}
   - slot{"symptoms": "none"}
+  - slot{"self_assess_done": true}
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
@@ -657,6 +705,7 @@
   - form{"name": "daily_ci_feel_no_change_form"}
   - form{"name": null}
   - slot{"symptoms": "moderate"}
+  - slot{"self_assess_done": true}
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
@@ -673,12 +722,27 @@
   - form{"name": "daily_ci_feel_no_change_form"}
   - form{"name": null}
   - slot{"symptoms": "mild"}
+  - slot{"self_assess_done": true}
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
   - utter_ask_anything_else
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "success"}
+  - utter_ask_another_question
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "need_assessment"}
+  - utter_need_assessment_already_done
+  - utter_ask_another_question
 * done
-  - utter_goodbye
+  - action_qa_goodbye
 
 ## daily check-in - feel no change - no symptoms
 * daily_checkin{"metadata":{}}
@@ -689,6 +753,7 @@
   - form{"name": "daily_ci_feel_no_change_form"}
   - form{"name": null}
   - slot{"symptoms": "none"}
+  - slot{"self_assess_done": true}
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
@@ -705,6 +770,7 @@
   - form{"name": "daily_ci_feel_better_form"}
   - form{"name": null}
   - slot{"symptoms": "moderate"}
+  - slot{"self_assess_done": true}
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
@@ -721,6 +787,7 @@
   - form{"name": "daily_ci_feel_better_form"}
   - form{"name": null}
   - slot{"symptoms": "mild"}
+  - slot{"self_assess_done": true}
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
@@ -737,9 +804,17 @@
   - form{"name": "daily_ci_feel_better_form"}
   - form{"name": null}
   - slot{"symptoms": "none"}
+  - slot{"self_assess_done": true}
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
   - utter_ask_anything_else
-* done
-  - utter_goodbye
+* ask_question
+  - utter_can_help_with_questions
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "failure"}
+  - utter_question_answering_error
+  - utter_try_again_later
+  - action_qa_goodbye

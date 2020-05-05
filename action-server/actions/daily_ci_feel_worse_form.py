@@ -9,6 +9,8 @@ from actions.form_helper import request_next_slot
 
 FORM_NAME = "daily_ci_feel_worse_form"
 
+SELF_ASSESS_DONE_SLOT = "self_assess_done"
+
 FEEL_WORSE_SLOT = "feel_worse"
 SEVERE_SYMPTOMS_SLOT = "severe_symptoms"
 HAS_FEVER_SLOT = "has_fever"
@@ -197,4 +199,4 @@ class DailyCiFeelWorseForm(FormAction):
         domain: Dict[Text, Any],
     ) -> List[Dict]:
 
-        return []
+        return [SlotSet(SELF_ASSESS_DONE_SLOT, True)]

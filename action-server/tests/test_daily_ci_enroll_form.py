@@ -1,4 +1,5 @@
 # type: ignore
+from unittest import skip
 from unittest.mock import patch
 
 import pytest
@@ -82,7 +83,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             expected_phone_number, slot_values.get(PHONE_NUMBER_SLOT, None)
         )
 
-    def test_validate_validation_code_empty(self):
+    def test_validate_validation_code(self):
         slot_mapping = self.form.slot_mappings()[VALIDATION_CODE_SLOT]
         self.assertEqual(slot_mapping, self.form.from_text())
 
@@ -233,6 +234,40 @@ class TestDailyCiEnrollForm(FormTestCase):
             [
                 "utter_daily_ci_enroll__acknowledge",
                 "utter_ask_daily_ci_enroll__validation_code",
+            ]
+        )
+
+    @skip("Async mocking problem")
+    @pytest.mark.asyncio
+    @patch("actions.lib.daily_ci_enroll_form.send_validation_code")
+    def test_provide_phone_number_sms_error(self, mock_send_validation_code):
+        mock_send_validation_code.return_value = None
+
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: PHONE_NUMBER_SLOT,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+            },
+            text=PHONE_NUMBER,
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(PHONE_NUMBER_SLOT, None),
+                SlotSet(DO_ENROLL_SLOT, False),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ],
+        )
+
+        self.assert_templates(
+            [
+                "utter_daily_ci_enroll__validation_code_not_sent_1",
+                "utter_daily_ci_enroll__validation_code_not_sent_2",
+                "utter_daily_ci_enroll__continue",
             ]
         )
 

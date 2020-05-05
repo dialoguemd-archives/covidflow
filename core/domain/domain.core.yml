@@ -51,6 +51,7 @@ actions:
   - action_severe_symptoms_recommendations
   - action_send_validation_code
   - action_send_daily_checkin_reminder
+  - action_qa_goodbye
 
 forms:
   - assessment_form

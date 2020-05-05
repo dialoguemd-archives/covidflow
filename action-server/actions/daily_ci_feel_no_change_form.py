@@ -10,6 +10,7 @@ from actions.form_helper import request_next_slot
 FORM_NAME = "daily_ci_feel_no_change_form"
 
 LAST_SYMPTOMS_SLOT = "last_symptoms"
+SELF_ASSESS_DONE_SLOT = "self_assess_done"
 
 FEEL_WORSE_SLOT = "feel_worse"
 SYMPTOMS_SLOT = "symptoms"
@@ -165,4 +166,4 @@ class DailyCiFeelNoChangeForm(FormAction):
                 template="utter_daily_ci__feel_no_change__mild_last_symptoms_recommendation"
             )
 
-        return []
+        return [SlotSet(SELF_ASSESS_DONE_SLOT, True)]

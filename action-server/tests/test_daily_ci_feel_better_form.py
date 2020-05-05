@@ -10,6 +10,7 @@ from actions.daily_ci_feel_better_form import (
     HAS_OTHER_MILD_SYMPTOMS_SLOT,
     IS_SYMPTOM_FREE_SLOT,
     LAST_SYMPTOMS_SLOT,
+    SELF_ASSESS_DONE_SLOT,
     SYMPTOMS_SLOT,
     DailyCiFeelBetterForm,
 )
@@ -194,6 +195,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(HAS_DIFF_BREATHING_SLOT, True),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
@@ -275,6 +277,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(HAS_OTHER_MILD_SYMPTOMS_SLOT, True),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
@@ -311,6 +314,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(HAS_OTHER_MILD_SYMPTOMS_SLOT, False),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
@@ -364,6 +368,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
             [
                 SlotSet(IS_SYMPTOM_FREE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, "none"),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
@@ -390,6 +395,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(IS_SYMPTOM_FREE_SLOT, False),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
@@ -494,6 +500,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(HAS_OTHER_MILD_SYMPTOMS_SLOT, True),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
@@ -528,6 +535,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(HAS_OTHER_MILD_SYMPTOMS_SLOT, False),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
@@ -555,6 +563,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
             [
                 SlotSet(IS_SYMPTOM_FREE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, "none"),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
@@ -579,6 +588,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(IS_SYMPTOM_FREE_SLOT, False),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]

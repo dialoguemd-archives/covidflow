@@ -1,5 +1,6 @@
 import logging
 import os
+from datetime import datetime
 from typing import Any, Dict, List, Text
 
 from hashids import Hashids
@@ -23,17 +24,13 @@ HASHIDS_SALT_ENV_KEY = "REMINDER_ID_HASHIDS_SALT"
 HASHIDS_MIN_LENGTH_ENV_KEY = "REMINDER_ID_HASHIDS_MIN_LENGTH"
 
 
-def _query_reminder(reminder_id):
-    session = session_factory()
-    try:
-        reminder = session.query(Reminder).get(reminder_id)
-        if reminder is None:
-            raise ReminderNotFoundException(
-                f"Reminder with id '{reminder_id}' does not exist."
-            )
-        return reminder
-    finally:
-        session.close()
+def _query_reminder(session, reminder_id):
+    reminder = session.query(Reminder).get(reminder_id)
+    if reminder is None:
+        raise ReminderNotFoundException(
+            f"Reminder with id '{reminder_id}' does not exist."
+        )
+    return reminder
 
 
 def _get_env(name):
@@ -72,16 +69,37 @@ class ActionSendDailyCheckInReminder(Action):
         hashed_id = metadata[REMINDER_ID_PROPERTY_NAME]
         reminder_id = self.hashids.decode(hashed_id)[0]
 
-        conversation_id = tracker.sender_id
+        session = session_factory()
+        try:
+            reminder = _query_reminder(session, reminder_id)
 
-        reminder = _query_reminder(reminder_id)
+            self._send_reminder(dispatcher, tracker, reminder, hashed_id)
+
+            reminder.last_reminded_at = datetime.utcnow()
+            session.commit()
+        except:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+        return []
+
+    def _send_reminder(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        reminder: Reminder,
+        hashed_id: str,
+    ):
+        conversation_id = tracker.sender_id
         first_name = reminder.first_name
         phone_number = reminder.phone_number
         language = reminder.language
 
         if conversation_id != phone_number:
             raise InvalidExternalEventException(
-                f"Phone number does not match sender_id: reminder_id={reminder_id} sender_id={conversation_id} phone_number={phone_number}"
+                f"Phone number does not match sender_id: reminder_id={reminder.id} sender_id={conversation_id} phone_number={phone_number}"
             )
 
         checkin_url = self.url_pattern.format(reminder_id=hashed_id, language=language)
@@ -97,5 +115,3 @@ class ActionSendDailyCheckInReminder(Action):
             first_name=first_name,
             check_in_url=checkin_url,
         )
-
-        return []

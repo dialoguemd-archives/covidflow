@@ -1,6 +1,9 @@
-from rasa_sdk.events import Form, SlotSet
+from rasa_sdk.events import FollowupAction, Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
+from actions.action_daily_ci_recommendations import (
+    ACTION_NAME as RECOMMENDATIONS_ACTION_NAME,
+)
 from actions.daily_ci_keep_or_cancel_form import (
     AGE_OVER_65_SLOT,
     CANCEL_CI_SLOT,
@@ -152,7 +155,14 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
 
         self.run_form(tracker)
 
-        self.assert_events([Form(FORM_NAME), Form(None), SlotSet(REQUESTED_SLOT, None)])
+        self.assert_events(
+            [
+                Form(FORM_NAME),
+                FollowupAction(RECOMMENDATIONS_ACTION_NAME),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ]
+        )
 
         self.assert_templates(
             [
@@ -162,19 +172,13 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
         )
 
     def test_no_symptoms_ci_continue(self):
-        self._test_ci_continue(symptoms="none")
-
-    def test_symptoms_ci_continue(self):
-        self._test_ci_continue(symptoms="mild")
-
-    def _test_ci_continue(self, symptoms: str):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: CANCEL_CI_SLOT,
                 AGE_OVER_65_SLOT: False,
                 FEEL_WORSE_SLOT: False,
                 PRECONDITIONS_SLOT: False,
-                SYMPTOMS_SLOT: symptoms,
+                SYMPTOMS_SLOT: "none",
             },
             intent="continue",
         )
@@ -183,6 +187,33 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
 
         self.assert_events(
             [SlotSet(CANCEL_CI_SLOT, False), Form(None), SlotSet(REQUESTED_SLOT, None)]
+        )
+
+        self.assert_templates(
+            ["utter_daily_ci__keep_or_cancel__acknowledge_continue_ci"]
+        )
+
+    def test_symptoms_ci_continue(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: CANCEL_CI_SLOT,
+                AGE_OVER_65_SLOT: False,
+                FEEL_WORSE_SLOT: False,
+                PRECONDITIONS_SLOT: False,
+                SYMPTOMS_SLOT: "mild",
+            },
+            intent="continue",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(CANCEL_CI_SLOT, False),
+                FollowupAction(RECOMMENDATIONS_ACTION_NAME),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ]
         )
 
         self.assert_templates(

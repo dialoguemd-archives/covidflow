@@ -752,3 +752,26 @@ responses:
 
   utter_daily_ci__keep_or_cancel__feel_worse_recommendation:
     - text: Entretemps, si votre condition change et que vous voulez réévaluer vos symptômes, n'hésitez pas à communiquer avec moi
+
+  ## Daily check-in - recommendations
+
+  utter_daily_ci__recommendations__more_information_vulnerable_population:
+    - text: Pour plus d'informations et de recommandations, consultez [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common) ou [canada.ca](https://www.canada.ca/fr/sante-publique/services/publications/maladies-et-affections/populations-vulnerables-covid-19.html)
+
+  utter_daily_ci__recommendations__more_information_general:
+    - text: Pour plus d'informations et de recommandations, consultez [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common)
+
+  utter_daily_ci__recommendations__211_qc:
+    - text: Et si vous avez besoin d'aide à domicile et vivez dans la grande région de Montréal ou à Québec, vous pouvez appeler au 211 ou consulter 211.ca
+
+  utter_daily_ci__recommendations__211_other_provinces:
+    - text: Et pour de l'aide à domicile, vous pouvez appeler au 211 ou consulter 211.ca
+
+  utter_daily_ci__recommendations__tomorrow_ci:
+    - text: Je vais communiquer avec vous demain environ au même moment
+
+  utter_daily_ci__recommendations__recommendation_1:
+    - text: Assurez-vous de bien vous hydrater et de vous reposer
+
+  utter_daily_ci__recommendations__recommendation_2:
+    - text: Vous pouvez aussi consulter [dialogue](https://covid19.dialogue.co/#/) pour des informations, si vous avez des questions, ou pour réévaluer vos symptômes

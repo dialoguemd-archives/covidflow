@@ -1,10 +1,13 @@
 from typing import Any, Dict, List, Optional, Text, Union
 
 from rasa_sdk import Tracker
-from rasa_sdk.events import EventType
+from rasa_sdk.events import EventType, FollowupAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
+from actions.action_daily_ci_recommendations import (
+    ACTION_NAME as RECOMMENDATIONS_ACTION_NAME,
+)
 from actions.form_helper import request_next_slot
 
 FORM_NAME = "daily_ci_keep_or_cancel_form"
@@ -85,7 +88,7 @@ class DailyCiKeepOrCancelForm(FormAction):
             dispatcher.utter_message(
                 template="utter_daily_ci__keep_or_cancel__feel_worse_recommendation"
             )
-            # TODO: return recommendations follow up action
+            return [FollowupAction(RECOMMENDATIONS_ACTION_NAME)]
 
         # Optional check-in cancel
         elif tracker.get_slot(CANCEL_CI_SLOT) is True:
@@ -96,15 +99,17 @@ class DailyCiKeepOrCancelForm(FormAction):
                 template="utter_daily_ci__keep_or_cancel__cancel_ci_recommendation"
             )
             # TODO: cancel check-in
+            return []
 
         # Optional check-in continue
-        else:
-            dispatcher.utter_message(
-                template="utter_daily_ci__keep_or_cancel__acknowledge_continue_ci"
-            )
-            # TODO: return recommendations follow up action if symptoms is not equal to "none:
+        dispatcher.utter_message(
+            template="utter_daily_ci__keep_or_cancel__acknowledge_continue_ci"
+        )
 
-        return []
+        if tracker.get_slot(SYMPTOMS_SLOT) == "none":
+            return []
+
+        return [FollowupAction(RECOMMENDATIONS_ACTION_NAME)]
 
 
 def _mandatory_ci(tracker: Tracker) -> bool:

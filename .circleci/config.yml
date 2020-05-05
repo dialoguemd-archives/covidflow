@@ -176,7 +176,7 @@ workflows:
               only: master
           working_directory: core
           language: en
-          core_endpoint_url: https://${CIRCLE_PROJECT_REPONAME}-core-en.dialoguecorp.com
+          core_endpoint_url: https://${CIRCLE_PROJECT_REPONAME}-core-en.dev.dialoguecorp.com
           requires:
             - deploy-dev-ca2
       - test_integration:
@@ -187,7 +187,7 @@ workflows:
               only: master
           working_directory: core
           language: fr
-          core_endpoint_url: https://${CIRCLE_PROJECT_REPONAME}-core-fr.dialoguecorp.com
+          core_endpoint_url: https://${CIRCLE_PROJECT_REPONAME}-core-fr.dev.dialoguecorp.com
           requires:
             - deploy-dev-ca2
 

@@ -6,7 +6,7 @@ from aiohttp import web
 from aiohttp.test_utils import TestServer, unused_port
 
 from db.reminder import Reminder
-from jobs.send_reminders import run
+from jobs.send_reminders import _send_reminder, run
 
 EN = "en"
 FR = "fr"
@@ -98,8 +98,13 @@ class TestJobSendReminder(TestCase):
         self.assertCountEqual(sent, [REMINDER_1.id, REMINDER_2.id])
         self.assertCountEqual(errored, [])
 
+    @patch(
+        "jobs.send_reminders._send_reminder_with_backoff", side_effect=_send_reminder
+    )
     @patch("jobs.send_reminders.session_factory")
-    def test_send_reminders_error(self, mock_session_factory):
+    def test_send_reminders_error(
+        self, mock_session_factory, mock_send_reminder_with_backoff
+    ):
         self._setUp(mock_session_factory, fail_request=True)
 
         sent, errored = run(
@@ -124,8 +129,13 @@ class TestJobSendReminder(TestCase):
         self.assertCountEqual(sent, [])
         self.assertCountEqual(errored, [])
 
+    @patch(
+        "jobs.send_reminders._send_reminder_with_backoff", side_effect=_send_reminder
+    )
     @patch("jobs.send_reminders.session_factory")
-    def test_connection_error(self, mock_session_factory):
+    def test_connection_error(
+        self, mock_session_factory, mock_send_reminder_with_backoff
+    ):
         self._setUp(mock_session_factory, start_server=False)
 
         sent, errored = run(

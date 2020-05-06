@@ -1,8 +1,9 @@
 import asyncio
 import os
 from datetime import datetime, timedelta
-from http import HTTPStatus
 
+import aiohttp
+import backoff
 from aiohttp import ClientSession
 from hashids import Hashids
 from sqlalchemy import and_, or_
@@ -84,7 +85,7 @@ async def _send_reminders(reminders, hashids, endpoints):
     sent = []
     errored = []
 
-    async with ClientSession() as session:
+    async with ClientSession(raise_for_status=True) as session:
         for reminder in reminders:
             log.debug(f"Sending reminder: {reminder}")
 
@@ -101,17 +102,22 @@ async def _send_reminders(reminders, hashids, endpoints):
             }
 
             try:
-                async with session.post(url, json=json) as response:
-                    if response.status == HTTPStatus.OK:
-                        sent.append(reminder.id)
-                    else:
-                        message = await response.text()
-                        raise Exception(message)
+                await _send_reminder_with_backoff(session, url, json)
+                sent.append(reminder.id)
             except Exception as e:
                 errored.append(reminder.id)
                 log.warning(f"Failed to send {reminder} due to {e!r}")
 
     return sent, errored
+
+
+@backoff.on_exception(backoff.expo, aiohttp.ClientError, max_time=3)
+async def _send_reminder_with_backoff(session, url, json):
+    await _send_reminder(session, url, json)
+
+
+async def _send_reminder(session, url, json):
+    await session.post(url, json=json)
 
 
 if __name__ == "__main__":

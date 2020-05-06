@@ -8,6 +8,7 @@ from actions.daily_ci_feel_worse_form import (
     HAS_DIFF_BREATHING_SLOT,
     HAS_DIFF_BREATHING_WORSENED_SLOT,
     HAS_FEVER_SLOT,
+    SELF_ASSESS_DONE_SLOT,
     SEVERE_SYMPTOMS_SLOT,
     DailyCiFeelWorseForm,
 )
@@ -44,6 +45,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(SEVERE_SYMPTOMS_SLOT, True),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
@@ -169,6 +171,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(HAS_DIFF_BREATHING_WORSENED_SLOT, True),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
@@ -203,6 +206,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(HAS_DIFF_BREATHING_WORSENED_SLOT, False),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
@@ -267,7 +271,12 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         self.run_form(tracker)
 
         self.assert_events(
-            [SlotSet(HAS_COUGH_SLOT, True), Form(None), SlotSet(REQUESTED_SLOT, None),],
+            [
+                SlotSet(HAS_COUGH_SLOT, True),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ],
         )
 
         self.assert_templates(
@@ -299,6 +308,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(HAS_COUGH_SLOT, False),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],

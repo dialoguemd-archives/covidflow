@@ -435,6 +435,9 @@ responses:
         - title: "No I'm done"
           payload: "/done"
 
+  utter_daily_ci__qa__will_contact_tomorrow:
+    - text: I will get in touch with you tomorrow for your daily check-in
+
   ## action self-isolation
 
   utter_symptoms_self_isolate:

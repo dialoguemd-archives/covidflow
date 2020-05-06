@@ -196,6 +196,9 @@ class DailyCiEnrollForm(FormAction):
                     template="utter_daily_ci_enroll__validation_code_not_sent_2"
                 )
                 dispatcher.utter_message(template="utter_daily_ci_enroll__continue")
+
+                return {PHONE_NUMBER_SLOT: None, DO_ENROLL_SLOT: False}
+
             return {
                 PHONE_NUMBER_SLOT: phone_number,
                 VALIDATION_CODE_REFERENCE_SLOT: validation_code,

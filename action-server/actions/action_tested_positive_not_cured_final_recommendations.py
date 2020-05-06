@@ -15,9 +15,7 @@ class ActionTestedPositiveNotCuredFinalRecommendations(Action):
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
 
-        dispatcher.utter_message(
-            template="utter_acknowledge_remind_monitor_symptoms_temperature"
-        )
+        dispatcher.utter_message(template="utter_remind_monitor_symptoms_temperature")
         dispatcher.utter_message(template="utter_remind_possible_checkin")
 
         return []

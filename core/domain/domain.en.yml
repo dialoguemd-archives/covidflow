@@ -752,3 +752,26 @@ responses:
 
   utter_daily_ci__keep_or_cancel__feel_worse_recommendation:
     - text: In the meantime, if your condition changes and you wish to reassess your symptoms, feel free to contact me
+
+  ## Daily check-in - recommendations
+
+  utter_daily_ci__recommendations__more_information_vulnerable_population:
+    - text: If you want more information and recommendations, please visit [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common) or [canada.ca](https://www.canada.ca/en/public-health/services/publications/diseases-conditions/vulnerable-populations-covid-19.html)
+
+  utter_daily_ci__recommendations__more_information_general:
+    - text: If you want more information and recommendations, please visit [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common)
+
+  utter_daily_ci__recommendations__211_qc:
+    - text: And if you need home assistance and live in the greater Montreal area or in Quebec City, you may call 211 or visit 211.ca
+
+  utter_daily_ci__recommendations__211_other_provinces:
+    - text: And if you need home assistance, you may call 211 or visit 211.ca
+
+  utter_daily_ci__recommendations__tomorrow_ci:
+    - text: I will check-in with you tomorrow around the same time
+
+  utter_daily_ci__recommendations__recommendation_1:
+    - text: Make sure you stay well hydrated and get enough rest
+
+  utter_daily_ci__recommendations__recommendation_2:
+    - text: You can always visit covid.dialogue.co for information, if you have questions, or if you want to assess your symptoms

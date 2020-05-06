@@ -38,7 +38,9 @@ entities:
 
 actions:
   - action_visit_package
+  - action_daily_ci_recommendations
   - action_explain_preconditions
+  - action_goodbye
   - action_suspect_mild_symptoms_exposure_recommendations
   - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_suspect_moderate_symptoms_recommendations

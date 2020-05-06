@@ -502,10 +502,10 @@ responses:
   utter_checkin_reminder:
     - text: "Bonjour {first_name}, ici Chloé, pour votre suivi quotidien. Pour poursuivre, veuillez suivre ce lien: {check_in_url}"
 
-  utter_greet_daily_checkin:
+  utter_daily_ci__greet:
     - text: Bonjour Linda, ici Chloé, pour votre suivi quotidien. Voyons voir comment ça va aujourd'hui
 
-  utter_ask_how_do_you_feel:
+  utter_ask_daily_ci__feel:
     - text: D'abord, comment vous sentez-vous par rapport à hier?
       buttons:
         - title: Mieux
@@ -514,9 +514,6 @@ responses:
           payload: "/worse"
         - title: Du pareil au même
           payload: "/no_change"
-
-  utter_to_be_continued:
-    - text: À continuer...
 
   utter_daily_ci__acknowledge_fever:
     - text: Entendu, je note que vous faites de la fièvre aujourd'hui
@@ -775,3 +772,22 @@ responses:
 
   utter_daily_ci__recommendations__recommendation_2:
     - text: Vous pouvez aussi consulter [dialogue](https://covid19.dialogue.co/#/) pour des informations, si vous avez des questions, ou pour réévaluer vos symptômes
+
+  ## Daily check-in - early opt out
+
+  utter_ask_daily_ci__early_opt_out__cancel_ci:
+    - text: Avant de poursuivre, si vous voulez vous désinscrire et annuler le suivi quotidien, dites-le moi maintenant
+      buttons:
+        - title: Me désinscrire
+          payload: "/opt_out"
+        - title: Continuer
+          payload: "/continue"
+
+  utter_daily_ci__early_opt_out__acknowledge_continue_ci:
+    - text: D'accord, continuons
+
+  utter_daily_ci__early_opt_out__acknowledge_cancel_ci:
+    - text: Entendu, j'annule votre suivi quotidien
+
+  utter_daily_ci__early_opt_out__cancel_ci_recommendation:
+    - text: Si vous remarquez des changements, ou si vous avez des symptômes, n'hésitez pas à communiquer avec moi pour une évaluation

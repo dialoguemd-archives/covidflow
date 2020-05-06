@@ -25,11 +25,12 @@ intents:
   - symptom_free
   - no_phone
   - cancel
+  - continue
+  - opt_out
   - send_validation_code:
       triggers: action_send_validation_code
   - send_daily_checkin_reminder:
       triggers: action_send_daily_checkin_reminder
-  - continue
 entities:
   - province
   - metadata
@@ -38,6 +39,7 @@ entities:
 
 actions:
   - action_visit_package
+  - action_daily_ci_early_opt_out
   - action_daily_ci_recommendations
   - action_explain_preconditions
   - action_goodbye

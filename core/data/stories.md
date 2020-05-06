@@ -630,10 +630,39 @@
   - utter_please_visit_again
   - action_qa_goodbye
 
+## daily check-in - early opt out - done
+* daily_checkin{"metadata":{}}
+  - utter_daily_ci__greet
+  - utter_ask_daily_ci__early_opt_out__cancel_ci
+* opt_out
+  - action_daily_ci_early_opt_out
+  - utter_ask_anything_else
+* done
+  - utter_goodbye
+
+## daily check-in - early opt out - QA
+* daily_checkin{"metadata":{}}
+  - utter_daily_ci__greet
+  - utter_ask_daily_ci__early_opt_out__cancel_ci
+* opt_out
+  - action_daily_ci_early_opt_out
+  - utter_ask_anything_else
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "success"}
+  - utter_ask_what_next_after_answer
+* done
+  - action_qa_goodbye
+
 ## daily check-in - feel worse - moderate symptoms
 * daily_checkin{"metadata":{}}
-  - utter_greet_daily_checkin
-  - utter_ask_how_do_you_feel
+  - utter_daily_ci__greet
+  - utter_ask_daily_ci__early_opt_out__cancel_ci
+* continue
+  - utter_daily_ci__early_opt_out__acknowledge_continue_ci
+  - utter_ask_daily_ci__feel
 * worse
   - daily_ci_feel_worse_form
   - form{"name": "daily_ci_feel_worse_form"}
@@ -656,8 +685,11 @@
 
 ## daily check-in - feel worse - mild symptoms
 * daily_checkin{"metadata":{}}
-  - utter_greet_daily_checkin
-  - utter_ask_how_do_you_feel
+  - utter_daily_ci__greet
+  - utter_ask_daily_ci__early_opt_out__cancel_ci
+* continue
+  - utter_daily_ci__early_opt_out__acknowledge_continue_ci
+  - utter_ask_daily_ci__feel
 * worse
   - daily_ci_feel_worse_form
   - form{"name": "daily_ci_feel_worse_form"}
@@ -681,8 +713,11 @@
 
 ## daily check-in - feel worse - no symptoms
 * daily_checkin{"metadata":{}}
-  - utter_greet_daily_checkin
-  - utter_ask_how_do_you_feel
+  - utter_daily_ci__greet
+  - utter_ask_daily_ci__early_opt_out__cancel_ci
+* continue
+  - utter_daily_ci__early_opt_out__acknowledge_continue_ci
+  - utter_ask_daily_ci__feel
 * worse
   - daily_ci_feel_worse_form
   - form{"name": "daily_ci_feel_worse_form"}
@@ -698,8 +733,11 @@
 
 ## daily check-in - feel no change - moderate symptoms
 * daily_checkin{"metadata":{}}
-  - utter_greet_daily_checkin
-  - utter_ask_how_do_you_feel
+  - utter_daily_ci__greet
+  - utter_ask_daily_ci__early_opt_out__cancel_ci
+* continue
+  - utter_daily_ci__early_opt_out__acknowledge_continue_ci
+  - utter_ask_daily_ci__feel
 * no_change
   - daily_ci_feel_no_change_form
   - form{"name": "daily_ci_feel_no_change_form"}
@@ -715,8 +753,11 @@
 
 ## daily check-in - feel no change - mild symptoms
 * daily_checkin{"metadata":{}}
-  - utter_greet_daily_checkin
-  - utter_ask_how_do_you_feel
+  - utter_daily_ci__greet
+  - utter_ask_daily_ci__early_opt_out__cancel_ci
+* continue
+  - utter_daily_ci__early_opt_out__acknowledge_continue_ci
+  - utter_ask_daily_ci__feel
 * no_change
   - daily_ci_feel_no_change_form
   - form{"name": "daily_ci_feel_no_change_form"}
@@ -746,8 +787,11 @@
 
 ## daily check-in - feel no change - no symptoms
 * daily_checkin{"metadata":{}}
-  - utter_greet_daily_checkin
-  - utter_ask_how_do_you_feel
+  - utter_daily_ci__greet
+  - utter_ask_daily_ci__early_opt_out__cancel_ci
+* continue
+  - utter_daily_ci__early_opt_out__acknowledge_continue_ci
+  - utter_ask_daily_ci__feel
 * no_change
   - daily_ci_feel_no_change_form
   - form{"name": "daily_ci_feel_no_change_form"}
@@ -763,8 +807,11 @@
 
 ## daily check-in - feel better - moderate symptoms
 * daily_checkin{"metadata":{}}
-  - utter_greet_daily_checkin
-  - utter_ask_how_do_you_feel
+  - utter_daily_ci__greet
+  - utter_ask_daily_ci__early_opt_out__cancel_ci
+* continue
+  - utter_daily_ci__early_opt_out__acknowledge_continue_ci
+  - utter_ask_daily_ci__feel
 * better
   - daily_ci_feel_better_form
   - form{"name": "daily_ci_feel_better_form"}
@@ -780,8 +827,11 @@
 
 ## daily check-in - feel better - mild symptoms
 * daily_checkin{"metadata":{}}
-  - utter_greet_daily_checkin
-  - utter_ask_how_do_you_feel
+  - utter_daily_ci__greet
+  - utter_ask_daily_ci__early_opt_out__cancel_ci
+* continue
+  - utter_daily_ci__early_opt_out__acknowledge_continue_ci
+  - utter_ask_daily_ci__feel
 * better
   - daily_ci_feel_better_form
   - form{"name": "daily_ci_feel_better_form"}
@@ -797,8 +847,11 @@
 
 ## daily check-in - feel better - no symptoms
 * daily_checkin{"metadata":{}}
-  - utter_greet_daily_checkin
-  - utter_ask_how_do_you_feel
+  - utter_daily_ci__greet
+  - utter_ask_daily_ci__early_opt_out__cancel_ci
+* continue
+  - utter_daily_ci__early_opt_out__acknowledge_continue_ci
+  - utter_ask_daily_ci__feel
 * better
   - daily_ci_feel_better_form
   - form{"name": "daily_ci_feel_better_form"}

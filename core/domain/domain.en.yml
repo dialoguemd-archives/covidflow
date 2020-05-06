@@ -502,10 +502,10 @@ responses:
   utter_checkin_reminder:
     - text: "Hello {first_name}, this is Chloe, for your daily check-in. To continue, please follow that link: {check_in_url}"
 
-  utter_greet_daily_checkin:
+  utter_daily_ci__greet:
     - text: Hello Linda, this is Chloe, and I'm checking in to see how you're doing today
 
-  utter_ask_how_do_you_feel:
+  utter_ask_daily_ci__feel:
     - text: First, compared to yesterday, how do you feel?
       buttons:
         - title: Better
@@ -514,9 +514,6 @@ responses:
           payload: "/worse"
         - title: No change
           payload: "/no_change"
-
-  utter_to_be_continued:
-    - text: To be continued...
 
   utter_daily_ci__acknowledge_fever:
     - text: OK, I'm taking note that you have a fever today
@@ -775,3 +772,22 @@ responses:
 
   utter_daily_ci__recommendations__recommendation_2:
     - text: You can always visit covid.dialogue.co for information, if you have questions, or if you want to assess your symptoms
+
+  ## Daily check-in - early opt out
+
+  utter_ask_daily_ci__early_opt_out__cancel_ci:
+    - text: Before we start, if you want to opt out and cancel the daily check-in, just let me know
+      buttons:
+        - title: Opt out
+          payload: "/opt_out"
+        - title: Continue
+          payload: "/continue"
+
+  utter_daily_ci__early_opt_out__acknowledge_continue_ci:
+    - text: OK, let's continue
+
+  utter_daily_ci__early_opt_out__acknowledge_cancel_ci:
+    - text: OK, I will cancel your daily check-in
+
+  utter_daily_ci__early_opt_out__cancel_ci_recommendation:
+    - text: If you notice any changes or get symptoms, feel free to check with me to reassess your symptoms

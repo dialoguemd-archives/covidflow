@@ -5,19 +5,18 @@ from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
+from actions.constants import (
+    FEEL_WORSE_SLOT,
+    HAS_COUGH_SLOT,
+    HAS_DIFF_BREATHING_SLOT,
+    HAS_FEVER_SLOT,
+    LAST_SYMPTOMS_SLOT,
+    SYMPTOMS_SLOT,
+)
+from actions.daily_ci_assessment_common import submit_daily_ci_assessment
 from actions.form_helper import request_next_slot
-from actions.lib.persistence import store_assessment
 
 FORM_NAME = "daily_ci_feel_better_form"
-
-LAST_SYMPTOMS_SLOT = "last_symptoms"
-SELF_ASSESS_DONE_SLOT = "self_assess_done"
-
-FEEL_WORSE_SLOT = "feel_worse"
-SYMPTOMS_SLOT = "symptoms"
-HAS_FEVER_SLOT = "has_fever"
-HAS_COUGH_SLOT = "has_cough"
-HAS_DIFF_BREATHING_SLOT = "has_diff_breathing"
 
 HAS_OTHER_MILD_SYMPTOMS_SLOT = "daily_ci__feel_better__has_other_mild_symptoms"
 IS_SYMPTOM_FREE_SLOT = "daily_ci__feel_better__is_symptom_free"
@@ -216,5 +215,5 @@ class DailyCiFeelBetterForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict]:
-        store_assessment(tracker.current_slot_values())
-        return [SlotSet(SELF_ASSESS_DONE_SLOT, True)]
+
+        return submit_daily_ci_assessment(tracker)

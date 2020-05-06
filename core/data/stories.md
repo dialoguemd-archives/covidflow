@@ -658,6 +658,7 @@
 
 ## daily check-in - feel worse - moderate symptoms
 * daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
   - utter_daily_ci__greet
   - utter_ask_daily_ci__early_opt_out__cancel_ci
 * continue
@@ -685,6 +686,7 @@
 
 ## daily check-in - feel worse - mild symptoms
 * daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
   - utter_daily_ci__greet
   - utter_ask_daily_ci__early_opt_out__cancel_ci
 * continue
@@ -713,6 +715,7 @@
 
 ## daily check-in - feel worse - no symptoms
 * daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
   - utter_daily_ci__greet
   - utter_ask_daily_ci__early_opt_out__cancel_ci
 * continue
@@ -733,6 +736,7 @@
 
 ## daily check-in - feel no change - moderate symptoms
 * daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
   - utter_daily_ci__greet
   - utter_ask_daily_ci__early_opt_out__cancel_ci
 * continue
@@ -753,6 +757,7 @@
 
 ## daily check-in - feel no change - mild symptoms
 * daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
   - utter_daily_ci__greet
   - utter_ask_daily_ci__early_opt_out__cancel_ci
 * continue
@@ -787,6 +792,7 @@
 
 ## daily check-in - feel no change - no symptoms
 * daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
   - utter_daily_ci__greet
   - utter_ask_daily_ci__early_opt_out__cancel_ci
 * continue
@@ -807,6 +813,7 @@
 
 ## daily check-in - feel better - moderate symptoms
 * daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
   - utter_daily_ci__greet
   - utter_ask_daily_ci__early_opt_out__cancel_ci
 * continue
@@ -827,6 +834,7 @@
 
 ## daily check-in - feel better - mild symptoms
 * daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
   - utter_daily_ci__greet
   - utter_ask_daily_ci__early_opt_out__cancel_ci
 * continue
@@ -847,6 +855,7 @@
 
 ## daily check-in - feel better - no symptoms
 * daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
   - utter_daily_ci__greet
   - utter_ask_daily_ci__early_opt_out__cancel_ci
 * continue

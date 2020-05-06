@@ -81,7 +81,7 @@ class Assessment(Base):
 
     @property
     def symptoms(self):
-        return self.attributes[SYMPTOMS_ATTRIBUTE]
+        return self.attributes.get(SYMPTOMS_ATTRIBUTE)
 
     @symptoms.setter
     def symptoms(self, symptoms):
@@ -89,7 +89,7 @@ class Assessment(Base):
 
     @property
     def has_fever(self):
-        return self.attributes[HAS_FEVER_ATTRIBUTE]
+        return self.attributes.get(HAS_FEVER_ATTRIBUTE)
 
     @has_fever.setter
     def has_fever(self, has_fever):
@@ -97,7 +97,7 @@ class Assessment(Base):
 
     @property
     def has_cough(self):
-        return self.attributes[HAS_COUGH_ATTRIBUTE]
+        return self.attributes.get(HAS_COUGH_ATTRIBUTE)
 
     @has_cough.setter
     def has_cough(self, has_cough):
@@ -105,7 +105,7 @@ class Assessment(Base):
 
     @property
     def has_diff_breathing(self):
-        return self.attributes[HAS_DIFF_BREATHING_ATTRIBUTE]
+        return self.attributes.get(HAS_DIFF_BREATHING_ATTRIBUTE)
 
     @has_diff_breathing.setter
     def has_diff_breathing(self, has_diff_breathing):
@@ -113,7 +113,7 @@ class Assessment(Base):
 
     @property
     def feel_worse(self):
-        return self.attributes[FEEL_WORSE_ATTRIBUTE]
+        return self.attributes.get(FEEL_WORSE_ATTRIBUTE)
 
     @feel_worse.setter
     def feel_worse(self, feel_worse):

@@ -3,17 +3,20 @@ from unittest.mock import patch
 from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
-from actions.daily_ci_feel_better_form import (
+from actions.constants import (
     FEEL_WORSE_SLOT,
-    FORM_NAME,
     HAS_COUGH_SLOT,
     HAS_DIFF_BREATHING_SLOT,
     HAS_FEVER_SLOT,
-    HAS_OTHER_MILD_SYMPTOMS_SLOT,
-    IS_SYMPTOM_FREE_SLOT,
+    LAST_HAS_DIFF_BREATHING_SLOT,
     LAST_SYMPTOMS_SLOT,
     SELF_ASSESS_DONE_SLOT,
     SYMPTOMS_SLOT,
+)
+from actions.daily_ci_feel_better_form import (
+    FORM_NAME,
+    HAS_OTHER_MILD_SYMPTOMS_SLOT,
+    IS_SYMPTOM_FREE_SLOT,
     DailyCiFeelBetterForm,
 )
 from tests.form_helper import FormTestCase
@@ -24,7 +27,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
         super().setUp()
         self.form = DailyCiFeelBetterForm()
 
-        self.patcher = patch("actions.daily_ci_feel_better_form.store_assessment")
+        self.patcher = patch("actions.daily_ci_assessment_common.store_assessment")
         self.mock_store_assessment = self.patcher.start()
 
     def tearDown(self):
@@ -205,6 +208,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
             [
                 SlotSet(HAS_DIFF_BREATHING_SLOT, True),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
+                SlotSet(SYMPTOMS_SLOT, "moderate"),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
@@ -497,6 +501,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 LAST_SYMPTOMS_SLOT: "mild",
+                LAST_HAS_DIFF_BREATHING_SLOT: False,
                 REQUESTED_SLOT: HAS_OTHER_MILD_SYMPTOMS_SLOT,
                 HAS_FEVER_SLOT: fever,
                 HAS_COUGH_SLOT: cough,
@@ -510,6 +515,8 @@ class TestDailyCiFeelBetterForm(FormTestCase):
             [
                 SlotSet(HAS_OTHER_MILD_SYMPTOMS_SLOT, True),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
+                SlotSet(SYMPTOMS_SLOT, "mild"),
+                SlotSet(HAS_DIFF_BREATHING_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
@@ -534,6 +541,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 LAST_SYMPTOMS_SLOT: "mild",
+                LAST_HAS_DIFF_BREATHING_SLOT: False,
                 REQUESTED_SLOT: HAS_OTHER_MILD_SYMPTOMS_SLOT,
                 HAS_FEVER_SLOT: fever,
                 HAS_COUGH_SLOT: cough,
@@ -547,6 +555,8 @@ class TestDailyCiFeelBetterForm(FormTestCase):
             [
                 SlotSet(HAS_OTHER_MILD_SYMPTOMS_SLOT, False),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
+                SlotSet(SYMPTOMS_SLOT, "mild"),
+                SlotSet(HAS_DIFF_BREATHING_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
@@ -562,6 +572,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 LAST_SYMPTOMS_SLOT: "mild",
+                LAST_HAS_DIFF_BREATHING_SLOT: False,
                 REQUESTED_SLOT: IS_SYMPTOM_FREE_SLOT,
                 HAS_FEVER_SLOT: False,
                 HAS_COUGH_SLOT: False,
@@ -577,6 +588,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
                 SlotSet(IS_SYMPTOM_FREE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, "none"),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
+                SlotSet(HAS_DIFF_BREATHING_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
@@ -590,6 +602,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 LAST_SYMPTOMS_SLOT: "mild",
+                LAST_HAS_DIFF_BREATHING_SLOT: False,
                 REQUESTED_SLOT: IS_SYMPTOM_FREE_SLOT,
                 HAS_FEVER_SLOT: False,
                 HAS_COUGH_SLOT: False,
@@ -604,6 +617,8 @@ class TestDailyCiFeelBetterForm(FormTestCase):
             [
                 SlotSet(IS_SYMPTOM_FREE_SLOT, False),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
+                SlotSet(SYMPTOMS_SLOT, "mild"),
+                SlotSet(HAS_DIFF_BREATHING_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]

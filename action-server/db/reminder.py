@@ -123,7 +123,7 @@ class Reminder(Base):
 
     @property
     def first_name(self):
-        return self.attributes[FIRST_NAME_ATTRIBUTE]
+        return self.attributes.get(FIRST_NAME_ATTRIBUTE)
 
     @first_name.setter
     def first_name(self, first_name):
@@ -131,7 +131,7 @@ class Reminder(Base):
 
     @property
     def phone_number(self):
-        return self.attributes[PHONE_NUMBER_ATTRIBUTE]
+        return self.attributes.get(PHONE_NUMBER_ATTRIBUTE)
 
     @phone_number.setter
     def phone_number(self, phone_number):
@@ -139,7 +139,7 @@ class Reminder(Base):
 
     @property
     def language(self):
-        return self.attributes[LANGUAGE_ATTRIBUTE]
+        return self.attributes.get(LANGUAGE_ATTRIBUTE)
 
     @language.setter
     def language(self, language):
@@ -147,7 +147,7 @@ class Reminder(Base):
 
     @property
     def province(self):
-        return self.attributes[PROVINCE_ATTRIBUTE]
+        return self.attributes.get(PROVINCE_ATTRIBUTE)
 
     @province.setter
     def province(self, province):
@@ -155,7 +155,7 @@ class Reminder(Base):
 
     @property
     def age_over_65(self):
-        return self.attributes[AGE_OVER_65_ATTRIBUTE]
+        return self.attributes.get(AGE_OVER_65_ATTRIBUTE)
 
     @age_over_65.setter
     def age_over_65(self, age_over_65):
@@ -163,7 +163,7 @@ class Reminder(Base):
 
     @property
     def preconditions(self):
-        return self.attributes[PRECONDITIONS_ATTRIBUTE]
+        return self.attributes.get(PRECONDITIONS_ATTRIBUTE)
 
     @preconditions.setter
     def preconditions(self, preconditions):
@@ -171,7 +171,7 @@ class Reminder(Base):
 
     @property
     def has_dialogue(self):
-        return self.attributes[HAS_DIALOGUE_ATTRIBUTE]
+        return self.attributes.get(HAS_DIALOGUE_ATTRIBUTE)
 
     @has_dialogue.setter
     def has_dialogue(self, has_dialogue):

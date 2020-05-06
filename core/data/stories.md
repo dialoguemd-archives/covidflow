@@ -27,7 +27,7 @@
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
   - action_suspect_moderate_symptoms_final_recommendations
-  - utter_visit_package
+  - action_visit_package
   - utter_ask_anything_else
 * ask_question
   - utter_can_help_with_questions
@@ -54,7 +54,7 @@
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
   - action_suspect_moderate_symptoms_final_recommendations
-  - utter_visit_package
+  - action_visit_package
   - utter_ask_anything_else
 * done
   - utter_goodbye
@@ -74,7 +74,7 @@
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
   - action_suspect_mild_symptoms_exposure_final_recommendations
-  - utter_visit_package
+  - action_visit_package
   - utter_ask_anything_else
 * ask_question
   - utter_can_help_with_questions
@@ -101,7 +101,7 @@
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
   - action_suspect_mild_symptoms_exposure_final_recommendations
-  - utter_visit_package
+  - action_visit_package
   - utter_ask_anything_else
 * ask_question
   - utter_can_help_with_questions
@@ -129,7 +129,7 @@
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
   - action_suspect_mild_symptoms_exposure_final_recommendations
-  - utter_visit_package
+  - action_visit_package
   - utter_ask_anything_else
 * done
   - utter_goodbye
@@ -150,7 +150,7 @@
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
   - action_suspect_mild_symptoms_exposure_final_recommendations
-  - utter_visit_package
+  - action_visit_package
   - utter_ask_anything_else
 * done
   - utter_goodbye
@@ -163,7 +163,7 @@
   - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
   - action_suspect_no_symptoms_recommendations
-  - utter_visit_package
+  - action_visit_package
   - utter_ask_anything_else
 * ask_question
   - utter_can_help_with_questions
@@ -201,7 +201,7 @@
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
-  - utter_visit_package
+  - action_visit_package
   - utter_ask_anything_else
 * done
   - utter_goodbye
@@ -221,7 +221,7 @@
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
-  - utter_visit_package
+  - action_visit_package
   - utter_ask_anything_else
 * done
   - utter_goodbye
@@ -243,7 +243,7 @@
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
-  - utter_visit_package
+  - action_visit_package
   - utter_ask_anything_else
 * ask_question
   - utter_can_help_with_questions
@@ -279,7 +279,7 @@
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
-  - utter_visit_package
+  - action_visit_package
   - utter_ask_anything_else
 * done
   - utter_goodbye
@@ -300,7 +300,7 @@
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
-  - utter_visit_package
+  - action_visit_package
   - utter_ask_anything_else
 * done
   - utter_goodbye
@@ -321,7 +321,7 @@
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
-  - utter_visit_package
+  - action_visit_package
   - utter_ask_anything_else
 * done
   - utter_goodbye
@@ -343,7 +343,7 @@
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
-  - utter_visit_package
+  - action_visit_package
   - utter_ask_anything_else
 * ask_question
   - utter_can_help_with_questions
@@ -372,7 +372,7 @@
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
-  - utter_visit_package
+  - action_visit_package
   - utter_ask_anything_else
 * done
   - utter_goodbye

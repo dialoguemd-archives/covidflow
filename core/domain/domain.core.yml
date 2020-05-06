@@ -37,7 +37,7 @@ entities:
   - validation_code
 
 actions:
-  - action_set_risk_level
+  - action_visit_package
   - action_explain_preconditions
   - action_suspect_mild_symptoms_exposure_recommendations
   - action_suspect_mild_symptoms_exposure_final_recommendations

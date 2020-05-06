@@ -59,7 +59,7 @@ responses:
     - text: "At any time, you can check-in with me to monitor your symptoms"
 
   utter_visit_package:
-    - text: "You can consult [your personal information package](https://covid19.dialogue.co/#/info?id=ca-{province},{risk_level})"
+    - text: "You can consult [your personal information package](https://covid19.dialogue.co/#/info?id=ca-{id})"
 
   utter_goodbye:
     - text: "Thanks and take care of yourself!"
@@ -67,7 +67,7 @@ responses:
   # Mild symptoms flow
 
   utter_ask_has_cough:
-    - text: "Do you have a cough or a sore throat"
+    - text: "Do you have a cough or a sore throat?"
       buttons:
         - title: Yes
           payload: "/affirm"
@@ -178,9 +178,6 @@ responses:
         - title: No
           payload: "/deny"
 
-  utter_acknowledge_remind_monitor_symptoms_temperature:
-    - text: "OK, don’t forget to take your temperature regularly and monitor your symptoms for any changes"
-
   utter_no_symptoms:
     - text: "It looks like you’re not experiencing any significant Covid-19 symptoms"
 
@@ -196,7 +193,7 @@ responses:
     - text: "You might have recovered. I invite you to stay home as much as possible and comply with social distancing rules. If you go outside, I recommend that you wear a mask"
 
   utter_more_information:
-    - text: "For more information, resources and recommendations about Covid-19, please visit [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common)"
+    - text: "You can find more information, resources and recommendations about Covid-19 [here](https://covid19.dialogue.co/#/info?id=common)"
 
   # Daily CI enroll flow
 

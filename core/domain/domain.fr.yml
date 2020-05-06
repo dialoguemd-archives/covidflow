@@ -67,7 +67,7 @@ responses:
     - text: "À tout moment, vous pouvez communiquer avec moi pour faire un suivi de vos symptômes"
 
   utter_visit_package:
-    - text: "Vous pouvez aussi consulter [votre trousse d'information personnalisée](https://covid19.dialogue.co/#/info?id=ca-{province},{risk_level})"
+    - text: "Vous pouvez aussi consulter [votre trousse d'information personnalisée](https://covid19.dialogue.co/#/info?id=ca-{id})"
 
   utter_goodbye:
     - text: "Merci, et prenez bien soin de vous!"
@@ -111,7 +111,7 @@ responses:
     - text: "Si vous développez des symptômes, ou si vous entrez en contact avec une personne atteinte de la Covid-19, veuillez communiquer avec moi pour obtenir une évaluation et des recommandations"
 
   utter_link_if_anxious:
-    - text: "Si vous êtes anxieux au sujet de la Covid-19 ou de votre propre bien-être, consultez Espace mieux-être Canada [https://ca.portal.gs/?lang=fr-ca]"
+    - text: "Si vous êtes anxieux au sujet de la Covid-19 ou de votre propre bien-être, consultez [Espace mieux-être Canada](https://ca.portal.gs/?lang=fr-ca)"
 
   # province age form
   utter_ask_province:
@@ -186,9 +186,6 @@ responses:
         - title: Non
           payload: "/deny"
 
-  utter_acknowledge_remind_monitor_symptoms_temperature:
-    - text: "D’accord. Assurez-vous de prendre votre température régulièrement et surveillez vos symptômes pour tout changement"
-
   utter_no_symptoms:
     - text: "Il semble que vous n’ayez pas de symptômes de la Covid-19"
 
@@ -204,7 +201,7 @@ responses:
     - text: "Il se peut que vous soyez guéri(e). Je vous invite à rester à la maison et à suivre les consignes de distanciation sociale. Si vous sortez, je vous recommande fortement de porter un masque"
 
   utter_more_information:
-    - text: "Pour des informations, ressources et recommandations sur la Covid-19, consultez [dialogue](https://covid19.dialogue.co/#/)"
+    - text: "Vous pouvez trouver d’autres informations, ressources et recommandations sur la Covid-19 [ici](https://covid19.dialogue.co/#/)"
 
   # Daily CI enroll flow
 

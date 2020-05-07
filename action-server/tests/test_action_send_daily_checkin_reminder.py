@@ -118,8 +118,8 @@ class TestActionSendDailyCheckinReminder(TestCase):
         with self.assertRaises(expected_exception=ReminderNotFoundException):
             ActionSendDailyCheckInReminder().run(dispatcher, tracker, {})
 
-            mock_session_factory.return_value.rollback.assert_called()
-            mock_session_factory.return_value.close.assert_called()
+        mock_session_factory.return_value.rollback.assert_called()
+        mock_session_factory.return_value.close.assert_called()
 
     @patch.dict("os.environ", ENV)
     @patch("actions.action_send_daily_checkin_reminder.session_factory")
@@ -132,5 +132,5 @@ class TestActionSendDailyCheckinReminder(TestCase):
         with self.assertRaises(expected_exception=InvalidExternalEventException):
             ActionSendDailyCheckInReminder().run(dispatcher, tracker, {})
 
-            mock_session_factory.return_value.rollback.assert_called()
-            mock_session_factory.return_value.close.assert_called()
+        mock_session_factory.return_value.rollback.assert_called()
+        mock_session_factory.return_value.close.assert_called()

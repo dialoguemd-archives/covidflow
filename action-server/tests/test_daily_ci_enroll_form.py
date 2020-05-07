@@ -1,6 +1,6 @@
 # type: ignore
 from unittest import skip
-from unittest.mock import call, patch
+from unittest.mock import patch
 
 import pytest
 from rasa_sdk.events import Form, SlotSet
@@ -20,10 +20,7 @@ from actions.daily_ci_enroll_form import (
     VALIDATION_CODE_SLOT,
     WANTS_CANCEL_SLOT,
     DailyCiEnrollForm,
-    _save_reminder,
 )
-from db.assessment import Assessment
-from db.reminder import Reminder
 from tests.form_helper import FormTestCase
 
 FIRST_NAME = "John"
@@ -107,47 +104,6 @@ class TestDailyCiEnrollForm(FormTestCase):
         self.assertEqual(
             expected_validation_code, slot_values.get(VALIDATION_CODE_SLOT, None)
         )
-
-    @patch("actions.daily_ci_enroll_form.session_factory")
-    @patch.object(Reminder, "create_from_slot_values")
-    @patch.object(Assessment, "create_from_slot_values")
-    def test_save_reminder(
-        self,
-        create_assessment_from_slot_values,
-        create_reminder_from_slot_values,
-        mock_session_factory,
-    ):
-        REMINDER_ID = 42
-        PHONE_NUMBER = "12223334444"
-        SLOTS = {
-            PHONE_NUMBER_SLOT: PHONE_NUMBER,
-        }
-
-        mock_session = mock_session_factory.return_value
-        expected_assessment = create_assessment_from_slot_values.return_value
-        expected_reminder = create_reminder_from_slot_values.return_value
-        expected_reminder.id = REMINDER_ID
-        expected_reminder.phone_number = PHONE_NUMBER
-
-        # Save with success
-        _save_reminder(SLOTS)
-
-        create_assessment_from_slot_values.assert_called_with(REMINDER_ID, SLOTS)
-        mock_session.add.assert_has_calls(
-            [call(expected_reminder), call(expected_assessment)]
-        )
-        mock_session.commit.assert_called()
-        mock_session.rollback.assert_not_called()
-        mock_session.close.assert_called()
-
-        ## Save with failure
-        mock_session.commit.side_effect = Exception("not this time")
-        _save_reminder(SLOTS)
-
-        mock_session.add.assert_called()
-        mock_session.commit.assert_called()
-        mock_session.rollback.assert_called()
-        mock_session.close.assert_called()
 
     def test_form_activation(self):
         tracker = self.create_tracker(active_form=False)
@@ -720,7 +676,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             ],
         )
 
-    @patch("actions.daily_ci_enroll_form._save_reminder")
+    @patch("actions.daily_ci_enroll_form.save_reminder")
     def test_provide_has_dialogue_enrollment_failed(self, mock_save_reminder):
         tracker = self.create_tracker(
             slots={

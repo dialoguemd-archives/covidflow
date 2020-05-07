@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from rasa_sdk.events import SlotSet
 
 from actions.action_daily_ci_early_opt_out import (
@@ -12,7 +14,8 @@ class ActionDailyCiEarlyOptOutTest(ActionTestCase):
         super().setUp()
         self.action = ActionDailyCiEarlyOptOut()
 
-    def test_early_opt_out(self):
+    @patch("actions.action_daily_ci_early_opt_out.cancel_reminder")
+    def test_early_opt_out(self, mock_cancel_reminder):
         tracker = self.create_tracker()
 
         self.run_action(tracker)
@@ -25,3 +28,5 @@ class ActionDailyCiEarlyOptOutTest(ActionTestCase):
                 "utter_daily_ci__early_opt_out__cancel_ci_recommendation",
             ]
         )
+
+        mock_cancel_reminder.assert_called()

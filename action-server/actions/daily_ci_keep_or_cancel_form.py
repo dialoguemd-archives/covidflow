@@ -9,6 +9,7 @@ from actions.action_daily_ci_recommendations import (
     ACTION_NAME as RECOMMENDATIONS_ACTION_NAME,
 )
 from actions.form_helper import request_next_slot
+from actions.lib.persistence import cancel_reminder
 
 FORM_NAME = "daily_ci_keep_or_cancel_form"
 
@@ -98,7 +99,7 @@ class DailyCiKeepOrCancelForm(FormAction):
             dispatcher.utter_message(
                 template="utter_daily_ci__keep_or_cancel__cancel_ci_recommendation"
             )
-            # TODO: cancel check-in
+            cancel_reminder(tracker.current_slot_values())
             return []
 
         # Optional check-in continue

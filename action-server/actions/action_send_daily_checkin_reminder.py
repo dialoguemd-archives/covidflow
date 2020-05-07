@@ -1,11 +1,11 @@
 import logging
+import os
 from datetime import datetime
 from typing import Any, Dict, List, Text
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
-from actions.lib.environment import get_env
 from actions.lib.exceptions import (
     InvalidExternalEventException,
     ReminderNotFoundException,
@@ -33,7 +33,7 @@ def _query_reminder(session, reminder_id):
 
 class ActionSendDailyCheckInReminder(Action):
     def __init__(self):
-        self.url_pattern = get_env(CHECKIN_URL_PATTERN_ENV_KEY)
+        self.url_pattern = os.environ[CHECKIN_URL_PATTERN_ENV_KEY]
         self.hashids = create_hashids()
 
         try:

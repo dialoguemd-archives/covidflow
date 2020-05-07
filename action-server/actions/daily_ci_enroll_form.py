@@ -8,14 +8,11 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
 from actions.form_helper import request_next_slot
+from actions.lib.persistence import save_reminder
 from actions.lib.phone_number_validation import (
     VALIDATION_CODE_LENGTH,
-    is_test_phone_number,
     send_validation_code,
 )
-from db.assessment import Assessment
-from db.base import session_factory
-from db.reminder import Reminder
 
 logger = logging.getLogger(__name__)
 
@@ -281,7 +278,7 @@ class DailyCiEnrollForm(FormAction):
         domain: Dict[Text, Any],
     ) -> List[Dict]:
         if tracker.get_slot(DO_ENROLL_SLOT) is True:
-            if _save_reminder(tracker.current_slot_values()):
+            if save_reminder(tracker.current_slot_values()):
                 dispatcher.utter_message(
                     template="utter_daily_ci_enroll__enroll_done_1"
                 )
@@ -303,31 +300,6 @@ class DailyCiEnrollForm(FormAction):
                 )
 
         return []
-
-
-def _save_reminder(slot_values: Dict[Text, Any]):
-    reminder = Reminder.create_from_slot_values(slot_values)
-
-    if is_test_phone_number(reminder.phone_number):
-        logger.info("555 number: not saving reminder to database")
-        return True
-
-    session = session_factory()
-    try:
-        session.add(reminder)
-        session.flush()
-
-        assessment = Assessment.create_from_slot_values(reminder.id, slot_values)
-        session.add(assessment)
-
-        session.commit()
-        return True
-    except:
-        logger.exception("Could not save reminder instance")
-        session.rollback()
-        return False
-    finally:
-        session.close()
 
 
 def _get_first_name(text: Text) -> Optional[Text]:

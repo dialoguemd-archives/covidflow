@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from rasa_sdk.events import FollowupAction, Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
@@ -20,6 +22,13 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
     def setUp(self):
         super().setUp()
         self.form = DailyCiKeepOrCancelForm()
+
+        self.patcher = patch("actions.daily_ci_keep_or_cancel_form.cancel_reminder")
+        self.mock_cancel_reminder = self.patcher.start()
+
+    def tearDown(self):
+        super().tearDown()
+        self.patcher.stop()
 
     def test_no_symptoms__not_feel_worse__no_preconditions__age_not_over_65(self):
         self._test_no_symptoms(feel_worse=False, preconditions=False, age_over_65=False)
@@ -193,6 +202,8 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
             ["utter_daily_ci__keep_or_cancel__acknowledge_continue_ci"]
         )
 
+        self.mock_cancel_reminder.assert_not_called()
+
     def test_symptoms_ci_continue(self):
         tracker = self.create_tracker(
             slots={
@@ -219,6 +230,8 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
         self.assert_templates(
             ["utter_daily_ci__keep_or_cancel__acknowledge_continue_ci"]
         )
+
+        self.mock_cancel_reminder.assert_not_called()
 
     def test_no_symptoms_ci_cancel(self):
         self._test_ci_cancel(symptoms="none")
@@ -250,3 +263,5 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
                 "utter_daily_ci__keep_or_cancel__cancel_ci_recommendation",
             ]
         )
+
+        self.mock_cancel_reminder.assert_called()

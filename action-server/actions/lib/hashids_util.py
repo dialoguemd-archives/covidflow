@@ -1,14 +1,14 @@
-from hashids import Hashids
+import os
 
-from actions.lib.environment import get_env
+from hashids import Hashids
 
 HASHIDS_SALT_ENV_KEY = "REMINDER_ID_HASHIDS_SALT"
 HASHIDS_MIN_LENGTH_ENV_KEY = "REMINDER_ID_HASHIDS_MIN_LENGTH"
 
 
 def create_hashids():
-    salt = get_env(HASHIDS_SALT_ENV_KEY)
-    min_length = get_env(HASHIDS_MIN_LENGTH_ENV_KEY)
+    salt = os.environ[HASHIDS_SALT_ENV_KEY]
+    min_length = os.environ[HASHIDS_MIN_LENGTH_ENV_KEY]
     return Hashids(salt, min_length=min_length)
 
 

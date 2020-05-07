@@ -6,7 +6,7 @@ intents:
   - deny
   - dont_know
   - checkin_return
-  - suspect
+  - get_assessment
   - tested_positive
   - ask_question
   - inform
@@ -15,7 +15,6 @@ intents:
   - help_preconditions:
       triggers: action_explain_preconditions
   - done
-  - get_assessment
   - better
   - worse
   - no_change

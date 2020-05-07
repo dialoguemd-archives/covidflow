@@ -5,12 +5,10 @@ responses:
   utter_ask_how_may_i_help:
     - text: How may I help you today?
       buttons:
-        - title: "I am returning for my check-in on my Covid-19"
+        - title: "I want to reassess my symptoms"
           payload: "/checkin_return"
-        - title: "I want to take the Covid-19 self-assessment"
+        - title: "I have symptoms and I suspect I have Covid-19"
           payload: "/get_assessment"
-        - title: "I suspect I have Covid-19"
-          payload: "/suspect"
         - title: "I have been tested positive for Covid-19"
           payload: "/tested_positive"
         - title: "I have a question about Covid-19"
@@ -50,7 +48,7 @@ responses:
     - text: "Please monitor your symptoms. If you need assistance, you should:\n- Contact your family doctor if possible, or\n- Call {provincial_811} for assistance"
 
   utter_remind_stay_home_self_isolate:
-    - text: "Now, please make sure that you stay home and self-isolate for at least 14 days"
+    - text: "Please make sure that you stay home and self-isolate for at least 14 days"
 
   utter_monitor_symptoms_temperature:
     - text: "Take your temperature regularly and monitor your symptoms for any changes"
@@ -423,7 +421,7 @@ responses:
         - title: "Ask another question"
           payload: "/ask_question"
         - title: "Get self-assessment"
-          payload: "/suspect"
+          payload: "/get_assessment"
         - title: "I'm done"
           payload: "/done"
 

@@ -4,7 +4,7 @@
   - utter_ask_how_may_i_help
 
 ## suspect - severe symptoms
-* suspect OR get_assessment
+* get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
@@ -13,7 +13,7 @@
   - action_severe_symptoms_recommendations
 
 ## suspect - moderate symptoms
-* suspect OR get_assessment
+* get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
@@ -40,7 +40,7 @@
   - action_qa_goodbye
 
 ## suspect - moderate symptoms no checkin
-* suspect OR get_assessment
+* get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
@@ -60,7 +60,7 @@
   - utter_goodbye
 
 ## suspect - mild symptoms no checkin
-* suspect OR get_assessment
+* get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
@@ -87,7 +87,7 @@
   - action_qa_goodbye
 
 ## suspect - mild symptoms
-* suspect OR get_assessment
+* get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
@@ -114,7 +114,7 @@
   - action_qa_goodbye
 
 ## suspect - no symptoms contact risk
-* suspect OR get_assessment
+* get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
@@ -135,7 +135,7 @@
   - utter_goodbye
 
 ## suspect - no symptoms contact risk no checkin
-* suspect OR get_assessment
+* get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}
@@ -156,7 +156,7 @@
   - utter_goodbye
 
 ## suspect - no symptoms no contact risk
-* suspect OR get_assessment
+* get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
   - form{"name": null}

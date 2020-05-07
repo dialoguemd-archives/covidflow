@@ -5,12 +5,10 @@ responses:
   utter_ask_how_may_i_help:
     - text: Que puis-je faire pour vous aujourd'hui?
       buttons:
-        - title: "Je veux faire le suivi de mes symptômes"
+        - title: "Je veux réévaluer mes symptômes"
           payload: "/checkin_return"
-        - title: "Je veux faire une évaluation de mes symptômes"
+        - title: "J'ai des symptômes et je crois avoir la Covid-19"
           payload: "/get_assessment"
-        - title: "Je crois avoir la Covid-19"
-          payload: "/suspect"
         - title: "J'ai eu un résultat positif au test de Covid-19"
           payload: "/tested_positive"
         - title: "J'ai des questions à propos de la Covid-19"
@@ -36,7 +34,7 @@ responses:
     - text: Ces symptômes exigent une attention immédiate. Vous devriez appeler le 911 immédiatement ou vous rendre directement au service d’urgence le plus proche
 
   utter_ask_moderate_symptoms:
-    - text: "Avez-vous les symptômes suivants:\n- Essoufflement léger à modéré\n- Incapacité à vous allonger en raison de difficultés respiratoires\n- Problèmes de santé chroniques que vous avez du mal à gérer en raison de difficultés respiratoires\n- Perte soudaine du goût ou de l'odorat"
+    - text: "Avez-vous un ou plusieurs des symptômes suivants:\n- Essoufflement léger à modéré\n- Incapacité à vous allonger en raison de difficultés respiratoires\n- Problèmes de santé chroniques que vous avez du mal à gérer en raison de difficultés respiratoires\n- Perte soudaine du goût ou de l'odorat"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -367,7 +365,7 @@ responses:
           payload: "/done"
 
   utter_can_help_with_questions:
-    - text: "Je peux aider à répondre à vos questions sur une variété de sujets entourant la Covid-19"
+    - text: "Je peux répondre à vos questions sur une variété de sujets entourant la Covid-19"
 
   utter_ask_active_question:
     - text: "Veuillez écrire votre question au sujet de la Covid-19:"
@@ -423,7 +421,7 @@ responses:
         - title: "Poser une autre question"
           payload: "/ask_question"
         - title: "Évaluation de mes symptômes"
-          payload: "/suspect"
+          payload: "/get_assessment"
         - title: "J'ai terminé"
           payload: "/done"
 
@@ -495,7 +493,7 @@ responses:
     - text: "Le service 211 peut vous diriger vers une variété de ressources dans votre région pour de l’assistance alimentaire, des services de santé ou communautaires"
 
   utter_remind_pharmacist_services:
-    - text: "Votre pharmacien(nne) peut également vous offrir des conseils pour soulager vos symptômes, et vous indiquer quels médicaments en vente libre sont indiqués et sécuritaires pour vous"
+    - text: "Votre pharmacien(ne) peut également vous offrir des conseils pour soulager vos symptômes, et vous indiquer quels médicaments en vente libre sont indiqués et sécuritaires pour vous"
 
   ## Daily check-in
 

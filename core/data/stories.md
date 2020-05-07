@@ -438,7 +438,7 @@
   - slot{"symptoms": "moderate"}
   - utter_ask_symptoms_worsened
 * deny
-  - utter_symptoms_worsen_emergency
+  - action_returning_symptoms_not_worsened_recommendations
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
@@ -469,7 +469,7 @@
   - slot{"symptoms": "moderate"}
   - utter_ask_symptoms_worsened
 * deny
-  - utter_symptoms_worsen_emergency
+  - action_returning_symptoms_not_worsened_recommendations
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}

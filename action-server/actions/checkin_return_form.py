@@ -34,7 +34,6 @@ class CheckinReturnForm(FormAction):
                 AssessmentSlots.PROVINCE,
                 AssessmentSlots.AGE_OVER_65,
                 AssessmentSlots.HAS_FEVER,
-                AssessmentSlots.LIVES_ALONE,
                 AssessmentSlots.MODERATE_SYMPTOMS,
             ]
 
@@ -46,16 +45,18 @@ class CheckinReturnForm(FormAction):
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return AssessmentCommon.slot_mappings(self)
 
-    def validate_has_fever(
+    def validate_has_cough(
         self,
         value: Text,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        dispatcher.utter_message(template="utter_symptoms_self_isolate")
+        if value is True:
+            dispatcher.utter_message(template="utter_returning_self_isolate")
+            dispatcher.utter_message(template="utter_self_isolation_link")
 
-        return {AssessmentSlots.HAS_FEVER: value}
+        return {AssessmentSlots.HAS_COUGH: value}
 
     def validate_province(
         self,

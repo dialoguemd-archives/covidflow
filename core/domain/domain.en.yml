@@ -438,6 +438,9 @@ responses:
 
   ## action self-isolation
 
+  utter_returning_self_isolate:
+    - text: "Since you still have symptoms, you must continue to self-isolate. It is extremely important that you follow this directive"
+
   utter_symptoms_self_isolate:
     - text: "Since you have symptoms, you need to *self-isolate for at least 14 days*. It is extremely important that you follow this directive"
 

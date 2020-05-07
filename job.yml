@@ -1,4 +1,4 @@
-name: reminders-processing
+name: send-daily-reminders
 engine: ~0.6
 type: cron
 ttl: 270

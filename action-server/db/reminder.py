@@ -1,3 +1,4 @@
+import copy
 import logging
 from typing import Any, Dict, Text
 
@@ -71,9 +72,21 @@ class Reminder(Base):
     )
     attributes = Column("attributes", JSONB, nullable=False)
 
-    def __init__(self, timezone):
+    def __init__(
+        self,
+        timezone=None,
+        id=None,
+        created_at=None,
+        last_reminded_at=None,
+        is_canceled=None,
+        attributes=dict(),
+    ):
+        self.id = id
+        self.created_at = created_at
+        self.last_reminded_at = last_reminded_at
         self.timezone = _uniformize_timezone(timezone)
-        self.attributes = {}
+        self.is_canceled = is_canceled
+        self.attributes = copy.deepcopy(attributes)
 
     @staticmethod
     def create_from_slot_values(slot_values: Dict[Text, Any]):
@@ -103,14 +116,6 @@ class Reminder(Base):
         if self.attributes != other.attributes:
             return False
         return True
-
-    def __repr__(self):
-        return ", ".join(
-            [
-                "{key}={value}".format(key=key, value=self.__dict__.get(key))
-                for key in self.__dict__
-            ]
-        )
 
     def _set_attribute(self, attribute, value):
         if value is not None:
@@ -171,3 +176,9 @@ class Reminder(Base):
     @has_dialogue.setter
     def has_dialogue(self, has_dialogue):
         self._set_attribute(HAS_DIALOGUE_ATTRIBUTE, has_dialogue)
+
+    def __repr__(self):
+        items = ", ".join(
+            [f"{k}={v}" for k, v in self.__dict__.items() if not k.startswith("_")]
+        )
+        return f"{self.__class__.__name__}({items})"

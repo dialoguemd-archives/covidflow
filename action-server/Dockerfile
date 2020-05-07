@@ -30,6 +30,7 @@ COPY alembic.ini alembic.ini
 
 COPY actions actions
 COPY db db
+COPY jobs jobs
 
 ENTRYPOINT [ ]
 CMD [ "rasa", "run", "actions", "--port", "8080" ]

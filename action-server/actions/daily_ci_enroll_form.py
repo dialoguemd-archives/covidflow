@@ -13,6 +13,7 @@ from actions.lib.phone_number_validation import (
     is_test_phone_number,
     send_validation_code,
 )
+from db.assessment import Assessment
 from db.base import session_factory
 from db.reminder import Reminder
 
@@ -280,9 +281,7 @@ class DailyCiEnrollForm(FormAction):
         domain: Dict[Text, Any],
     ) -> List[Dict]:
         if tracker.get_slot(DO_ENROLL_SLOT) is True:
-            reminder = Reminder.create_from_slot_values(tracker.current_slot_values())
-
-            if _save_reminder(reminder):
+            if _save_reminder(tracker.current_slot_values()):
                 dispatcher.utter_message(
                     template="utter_daily_ci_enroll__enroll_done_1"
                 )
@@ -306,7 +305,9 @@ class DailyCiEnrollForm(FormAction):
         return []
 
 
-def _save_reminder(reminder):
+def _save_reminder(slot_values: Dict[Text, Any]):
+    reminder = Reminder.create_from_slot_values(slot_values)
+
     if is_test_phone_number(reminder.phone_number):
         logger.info("555 number: not saving reminder to database")
         return True
@@ -314,6 +315,11 @@ def _save_reminder(reminder):
     session = session_factory()
     try:
         session.add(reminder)
+        session.flush()
+
+        assessment = Assessment.create_from_slot_values(reminder.id, slot_values)
+        session.add(assessment)
+
         session.commit()
         return True
     except:

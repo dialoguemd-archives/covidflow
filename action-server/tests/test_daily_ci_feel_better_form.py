@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
@@ -21,6 +23,13 @@ class TestDailyCiFeelBetterForm(FormTestCase):
     def setUp(self):
         super().setUp()
         self.form = DailyCiFeelBetterForm()
+
+        self.patcher = patch("actions.daily_ci_feel_better_form.store_assessment")
+        self.mock_store_assessment = self.patcher.start()
+
+    def tearDown(self):
+        super().tearDown()
+        self.patcher.stop()
 
     def test_moderate(self):
         self._test_form_activation(last_symptoms="moderate")
@@ -510,6 +519,8 @@ class TestDailyCiFeelBetterForm(FormTestCase):
             ["utter_daily_ci__feel_better__has_other_mild_symptoms_recommendation"]
         )
 
+        self.mock_store_assessment.assert_called()
+
     def test_mild_last_symptoms__fever_cough__no_other_mild(self):
         self._test_mild_last_symptoms__no_other_mild(fever=True, cough=True)
 
@@ -545,6 +556,8 @@ class TestDailyCiFeelBetterForm(FormTestCase):
             ["utter_daily_ci__feel_better__has_other_mild_symptoms_recommendation"]
         )
 
+        self.mock_store_assessment.assert_called()
+
     def test_mild_last_symptoms__symptom_free(self):
         tracker = self.create_tracker(
             slots={
@@ -570,6 +583,8 @@ class TestDailyCiFeelBetterForm(FormTestCase):
         )
 
         self.assert_templates([])
+
+        self.mock_store_assessment.assert_called()
 
     def test_mild_last_symptoms__still_sick(self):
         tracker = self.create_tracker(
@@ -599,3 +614,5 @@ class TestDailyCiFeelBetterForm(FormTestCase):
                 "utter_daily_ci__feel_better__has_other_mild_symptoms_still_sick_recommendation"
             ]
         )
+
+        self.mock_store_assessment.assert_called()

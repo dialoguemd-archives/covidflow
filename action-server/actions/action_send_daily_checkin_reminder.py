@@ -1,16 +1,16 @@
 import logging
-import os
 from datetime import datetime
 from typing import Any, Dict, List, Text
 
-from hashids import Hashids
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
+from actions.lib.environment import get_env
 from actions.lib.exceptions import (
     InvalidExternalEventException,
     ReminderNotFoundException,
 )
+from actions.lib.hashids_util import create_hashids
 from db.base import session_factory
 from db.reminder import Reminder
 
@@ -20,8 +20,6 @@ METADATA_ENTITY_NAME = "metadata"
 REMINDER_ID_PROPERTY_NAME = "reminder_id"
 
 CHECKIN_URL_PATTERN_ENV_KEY = "DAILY_CHECKIN_URL_PATTERN"
-HASHIDS_SALT_ENV_KEY = "REMINDER_ID_HASHIDS_SALT"
-HASHIDS_MIN_LENGTH_ENV_KEY = "REMINDER_ID_HASHIDS_MIN_LENGTH"
 
 
 def _query_reminder(session, reminder_id):
@@ -33,20 +31,10 @@ def _query_reminder(session, reminder_id):
     return reminder
 
 
-def _get_env(name):
-    value = os.environ.get(name)
-    if value is None:
-        raise Exception(f"Environment variable '{name}' is not set.")
-    return value
-
-
 class ActionSendDailyCheckInReminder(Action):
     def __init__(self):
-        salt = _get_env(HASHIDS_SALT_ENV_KEY)
-        min_length = _get_env(HASHIDS_MIN_LENGTH_ENV_KEY)
-
-        self.url_pattern = _get_env(CHECKIN_URL_PATTERN_ENV_KEY)
-        self.hashids = Hashids(salt, min_length=min_length)
+        self.url_pattern = get_env(CHECKIN_URL_PATTERN_ENV_KEY)
+        self.hashids = create_hashids()
 
         try:
             # Make sure url pattern contains all required keys

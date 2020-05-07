@@ -348,13 +348,90 @@ class TestAssessmentForm(FormTestCase):
             ["utter_mild_symptoms_self_isolate", "utter_ask_lives_alone"]
         )
 
-    def test_fever_mild_symptoms_no_cough(self):
-        self._test_mild_symptoms_no_cough(fever=True)
+    def test_fever_cough_lives_alone(self):
+        self._test_mild_symptoms_lives_alone(fever=True, cough=True)
 
-    def test_no_fever_mild_symptoms_no_cough(self):
-        self._test_mild_symptoms_no_cough(fever=False)
+    def test_fever_no_cough_lives_alone(self):
+        self._test_mild_symptoms_lives_alone(fever=True, cough=False)
 
-    def _test_mild_symptoms_no_cough(self, fever: bool):
+    def test_no_fever_cough_lives_alone(self):
+        self._test_mild_symptoms_lives_alone(fever=False, cough=True)
+
+    def _test_mild_symptoms_lives_alone(self, fever: bool, cough: bool):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: AssessmentSlots.LIVES_ALONE,
+                AssessmentSlots.SEVERE_SYMPTOMS: False,
+                AssessmentSlots.PROVINCE: "qc",
+                PROVINCIAL_811_SLOT: "811 qc",
+                AssessmentSlots.AGE_OVER_65: False,
+                AssessmentSlots.HAS_FEVER: fever,
+                AssessmentSlots.MODERATE_SYMPTOMS: False,
+                AssessmentSlots.HAS_COUGH: cough,
+            },
+            intent="affirm",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(AssessmentSlots.LIVES_ALONE, True),
+                SlotSet(AssessmentSlots.SYMPTOMS, "mild"),
+                SlotSet(AssessmentSlots.SELF_ASSESS_DONE, True),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ]
+        )
+
+        self.assert_templates(["utter_dont_leave_home", "utter_self_isolation_link"])
+
+    def test_fever_cough_not_lives_alone(self):
+        self._test_mild_symptoms_lives_alone(fever=True, cough=True)
+
+    def test_fever_no_cough_not_lives_alone(self):
+        self._test_mild_symptoms_lives_alone(fever=True, cough=False)
+
+    def test_no_fever_cough_not_lives_alone(self):
+        self._test_mild_symptoms_lives_alone(fever=False, cough=True)
+
+    def _test_mild_symptoms_not_lives_alone(self, fever: bool, cough: bool):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: AssessmentSlots.LIVES_ALONE,
+                AssessmentSlots.SEVERE_SYMPTOMS: False,
+                AssessmentSlots.PROVINCE: "qc",
+                PROVINCIAL_811_SLOT: "811 qc",
+                AssessmentSlots.AGE_OVER_65: False,
+                AssessmentSlots.HAS_FEVER: fever,
+                AssessmentSlots.MODERATE_SYMPTOMS: False,
+                AssessmentSlots.HAS_COUGH: cough,
+            },
+            intent="deny",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(AssessmentSlots.LIVES_ALONE, False),
+                SlotSet(AssessmentSlots.SYMPTOMS, "mild"),
+                SlotSet(AssessmentSlots.SELF_ASSESS_DONE, True),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ]
+        )
+
+        self.assert_templates(
+            [
+                "utter_stay_separate_room",
+                "utter_distance_clean_surfaces",
+                "utter_wear_mask_same_room",
+                "utter_self_isolation_link",
+            ]
+        )
+
+    def test_no_symptoms(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: AssessmentSlots.HAS_COUGH,
@@ -362,7 +439,7 @@ class TestAssessmentForm(FormTestCase):
                 AssessmentSlots.PROVINCE: "qc",
                 PROVINCIAL_811_SLOT: "811 qc",
                 AssessmentSlots.AGE_OVER_65: False,
-                AssessmentSlots.HAS_FEVER: fever,
+                AssessmentSlots.HAS_FEVER: False,
                 AssessmentSlots.MODERATE_SYMPTOMS: False,
             },
             intent="deny",
@@ -379,13 +456,7 @@ class TestAssessmentForm(FormTestCase):
 
         self.assert_templates(["utter_ask_contact"])
 
-    def test_fever_mild_symptoms_no_cough_contact(self):
-        self._test_mild_symptoms_no_cough_contact(fever=True)
-
-    def test_no_fever_mild_symptoms_no_cough_contact(self):
-        self._test_mild_symptoms_no_cough_contact(fever=False)
-
-    def _test_mild_symptoms_no_cough_contact(self, fever: bool):
+    def test_no_symptoms_contact(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: AssessmentSlots.CONTACT,
@@ -393,7 +464,7 @@ class TestAssessmentForm(FormTestCase):
                 AssessmentSlots.PROVINCE: "qc",
                 PROVINCIAL_811_SLOT: "811 qc",
                 AssessmentSlots.AGE_OVER_65: False,
-                AssessmentSlots.HAS_FEVER: fever,
+                AssessmentSlots.HAS_FEVER: False,
                 AssessmentSlots.MODERATE_SYMPTOMS: False,
                 AssessmentSlots.HAS_COUGH: False,
             },
@@ -413,13 +484,7 @@ class TestAssessmentForm(FormTestCase):
             ["utter_contact_risk_self_isolate", "utter_ask_lives_alone"]
         )
 
-    def test_fever_mild_symptoms_no_cough_contact_lives_alone(self):
-        self._test_mild_symptoms_no_cough_contact_lives_alone(fever=True)
-
-    def test_no_fever_mild_symptoms_no_cough_contact_lives_alone(self):
-        self._test_mild_symptoms_no_cough_contact_lives_alone(fever=False)
-
-    def _test_mild_symptoms_no_cough_contact_lives_alone(self, fever: bool):
+    def test_no_symptoms_contact_lives_alone(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: AssessmentSlots.LIVES_ALONE,
@@ -427,7 +492,7 @@ class TestAssessmentForm(FormTestCase):
                 AssessmentSlots.PROVINCE: "qc",
                 PROVINCIAL_811_SLOT: "811 qc",
                 AssessmentSlots.AGE_OVER_65: False,
-                AssessmentSlots.HAS_FEVER: fever,
+                AssessmentSlots.HAS_FEVER: False,
                 AssessmentSlots.MODERATE_SYMPTOMS: False,
                 AssessmentSlots.HAS_COUGH: False,
                 AssessmentSlots.CONTACT: True,
@@ -450,13 +515,7 @@ class TestAssessmentForm(FormTestCase):
 
         self.assert_templates(["utter_dont_leave_home", "utter_self_isolation_link"])
 
-    def test_fever_mild_symptoms_no_cough_contact_not_lives_alone(self):
-        self._test_mild_symptoms_no_cough_contact_not_lives_alone(fever=True)
-
-    def test_no_fever_mild_symptoms_no_cough_contact_not_lives_alone(self):
-        self._test_mild_symptoms_no_cough_contact_not_lives_alone(fever=False)
-
-    def _test_mild_symptoms_no_cough_contact_not_lives_alone(self, fever: bool):
+    def test_no_symptoms_contact_not_lives_alone(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: AssessmentSlots.LIVES_ALONE,
@@ -464,7 +523,7 @@ class TestAssessmentForm(FormTestCase):
                 AssessmentSlots.PROVINCE: "qc",
                 PROVINCIAL_811_SLOT: "811 qc",
                 AssessmentSlots.AGE_OVER_65: False,
-                AssessmentSlots.HAS_FEVER: fever,
+                AssessmentSlots.HAS_FEVER: False,
                 AssessmentSlots.MODERATE_SYMPTOMS: False,
                 AssessmentSlots.HAS_COUGH: False,
                 AssessmentSlots.CONTACT: True,
@@ -494,13 +553,7 @@ class TestAssessmentForm(FormTestCase):
             ]
         )
 
-    def test_fever_mild_symptoms_no_cough_no_contact(self):
-        self._test_mild_symptoms_no_cough_no_contact(fever=True)
-
-    def test_no_fever_mild_symptoms_no_cough_no_contact(self):
-        self._test_mild_symptoms_no_cough_no_contact(fever=False)
-
-    def _test_mild_symptoms_no_cough_no_contact(self, fever: bool):
+    def test_no_symptoms_no_contact(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: AssessmentSlots.CONTACT,
@@ -508,7 +561,7 @@ class TestAssessmentForm(FormTestCase):
                 AssessmentSlots.PROVINCE: "qc",
                 PROVINCIAL_811_SLOT: "811 qc",
                 AssessmentSlots.AGE_OVER_65: False,
-                AssessmentSlots.HAS_FEVER: fever,
+                AssessmentSlots.HAS_FEVER: False,
                 AssessmentSlots.MODERATE_SYMPTOMS: False,
                 AssessmentSlots.HAS_COUGH: False,
             },
@@ -526,13 +579,7 @@ class TestAssessmentForm(FormTestCase):
 
         self.assert_templates(["utter_ask_travel"])
 
-    def test_fever_mild_symptoms_no_cough_no_contact_travel(self):
-        self._test_mild_symptoms_no_cough_no_contact_travel(fever=True)
-
-    def test_no_fever_mild_symptoms_no_cough_no_contact_travel(self):
-        self._test_mild_symptoms_no_cough_no_contact_travel(fever=False)
-
-    def _test_mild_symptoms_no_cough_no_contact_travel(self, fever: bool):
+    def test_no_symptoms_no_contact_travel(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: AssessmentSlots.TRAVEL,
@@ -540,7 +587,7 @@ class TestAssessmentForm(FormTestCase):
                 AssessmentSlots.PROVINCE: "qc",
                 PROVINCIAL_811_SLOT: "811 qc",
                 AssessmentSlots.AGE_OVER_65: False,
-                AssessmentSlots.HAS_FEVER: fever,
+                AssessmentSlots.HAS_FEVER: False,
                 AssessmentSlots.MODERATE_SYMPTOMS: False,
                 AssessmentSlots.HAS_COUGH: False,
                 AssessmentSlots.CONTACT: False,
@@ -561,13 +608,7 @@ class TestAssessmentForm(FormTestCase):
             ["utter_contact_risk_self_isolate", "utter_ask_lives_alone"]
         )
 
-    def test_fever_mild_symptoms_no_cough_no_contact_travel_lives_alone(self):
-        self._test_mild_symptoms_no_cough_no_contact_travel_lives_alone(fever=True)
-
-    def test_no_fever_mild_symptoms_no_cough_no_contact_travel_lives_alone(self):
-        self._test_mild_symptoms_no_cough_no_contact_travel_lives_alone(fever=False)
-
-    def _test_mild_symptoms_no_cough_no_contact_travel_lives_alone(self, fever: bool):
+    def test_no_symptoms_no_contact_travel_lives_alone(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: AssessmentSlots.LIVES_ALONE,
@@ -575,7 +616,7 @@ class TestAssessmentForm(FormTestCase):
                 AssessmentSlots.PROVINCE: "qc",
                 PROVINCIAL_811_SLOT: "811 qc",
                 AssessmentSlots.AGE_OVER_65: False,
-                AssessmentSlots.HAS_FEVER: fever,
+                AssessmentSlots.HAS_FEVER: False,
                 AssessmentSlots.MODERATE_SYMPTOMS: False,
                 AssessmentSlots.HAS_COUGH: False,
                 AssessmentSlots.CONTACT: False,
@@ -599,15 +640,7 @@ class TestAssessmentForm(FormTestCase):
 
         self.assert_templates(["utter_dont_leave_home", "utter_self_isolation_link"])
 
-    def test_fever_mild_symptoms_no_cough_no_contact_travel_not_lives_alone(self):
-        self._test_mild_symptoms_no_cough_no_contact_travel_not_lives_alone(fever=True)
-
-    def test_no_fever_mild_symptoms_no_cough_no_contact_travel_not_lives_alone(self):
-        self._test_mild_symptoms_no_cough_no_contact_travel_not_lives_alone(fever=False)
-
-    def _test_mild_symptoms_no_cough_no_contact_travel_not_lives_alone(
-        self, fever: bool
-    ):
+    def test_no_symptoms_no_contact_travel_not_lives_alone(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: AssessmentSlots.LIVES_ALONE,
@@ -615,7 +648,7 @@ class TestAssessmentForm(FormTestCase):
                 AssessmentSlots.PROVINCE: "qc",
                 PROVINCIAL_811_SLOT: "811 qc",
                 AssessmentSlots.AGE_OVER_65: False,
-                AssessmentSlots.HAS_FEVER: fever,
+                AssessmentSlots.HAS_FEVER: False,
                 AssessmentSlots.MODERATE_SYMPTOMS: False,
                 AssessmentSlots.HAS_COUGH: False,
                 AssessmentSlots.CONTACT: False,
@@ -646,13 +679,7 @@ class TestAssessmentForm(FormTestCase):
             ]
         )
 
-    def test_fever_mild_symptoms_no_cough_no_contact_no_travel(self):
-        self._test_mild_symptoms_no_cough_no_contact_no_travel(fever=True)
-
-    def test_no_fever_mild_symptoms_no_cough_no_contact_no_travel(self):
-        self._test_mild_symptoms_no_cough_no_contact_no_travel(fever=False)
-
-    def _test_mild_symptoms_no_cough_no_contact_no_travel(self, fever: bool):
+    def test_no_symptoms_no_contact_no_travel(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: AssessmentSlots.TRAVEL,
@@ -660,7 +687,7 @@ class TestAssessmentForm(FormTestCase):
                 AssessmentSlots.PROVINCE: "qc",
                 PROVINCIAL_811_SLOT: "811 qc",
                 AssessmentSlots.AGE_OVER_65: False,
-                AssessmentSlots.HAS_FEVER: fever,
+                AssessmentSlots.HAS_FEVER: False,
                 AssessmentSlots.MODERATE_SYMPTOMS: False,
                 AssessmentSlots.HAS_COUGH: False,
                 AssessmentSlots.CONTACT: False,

@@ -1,6 +1,6 @@
 # type: ignore
 from unittest import skip
-from unittest.mock import patch
+from unittest.mock import call, patch
 
 import pytest
 from rasa_sdk.events import Form, SlotSet
@@ -22,6 +22,7 @@ from actions.daily_ci_enroll_form import (
     DailyCiEnrollForm,
     _save_reminder,
 )
+from db.assessment import Assessment
 from db.reminder import Reminder
 from tests.form_helper import FormTestCase
 
@@ -108,20 +109,42 @@ class TestDailyCiEnrollForm(FormTestCase):
         )
 
     @patch("actions.daily_ci_enroll_form.session_factory")
-    def test_save_reminder(self, mock_session_factory):
-        mock_session = mock_session_factory.return_value
+    @patch.object(Reminder, "create_from_slot_values")
+    @patch.object(Assessment, "create_from_slot_values")
+    def test_save_reminder(
+        self,
+        create_assessment_from_slot_values,
+        create_reminder_from_slot_values,
+        mock_session_factory,
+    ):
+        REMINDER_ID = 42
+        PHONE_NUMBER = "12223334444"
+        SLOTS = {
+            PHONE_NUMBER_SLOT: PHONE_NUMBER,
+        }
 
-        reminder = Reminder(None)
-        reminder.phone_number = "12223334444"
-        _save_reminder(reminder)
-        mock_session.add.assert_called_with(reminder)
+        mock_session = mock_session_factory.return_value
+        expected_assessment = create_assessment_from_slot_values.return_value
+        expected_reminder = create_reminder_from_slot_values.return_value
+        expected_reminder.id = REMINDER_ID
+        expected_reminder.phone_number = PHONE_NUMBER
+
+        # Save with success
+        _save_reminder(SLOTS)
+
+        create_assessment_from_slot_values.assert_called_with(REMINDER_ID, SLOTS)
+        mock_session.add.assert_has_calls(
+            [call(expected_reminder), call(expected_assessment)]
+        )
         mock_session.commit.assert_called()
         mock_session.rollback.assert_not_called()
         mock_session.close.assert_called()
 
+        ## Save with failure
         mock_session.commit.side_effect = Exception("not this time")
-        _save_reminder(reminder)
-        mock_session.add.assert_called_with(reminder)
+        _save_reminder(SLOTS)
+
+        mock_session.add.assert_called()
         mock_session.commit.assert_called()
         mock_session.rollback.assert_called()
         mock_session.close.assert_called()
@@ -731,10 +754,4 @@ class TestDailyCiEnrollForm(FormTestCase):
             ]
         )
 
-        expected_reminder = Reminder(None)
-        expected_reminder.preconditions = True
-        expected_reminder.first_name = FIRST_NAME
-        expected_reminder.phone_number = PHONE_NUMBER
-        expected_reminder.has_dialogue = True
-
-        mock_save_reminder.assert_called_with(expected_reminder)
+        mock_save_reminder.assert_called()

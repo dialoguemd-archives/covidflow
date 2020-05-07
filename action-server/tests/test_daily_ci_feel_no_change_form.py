@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
@@ -19,6 +21,13 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
     def setUp(self):
         super().setUp()
         self.form = DailyCiFeelNoChangeForm()
+
+        self.patcher = patch("actions.daily_ci_feel_no_change_form.store_assessment")
+        self.mock_store_assessment = self.patcher.start()
+
+    def tearDown(self):
+        super().tearDown()
+        self.patcher.stop()
 
     def test_moderate_last_symptoms(self):
         self._test_form_activation(last_symptoms="moderate")
@@ -281,6 +290,8 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
             ]
         )
 
+        self.mock_store_assessment.assert_called()
+
     def test_mild_last_symptoms__fever_no_cough(self):
         self._test_mild_last_symptoms__no_cough(fever=True)
 
@@ -314,3 +325,5 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
                 "utter_daily_ci__feel_no_change__mild_last_symptoms_recommendation",
             ]
         )
+
+        self.mock_store_assessment.assert_called()

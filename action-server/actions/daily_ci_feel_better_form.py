@@ -6,6 +6,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
 from actions.form_helper import request_next_slot
+from actions.lib.assessment_persistence import store_assessment
 
 FORM_NAME = "daily_ci_feel_better_form"
 
@@ -215,5 +216,5 @@ class DailyCiFeelBetterForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict]:
-
+        store_assessment(tracker.current_slot_values())
         return [SlotSet(SELF_ASSESS_DONE_SLOT, True)]

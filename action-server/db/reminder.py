@@ -5,7 +5,7 @@ import pytz
 from sqlalchemy import Boolean, CheckConstraint, Column, DateTime, Integer, String, func
 from sqlalchemy.dialects.postgresql import JSONB
 
-from .base import Base
+from db.base import Base
 
 logger = logging.getLogger(__name__)
 

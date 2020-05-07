@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
@@ -19,6 +21,13 @@ class TestDailyCiFeelWorseForm(FormTestCase):
     def setUp(self):
         super().setUp()
         self.form = DailyCiFeelWorseForm()
+
+        self.patcher = patch("actions.daily_ci_feel_worse_form.store_assessment")
+        self.mock_store_assessment = self.patcher.start()
+
+    def tearDown(self):
+        super().tearDown()
+        self.patcher.stop()
 
     def test_form_activation(self):
         tracker = self.create_tracker(active_form=False)
@@ -286,6 +295,8 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             ]
         )
 
+        self.mock_store_assessment.assert_called()
+
     def test_fever_no_diff_breathing_no_cough(self):
         self._test_no_diff_breathing_no_cough(fever=True)
 
@@ -320,3 +331,5 @@ class TestDailyCiFeelWorseForm(FormTestCase):
                 "utter_daily_ci__feel_worse__no_cough_recommendation",
             ]
         )
+
+        self.mock_store_assessment.assert_called()

@@ -6,6 +6,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
 from actions.form_helper import request_next_slot
+from actions.lib.assessment_persistence import store_assessment
 
 FORM_NAME = "daily_ci_feel_no_change_form"
 
@@ -166,4 +167,5 @@ class DailyCiFeelNoChangeForm(FormAction):
                 template="utter_daily_ci__feel_no_change__mild_last_symptoms_recommendation"
             )
 
+        store_assessment(tracker.current_slot_values())
         return [SlotSet(SELF_ASSESS_DONE_SLOT, True)]

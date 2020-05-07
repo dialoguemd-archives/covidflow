@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   app: dialogue/helm-app@1.1.3
   base: dialogue/base@1.8.0
+  job: dialogue/helm-job@1.2.1
   python: dialogue/python@2.7.0
   release: dialogue/release@2.1.4
 
@@ -126,6 +127,17 @@ workflows:
           filters:
             branches:
               ignore: master
+      - job/deploy:
+          name: deploy-job-dev-ca2-ephemeral
+          stage: dev
+          place: ca2
+          wait: false
+          requires:
+            - deploy-dev-ca2-ephemeral
+          context: org-global-v2
+          filters:
+            branches:
+              ignore: master
 
       - test_integration:
           name: dev-integration-tests-en
@@ -167,6 +179,17 @@ workflows:
           filters:
             branches:
               only: master
+      - job/deploy:
+          name: deploy-job-dev-ca2
+          stage: dev
+          place: ca2
+          wait: false
+          requires:
+            - deploy-dev-ca2
+          context: org-global-v2
+          filters:
+            branches:
+              only: master
 
       - test_integration:
           name: master-integration-tests-en
@@ -198,6 +221,17 @@ workflows:
           requires:
             - master-integration-tests-en
             - master-integration-tests-fr
+          context: org-global-v2
+          filters:
+            branches:
+              only: master
+      - job/deploy:
+          name: deploy-job-prod-ca
+          stage: prod
+          place: ca
+          wait: false
+          requires:
+            - deploy-prod-ca
           context: org-global-v2
           filters:
             branches:

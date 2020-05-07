@@ -1,5 +1,5 @@
 name: reminders-processing
-engine: ~1
+engine: ~0.6
 type: cron
 ttl: 270
 cron:
@@ -11,3 +11,6 @@ command:
   - "jobs.send_reminders"
 image:
   repo: covidflow-action-server
+environment:
+  COUNTRY_CODE: ca
+  REMINDER_ID_HASHIDS_MIN_LENGTH: 8

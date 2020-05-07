@@ -19,6 +19,7 @@ from actions.constants import (
     LAST_SYMPTOMS_SLOT,
     PRECONDITIONS_SLOT,
     PROVINCE_SLOT,
+    PROVINCIAL_811_SLOT,
     SYMPTOMS_SLOT,
 )
 from tests.action_helper import ActionTestCase
@@ -27,9 +28,22 @@ HASHIDS_SALT = "abcd1234"
 HASHIDS_MIN_LENGTH = 4
 hashids = Hashids(HASHIDS_SALT, min_length=HASHIDS_MIN_LENGTH)
 
+NON_DEFAULT_PROVINCE = "nu"
+NON_DEFAULT_PROVINCIAL_811 = "811 special"
+DEFAULT_PROVINCIAL_811 = "811 default"
+
+DOMAIN = {
+    "responses": {
+        f"provincial_811_{NON_DEFAULT_PROVINCE}": [
+            {"text": NON_DEFAULT_PROVINCIAL_811}
+        ],
+        "provincial_811_default": [{"text": DEFAULT_PROVINCIAL_811}],
+    }
+}
+
 NON_DEFAULT_REMINDER_VALUES = {
     FIRST_NAME_SLOT: "Robin",
-    PROVINCE_SLOT: "nu",
+    PROVINCE_SLOT: NON_DEFAULT_PROVINCE,
     AGE_OVER_65_SLOT: True,
     PRECONDITIONS_SLOT: True,
     HAS_DIALOGUE_SLOT: True,
@@ -50,11 +64,12 @@ NON_DEFAULT_ASSESSMENT_VALUES_ENTRY = {
 }
 
 DEFAULT_VALUES = {
-    FIRST_NAME_SLOT: None,
+    FIRST_NAME_SLOT: "",
     PROVINCE_SLOT: None,
     AGE_OVER_65_SLOT: False,
     PRECONDITIONS_SLOT: False,
     HAS_DIALOGUE_SLOT: False,
+    PROVINCIAL_811_SLOT: DEFAULT_PROVINCIAL_811,
     LAST_SYMPTOMS_SLOT: "moderate",
     LAST_HAS_COUGH_SLOT: False,
     LAST_HAS_FEVER_SLOT: False,
@@ -116,12 +131,13 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
 
         tracker = _create_tracker()
 
-        self.run_action(tracker)
+        self.run_action(tracker, DOMAIN)
 
         self.assert_templates([])
 
         expected_slots = {
             **NON_DEFAULT_REMINDER_VALUES,
+            PROVINCIAL_811_SLOT: NON_DEFAULT_PROVINCIAL_811,
             **NON_DEFAULT_ASSESSMENT_VALUES,
         }
 
@@ -140,7 +156,7 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
 
         tracker = _create_tracker()
 
-        self.run_action(tracker)
+        self.run_action(tracker, DOMAIN)
 
         self.assert_templates([])
 

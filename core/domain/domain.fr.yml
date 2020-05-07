@@ -438,6 +438,9 @@ responses:
 
   ## action self-isolation
 
+  utter_returning_self_isolate:
+    - text: "Puisque vous avez encore des symptômes, vous devez continuer à vous isoler. Il est essentiel que vous suiviez cette consigne"
+
   utter_symptoms_self_isolate:
     - text: "Étant donné que vous avez des symptômes, vous devez vous isoler pendant au moins 14 jours. Il est essentiel que vous suiviez cette consigne"
 

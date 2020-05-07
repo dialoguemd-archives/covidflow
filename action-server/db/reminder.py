@@ -90,7 +90,7 @@ class Reminder(Base):
 
     @staticmethod
     def create_from_slot_values(slot_values: Dict[Text, Any]):
-        metadata = slot_values.get(METADATA_SLOT, {})
+        metadata = slot_values.get(METADATA_SLOT) or {}
         timezone = metadata.get(TIMEZONE_METADATA_PROPERTY, None)
 
         reminder = Reminder(timezone)

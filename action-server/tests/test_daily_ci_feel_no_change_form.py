@@ -3,17 +3,17 @@ from unittest.mock import patch
 from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
-from actions.daily_ci_feel_no_change_form import (
+from actions.constants import (
     FEEL_WORSE_SLOT,
-    FORM_NAME,
     HAS_COUGH_SLOT,
     HAS_DIFF_BREATHING_SLOT,
     HAS_FEVER_SLOT,
+    LAST_HAS_DIFF_BREATHING_SLOT,
     LAST_SYMPTOMS_SLOT,
     SELF_ASSESS_DONE_SLOT,
     SYMPTOMS_SLOT,
-    DailyCiFeelNoChangeForm,
 )
+from actions.daily_ci_feel_no_change_form import FORM_NAME, DailyCiFeelNoChangeForm
 from tests.form_helper import FormTestCase
 
 
@@ -22,7 +22,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
         super().setUp()
         self.form = DailyCiFeelNoChangeForm()
 
-        self.patcher = patch("actions.daily_ci_feel_no_change_form.store_assessment")
+        self.patcher = patch("actions.daily_ci_assessment_common.store_assessment")
         self.mock_store_assessment = self.patcher.start()
 
     def tearDown(self):
@@ -198,6 +198,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
             [
                 SlotSet(HAS_DIFF_BREATHING_SLOT, True),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
+                SlotSet(SYMPTOMS_SLOT, "moderate"),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
@@ -237,15 +238,18 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
 
         slot_set_events = [SlotSet(HAS_DIFF_BREATHING_SLOT, False)]
         if symptoms != None:
-            slot_set_events.append(SlotSet(SYMPTOMS_SLOT, symptoms))
+            slot_set_events += [
+                SlotSet(SYMPTOMS_SLOT, symptoms),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
+            ]
+        else:
+            slot_set_events += [
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
+                SlotSet(SYMPTOMS_SLOT, "moderate"),
+            ]
 
         self.assert_events(
-            slot_set_events
-            + [
-                SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
-                SlotSet(REQUESTED_SLOT, None),
-            ],
+            slot_set_events + [Form(None), SlotSet(REQUESTED_SLOT, None),],
         )
 
         self.assert_templates(
@@ -265,6 +269,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 LAST_SYMPTOMS_SLOT: "mild",
+                LAST_HAS_DIFF_BREATHING_SLOT: False,
                 REQUESTED_SLOT: HAS_COUGH_SLOT,
                 HAS_FEVER_SLOT: fever,
             },
@@ -277,6 +282,8 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
             [
                 SlotSet(HAS_COUGH_SLOT, True),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
+                SlotSet(SYMPTOMS_SLOT, "mild"),
+                SlotSet(HAS_DIFF_BREATHING_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
@@ -302,6 +309,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 LAST_SYMPTOMS_SLOT: "mild",
+                LAST_HAS_DIFF_BREATHING_SLOT: False,
                 REQUESTED_SLOT: HAS_COUGH_SLOT,
                 HAS_FEVER_SLOT: fever,
             },
@@ -314,6 +322,8 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
             [
                 SlotSet(HAS_COUGH_SLOT, False),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
+                SlotSet(SYMPTOMS_SLOT, "mild"),
+                SlotSet(HAS_DIFF_BREATHING_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]

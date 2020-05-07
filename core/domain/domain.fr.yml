@@ -504,7 +504,7 @@ responses:
     - text: "Bonjour {first_name}, ici Chloé, pour votre suivi quotidien. Pour poursuivre, veuillez suivre ce lien: {check_in_url}"
 
   utter_daily_ci__greet:
-    - text: Bonjour Linda, ici Chloé, pour votre suivi quotidien. Voyons voir comment ça va aujourd'hui
+    - text: Bonjour {first_name}, ici Chloé, pour votre suivi quotidien. Voyons voir comment ça va aujourd'hui
 
   utter_ask_daily_ci__feel:
     - text: D'abord, comment vous sentez-vous par rapport à hier?

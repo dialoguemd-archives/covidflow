@@ -1,9 +1,7 @@
-.PHONY: init install install-dev install-rasa-sdk clean lint format test train-en train-fr shell-en shell-fr
+.PHONY: init install install-dev install-rasa-sdk clean lint format test test-integration-en test-integration-fr train-en train-fr shell-en shell-fr
 
 # include source code in any python subprocess
 export PYTHONPATH = .
-
-VENV_LOCATION=.venv
 
 RASA_VERSION=1.9.4
 

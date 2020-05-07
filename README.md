@@ -89,4 +89,18 @@ To see the tracker-store and action-server logs:
 
 #### Action-server integration tests
 
-To execute the integration tests locally, run `make test-integration` in the action-server folder while the services are running. 
+To execute the integration tests locally, run `make test-integration` in the core folder while the services are running. 
+
+#### Locust load tests
+
+Load tests can be run locally from the load-test package. Run `make init` and `make install` to install poetry and the project dependencies. Simply run `make locust-rasa`. You will need to source the environment variables, an example is in `load-tests/.env.example`.
+
+Load tests can be run and parameterized from its Docker image. Use the root of this project as the build context and run:
+
+`docker build -f load-tests/Dockerfile -t rasa-load-tests .`
+
+The Docker image needs a env-file source for its target URL, an example is in `load-tests/.env.example`. Then, run the image like so.
+
+`docker run -p 8089:8089/tcp --env-file load-tests/.env rasa-load-tests`
+
+If run against localhost, you will need to add the `--network="host"` parameter.

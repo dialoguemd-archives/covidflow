@@ -760,10 +760,10 @@ responses:
     - text: If you want more information and recommendations, please visit [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common)
 
   utter_daily_ci__recommendations__211_qc:
-    - text: And if you need home assistance and live in the greater Montreal area or in Quebec City, you may call 211 or visit 211.ca
+    - text: And if you need home assistance and live in the greater Montreal area or in Quebec City, you may call 211 or visit [211.ca](211.ca)
 
   utter_daily_ci__recommendations__211_other_provinces:
-    - text: And if you need home assistance, you may call 211 or visit 211.ca
+    - text: And if you need home assistance, you may call 211 or visit [211.ca](211.ca)
 
   utter_daily_ci__recommendations__tomorrow_ci:
     - text: I will check-in with you tomorrow around the same time
@@ -772,7 +772,7 @@ responses:
     - text: Make sure you stay well hydrated and get enough rest
 
   utter_daily_ci__recommendations__recommendation_2:
-    - text: You can always visit covid.dialogue.co for information, if you have questions, or if you want to assess your symptoms
+    - text: You can always visit [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common) for information, if you have questions, or if you want to assess your symptoms
 
   ## Daily check-in - early opt out
 

@@ -632,6 +632,7 @@
 
 ## daily check-in - early opt out - done
 * daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
   - utter_daily_ci__greet
   - utter_ask_daily_ci__early_opt_out__cancel_ci
 * opt_out
@@ -642,6 +643,7 @@
 
 ## daily check-in - early opt out - QA
 * daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
   - utter_daily_ci__greet
   - utter_ask_daily_ci__early_opt_out__cancel_ci
 * opt_out

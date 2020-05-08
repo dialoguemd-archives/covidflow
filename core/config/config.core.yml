@@ -8,4 +8,5 @@ policies:
     max_history: 10
     epochs: 100
     evaluate_on_number_of_examples: 0
+    random_seed: 42
   - name: MappingPolicy

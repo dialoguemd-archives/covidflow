@@ -1,23 +1,24 @@
 from typing import Any, Dict, List, Optional, Text, Union
 
 from rasa_sdk import Tracker
-from rasa_sdk.events import EventType, FollowupAction
+from rasa_sdk.events import EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from actions.action_daily_ci_recommendations import (
-    ACTION_NAME as RECOMMENDATIONS_ACTION_NAME,
+from actions.constants import (
+    AGE_OVER_65_SLOT,
+    FEEL_WORSE_SLOT,
+    PRECONDITIONS_SLOT,
+    PROVINCE_SLOT,
+    PROVINCES_WITH_211,
+    SYMPTOMS_SLOT,
 )
 from actions.form_helper import request_next_slot
 from actions.lib.persistence import cancel_reminder
 
 FORM_NAME = "daily_ci_keep_or_cancel_form"
 
-AGE_OVER_65_SLOT = "age_over_65"
 CANCEL_CI_SLOT = "cancel_ci"
-FEEL_WORSE_SLOT = "feel_worse"
-PRECONDITIONS_SLOT = "preconditions"
-SYMPTOMS_SLOT = "symptoms"
 
 
 class DailyCiKeepOrCancelForm(FormAction):
@@ -89,7 +90,7 @@ class DailyCiKeepOrCancelForm(FormAction):
             dispatcher.utter_message(
                 template="utter_daily_ci__keep_or_cancel__feel_worse_recommendation"
             )
-            return [FollowupAction(RECOMMENDATIONS_ACTION_NAME)]
+            _recommendations(dispatcher, tracker)
 
         # Optional check-in cancel
         elif tracker.get_slot(CANCEL_CI_SLOT) is True:
@@ -100,17 +101,16 @@ class DailyCiKeepOrCancelForm(FormAction):
                 template="utter_daily_ci__keep_or_cancel__cancel_ci_recommendation"
             )
             cancel_reminder(tracker.current_slot_values())
-            return []
+        else:
+            # Optional check-in continue
+            dispatcher.utter_message(
+                template="utter_daily_ci__keep_or_cancel__acknowledge_continue_ci"
+            )
 
-        # Optional check-in continue
-        dispatcher.utter_message(
-            template="utter_daily_ci__keep_or_cancel__acknowledge_continue_ci"
-        )
+            if tracker.get_slot(SYMPTOMS_SLOT) != "none":
+                _recommendations(dispatcher, tracker)
 
-        if tracker.get_slot(SYMPTOMS_SLOT) == "none":
-            return []
-
-        return [FollowupAction(RECOMMENDATIONS_ACTION_NAME)]
+        return []
 
 
 def _mandatory_ci(tracker: Tracker) -> bool:
@@ -125,3 +125,35 @@ def _mandatory_ci(tracker: Tracker) -> bool:
         )
 
     return False
+
+
+def _recommendations(dispatcher: CollectingDispatcher, tracker: Tracker) -> None:
+    if (
+        tracker.get_slot(AGE_OVER_65_SLOT) is True
+        or tracker.get_slot(PRECONDITIONS_SLOT) is True
+    ):
+        dispatcher.utter_message(
+            template="utter_daily_ci__recommendations__more_information_vulnerable_population"
+        )
+    else:
+        dispatcher.utter_message(
+            template="utter_daily_ci__recommendations__more_information_general"
+        )
+
+    if tracker.get_slot(PROVINCE_SLOT) in PROVINCES_WITH_211:
+        if tracker.get_slot(PROVINCE_SLOT) == "qc":
+            dispatcher.utter_message(template="utter_daily_ci__recommendations__211_qc")
+        else:
+            dispatcher.utter_message(
+                template="utter_daily_ci__recommendations__211_other_provinces"
+            )
+
+    dispatcher.utter_message(template="utter_daily_ci__recommendations__tomorrow_ci")
+
+    dispatcher.utter_message(
+        template="utter_daily_ci__recommendations__recommendation_1"
+    )
+
+    dispatcher.utter_message(
+        template="utter_daily_ci__recommendations__recommendation_2"
+    )

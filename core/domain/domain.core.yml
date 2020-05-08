@@ -1,35 +1,48 @@
 intents:
-  - greet
+  - greet:
+      use_entities: []
   - goodbye
   - affirm
   - deny
   - dont_know
   - checkin_return
-  - suspect
+  - get_assessment
   - tested_positive
   - ask_question
   - inform
   - less
   - more
-  - help_pre_existing_conditions:
-      triggers: action_explain_pre_existing_conditions
+  - help_preconditions:
+      triggers: action_explain_preconditions
   - done
-  - get_assessment
   - better
   - worse
   - no_change
-  - daily_checkin
-
+  - daily_checkin:
+      use_entities: []
+  - still_sick
+  - symptom_free
+  - no_phone
+  - cancel
+  - continue
+  - opt_out
+  - send_validation_code:
+      triggers: action_send_validation_code
+  - send_daily_checkin_reminder:
+      triggers: action_send_daily_checkin_reminder
 entities:
   - province
-  - age_over_65
-  - contact
-  - symptoms
   - metadata
+  - first_name
+  - validation_code
 
 actions:
-  - action_set_risk_level
-  - action_explain_pre_existing_conditions
+  - action_visit_package
+  - action_initialize_daily_checkin
+  - action_daily_ci_early_opt_out
+  - action_explain_preconditions
+  - action_goodbye
+  - action_returning_symptoms_not_worsened_recommendations
   - action_suspect_mild_symptoms_exposure_recommendations
   - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_suspect_moderate_symptoms_recommendations
@@ -40,13 +53,20 @@ actions:
   - action_tested_positive_maybe_cured_final_recommendations
   - action_tested_positive_not_cured_final_recommendations
   - action_severe_symptoms_recommendations
-  - action_offer_daily_checkin
+  - action_send_validation_code
+  - action_send_daily_checkin_reminder
+  - action_qa_goodbye
 
 forms:
   - assessment_form
+  - tested_positive_form
+  - checkin_return_form
   - daily_ci_enroll_form
+  - daily_ci_feel_no_change_form
+  - daily_ci_feel_better_form
+  - daily_ci_feel_worse_form
+  - daily_ci_keep_or_cancel_form
   - question_answering_form
-  - self_isolation_form
   - home_assistance_form
 
 slots:
@@ -56,9 +76,6 @@ slots:
   language:
     type: unfeaturized
     initial_value: *language
-
-  assessment_type:
-    type: unfeaturized
 
   severe_symptoms:
     type: unfeaturized
@@ -86,6 +103,9 @@ slots:
   has_cough:
     type: unfeaturized
 
+  has_diff_breathing:
+    type: unfeaturized
+
   contact:
     type: unfeaturized
 
@@ -101,7 +121,10 @@ slots:
   phone_number:
     type: unfeaturized
 
-  pre_existing_conditions:
+  preconditions:
+    type: unfeaturized
+
+  has_dialogue:
     type: unfeaturized
 
   active_question:
@@ -122,6 +145,9 @@ slots:
       - success
       - failure
 
+  has_contact_risk:
+    type: bool
+
   self_assess_done:
     type: bool
 
@@ -129,6 +155,57 @@ slots:
     type: unfeaturized
 
   has_assistance:
+    type: unfeaturized
+
+  feel_worse:
+    type: unfeaturized
+
+  cancel_ci:
+    type: unfeaturized
+
+  provincial_811:
+    type: unfeaturized
+
+  last_symptoms:
+    type: unfeaturized
+
+  last_has_cough:
+    type: unfeaturized
+
+  last_has_fever:
+    type: unfeaturized
+
+  last_has_diff_breathing:
+    type: unfeaturized
+
+  daily_ci_enroll__do_enroll:
+    type: unfeaturized
+
+  daily_ci_enroll__validation_code_reference:
+    type: unfeaturized
+
+  daily_ci_enroll__validation_code:
+    type: unfeaturized
+
+  daily_ci_enroll__phone_number_error_counter:
+    type: unfeaturized
+    initial_value: 0
+
+  daily_ci_enroll__validation_code_error_counter:
+    type: unfeaturized
+    initial_value: 0
+
+  daily_ci_enroll__wants_cancel:
+    type: unfeaturized
+    initial_value: false
+
+  daily_ci__feel_worse__has_diff_breathing_worsened:
+    type: unfeaturized
+
+  daily_ci__feel_better__has_other_mild_symptoms:
+    type: unfeaturized
+
+  daily_ci__feel_better__is_symptom_free:
     type: unfeaturized
 
 session_config:

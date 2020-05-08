@@ -1,0 +1,4 @@
+- suspect
+- suspect_reach_moderate
+- user: affirm
+  bot: self_isolate/ask_alone_symptoms

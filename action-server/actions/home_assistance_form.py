@@ -4,7 +4,7 @@ from rasa_sdk import Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-PROVINCES_WITH_211 = ["bc", "ab", "sk", "mb", "on", "qc", "ns"]
+from actions.constants import PROVINCES_WITH_211
 
 PROVINCE_SLOT = "province"
 HAS_ASSISTANCE_SLOT = "has_assistance"

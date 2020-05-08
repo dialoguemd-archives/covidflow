@@ -33,6 +33,10 @@ help:
 	@echo "        Start a Rasa shell using English models"
 	@echo "    shell-fr"
 	@echo "        Start a Rasa shell using French models"
+	@echo "    test-integration-en"
+	@echo "        Run integration tests in English"
+	@echo "    test-integration-fr"
+	@echo "        Run integration tests in French"
 
 init:
 	curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
@@ -75,3 +79,9 @@ train-fr:
 		rasa/rasa:${RASA_VERSION}-full train \
 		--out models/fr \
 		--augmentation 0
+
+test-integration-en:
+	CORE_ENDPOINT_URL=http://localhost:5005 poetry run python -m rasa_integration_testing ../integration-tests-en
+
+test-integration-fr:
+	CORE_ENDPOINT_URL=http://localhost:5006 poetry run python -m rasa_integration_testing ../integration-tests-fr

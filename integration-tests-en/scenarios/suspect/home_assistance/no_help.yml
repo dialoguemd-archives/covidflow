@@ -1,0 +1,5 @@
+- suspect
+- suspect_reach_moderate
+- suspect_reach_home_assistance
+- user: deny
+  bot: home_assistance/no_help

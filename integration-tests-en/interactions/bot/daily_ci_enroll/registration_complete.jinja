@@ -1,0 +1,38 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "Thanks. I have recorded all your answers in your personal profile"
+    },
+    {
+        "text": "Your registration to the daily check-in is now completed"
+    },
+    {
+        "text": "I will check-in with you everyday around this time to see how you're doing, monitor your symptoms and direct you to the right resources"
+    },
+    {
+        "text": "Please make sure that you stay home and self-isolate for at least 14 days"
+    },
+    {
+        "text": "Take your temperature regularly and monitor your symptoms for any changes"
+    },
+    {
+        "text": "At any time, you can check-in with me to monitor your symptoms"
+    },
+    {
+        "text": "You can consult [your personal information package](https://covid19.dialogue.co/#/info?id=ca-qc,elevated-medical-risk)"
+    },
+    {
+        "text": "Is there anything else I can help you with?",
+        "buttons": [
+            {
+                "payload": "/ask_question",
+                "title": "I have other questions"
+            },
+            {
+                "payload": "/done",
+                "title": "No thanks"
+            }
+        ]
+    }
+]

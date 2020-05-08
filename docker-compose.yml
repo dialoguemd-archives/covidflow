@@ -8,7 +8,9 @@ services:
       - 5005:8080
     environment:
       - SQL_TRACKER_STORE_URL=tracker-store
+      - SQL_TRACKER_STORE_USER=chloe
       - SQL_TRACKER_STORE_PASSWORD=password
+      - SQL_TRACKER_STORE_DB=chloe
       - TWILIO_ACCOUNT_SID
       - TWILIO_AUTH_TOKEN
       - TWILIO_NUMBER
@@ -28,7 +30,9 @@ services:
       - 5006:8080
     environment:
       - SQL_TRACKER_STORE_URL=tracker-store
+      - SQL_TRACKER_STORE_USER=chloe
       - SQL_TRACKER_STORE_PASSWORD=password
+      - SQL_TRACKER_STORE_DB=chloe
       - TWILIO_ACCOUNT_SID
       - TWILIO_AUTH_TOKEN
       - TWILIO_NUMBER
@@ -47,8 +51,18 @@ services:
       dockerfile: Dockerfile
     ports:
       - 5055:8080
+    environment:
+        - DAILY_CHECKIN_URL_PATTERN=http://localhost:3000/?lng={language}#/rasa/ci/{reminder_id}
+        - REMINDER_ID_HASHIDS_MIN_LENGTH=8
+        - REMINDER_ID_HASHIDS_SALT=abcd1234
+        - SQL_TRACKER_STORE_URL=tracker-store
+        - SQL_TRACKER_STORE_USER=chloe
+        - SQL_TRACKER_STORE_PASSWORD=password
+        - SQL_TRACKER_STORE_DB=chloe
     volumes:
       - ./action-server/actions:/app/actions
+      - ./action-server/db:/app/db
+      - ./action-server/jobs:/app/jobs
 
   tracker-store:
     image: postgres:11
@@ -57,3 +71,16 @@ services:
       - POSTGRES_PASSWORD=password
     ports:
       - 5432:5432
+
+  db-migration:
+    build:
+      context: ./action-server
+      dockerfile: Dockerfile
+    environment:
+      - ALEMBIC_DATABASE_URI=postgresql+psycopg2://chloe:password@tracker-store:5432/chloe
+    command: ["./wait-for-it.sh", "tracker-store:5432", "-s", "-t", "120", "--", "alembic", "upgrade", "head"]
+    volumes:
+      - ./action-server/alembic.ini:/app/alembic.ini
+      - ./action-server/alembic:/app/alembic
+    depends_on:
+      - tracker-store

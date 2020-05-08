@@ -6,8 +6,7 @@
         websocket: true
     scale:
       horizontal: 3-12
-      vertical: large
-      cpuThreshold: 30
+      vertical: medium.mem
     healthcheck:
       path: /
       liveness:
@@ -27,23 +26,29 @@ components:
     port: 8080
     scale:
       horizontal: 2-4
-      vertical: medium
+      vertical: small.mem
     healthcheck:
       liveness:
         timeoutSeconds: 15
       readiness:
         initialDelaySeconds: 25
+
+addons:
+  migrations:
+    image:
+      repo: covidflow-action-server
 scale:
   memThreshold: false
 environment:
   COUNTRY_CODE: ca
+  ALEMBIC_DATABASE_URI: postgresql+psycopg2://$(SQL_TRACKER_STORE_USER):$(SQL_TRACKER_STORE_PASSWORD)@$(SQL_TRACKER_STORE_URL):5432/$(SQL_TRACKER_STORE_DB)
+  DAILY_CHECKIN_URL_PATTERN: "https://covid19.dialogue.co/?lng={language}#/rasa/ci/{reminder_id}"
+  REMINDER_ID_HASHIDS_MIN_LENGTH: 8
 
 environments:
   dev-ca2:
     environment:
-      SQL_TRACKER_STORE_URL: chloe.db.dev.dialoguecorp.com
       TWILIO_NUMBER: "+14382996778"
   prod-ca:
     environment:
-      SQL_TRACKER_STORE_URL: chloe.db.dialoguecorp.com
       TWILIO_NUMBER: "+14382996828"

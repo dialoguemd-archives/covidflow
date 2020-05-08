@@ -1,0 +1,16 @@
+name: send-daily-reminders
+engine: ~0.6
+type: cron
+ttl: 270
+cron:
+  schedule: "*/15 * * * *"
+  concurrencyPolicy: Forbid
+command:
+  - "python"
+  - "-m"
+  - "jobs.send_reminders"
+image:
+  repo: covidflow-action-server
+environment:
+  COUNTRY_CODE: ca
+  REMINDER_ID_HASHIDS_MIN_LENGTH: 8

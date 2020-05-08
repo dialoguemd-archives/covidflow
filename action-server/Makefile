@@ -1,4 +1,4 @@
-.PHONY: init install install-dev install-rasa-sdk clean lint format test
+.PHONY: init install install-dev install-rasa-sdk clean lint format test test-integration
 
 # include source code in any python subprocess
 export PYTHONPATH = .
@@ -23,6 +23,8 @@ help:
 	@echo "        Format code with black"
 	@echo "    test"
 	@echo "        Run py.test (use TEST_FILE variable to test a single file)"
+	@echo "    test-integration"
+	@echo "        Run integration tests"
 
 init:
 	curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python

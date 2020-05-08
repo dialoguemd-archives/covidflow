@@ -1,16 +1,25 @@
 [tool.poetry]
-name = "covidflow"
+name = "covidflow-action-server"
 version = "0.1.0"
-description = ""
-authors = [""]
+description = "Rasa Action Server for covidflow"
+authors = ["Nu Echo"]
 
 [tool.poetry.dependencies]
+aiohttp = "^3.6.2"
 pydantic = "^1.4"
 python = "^3.6"
 rasa-sdk = "^1.9.0"
+alembic = "0.9.8"
+psycopg2-binary = "2.7.7"
+structlog = "^20.1.0"
+pytz = "^2020.1"
+sqlalchemy = "~1.3.3"
+sqlalchemy-stubs = "^0.3"
+hashids = "^1.2.0"
+backoff = "^1.10.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "5.3.4"
+pytest = "^5.4.0"
 pytest-cov = "2.8.1"
 black = "19.10b0"
 flake8 = "3.7.9"
@@ -18,6 +27,7 @@ isort = "^4.3.21"
 mypy = "0.770"
 pep8-naming = "0.10.0"
 pylama = "^7.7.1"
+pytest-asyncio = "^0.12.0"
 
 [build-system]
 requires = ["poetry>=0.12"]

@@ -1,0 +1,8 @@
+- user: deny
+  bot: select_province
+- user: province/qc
+  bot: older_65
+- user: deny
+  bot: symptoms_fever
+- user: deny
+  bot: symptoms_moderate

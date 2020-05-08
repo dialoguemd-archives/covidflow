@@ -1,0 +1,6 @@
+- suspect
+- suspect_reach_moderate
+- user: deny
+  bot: symptoms_mild
+- user: affirm
+  bot: self_isolate/ask_alone_symptoms

@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Any, Dict, List, Optional, Text
 from unittest import TestCase
 
 from rasa_sdk import Action, Tracker
@@ -51,9 +51,10 @@ class ActionTestCase(TestCase):
             last_action,
         )
 
-    def run_action(self, tracker: Tracker):
+    def run_action(self, tracker: Tracker, domain: Optional[Dict[Text, Any]] = None):
+        domain = domain or {}
         self.events = self.action.run(
-            dispatcher=self.dispatcher, tracker=tracker, domain=None
+            dispatcher=self.dispatcher, tracker=tracker, domain=domain
         )
 
         self.templates = [message["template"] for message in self.dispatcher.messages]

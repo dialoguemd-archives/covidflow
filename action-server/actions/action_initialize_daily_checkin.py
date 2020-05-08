@@ -15,8 +15,10 @@ from actions.constants import (
     LAST_SYMPTOMS_SLOT,
     PRECONDITIONS_SLOT,
     PROVINCE_SLOT,
+    PROVINCIAL_811_SLOT,
 )
 from actions.lib.hashids_util import create_hashids
+from actions.lib.provincial_811 import get_provincial_811
 from db.assessment import Assessment
 from db.base import session_factory
 from db.reminder import Reminder
@@ -26,10 +28,12 @@ logger = logging.getLogger(__name__)
 ACTION_NAME = "action_initialize_daily_checkin"
 
 DEFAULT_SYMPTOMS_VALUE = "moderate"
+DEFAULT_FIRST_NAME_VALUE = ""
+DEFAULT_PROVINCE_VALUE = None
 
 DEFAULT_REMINDER_VALUES = {
-    FIRST_NAME_SLOT: None,
-    PROVINCE_SLOT: None,
+    FIRST_NAME_SLOT: DEFAULT_FIRST_NAME_VALUE,
+    PROVINCE_SLOT: DEFAULT_PROVINCE_VALUE,
     AGE_OVER_65_SLOT: False,
     PRECONDITIONS_SLOT: False,
     HAS_DIALOGUE_SLOT: False,
@@ -65,7 +69,7 @@ class ActionInitializeDailyCheckin(Action):
 
         session = session_factory()
 
-        user_slots = _get_user_info(session, reminder_id)
+        user_slots = _get_user_info(session, reminder_id, domain)
         assessment_slots = _get_last_assessment_slots(session, reminder_id)
 
         session.close()
@@ -76,7 +80,7 @@ class ActionInitializeDailyCheckin(Action):
         ]
 
 
-def _get_user_info(session, reminder_id: str) -> dict:
+def _get_user_info(session, reminder_id: str, domain: Dict[Text, Any]) -> dict:
     try:
         reminder = session.query(Reminder).get(reminder_id)
     except:
@@ -86,14 +90,19 @@ def _get_user_info(session, reminder_id: str) -> dict:
         logger.warning(
             f"Reminder with id '{reminder_id}' does not exist. Could not fetch user profile. Filling up with defaults."
         )
-        return DEFAULT_REMINDER_VALUES
+        return {
+            **DEFAULT_REMINDER_VALUES,
+            PROVINCIAL_811_SLOT: get_provincial_811(DEFAULT_PROVINCE_VALUE, domain),
+        }
 
+    province = reminder.province
     return {
-        FIRST_NAME_SLOT: reminder.first_name,
-        PROVINCE_SLOT: reminder.province,
+        FIRST_NAME_SLOT: _fill(reminder.first_name, DEFAULT_FIRST_NAME_VALUE),
+        PROVINCE_SLOT: province,
         AGE_OVER_65_SLOT: _fill_false(reminder.age_over_65),
         PRECONDITIONS_SLOT: _fill_false(reminder.preconditions),
         HAS_DIALOGUE_SLOT: _fill_false(reminder.has_dialogue),
+        PROVINCIAL_811_SLOT: get_provincial_811(province, domain),
     }
 
 

@@ -6,6 +6,8 @@ from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
+from actions.lib.provincial_811 import get_provincial_811
+
 # isn't really an assessment slot, used for interpolation
 PROVINCIAL_811_SLOT = "provincial_811"
 
@@ -85,14 +87,11 @@ class AssessmentCommon:
 
     @staticmethod
     def validate_province(value: Text, domain: Dict[Text, Any],) -> Dict[Text, Any]:
-        responses = domain.get("responses", {})
-        provincial_811 = responses.get(
-            f"provincial_811_{value}", None
-        ) or responses.get("provincial_811_default")
+        provincial_811 = get_provincial_811(value, domain)
 
         return {
             AssessmentSlots.PROVINCE: value,
-            PROVINCIAL_811_SLOT: provincial_811[0]["text"],
+            PROVINCIAL_811_SLOT: provincial_811,
         }
 
     @staticmethod

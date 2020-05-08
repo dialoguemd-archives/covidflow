@@ -59,6 +59,8 @@ services:
         - SQL_TRACKER_STORE_USER=chloe
         - SQL_TRACKER_STORE_PASSWORD=password
         - SQL_TRACKER_STORE_DB=chloe
+        - REMINDER_JOB_CORE_ENDPOINT_EN=core-en:8080
+        - REMINDER_JOB_CORE_ENDPOINT_FR=core-fr:8080
     volumes:
       - ./action-server/actions:/app/actions
       - ./action-server/db:/app/db

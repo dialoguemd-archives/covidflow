@@ -6,18 +6,18 @@ from aiohttp import web
 from aiohttp.test_utils import TestServer, unused_port
 
 from db.reminder import Reminder
-from jobs.send_reminders import _send_reminder, run
-
-EN = "en"
-FR = "fr"
+from jobs.send_reminders import (
+    CORE_ENDPOINTS,
+    EN,
+    FR,
+    HASHIDS_MIN_LENGTH_ENV_KEY,
+    HASHIDS_SALT_ENV_KEY,
+    _send_reminder,
+    run,
+)
 
 HASHIDS_SALT = "abcd1234"
 HASHIDS_MIN_LENGTH = 4
-
-ENV = {
-    "REMINDER_ID_HASHIDS_SALT": HASHIDS_SALT,
-    "REMINDER_ID_HASHIDS_MIN_LENGTH": str(HASHIDS_MIN_LENGTH),
-}
 
 REMINDER_1 = Reminder(
     id=1,
@@ -41,22 +41,18 @@ class TestJobSendReminder(TestCase):
         start_server=True,
     ):
         loop = asyncio.get_event_loop()
-        self.server = dict()
-        port = dict()
-
-        self.server[EN] = FakeCoreServer(fail_request)
-        self.server[FR] = FakeCoreServer(fail_request)
-
-        if start_server:
-            port[EN] = loop.run_until_complete(self.server[EN].start())
-            port[FR] = loop.run_until_complete(self.server[FR].start())
-        else:
-            port[EN] = unused_port()
-            port[FR] = unused_port()
+        self.server = {
+            EN: FakeCoreServer(fail_request),
+            FR: FakeCoreServer(fail_request),
+        }
 
         self.core_endpoints = {
-            EN: f"127.0.0.1:{port[EN]}",
-            FR: f"127.0.0.1:{port[FR]}",
+            EN: loop.run_until_complete(self.server[EN].start())
+            if start_server
+            else f"127.0.0.1:{unused_port()}",
+            FR: loop.run_until_complete(self.server[FR].start())
+            if start_server
+            else f"127.0.0.1:{unused_port()}",
         }
 
         mock_session_factory.return_value.query.return_value.filter.return_value.all.return_value = (
@@ -75,12 +71,20 @@ class TestJobSendReminder(TestCase):
         with self.assertRaises(expected_exception=Exception):
             run()
 
-    @patch.dict("os.environ", ENV)
     @patch("jobs.send_reminders.session_factory")
     def test_with_environment_variables(self, mock_session_factory):
         self._setUp(mock_session_factory)
 
-        sent, errored = run(core_endpoints=self.core_endpoints)
+        with patch.dict(
+            "os.environ",
+            {
+                HASHIDS_SALT_ENV_KEY: HASHIDS_SALT,
+                HASHIDS_MIN_LENGTH_ENV_KEY: str(HASHIDS_MIN_LENGTH),
+                CORE_ENDPOINTS[EN]: self.core_endpoints[EN],
+                CORE_ENDPOINTS[FR]: self.core_endpoints[FR],
+            },
+        ):
+            sent, errored = run()
 
         self.assertCountEqual(sent, [REMINDER_1.id, REMINDER_2.id])
         self.assertCountEqual(errored, [])
@@ -161,7 +165,7 @@ class FakeCoreServer:
 
     async def start(self):
         await self.server.start_server()
-        return self.server.port
+        return f"{self.server.host}:{self.server.port}"
 
     async def stop(self):
         await self.server.close()

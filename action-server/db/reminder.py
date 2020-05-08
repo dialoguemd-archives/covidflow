@@ -1,14 +1,27 @@
 import copy
-import logging
+from datetime import datetime, timedelta
 from typing import Any, Dict, Text
 
 import pytz
-from sqlalchemy import Boolean, CheckConstraint, Column, DateTime, Integer, String, func
+from sqlalchemy import (
+    Boolean,
+    CheckConstraint,
+    Column,
+    Date,
+    DateTime,
+    Integer,
+    String,
+    Time,
+    cast,
+    func,
+)
 from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.ext.hybrid import hybrid_property
+from structlog import get_logger
 
 from db.base import Base
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 FIRST_NAME_ATTRIBUTE = "first_name"
@@ -39,6 +52,8 @@ SLOT_MAPPING = {
     HAS_DIALOGUE_SLOT: HAS_DIALOGUE_ATTRIBUTE,
 }
 
+REMINDER_FREQUENCY = timedelta(days=1)
+
 
 def _uniformize_timezone(timezone):
     if timezone is None:
@@ -47,14 +62,14 @@ def _uniformize_timezone(timezone):
     try:
         return pytz.timezone(timezone).zone
     except:
-        logger.exception(
-            "Could not instantiate timezone with name '%s'. Reminder will be created without specifying timezone.",
-            timezone,
+        logger.warning(
+            "Could not instantiate timezone. Reminder will be created without specifying timezone.",
+            timezone=timezone,
+            exc_info=True,
         )
         return None
 
 
-# TODO: We might want to use auto-mapping instead of re-defining the actual tables.
 class Reminder(Base):
     __tablename__ = "reminder"
 
@@ -120,6 +135,26 @@ class Reminder(Base):
     def _set_attribute(self, attribute, value):
         if value is not None:
             self.attributes[attribute] = value
+
+    @hybrid_property
+    def next_reminder_due_date(self):
+        should_have_been_last_reminded_at = (
+            self.created_at
+            if self.last_reminded_at is None
+            else datetime.combine(
+                self.last_reminded_at.date(), self.created_at.time()
+            )
+        )
+        return should_have_been_last_reminded_at + REMINDER_FREQUENCY
+
+    @next_reminder_due_date.expression  # type: ignore
+    def next_reminder_due_date(cls):
+        should_have_been_last_reminded_at = (
+            cls.created_at
+            if cls.last_reminded_at is None
+            else cast(cls.last_reminded_at, Date) + cast(cls.created_at, Time)
+        )
+        return should_have_been_last_reminded_at + REMINDER_FREQUENCY
 
     @property
     def first_name(self):

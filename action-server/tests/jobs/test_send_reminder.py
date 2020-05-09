@@ -49,10 +49,10 @@ class TestJobSendReminder(TestCase):
         self.core_endpoints = {
             EN: loop.run_until_complete(self.server[EN].start())
             if start_server
-            else f"127.0.0.1:{unused_port()}",
+            else f"http://127.0.0.1:{unused_port()}",
             FR: loop.run_until_complete(self.server[FR].start())
             if start_server
-            else f"127.0.0.1:{unused_port()}",
+            else f"http://127.0.0.1:{unused_port()}",
         }
 
         mock_session_factory.return_value.query.return_value.filter.return_value.all.return_value = (
@@ -165,7 +165,7 @@ class FakeCoreServer:
 
     async def start(self):
         await self.server.start_server()
-        return f"{self.server.host}:{self.server.port}"
+        return f"http://{self.server.host}:{self.server.port}"
 
     async def stop(self):
         await self.server.close()

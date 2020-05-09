@@ -12,6 +12,7 @@ from sqlalchemy import (
     Integer,
     String,
     Time,
+    case,
     cast,
     func,
 )
@@ -141,20 +142,20 @@ class Reminder(Base):
         should_have_been_last_reminded_at = (
             self.created_at
             if self.last_reminded_at is None
-            else datetime.combine(
-                self.last_reminded_at.date(), self.created_at.time()
-            )
+            else datetime.combine(self.last_reminded_at.date(), self.created_at.time())
         )
         return should_have_been_last_reminded_at + REMINDER_FREQUENCY
 
     @next_reminder_due_date.expression  # type: ignore
     def next_reminder_due_date(cls):
-        should_have_been_last_reminded_at = (
-            cls.created_at
-            if cls.last_reminded_at is None
-            else cast(cls.last_reminded_at, Date) + cast(cls.created_at, Time)
+        return (
+            case(
+                [(cls.last_reminded_at == None, cls.created_at)],
+                else_=cast(cls.last_reminded_at, Date)
+                + cast(cls.created_at, Time(timezone=True)),
+            )
+            + REMINDER_FREQUENCY
         )
-        return should_have_been_last_reminded_at + REMINDER_FREQUENCY
 
     @property
     def first_name(self):

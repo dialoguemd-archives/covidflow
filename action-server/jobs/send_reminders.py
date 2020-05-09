@@ -33,8 +33,13 @@ NAME_KEY = "name"
 ENTITIES_KEY = "entities"
 
 INTENT_NAME = "send_daily_checkin_reminder"
-DEFAULT_ENDPOINTS = {EN: "core-en.covidflow", FR: "core-fr.covidflow"}
-URL_PATTERN = "http://{endpoint}/conversations/{phone_number}/trigger_intent?output_channel=twilio"
+DEFAULT_ENDPOINTS = {
+    EN: "http://core-en.covidflow:8080",
+    FR: "http://core-fr.covidflow:8080",
+}
+URL_PATTERN = (
+    "{endpoint}/conversations/{phone_number}/trigger_intent?output_channel=twilio"
+)
 
 
 def run(

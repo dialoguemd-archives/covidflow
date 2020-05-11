@@ -3,12 +3,8 @@ from typing import List
 from rasa_sdk import Tracker
 from rasa_sdk.events import SlotSet
 
-from .constants import (
-    LAST_ASSESSMENT_SLOTS,
-    SELF_ASSESS_DONE_SLOT,
-    SYMPTOMS_SLOT,
-)
 from ..lib.persistence import cancel_reminder, store_assessment
+from .constants import LAST_ASSESSMENT_SLOTS, SELF_ASSESS_DONE_SLOT, SYMPTOMS_SLOT
 
 LAST_PREFIX = "last_"
 

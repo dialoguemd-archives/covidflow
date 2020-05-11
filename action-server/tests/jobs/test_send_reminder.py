@@ -103,7 +103,8 @@ class TestJobSendReminder(TestCase):
         self.assertCountEqual(errored, [])
 
     @patch(
-        "covidflow.jobs.send_reminders._send_reminder_with_backoff", side_effect=_send_reminder
+        "covidflow.jobs.send_reminders._send_reminder_with_backoff",
+        side_effect=_send_reminder,
     )
     @patch("covidflow.jobs.send_reminders.session_factory")
     def test_send_reminders_error(
@@ -134,7 +135,8 @@ class TestJobSendReminder(TestCase):
         self.assertCountEqual(errored, [])
 
     @patch(
-        "covidflow.jobs.send_reminders._send_reminder_with_backoff", side_effect=_send_reminder
+        "covidflow.jobs.send_reminders._send_reminder_with_backoff",
+        side_effect=_send_reminder,
     )
     @patch("covidflow.jobs.send_reminders.session_factory")
     def test_connection_error(

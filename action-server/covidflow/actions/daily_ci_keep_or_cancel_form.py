@@ -5,6 +5,7 @@ from rasa_sdk.events import EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
+from ..lib.persistence import cancel_reminder
 from .constants import (
     AGE_OVER_65_SLOT,
     FEEL_WORSE_SLOT,
@@ -14,7 +15,6 @@ from .constants import (
     SYMPTOMS_SLOT,
 )
 from .form_helper import request_next_slot
-from ..lib.persistence import cancel_reminder
 
 FORM_NAME = "daily_ci_keep_or_cancel_form"
 

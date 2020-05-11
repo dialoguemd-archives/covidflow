@@ -27,7 +27,9 @@ class TestDailyCiFeelBetterForm(FormTestCase):
         super().setUp()
         self.form = DailyCiFeelBetterForm()
 
-        self.patcher = patch("covidflow.actions.daily_ci_assessment_common.store_assessment")
+        self.patcher = patch(
+            "covidflow.actions.daily_ci_assessment_common.store_assessment"
+        )
         self.mock_store_assessment = self.patcher.start()
 
     def tearDown(self):

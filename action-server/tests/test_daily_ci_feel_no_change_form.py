@@ -13,7 +13,10 @@ from covidflow.actions.constants import (
     SELF_ASSESS_DONE_SLOT,
     SYMPTOMS_SLOT,
 )
-from covidflow.actions.daily_ci_feel_no_change_form import FORM_NAME, DailyCiFeelNoChangeForm
+from covidflow.actions.daily_ci_feel_no_change_form import (
+    FORM_NAME,
+    DailyCiFeelNoChangeForm,
+)
 from tests.form_helper import FormTestCase
 
 
@@ -22,7 +25,9 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
         super().setUp()
         self.form = DailyCiFeelNoChangeForm()
 
-        self.patcher = patch("covidflow.actions.daily_ci_assessment_common.store_assessment")
+        self.patcher = patch(
+            "covidflow.actions.daily_ci_assessment_common.store_assessment"
+        )
         self.mock_store_assessment = self.patcher.start()
 
     def tearDown(self):

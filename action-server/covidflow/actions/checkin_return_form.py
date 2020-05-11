@@ -7,11 +7,13 @@ from rasa_sdk.forms import FormAction
 
 from .assessment_common import AssessmentCommon, AssessmentSlots
 
+FORM_NAME = "checkin_return_form"
+
 
 class CheckinReturnForm(FormAction):
     def name(self) -> Text:
 
-        return "checkin_return_form"
+        return FORM_NAME
 
     ## override to play initial message
     async def _activate_if_required(
@@ -20,7 +22,7 @@ class CheckinReturnForm(FormAction):
         tracker: "Tracker",
         domain: Dict[Text, Any],
     ) -> List[EventType]:
-        if tracker.active_form.get("name") != "checkin_return_form":
+        if tracker.active_form.get("name") != FORM_NAME:
             dispatcher.utter_message(template="utter_returning_for_checkin")
 
         return await super()._activate_if_required(dispatcher, tracker, domain)

@@ -7,6 +7,8 @@ from rasa_sdk.forms import FormAction
 
 from .assessment_common import AssessmentCommon, AssessmentSlots
 
+FORM_NAME = "assessment_form"
+
 CONTACT_SLOT = "contact"
 TRAVEL_SLOT = "travel"
 
@@ -16,7 +18,7 @@ CONTACT_RISK_SLOT = "has_contact_risk"
 class AssessmentForm(FormAction):
     def name(self) -> Text:
 
-        return "assessment_form"
+        return FORM_NAME
 
     @staticmethod
     def required_slots(tracker: Tracker) -> List[Text]:

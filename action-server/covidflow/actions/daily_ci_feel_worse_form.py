@@ -10,6 +10,7 @@ from .constants import (
     HAS_COUGH_SLOT,
     HAS_DIFF_BREATHING_SLOT,
     HAS_FEVER_SLOT,
+    SEVERE_SYMPTOMS_SLOT,
     SYMPTOMS_SLOT,
 )
 from .daily_ci_assessment_common import submit_daily_ci_assessment
@@ -17,7 +18,6 @@ from .form_helper import request_next_slot
 
 FORM_NAME = "daily_ci_feel_worse_form"
 
-SEVERE_SYMPTOMS_SLOT = "severe_symptoms"
 HAS_DIFF_BREATHING_WORSENED_SLOT = "daily_ci__feel_worse__has_diff_breathing_worsened"
 
 

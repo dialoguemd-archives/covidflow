@@ -4,7 +4,7 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.events import ConversationPaused
 from rasa_sdk.executor import CollectingDispatcher
 
-CANCEL_CI_SLOT = "cancel_ci"
+from .constants import CANCEL_CI_SLOT
 
 
 class ActionQaGoodbye(Action):

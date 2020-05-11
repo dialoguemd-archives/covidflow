@@ -112,9 +112,6 @@ slots:
   travel:
     type: unfeaturized
 
-  risk_level:
-    type: unfeaturized
-
   first_name:
     type: unfeaturized
 

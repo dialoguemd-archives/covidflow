@@ -27,9 +27,9 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
         self.form = DailyCiFeelNoChangeForm()
 
         self.patcher = patch(
-            "covidflow.actions.daily_ci_assessment_common.store_assessment"
+            "covidflow.actions.daily_ci_assessment_common.save_assessment"
         )
-        self.mock_store_assessment = self.patcher.start()
+        self.mock_save_assessment = self.patcher.start()
 
     def tearDown(self):
         super().tearDown()
@@ -303,7 +303,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
             ]
         )
 
-        self.mock_store_assessment.assert_called()
+        self.mock_save_assessment.assert_called()
 
     def test_mild_last_symptoms__fever_no_cough(self):
         self._test_mild_last_symptoms__no_cough(fever=True)
@@ -342,4 +342,4 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
             ]
         )
 
-        self.mock_store_assessment.assert_called()
+        self.mock_save_assessment.assert_called()

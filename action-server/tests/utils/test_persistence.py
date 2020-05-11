@@ -15,8 +15,8 @@ from covidflow.utils.persistence import (
     METADATA_SLOT,
     REMINDER_ID_METADATA_PROPERTY,
     cancel_reminder,
+    save_assessment,
     save_reminder,
-    store_assessment,
 )
 
 HASHIDS_SALT = "abcd1234"
@@ -130,33 +130,33 @@ class PersistenceTest(TestCase):
         mock_session_factory.return_value.close.assert_called()
 
     #####
-    ## store_assessment
+    ## save_assessment
 
     @patch.dict("os.environ", ENV)
     @patch("covidflow.utils.persistence.session_factory")
-    def test_store_assessment_valid(self, mock_session_factory):
-        store_assessment(DEFAULT_SLOTS_VALUES)
+    def test_save_assessment_valid(self, mock_session_factory):
+        save_assessment(DEFAULT_SLOTS_VALUES)
 
         mock_session_factory.return_value.add.assert_called_with(DEFAULT_ASSESSMENT)
         mock_session_factory.return_value.commit.assert_called()
         mock_session_factory.return_value.close.assert_called()
 
-    def test_store_assessment_missing_env(self):
+    def test_save_assessment_missing_env(self):
         with self.assertRaises(Exception):
-            store_assessment(DEFAULT_SLOTS_VALUES)
+            save_assessment(DEFAULT_SLOTS_VALUES)
 
     @patch.dict("os.environ", ENV)
     @patch("covidflow.utils.persistence.session_factory")
-    def test_store_assessment_missing_reminder_id(self, mock_session_factory):
+    def test_save_assessment_missing_reminder_id(self, mock_session_factory):
         with self.assertRaises(KeyError):
-            store_assessment(DEFAULT_ASSESSMENT_SLOT_VALUES)
+            save_assessment(DEFAULT_ASSESSMENT_SLOT_VALUES)
 
     @patch.dict("os.environ", ENV)
     @patch("covidflow.utils.persistence.session_factory")
-    def test_store_assessment_commit_error_no_raise(self, mock_session_factory):
+    def test_save_assessment_commit_error_no_raise(self, mock_session_factory):
         mock_session_factory.return_value.commit.side_effect = Exception("no way")
 
-        store_assessment(DEFAULT_SLOTS_VALUES)
+        save_assessment(DEFAULT_SLOTS_VALUES)
 
         mock_session_factory.return_value.add.assert_called_with(DEFAULT_ASSESSMENT)
         mock_session_factory.return_value.commit.assert_called()

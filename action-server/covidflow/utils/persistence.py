@@ -69,7 +69,7 @@ def cancel_reminder(slot_values: Dict[Text, Any]):
         session.close()
 
 
-def store_assessment(slot_values: Dict[Text, Any]):
+def save_assessment(slot_values: Dict[Text, Any]):
     metadata = slot_values.get(METADATA_SLOT, {})
 
     if REMINDER_ID_METADATA_PROPERTY not in metadata:

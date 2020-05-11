@@ -1,11 +1,11 @@
 import logging
 from typing import Any, Dict, Text
 
-from actions.lib.hashids_util import decode_reminder_id, encode_reminder_id
-from actions.lib.phone_number_validation import is_test_phone_number
-from db.assessment import Assessment
-from db.base import session_factory
-from db.reminder import Reminder
+from ..lib.hashids_util import decode_reminder_id, encode_reminder_id
+from ..lib.phone_number_validation import is_test_phone_number
+from ....db.assessment import Assessment
+from ....db.base import session_factory
+from ....db.reminder import Reminder
 
 logger = logging.getLogger(__name__)
 

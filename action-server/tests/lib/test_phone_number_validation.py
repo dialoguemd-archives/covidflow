@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import pytest
 
-from actions.lib.phone_number_validation import (
+from covidflow.actions.lib.phone_number_validation import (
     _generate_validation_code,
     send_validation_code,
 )

@@ -3,8 +3,8 @@ from typing import Any, Dict, List, Text
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
-from actions.assessment_common import AssessmentSlots
-from actions.assessment_form import CONTACT_SLOT, TRAVEL_SLOT
+from .assessment_common import AssessmentSlots
+from .assessment_form import CONTACT_SLOT, TRAVEL_SLOT
 
 RISK_LEVEL_MEDICAL = "elevated-medical-risk"
 RISK_LEVEL_COVID = "elevated-covid-risk"

@@ -6,13 +6,13 @@ from typing import Any, Dict, List, Text
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
-from actions.lib.exceptions import (
+from .lib.exceptions import (
     InvalidExternalEventException,
     ReminderNotFoundException,
 )
-from actions.lib.hashids_util import create_hashids
-from db.base import session_factory
-from db.reminder import Reminder
+from .lib.hashids_util import create_hashids
+from ..db.base import session_factory
+from ..db.reminder import Reminder
 
 logger = logging.getLogger(__name__)
 

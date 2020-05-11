@@ -6,8 +6,8 @@ from hashids import Hashids
 from rasa_sdk import Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
-from actions.action_send_daily_checkin_reminder import ActionSendDailyCheckInReminder
-from actions.lib.exceptions import (
+from covidflow.actions.action_send_daily_checkin_reminder import ActionSendDailyCheckInReminder
+from covidflow.actions.lib.exceptions import (
     InvalidExternalEventException,
     ReminderNotFoundException,
 )

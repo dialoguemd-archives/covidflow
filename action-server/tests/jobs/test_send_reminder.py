@@ -5,8 +5,8 @@ from unittest.mock import patch
 from aiohttp import web
 from aiohttp.test_utils import TestServer, unused_port
 
-from db.reminder import Reminder
-from jobs.send_reminders import (
+from covidflow.db.reminder import Reminder
+from covidflow.jobs.send_reminders import (
     CORE_ENDPOINTS,
     EN,
     FR,

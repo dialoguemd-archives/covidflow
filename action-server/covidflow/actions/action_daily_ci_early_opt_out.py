@@ -4,7 +4,7 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 
-from actions.lib.persistence import cancel_reminder
+from .lib.persistence import cancel_reminder
 
 ACTION_NAME = "action_daily_ci_early_opt_out"
 

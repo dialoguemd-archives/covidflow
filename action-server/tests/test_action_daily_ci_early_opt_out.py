@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from rasa_sdk.events import SlotSet
 
-from actions.action_daily_ci_early_opt_out import (
+from covidflow.actions.action_daily_ci_early_opt_out import (
     CANCEL_CI_SLOT,
     ActionDailyCiEarlyOptOut,
 )

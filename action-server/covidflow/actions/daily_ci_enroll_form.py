@@ -7,9 +7,9 @@ from rasa_sdk.events import EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from actions.form_helper import request_next_slot
-from actions.lib.persistence import save_reminder
-from actions.lib.phone_number_validation import (
+from .form_helper import request_next_slot
+from .lib.persistence import save_reminder
+from .lib.phone_number_validation import (
     VALIDATION_CODE_LENGTH,
     send_validation_code,
 )

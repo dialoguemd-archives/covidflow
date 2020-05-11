@@ -4,7 +4,7 @@ from unittest.mock import patch
 from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
-from actions.daily_ci_keep_or_cancel_form import (
+from covidflow.actions.daily_ci_keep_or_cancel_form import (
     AGE_OVER_65_SLOT,
     CANCEL_CI_SLOT,
     FEEL_WORSE_SLOT,

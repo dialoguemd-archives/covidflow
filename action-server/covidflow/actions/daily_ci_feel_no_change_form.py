@@ -5,7 +5,7 @@ from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from actions.constants import (
+from .constants import (
     FEEL_WORSE_SLOT,
     HAS_COUGH_SLOT,
     HAS_DIFF_BREATHING_SLOT,
@@ -13,8 +13,8 @@ from actions.constants import (
     LAST_SYMPTOMS_SLOT,
     SYMPTOMS_SLOT,
 )
-from actions.daily_ci_assessment_common import submit_daily_ci_assessment
-from actions.form_helper import request_next_slot
+from .daily_ci_assessment_common import submit_daily_ci_assessment
+from .form_helper import request_next_slot
 
 FORM_NAME = "daily_ci_feel_no_change_form"
 

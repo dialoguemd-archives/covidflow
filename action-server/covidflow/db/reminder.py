@@ -20,7 +20,7 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.hybrid import hybrid_property
 from structlog import get_logger
 
-from db.base import Base
+from .base import Base
 
 logger = get_logger(__name__)
 

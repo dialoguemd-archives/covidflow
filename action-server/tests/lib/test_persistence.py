@@ -2,14 +2,14 @@ from typing import Any, Dict
 from unittest import TestCase
 from unittest.mock import call, patch
 
-from actions.lib.persistence import (
+from covidflow.actions.lib.persistence import (
     METADATA_SLOT,
     REMINDER_ID_METADATA_PROPERTY,
     cancel_reminder,
     save_reminder,
     store_assessment,
 )
-from db.assessment import (
+from covidflow.db.assessment import (
     FEEL_WORSE_SLOT,
     HAS_COUGH_SLOT,
     HAS_DIFF_BREATHING_SLOT,
@@ -17,7 +17,7 @@ from db.assessment import (
     SYMPTOMS_SLOT,
     Assessment,
 )
-from db.reminder import PHONE_NUMBER_SLOT, Reminder
+from covidflow.db.reminder import PHONE_NUMBER_SLOT, Reminder
 
 HASHIDS_SALT = "abcd1234"
 HASHIDS_MIN_LENGTH = 4

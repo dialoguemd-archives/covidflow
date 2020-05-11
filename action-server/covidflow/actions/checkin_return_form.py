@@ -5,7 +5,7 @@ from rasa_sdk.events import EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from actions.assessment_common import AssessmentCommon, AssessmentSlots
+from .assessment_common import AssessmentCommon, AssessmentSlots
 
 
 class CheckinReturnForm(FormAction):

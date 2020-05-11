@@ -7,7 +7,7 @@ from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from actions.answers import (
+from .answers import (
     QuestionAnsweringProtocol,
     QuestionAnsweringResponse,
     QuestionAnsweringStatus,

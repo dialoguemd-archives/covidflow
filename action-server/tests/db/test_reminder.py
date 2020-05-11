@@ -1,7 +1,7 @@
 from datetime import datetime
 from unittest import TestCase
 
-from db.reminder import Reminder, _uniformize_timezone
+from covidflow.db.reminder import Reminder, _uniformize_timezone
 
 METADATA_SLOT = "metadata"
 PHONE_NUMBER_SLOT = "phone_number"

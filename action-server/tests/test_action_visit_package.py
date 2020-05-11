@@ -3,14 +3,14 @@ from unittest.mock import Mock
 
 from rasa_sdk import Tracker
 
-from actions.action_visit_package import (
+from covidflow.actions.action_visit_package import (
     RISK_LEVEL_COVID,
     RISK_LEVEL_DEFAULT,
     RISK_LEVEL_MEDICAL,
     ActionVisitPackage,
 )
-from actions.assessment_common import AssessmentSlots
-from actions.assessment_form import CONTACT_SLOT, TRAVEL_SLOT
+from covidflow.actions.assessment_common import AssessmentSlots
+from covidflow.actions.assessment_form import CONTACT_SLOT, TRAVEL_SLOT
 
 
 def _create_tracker(slots={}) -> Tracker:

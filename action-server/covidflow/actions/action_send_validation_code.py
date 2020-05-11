@@ -5,7 +5,7 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.events import Restarted
 from rasa_sdk.executor import CollectingDispatcher
 
-from actions.lib.phone_number_validation import (
+from .lib.phone_number_validation import (
     FIRST_NAME_ENTITY,
     VALIDATION_CODE_ENTITY,
 )

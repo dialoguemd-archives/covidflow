@@ -7,7 +7,7 @@ from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 from rasa_sdk.interfaces import ActionExecutionRejection
 
-from actions.daily_ci_enroll_form import (
+from covidflow.actions.daily_ci_enroll_form import (
     CODE_TRY_COUNTER_SLOT,
     DO_ENROLL_SLOT,
     FIRST_NAME_SLOT,

@@ -5,8 +5,8 @@ from hashids import Hashids
 from rasa_sdk import Tracker
 from rasa_sdk.events import SlotSet
 
-from actions.action_initialize_daily_checkin import ActionInitializeDailyCheckin
-from actions.constants import (
+from covidflow.actions.action_initialize_daily_checkin import ActionInitializeDailyCheckin
+from covidflow.actions.constants import (
     AGE_OVER_65_SLOT,
     FIRST_NAME_SLOT,
     HAS_COUGH_SLOT,

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from db.assessment import (
+from covidflow.db.assessment import (
     FEEL_WORSE_SLOT,
     HAS_COUGH_SLOT,
     HAS_DIFF_BREATHING_SLOT,

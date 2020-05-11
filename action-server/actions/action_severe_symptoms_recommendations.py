@@ -1,6 +1,7 @@
 from typing import Any, Dict, List, Text
 
 from rasa_sdk import Action, Tracker
+from rasa_sdk.events import ConversationPaused
 from rasa_sdk.executor import CollectingDispatcher
 
 
@@ -17,4 +18,4 @@ class ActionSevereSymptomsRecommendations(Action):
 
         dispatcher.utter_message(template="utter_call_911")
 
-        return []
+        return [ConversationPaused()]

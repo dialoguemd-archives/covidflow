@@ -549,7 +549,9 @@ class TestDailyCiEnrollForm(FormTestCase):
             ],
         )
 
-        self.assert_templates(["utter_ask_has_dialogue"])
+        self.assert_templates(
+            ["utter_daily_ci_enroll__acknowledge", "utter_ask_has_dialogue"]
+        )
 
     def test_provide_preconditions_deny(self):
         tracker = self.create_tracker(
@@ -572,7 +574,9 @@ class TestDailyCiEnrollForm(FormTestCase):
             ],
         )
 
-        self.assert_templates(["utter_ask_has_dialogue"],)
+        self.assert_templates(
+            ["utter_daily_ci_enroll__acknowledge", "utter_ask_has_dialogue"],
+        )
 
     def test_provide_preconditions_dont_know(self):
         tracker = self.create_tracker(

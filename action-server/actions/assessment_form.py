@@ -68,7 +68,7 @@ class AssessmentForm(FormAction):
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
         if value is True:
-            dispatcher.utter_message(template="utter_symptoms_self_isolate")
+            dispatcher.utter_message(template="utter_moderate_symptoms_self_isolate")
 
         return {AssessmentSlots.MODERATE_SYMPTOMS: value}
 
@@ -80,7 +80,7 @@ class AssessmentForm(FormAction):
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
         if value is True:
-            dispatcher.utter_message(template="utter_symptoms_self_isolate")
+            dispatcher.utter_message(template="utter_mild_symptoms_self_isolate")
 
         return {AssessmentSlots.HAS_COUGH: value}
 

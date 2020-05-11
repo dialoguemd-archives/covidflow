@@ -15,6 +15,6 @@ class ActionTestedPositiveNoSymptomsRecommendations(Action):
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
 
-        dispatcher.utter_message(template="utter_no_symptoms")
+        dispatcher.utter_message(template="utter_tested_positive_no_symptoms")
 
         return []

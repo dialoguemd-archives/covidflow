@@ -1,4 +1,4 @@
 - user: affirm
-  bot: self_isolate/ask_alone_symptoms
+  bot: self_isolate/ask_alone_moderate_symptoms
 - user: affirm
   bot: self_isolate/stay_home

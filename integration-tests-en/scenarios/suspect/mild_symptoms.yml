@@ -3,4 +3,4 @@
 - user: deny
   bot: symptoms_mild
 - user: affirm
-  bot: self_isolate/ask_alone_symptoms
+  bot: self_isolate/ask_alone_mild_symptoms

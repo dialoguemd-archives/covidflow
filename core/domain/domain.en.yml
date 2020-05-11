@@ -176,8 +176,8 @@ responses:
         - title: No
           payload: "/deny"
 
-  utter_no_symptoms:
-    - text: "It looks like you’re not experiencing any significant Covid-19 symptoms"
+  utter_tested_positive_no_symptoms:
+    - text: "Although your test is positive, it looks like you’re not experiencing any significant symptoms at the moment"
 
   utter_ask_when_tested:
     - text: "When have you been diagnosed?"
@@ -340,6 +340,9 @@ responses:
   utter_remind_monitor_symptoms_temperature:
     - text: Don't forget to take your temperature regularly and monitor your symptoms for any changes
 
+  utter_returning_no_symptoms:
+    - text: "It looks like you’re not experiencing any significant Covid-19 symptoms"
+
   utter_ask_when_first_symptoms:
     - text: When did you experience your first symptoms?
       buttons:
@@ -349,7 +352,7 @@ responses:
           payload: "/less"
 
   utter_social_distancing_leave_home:
-    - text: OK, you should keep complying with social distancing rules, and if you leave your home, we recommend that you wear a mask
+    - text: OK, you should keep complying with social distancing rules, and if you leave your home, I recommend that you wear a mask
 
   utter_self_isolate_symptom_free:
     - text: In this case, you should keep self-isolating until you have been symptom-free for at least 7 days
@@ -441,8 +444,11 @@ responses:
   utter_returning_self_isolate:
     - text: "Since you still have symptoms, you must continue to self-isolate. It is extremely important that you follow this directive"
 
-  utter_symptoms_self_isolate:
+  utter_moderate_symptoms_self_isolate:
     - text: "Since you have symptoms, you need to *self-isolate for at least 14 days*. It is extremely important that you follow this directive"
+
+  utter_mild_symptoms_self_isolate:
+    - text: "Since you have some symptoms, you must self-isolate for at least 14 days. It is essential that you follow this directive"
 
   utter_tested_positive_self_isolate:
     - text: "Since you have tested positive to the Covid-19, *you must self-isolate for at least 14 days*. It is extremely important that you follow this directive"

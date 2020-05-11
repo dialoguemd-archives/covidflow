@@ -7,11 +7,13 @@ from rasa_sdk.forms import FormAction
 
 from .assessment_common import AssessmentCommon, AssessmentSlots
 
+FORM_NAME = "tested_positive_form"
+
 
 class TestedPositiveForm(FormAction):
     def name(self) -> Text:
 
-        return "tested_positive_form"
+        return FORM_NAME
 
     ## override to play initial message
     async def _activate_if_required(
@@ -20,7 +22,7 @@ class TestedPositiveForm(FormAction):
         tracker: "Tracker",
         domain: Dict[Text, Any],
     ) -> List[EventType]:
-        if tracker.active_form.get("name") != "tested_positive_form":
+        if tracker.active_form.get("name") != FORM_NAME:
             dispatcher.utter_message(template="utter_tested_positive_self_isolate")
         return await super()._activate_if_required(dispatcher, tracker, domain)
 

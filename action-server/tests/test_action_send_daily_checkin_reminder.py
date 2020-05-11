@@ -7,7 +7,7 @@ from rasa_sdk import Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
 from covidflow.actions.action_send_daily_checkin_reminder import ActionSendDailyCheckInReminder
-from covidflow.actions.lib.exceptions import (
+from covidflow.lib.exceptions import (
     InvalidExternalEventException,
     ReminderNotFoundException,
 )
@@ -80,8 +80,8 @@ class TestActionSendDailyCheckinReminder(TestCase):
             ActionSendDailyCheckInReminder()
 
     @patch.dict("os.environ", ENV)
-    @patch("actions.action_send_daily_checkin_reminder.session_factory")
-    @patch("actions.action_send_daily_checkin_reminder.datetime")
+    @patch("covidflow.actions.action_send_daily_checkin_reminder.session_factory")
+    @patch("covidflow.actions.action_send_daily_checkin_reminder.datetime")
     def test_happy_path(self, mock_datetime, mock_session_factory):
         reminder_mock = _mock_reminder(mock_session_factory, DEFAULT_PHONE_NUMBER)
         mock_datetime.utcnow.return_value = DEFAULT_NOW
@@ -108,7 +108,7 @@ class TestActionSendDailyCheckinReminder(TestCase):
         mock_session_factory.return_value.close.assert_called()
 
     @patch.dict("os.environ", ENV)
-    @patch("actions.action_send_daily_checkin_reminder.session_factory")
+    @patch("covidflow.actions.action_send_daily_checkin_reminder.session_factory")
     def test_reminder_not_found(self, mock_session_factory):
         mock_session_factory.return_value.query.return_value.get.return_value = None
 
@@ -122,7 +122,7 @@ class TestActionSendDailyCheckinReminder(TestCase):
         mock_session_factory.return_value.close.assert_called()
 
     @patch.dict("os.environ", ENV)
-    @patch("actions.action_send_daily_checkin_reminder.session_factory")
+    @patch("covidflow.actions.action_send_daily_checkin_reminder.session_factory")
     def test_phone_not_match(self, mock_session_factory):
         _mock_reminder(mock_session_factory, "99999999999")
 

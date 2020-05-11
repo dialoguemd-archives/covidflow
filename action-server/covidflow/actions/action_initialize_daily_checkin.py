@@ -17,8 +17,8 @@ from .constants import (
     PROVINCE_SLOT,
     PROVINCIAL_811_SLOT,
 )
-from .lib.hashids_util import create_hashids
-from .lib.provincial_811 import get_provincial_811
+from ..lib.hashids_util import create_hashids
+from ..lib.provincial_811 import get_provincial_811
 from ..db.assessment import Assessment
 from ..db.base import session_factory
 from ..db.reminder import Reminder

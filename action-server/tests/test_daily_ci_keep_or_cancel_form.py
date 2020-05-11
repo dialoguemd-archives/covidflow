@@ -69,7 +69,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
         super().setUp()
         self.form = DailyCiKeepOrCancelForm()
 
-        self.patcher = patch("actions.daily_ci_keep_or_cancel_form.cancel_reminder")
+        self.patcher = patch("covidflow.actions.daily_ci_keep_or_cancel_form.cancel_reminder")
         self.mock_cancel_reminder = self.patcher.start()
 
     def tearDown(self):

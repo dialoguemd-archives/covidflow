@@ -71,7 +71,7 @@ class TestJobSendReminder(TestCase):
         with self.assertRaises(expected_exception=Exception):
             run()
 
-    @patch("jobs.send_reminders.session_factory")
+    @patch("covidflow.jobs.send_reminders.session_factory")
     def test_with_environment_variables(self, mock_session_factory):
         self._setUp(mock_session_factory)
 
@@ -89,7 +89,7 @@ class TestJobSendReminder(TestCase):
         self.assertCountEqual(sent, [REMINDER_1.id, REMINDER_2.id])
         self.assertCountEqual(errored, [])
 
-    @patch("jobs.send_reminders.session_factory")
+    @patch("covidflow.jobs.send_reminders.session_factory")
     def test_send_reminders(self, mock_session_factory):
         self._setUp(mock_session_factory)
 
@@ -103,9 +103,9 @@ class TestJobSendReminder(TestCase):
         self.assertCountEqual(errored, [])
 
     @patch(
-        "jobs.send_reminders._send_reminder_with_backoff", side_effect=_send_reminder
+        "covidflow.jobs.send_reminders._send_reminder_with_backoff", side_effect=_send_reminder
     )
-    @patch("jobs.send_reminders.session_factory")
+    @patch("covidflow.jobs.send_reminders.session_factory")
     def test_send_reminders_error(
         self, mock_session_factory, mock_send_reminder_with_backoff
     ):
@@ -120,7 +120,7 @@ class TestJobSendReminder(TestCase):
         self.assertCountEqual(sent, [])
         self.assertCountEqual(errored, [REMINDER_1.id, REMINDER_2.id])
 
-    @patch("jobs.send_reminders.session_factory")
+    @patch("covidflow.jobs.send_reminders.session_factory")
     def test_send_no_reminders(self, mock_session_factory):
         self._setUp(mock_session_factory, reminders=[])
 
@@ -134,9 +134,9 @@ class TestJobSendReminder(TestCase):
         self.assertCountEqual(errored, [])
 
     @patch(
-        "jobs.send_reminders._send_reminder_with_backoff", side_effect=_send_reminder
+        "covidflow.jobs.send_reminders._send_reminder_with_backoff", side_effect=_send_reminder
     )
-    @patch("jobs.send_reminders.session_factory")
+    @patch("covidflow.jobs.send_reminders.session_factory")
     def test_connection_error(
         self, mock_session_factory, mock_send_reminder_with_backoff
     ):

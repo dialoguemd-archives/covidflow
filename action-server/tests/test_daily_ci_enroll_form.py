@@ -218,7 +218,7 @@ class TestDailyCiEnrollForm(FormTestCase):
 
     @skip("Async mocking problem")
     @pytest.mark.asyncio
-    @patch("actions.lib.daily_ci_enroll_form.send_validation_code")
+    @patch("covidflow.lib.daily_ci_enroll_form.send_validation_code")
     def test_provide_phone_number_sms_error(self, mock_send_validation_code):
         mock_send_validation_code.return_value = None
 
@@ -676,7 +676,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             ],
         )
 
-    @patch("actions.daily_ci_enroll_form.save_reminder")
+    @patch("covidflow.actions.daily_ci_enroll_form.save_reminder")
     def test_provide_has_dialogue_enrollment_failed(self, mock_save_reminder):
         tracker = self.create_tracker(
             slots={

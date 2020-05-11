@@ -29,7 +29,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         super().setUp()
         self.form = DailyCiFeelWorseForm()
 
-        self.patcher = patch("actions.daily_ci_assessment_common.store_assessment")
+        self.patcher = patch("covidflow.actions.daily_ci_assessment_common.store_assessment")
         self.mock_store_assessment = self.patcher.start()
 
     def tearDown(self):
@@ -51,7 +51,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
 
         self.assert_templates(["utter_ask_daily_ci__feel_worse__severe_symptoms"])
 
-    @patch("actions.daily_ci_assessment_common.cancel_reminder")
+    @patch("covidflow.actions.daily_ci_assessment_common.cancel_reminder")
     def test_severe_symptoms(self, mock_cancel_reminder):
         tracker = self.create_tracker(
             slots={

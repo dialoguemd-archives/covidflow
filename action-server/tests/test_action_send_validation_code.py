@@ -5,7 +5,7 @@ from rasa_sdk.events import Restarted
 from rasa_sdk.executor import CollectingDispatcher
 
 from covidflow.actions.action_send_validation_code import ActionSendValidationCode
-from covidflow.actions.lib.phone_number_validation import (
+from covidflow.lib.phone_number_validation import (
     FIRST_NAME_ENTITY,
     VALIDATION_CODE_ENTITY,
 )

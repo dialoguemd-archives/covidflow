@@ -14,7 +14,7 @@ from .constants import (
     SYMPTOMS_SLOT,
 )
 from .form_helper import request_next_slot
-from .lib.persistence import cancel_reminder
+from ..lib.persistence import cancel_reminder
 
 FORM_NAME = "daily_ci_keep_or_cancel_form"
 

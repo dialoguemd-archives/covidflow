@@ -8,7 +8,7 @@ from .constants import (
     SELF_ASSESS_DONE_SLOT,
     SYMPTOMS_SLOT,
 )
-from .lib.persistence import cancel_reminder, store_assessment
+from ..lib.persistence import cancel_reminder, store_assessment
 
 LAST_PREFIX = "last_"
 

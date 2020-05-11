@@ -14,7 +14,7 @@ class ActionDailyCiEarlyOptOutTest(ActionTestCase):
         super().setUp()
         self.action = ActionDailyCiEarlyOptOut()
 
-    @patch("actions.action_daily_ci_early_opt_out.cancel_reminder")
+    @patch("covidflow.actions.action_daily_ci_early_opt_out.cancel_reminder")
     def test_early_opt_out(self, mock_cancel_reminder):
         tracker = self.create_tracker()
 

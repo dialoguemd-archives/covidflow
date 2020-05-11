@@ -116,7 +116,7 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
             ActionInitializeDailyCheckin().name(), "action_initialize_daily_checkin",
         )
 
-    @patch("actions.action_initialize_daily_checkin.session_factory")
+    @patch("covidflow.actions.action_initialize_daily_checkin.session_factory")
     def test_happy_path(self, mock_session_factory):
         mock_session_factory.return_value.query.return_value.get.return_value = namedtuple(
             "Reminder", NON_DEFAULT_REMINDER_VALUES.keys()
@@ -147,7 +147,7 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
 
         mock_session_factory.return_value.close.assert_called()
 
-    @patch("actions.action_initialize_daily_checkin.session_factory")
+    @patch("covidflow.actions.action_initialize_daily_checkin.session_factory")
     def test_reminder_not_found_default_user_values(self, mock_session_factory):
         mock_session_factory.return_value.query.return_value.get.return_value = None
         mock_session_factory.return_value.query.return_value.filter_by.return_value.order_by.return_value.first.return_value = (

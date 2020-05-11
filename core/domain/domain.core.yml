@@ -23,6 +23,10 @@ intents:
   - still_sick
   - symptom_free
   - no_phone
+  - did_not_get_code
+  - change_phone
+  - resend_code
+  - reenter_phone_number
   - cancel
   - continue
   - opt_out
@@ -30,6 +34,7 @@ intents:
       triggers: action_send_validation_code
   - send_daily_checkin_reminder:
       triggers: action_send_daily_checkin_reminder
+
 entities:
   - province
   - metadata
@@ -178,11 +183,18 @@ slots:
   daily_ci_enroll__do_enroll:
     type: unfeaturized
 
+  daily_ci_enroll__phone_number_to_change:
+    type: unfeaturized
+
   daily_ci_enroll__validation_code_reference:
     type: unfeaturized
 
   daily_ci_enroll__validation_code:
     type: unfeaturized
+
+  daily_ci_enroll__no_code_solution:
+    type: unfeaturized
+    initial_value: "N/A"
 
   daily_ci_enroll__phone_number_error_counter:
     type: unfeaturized
@@ -191,6 +203,9 @@ slots:
   daily_ci_enroll__validation_code_error_counter:
     type: unfeaturized
     initial_value: 0
+
+  daily_ci_enroll__validation_no_code_solution:
+    type: unfeaturized
 
   daily_ci_enroll__wants_cancel:
     type: unfeaturized

@@ -16,6 +16,8 @@ from covidflow.actions.daily_ci_enroll_form import (
     CODE_TRY_COUNTER_SLOT,
     DO_ENROLL_SLOT,
     FORM_NAME,
+    NO_CODE_SOLUTION_SLOT,
+    PHONE_TO_CHANGE_SLOT,
     PHONE_TRY_COUNTER_SLOT,
     VALIDATION_CODE_REFERENCE_SLOT,
     VALIDATION_CODE_SLOT,
@@ -93,23 +95,24 @@ class TestDailyCiEnrollForm(FormTestCase):
             expected_phone_number, slot_values.get(PHONE_NUMBER_SLOT, None)
         )
 
-    def test_validate_validation_code(self):
-        slot_mapping = self.form.slot_mappings()[VALIDATION_CODE_SLOT]
+    @pytest.mark.asyncio
+    async def test_validate_validation_code(self):
+        slot_mapping = self.form.slot_mappings()[VALIDATION_CODE_SLOT][-1]
         self.assertEqual(slot_mapping, self.form.from_text())
 
-        self._validate_validation_code("its 4567", "4567")
-        self._validate_validation_code("4567", "4567")
+        await self._validate_validation_code("its 4567", "4567")
+        await self._validate_validation_code("4567", "4567")
 
-        self._validate_validation_code("45678", None)
-        self._validate_validation_code("514", None)
+        await self._validate_validation_code("45678", None)
+        await self._validate_validation_code("514", None)
 
-        self._validate_validation_code("4325", None)
+        await self._validate_validation_code("4325", None)
 
-    def _validate_validation_code(self, text: str, expected_validation_code: str):
+    async def _validate_validation_code(self, text: str, expected_validation_code: str):
         tracker = self.create_tracker(
             slots={VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE}
         )
-        slot_values = self.form.validate_daily_ci_enroll__validation_code(
+        slot_values = await self.form.validate_daily_ci_enroll__validation_code(
             text, self.dispatcher, tracker, None
         )
 
@@ -220,6 +223,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(PHONE_NUMBER_SLOT, PHONE_NUMBER),
+                SlotSet(PHONE_TO_CHANGE_SLOT, False),
                 SlotSet(VALIDATION_CODE_REFERENCE_SLOT, VALIDATION_CODE),
                 SlotSet(REQUESTED_SLOT, VALIDATION_CODE_SLOT),
             ],
@@ -250,7 +254,8 @@ class TestDailyCiEnrollForm(FormTestCase):
 
         self.assert_events(
             [
-                SlotSet(PHONE_NUMBER_SLOT, None),
+                SlotSet(PHONE_NUMBER_SLOT, PHONE_NUMBER),
+                SlotSet(PHONE_TO_CHANGE_SLOT, False),
                 SlotSet(DO_ENROLL_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -281,6 +286,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(PHONE_NUMBER_SLOT, None),
+                SlotSet(PHONE_TO_CHANGE_SLOT, False),
                 SlotSet(PHONE_TRY_COUNTER_SLOT, 1),
                 SlotSet(REQUESTED_SLOT, PHONE_NUMBER_SLOT),
             ],
@@ -309,6 +315,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(PHONE_NUMBER_SLOT, None),
+                SlotSet(PHONE_TO_CHANGE_SLOT, False),
                 SlotSet(PHONE_TRY_COUNTER_SLOT, 2),
                 SlotSet(REQUESTED_SLOT, PHONE_NUMBER_SLOT),
             ],
@@ -337,6 +344,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(PHONE_NUMBER_SLOT, None),
+                SlotSet(PHONE_TO_CHANGE_SLOT, False),
                 SlotSet(DO_ENROLL_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -360,6 +368,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(PHONE_NUMBER_SLOT, None),
+                SlotSet(PHONE_TO_CHANGE_SLOT, False),
                 SlotSet(DO_ENROLL_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -388,6 +397,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(PHONE_NUMBER_SLOT, None),
+                SlotSet(PHONE_TO_CHANGE_SLOT, False),
                 SlotSet(WANTS_CANCEL_SLOT, None),
                 SlotSet(REQUESTED_SLOT, WANTS_CANCEL_SLOT),
             ],
@@ -543,6 +553,314 @@ class TestDailyCiEnrollForm(FormTestCase):
         )
 
         self.assert_templates(["utter_daily_ci_enroll__invalid_phone_no_checkin"])
+
+    def test_provide_validation_code_change_phone(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE,
+            },
+            intent="change_phone",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(VALIDATION_CODE_SLOT, None),
+                SlotSet(PHONE_NUMBER_SLOT, None),
+                SlotSet(PHONE_TO_CHANGE_SLOT, True),
+                SlotSet(REQUESTED_SLOT, PHONE_NUMBER_SLOT),
+            ],
+        )
+
+        self.assert_templates(["utter_ask_phone_number_new"])
+
+    @patch(
+        "covidflow.actions.daily_ci_enroll_form.send_validation_code",
+        new=AsyncMock(return_value=VALIDATION_CODE),
+    )
+    def test_provide_validation_code_phone_number(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE,
+            },
+            text=PHONE_NUMBER,
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(VALIDATION_CODE_SLOT, None),
+                SlotSet(PHONE_NUMBER_SLOT, PHONE_NUMBER),
+                SlotSet(PHONE_TO_CHANGE_SLOT, False),
+                SlotSet(VALIDATION_CODE_REFERENCE_SLOT, VALIDATION_CODE),
+                SlotSet(REQUESTED_SLOT, VALIDATION_CODE_SLOT),
+            ],
+        )
+
+        self.assert_templates(
+            [
+                "utter_daily_ci_enroll__acknowledge_new_phone_number",
+                "utter_ask_daily_ci_enroll__validation_code",
+            ]
+        )
+
+    @patch(
+        "covidflow.actions.daily_ci_enroll_form.send_validation_code",
+        new=AsyncMock(return_value=VALIDATION_CODE),
+    )
+    def test_provide_validation_code_change_phone_with_new(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE,
+            },
+            intent="change_phone",
+            text=PHONE_NUMBER,
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(VALIDATION_CODE_SLOT, None),
+                SlotSet(PHONE_NUMBER_SLOT, PHONE_NUMBER),
+                SlotSet(PHONE_TO_CHANGE_SLOT, False),
+                SlotSet(VALIDATION_CODE_REFERENCE_SLOT, VALIDATION_CODE),
+                SlotSet(REQUESTED_SLOT, VALIDATION_CODE_SLOT),
+            ],
+        )
+
+        self.assert_templates(
+            [
+                "utter_daily_ci_enroll__acknowledge_new_phone_number",
+                "utter_ask_daily_ci_enroll__validation_code",
+            ]
+        )
+
+    @patch(
+        "covidflow.actions.daily_ci_enroll_form.send_validation_code",
+        new=AsyncMock(return_value=None),
+    )
+    def test_provide_validation_code_phone_number_sms_error(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE,
+            },
+            text=PHONE_NUMBER,
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(VALIDATION_CODE_SLOT, None),
+                SlotSet(PHONE_NUMBER_SLOT, PHONE_NUMBER),
+                SlotSet(PHONE_TO_CHANGE_SLOT, False),
+                SlotSet(DO_ENROLL_SLOT, False),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ],
+        )
+
+        self.assert_templates(
+            [
+                "utter_daily_ci_enroll__acknowledge_new_phone_number",
+                "utter_daily_ci_enroll__validation_code_not_sent_1",
+                "utter_daily_ci_enroll__validation_code_not_sent_2",
+                "utter_daily_ci_enroll__continue",
+            ]
+        )
+
+    def test_provide_validation_code_did_not_get_code_first_time(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE,
+            },
+            intent="did_not_get_code",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(VALIDATION_CODE_SLOT, None),
+                SlotSet(CODE_TRY_COUNTER_SLOT, 1),
+                SlotSet(NO_CODE_SOLUTION_SLOT, None),
+                SlotSet(REQUESTED_SLOT, NO_CODE_SOLUTION_SLOT),
+            ],
+        )
+
+        self.assert_templates(
+            ["utter_ask_daily_ci_enroll__no_code_solution",]
+        )
+
+    def test_provide_validation_code_did_not_get_code_second_time(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                CODE_TRY_COUNTER_SLOT: 1,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE,
+            },
+            intent="did_not_get_code",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(VALIDATION_CODE_SLOT, None),
+                SlotSet(CODE_TRY_COUNTER_SLOT, 2),
+                SlotSet(NO_CODE_SOLUTION_SLOT, None),
+                SlotSet(REQUESTED_SLOT, NO_CODE_SOLUTION_SLOT),
+            ],
+        )
+
+        self.assert_templates(
+            ["utter_ask_daily_ci_enroll__no_code_solution",]
+        )
+
+    def test_provide_validation_code_did_not_get_code_third_time(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                CODE_TRY_COUNTER_SLOT: 2,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE,
+            },
+            intent="did_not_get_code",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(VALIDATION_CODE_SLOT, None),
+                SlotSet(DO_ENROLL_SLOT, False),
+                SlotSet(NO_CODE_SOLUTION_SLOT, None),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ],
+        )
+
+        self.assert_templates(
+            ["utter_daily_ci_enroll__invalid_phone_no_checkin",]
+        )
+
+    @patch(
+        "covidflow.actions.daily_ci_enroll_form.send_validation_code",
+        new=AsyncMock(return_value=VALIDATION_CODE),
+    )
+    def test_provide_no_code_solution_resend_code(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: NO_CODE_SOLUTION_SLOT,
+                CODE_TRY_COUNTER_SLOT: 1,  # set when received did_not_get_code intent
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE,
+            },
+            intent="resend_code",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(NO_CODE_SOLUTION_SLOT, "resend_code"),
+                SlotSet(VALIDATION_CODE_REFERENCE_SLOT, VALIDATION_CODE),
+                SlotSet(REQUESTED_SLOT, VALIDATION_CODE_SLOT),
+            ],
+        )
+
+        self.assert_templates(["utter_ask_daily_ci_enroll__validation_code"])
+
+    @patch(
+        "covidflow.actions.daily_ci_enroll_form.send_validation_code",
+        new=AsyncMock(return_value=None),
+    )
+    def test_provide_no_code_solution_resend_code_sms_error(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: NO_CODE_SOLUTION_SLOT,
+                CODE_TRY_COUNTER_SLOT: 1,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE,
+            },
+            intent="resend_code",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(NO_CODE_SOLUTION_SLOT, "resend_code"),
+                SlotSet(DO_ENROLL_SLOT, False),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ],
+        )
+
+        self.assert_templates(
+            [
+                "utter_daily_ci_enroll__validation_code_not_sent_1",
+                "utter_daily_ci_enroll__validation_code_not_sent_2",
+                "utter_daily_ci_enroll__continue",
+            ]
+        )
+
+    def test_provide_no_code_solution_reenter_phone_number(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: NO_CODE_SOLUTION_SLOT,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE,
+            },
+            intent="reenter_phone_number",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(NO_CODE_SOLUTION_SLOT, "reenter_phone_number"),
+                SlotSet(PHONE_NUMBER_SLOT, None),
+                SlotSet(PHONE_TO_CHANGE_SLOT, True),
+                SlotSet(REQUESTED_SLOT, PHONE_NUMBER_SLOT),
+            ],
+        )
+
+        self.assert_templates(["utter_ask_phone_number_new"])
 
     def test_provide_preconditions_affirm(self):
         tracker = self.create_tracker(

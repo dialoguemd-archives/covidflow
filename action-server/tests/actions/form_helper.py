@@ -9,11 +9,13 @@ from rasa_sdk.forms import FormAction
 PHONE_TRY_COUNTER_SLOT = "daily_ci_enroll__phone_number_error_counter"
 CODE_TRY_COUNTER_SLOT = "daily_ci_enroll__validation_code_error_counter"
 WANTS_CANCEL_SLOT = "daily_ci_enroll__wants_cancel"
+NO_CODE_SOLUTION_SLOT = "daily_ci_enroll__no_code_solution"
 
 INITIAL_SLOT_VALUES = {
     PHONE_TRY_COUNTER_SLOT: 0,
     CODE_TRY_COUNTER_SLOT: 0,
     WANTS_CANCEL_SLOT: False,
+    NO_CODE_SOLUTION_SLOT: "N/A",
 }
 
 

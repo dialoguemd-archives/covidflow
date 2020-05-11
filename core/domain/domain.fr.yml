@@ -274,6 +274,20 @@ responses:
   utter_ask_daily_ci_enroll__validation_code_error:
     - text: Je suis désolée, ce code n’est pas valide. Veuillez entrer de nouveau le code à 4 chiffres que vous venez de recevoir
 
+  utter_daily_ci_enroll__acknowledge_new_phone_number:
+    - text: Très bien, j’utiliserai plutôt ce numéro
+
+  utter_ask_daily_ci_enroll__no_code_solution:
+    - text: Je suis désolée. Je peux vous envoyer un nouveau code au même numéro ou vous pouvez me redonner votre numéro. Que voulez-vous faire?
+      buttons:
+        - title: Renvoyez-moi un code
+          payload: "/resend_code"
+        - title: Redonner mon numéro
+          payload: "/reenter_phone_number"
+
+  utter_ask_phone_number_new:
+    - text: D’accord, veuillez inscrire votre numéro de téléphone, pour que je puisse vous joindre
+
   utter_ask_preconditions:
     - text: Avez-vous des problèmes de santé qui pourraient affecter votre système immunitaire?
       buttons:

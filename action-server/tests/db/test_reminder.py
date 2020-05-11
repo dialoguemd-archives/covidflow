@@ -1,3 +1,4 @@
+from datetime import datetime
 from unittest import TestCase
 
 from db.reminder import Reminder, _uniformize_timezone
@@ -46,3 +47,28 @@ class TestReminder(TestCase):
         expected_reminder.first_name = NAME
 
         self.assertEqual(reminder, expected_reminder)
+
+    def test_next_reminder_due_date(self):
+        reminder = Reminder(
+            created_at=datetime(
+                year=2020, month=5, day=9, hour=15, minute=10, second=33
+            ),
+            last_reminded_at=None,
+        )
+        self.assertEqual(
+            reminder.next_reminder_due_date,
+            datetime(year=2020, month=5, day=10, hour=15, minute=10, second=33),
+        )
+
+        reminder = Reminder(
+            created_at=datetime(
+                year=2020, month=5, day=6, hour=11, minute=43, second=12
+            ),
+            last_reminded_at=datetime(
+                year=2020, month=5, day=9, hour=15, minute=10, second=33
+            ),
+        )
+        self.assertEqual(
+            reminder.next_reminder_due_date,
+            datetime(year=2020, month=5, day=10, hour=11, minute=43, second=12),
+        )

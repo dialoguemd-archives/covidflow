@@ -1,12 +1,12 @@
 import asyncio
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import aiohttp
 import backoff
 from aiohttp import ClientSession
 from hashids import Hashids
-from sqlalchemy import and_, or_
+from sqlalchemy import and_
 from structlog import get_logger
 
 from actions.action_send_daily_checkin_reminder import (
@@ -16,26 +16,44 @@ from actions.action_send_daily_checkin_reminder import (
 from db.base import session_factory
 from db.reminder import Reminder
 
-log = get_logger(__name__)
+logger = get_logger(__name__)
+
+EN = "en"
+FR = "fr"
+
 
 HASHIDS_SALT_ENV_KEY = "REMINDER_ID_HASHIDS_SALT"
 HASHIDS_MIN_LENGTH_ENV_KEY = "REMINDER_ID_HASHIDS_MIN_LENGTH"
+CORE_ENDPOINTS = {
+    EN: "REMINDER_JOB_CORE_ENDPOINT_EN",
+    FR: "REMINDER_JOB_CORE_ENDPOINT_FR",
+}
 
 NAME_KEY = "name"
 ENTITIES_KEY = "entities"
 
 INTENT_NAME = "send_daily_checkin_reminder"
-DEFAULT_ENDPOINTS = {"en": "core-en:8080", "fr": "core-fr:8080"}
-URL_PATTERN = "http://{endpoint}/conversations/{phone_number}/trigger_intent?output_channel=twilio"
+DEFAULT_ENDPOINTS = {
+    EN: "http://core-en.covidflow:8080",
+    FR: "http://core-fr.covidflow:8080",
+}
+URL_PATTERN = (
+    "{endpoint}/conversations/{phone_number}/trigger_intent?output_channel=twilio"
+)
 
 
 def run(
     hashids_salt=None, hashids_min_length=None, core_endpoints=DEFAULT_ENDPOINTS,
 ):
-    log.info("Starting reminders job")
+    logger.info("Starting reminders job")
 
     salt = hashids_salt or os.environ[HASHIDS_SALT_ENV_KEY]
     min_length = hashids_min_length or os.environ[HASHIDS_MIN_LENGTH_ENV_KEY]
+
+    try:
+        endpoints = {k: os.environ[v] for k, v in CORE_ENDPOINTS.items()}
+    except KeyError:
+        endpoints = core_endpoints
 
     hashids = Hashids(salt, min_length=min_length)
 
@@ -43,10 +61,10 @@ def run(
 
     loop = asyncio.get_event_loop()
     sent, errored = loop.run_until_complete(
-        _send_reminders(reminders, hashids, core_endpoints)
+        _send_reminders(reminders, hashids, endpoints)
     )
 
-    log.info(f"Reminders sent", sent_reminders=sent, errored_reminders=errored)
+    logger.info("Sent reminders", sent_reminders=sent, errored_reminders=errored)
     return sent, errored
 
 
@@ -54,13 +72,7 @@ def _query_due_reminders():
     session = session_factory()
     now = datetime.utcnow()
 
-    log.debug("Fetching due reminders")
-
-    one_day_after_creation_date = and_(
-        Reminder.last_reminded_at == None,
-        Reminder.created_at <= now - timedelta(days=1),
-    )
-    one_day_after_last_reminder = Reminder.last_reminded_at <= now - timedelta(days=1)
+    logger.debug("Fetching due reminders")
 
     try:
         reminders = (
@@ -68,15 +80,18 @@ def _query_due_reminders():
             .filter(
                 and_(
                     Reminder.is_canceled == False,
-                    or_(one_day_after_creation_date, one_day_after_last_reminder),
+                    Reminder.next_reminder_due_date <= now,
                 )
             )
             .all()
         )
 
-        log.debug(f"Due reminders: {reminders}")
+        logger.debug("Fetched due reminders", reminders=reminders)
 
         return reminders
+    except Exception:
+        logger.exception("Failed to fetch due reminers")
+        return []
     finally:
         session.close()
 
@@ -87,7 +102,7 @@ async def _send_reminders(reminders, hashids, endpoints):
 
     async with ClientSession(raise_for_status=True) as session:
         for reminder in reminders:
-            log.debug(f"Sending reminder: {reminder}")
+            logger.debug("Sending reminder", reminder=reminder)
 
             hashed_id = hashids.encode(reminder.id)
             url = URL_PATTERN.format(
@@ -104,9 +119,12 @@ async def _send_reminders(reminders, hashids, endpoints):
             try:
                 await _send_reminder_with_backoff(session, url, json)
                 sent.append(reminder.id)
-            except Exception as e:
+                logger.debug("Sent reminder", reminder=reminder)
+            except Exception:
                 errored.append(reminder.id)
-                log.warning(f"Failed to send {reminder} due to {e!r}")
+                logger.warning(
+                    "Failed to send reminder", reminder=reminder, exc_info=True
+                )
 
     return sent, errored
 

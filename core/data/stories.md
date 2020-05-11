@@ -534,7 +534,7 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
-  - utter_no_symptoms
+  - utter_returning_no_symptoms
   - utter_ask_when_first_symptoms
 * more
   - utter_social_distancing_leave_home
@@ -549,7 +549,7 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "none"}
-  - utter_no_symptoms
+  - utter_returning_no_symptoms
   - utter_ask_when_first_symptoms
 * less
   - utter_self_isolate_symptom_free

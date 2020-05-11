@@ -268,6 +268,8 @@ class DailyCiEnrollForm(FormAction):
             )
 
             slot_values[PRE_EXISTING_CONDITIONS_SLOT] = True
+        else:
+            dispatcher.utter_message(template="utter_daily_ci_enroll__acknowledge")
 
         return slot_values
 

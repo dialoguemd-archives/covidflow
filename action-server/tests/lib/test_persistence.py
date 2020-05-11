@@ -46,7 +46,7 @@ DEFAULT_SLOTS_VALUES: Dict[str, Any] = {
 DEFAULT_ASSESSMENT = Assessment(REMINDER_ID, attributes=DEFAULT_ASSESSMENT_SLOT_VALUES)
 
 
-class AssessmentPersistenceTest(TestCase):
+class PersistenceTest(TestCase):
     #####
     ## save_reminder
 
@@ -123,8 +123,7 @@ class AssessmentPersistenceTest(TestCase):
     def test_cancel_reminder_commit_error(self, mock_session_factory):
         mock_session_factory.return_value.commit.side_effect = Exception("no way")
 
-        with self.assertRaises(Exception):
-            cancel_reminder(DEFAULT_SLOTS_VALUES)
+        cancel_reminder(DEFAULT_SLOTS_VALUES)
 
         mock_session_factory.return_value.commit.assert_called()
         mock_session_factory.return_value.rollback.assert_called()

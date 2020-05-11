@@ -3,8 +3,12 @@ from typing import List
 from rasa_sdk import Tracker
 from rasa_sdk.events import SlotSet
 
-from actions.constants import LAST_ASSESSMENT_SLOTS, SELF_ASSESS_DONE_SLOT
-from actions.lib.persistence import store_assessment
+from actions.constants import (
+    LAST_ASSESSMENT_SLOTS,
+    SELF_ASSESS_DONE_SLOT,
+    SYMPTOMS_SLOT,
+)
+from actions.lib.persistence import cancel_reminder, store_assessment
 
 LAST_PREFIX = "last_"
 
@@ -21,5 +25,8 @@ def submit_daily_ci_assessment(tracker: Tracker) -> List[dict]:
             slots_to_add.update({current_slot: value})
 
     store_assessment({**tracker.current_slot_values(), **slots_to_add})
+
+    if tracker.get_slot(SYMPTOMS_SLOT) == "severe":
+        cancel_reminder(tracker.current_slot_values())
 
     return events + [SlotSet(key, value) for key, value in slots_to_add.items()]

@@ -51,7 +51,8 @@ class TestDailyCiFeelWorseForm(FormTestCase):
 
         self.assert_templates(["utter_ask_daily_ci__feel_worse__severe_symptoms"])
 
-    def test_severe_symptoms(self):
+    @patch("actions.daily_ci_assessment_common.cancel_reminder")
+    def test_severe_symptoms(self, mock_cancel_reminder):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: SEVERE_SYMPTOMS_SLOT,
@@ -68,8 +69,8 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(SEVERE_SYMPTOMS_SLOT, True),
+                SlotSet(SYMPTOMS_SLOT, "severe"),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "moderate"),
                 SlotSet(HAS_FEVER_SLOT, True),
                 SlotSet(HAS_COUGH_SLOT, True),
                 SlotSet(HAS_DIFF_BREATHING_SLOT, True),
@@ -78,7 +79,9 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             ],
         )
 
-        self.assert_templates(["utter_call_911"])
+        self.assert_templates([])
+
+        mock_cancel_reminder.assert_called_once
 
     def test_no_severe_symptoms(self):
         tracker = self.create_tracker(

@@ -62,8 +62,8 @@ def cancel_reminder(slot_values: Dict[Text, Any]):
         reminder.is_canceled = True
         session.commit()
     except:
+        logger.exception("Could not cancel reminder")
         session.rollback()
-        raise
     finally:
         session.close()
 

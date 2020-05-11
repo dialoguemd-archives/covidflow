@@ -658,6 +658,22 @@
 * done
   - action_qa_goodbye
 
+## daily check-in - feel worse - severe symptoms
+* daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
+  - utter_daily_ci__greet
+  - utter_ask_daily_ci__early_opt_out__cancel_ci
+* continue
+  - utter_daily_ci__early_opt_out__acknowledge_continue_ci
+  - utter_ask_daily_ci__feel
+* worse
+  - daily_ci_feel_worse_form
+  - form{"name": "daily_ci_feel_worse_form"}
+  - form{"name": null}
+  - slot{"symptoms": "severe"}
+  - slot{"self_assess_done": true}
+  - action_severe_symptoms_recommendations
+
 ## daily check-in - feel worse - moderate symptoms
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin

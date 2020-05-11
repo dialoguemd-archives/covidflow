@@ -10,6 +10,7 @@ from actions.constants import (
     HAS_COUGH_SLOT,
     HAS_DIFF_BREATHING_SLOT,
     HAS_FEVER_SLOT,
+    SYMPTOMS_SLOT,
 )
 from actions.daily_ci_assessment_common import submit_daily_ci_assessment
 from actions.form_helper import request_next_slot
@@ -110,12 +111,11 @@ class DailyCiFeelWorseForm(FormAction):
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
         if value is True:
-            dispatcher.utter_message(template="utter_call_911")
-        else:
-            dispatcher.utter_message(
-                template="utter_daily_ci__feel_worse__acknowledge_no_severe_symptoms"
-            )
+            return {SEVERE_SYMPTOMS_SLOT: value, SYMPTOMS_SLOT: "severe"}
 
+        dispatcher.utter_message(
+            template="utter_daily_ci__feel_worse__acknowledge_no_severe_symptoms"
+        )
         return {SEVERE_SYMPTOMS_SLOT: value}
 
     def validate_has_fever(

@@ -8,7 +8,7 @@ cron:
 command:
   - "python"
   - "-m"
-  - "jobs.send_reminders"
+  - "covidflow.jobs.send_reminders"
 image:
   repo: covidflow-action-server
 environment:

@@ -5,7 +5,8 @@ from rasa_sdk.events import EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from ..lib.persistence import cancel_reminder
+from covidflow.lib.persistence import cancel_reminder
+
 from .constants import (
     AGE_OVER_65_SLOT,
     FEEL_WORSE_SLOT,

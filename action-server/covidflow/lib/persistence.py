@@ -1,9 +1,10 @@
 import logging
 from typing import Any, Dict, Text
 
-from ..db.assessment import Assessment
-from ..db.base import session_factory
-from ..db.reminder import Reminder
+from covidflow.db.assessment import Assessment
+from covidflow.db.base import session_factory
+from covidflow.db.reminder import Reminder
+
 from .hashids_util import decode_reminder_id, encode_reminder_id
 from .phone_number_validation import is_test_phone_number
 

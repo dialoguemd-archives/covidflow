@@ -7,8 +7,12 @@ from rasa_sdk.events import EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from ..lib.persistence import save_reminder
-from ..lib.phone_number_validation import VALIDATION_CODE_LENGTH, send_validation_code
+from covidflow.lib.persistence import save_reminder
+from covidflow.lib.phone_number_validation import (
+    VALIDATION_CODE_LENGTH,
+    send_validation_code,
+)
+
 from .form_helper import request_next_slot
 
 logger = logging.getLogger(__name__)

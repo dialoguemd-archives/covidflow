@@ -5,11 +5,12 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 
-from ..db.assessment import Assessment
-from ..db.base import session_factory
-from ..db.reminder import Reminder
-from ..lib.hashids_util import create_hashids
-from ..lib.provincial_811 import get_provincial_811
+from covidflow.db.assessment import Assessment
+from covidflow.db.base import session_factory
+from covidflow.db.reminder import Reminder
+from covidflow.lib.hashids_util import create_hashids
+from covidflow.lib.provincial_811 import get_provincial_811
+
 from .constants import (
     AGE_OVER_65_SLOT,
     FIRST_NAME_SLOT,

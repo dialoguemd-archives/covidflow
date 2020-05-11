@@ -28,9 +28,7 @@ FROM base as final
 COPY alembic alembic
 COPY alembic.ini alembic.ini
 
-COPY actions actions
-COPY db db
-COPY jobs jobs
+COPY covidflow covidflow
 
 ENTRYPOINT [ ]
-CMD [ "rasa", "run", "actions", "--port", "8080" ]
+CMD [ "rasa", "run", "actions", "--actions", "covidflow.actions", "--port", "8080" ]

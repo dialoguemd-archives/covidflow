@@ -9,12 +9,12 @@ from hashids import Hashids
 from sqlalchemy import and_
 from structlog import get_logger
 
-from ..actions.action_send_daily_checkin_reminder import (
+from covidflow.actions.action_send_daily_checkin_reminder import (
     METADATA_ENTITY_NAME,
     REMINDER_ID_PROPERTY_NAME,
 )
-from ..db.base import session_factory
-from ..db.reminder import Reminder
+from covidflow.db.base import session_factory
+from covidflow.db.reminder import Reminder
 
 logger = get_logger(__name__)
 

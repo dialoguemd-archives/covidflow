@@ -8,7 +8,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from covidflow.db.assessment import Assessment
 from covidflow.db.base import session_factory
 from covidflow.db.reminder import Reminder
-from covidflow.lib.hashids_util import create_hashids
+from covidflow.utils.hashids_util import create_hashids
 
 from .constants import (
     AGE_OVER_65_SLOT,

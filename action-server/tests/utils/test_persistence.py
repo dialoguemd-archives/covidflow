@@ -11,7 +11,7 @@ from covidflow.db.assessment import (
     Assessment,
 )
 from covidflow.db.reminder import PHONE_NUMBER_SLOT, Reminder
-from covidflow.lib.persistence import (
+from covidflow.utils.persistence import (
     METADATA_SLOT,
     REMINDER_ID_METADATA_PROPERTY,
     cancel_reminder,
@@ -51,7 +51,7 @@ class PersistenceTest(TestCase):
     ## save_reminder
 
     @patch.dict("os.environ", ENV)
-    @patch("covidflow.lib.persistence.session_factory")
+    @patch("covidflow.utils.persistence.session_factory")
     @patch.object(Reminder, "create_from_slot_values")
     @patch.object(Assessment, "create_from_slot_values")
     def test_save_reminder(
@@ -96,7 +96,7 @@ class PersistenceTest(TestCase):
     ## cancel_reminder
 
     @patch.dict("os.environ", ENV)
-    @patch("covidflow.lib.persistence.session_factory")
+    @patch("covidflow.utils.persistence.session_factory")
     def test_cancel_reminder_valid(self, mock_session_factory):
         mock_reminder = (
             mock_session_factory.return_value.query.return_value.get.return_value
@@ -113,13 +113,13 @@ class PersistenceTest(TestCase):
             cancel_reminder(DEFAULT_SLOTS_VALUES)
 
     @patch.dict("os.environ", ENV)
-    @patch("covidflow.lib.persistence.session_factory")
+    @patch("covidflow.utils.persistence.session_factory")
     def test_cancel_reminder_missing_reminder_id(self, mock_session_factory):
         with self.assertRaises(KeyError):
             cancel_reminder(DEFAULT_ASSESSMENT_SLOT_VALUES)
 
     @patch.dict("os.environ", ENV)
-    @patch("covidflow.lib.persistence.session_factory")
+    @patch("covidflow.utils.persistence.session_factory")
     def test_cancel_reminder_commit_error(self, mock_session_factory):
         mock_session_factory.return_value.commit.side_effect = Exception("no way")
 
@@ -133,7 +133,7 @@ class PersistenceTest(TestCase):
     ## store_assessment
 
     @patch.dict("os.environ", ENV)
-    @patch("covidflow.lib.persistence.session_factory")
+    @patch("covidflow.utils.persistence.session_factory")
     def test_store_assessment_valid(self, mock_session_factory):
         store_assessment(DEFAULT_SLOTS_VALUES)
 
@@ -146,13 +146,13 @@ class PersistenceTest(TestCase):
             store_assessment(DEFAULT_SLOTS_VALUES)
 
     @patch.dict("os.environ", ENV)
-    @patch("covidflow.lib.persistence.session_factory")
+    @patch("covidflow.utils.persistence.session_factory")
     def test_store_assessment_missing_reminder_id(self, mock_session_factory):
         with self.assertRaises(KeyError):
             store_assessment(DEFAULT_ASSESSMENT_SLOT_VALUES)
 
     @patch.dict("os.environ", ENV)
-    @patch("covidflow.lib.persistence.session_factory")
+    @patch("covidflow.utils.persistence.session_factory")
     def test_store_assessment_commit_error_no_raise(self, mock_session_factory):
         mock_session_factory.return_value.commit.side_effect = Exception("no way")
 

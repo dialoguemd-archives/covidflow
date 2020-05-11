@@ -219,7 +219,7 @@ class TestDailyCiEnrollForm(FormTestCase):
 
     @skip("Async mocking problem")
     @pytest.mark.asyncio
-    @patch("covidflow.lib.daily_ci_enroll_form.send_validation_code")
+    @patch("covidflow.utils.daily_ci_enroll_form.send_validation_code")
     def test_provide_phone_number_sms_error(self, mock_send_validation_code):
         mock_send_validation_code.return_value = None
 

@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import pytest
 
-from covidflow.lib.phone_number_validation import (
+from covidflow.utils.phone_number_validation import (
     _generate_validation_code,
     send_validation_code,
 )
@@ -22,7 +22,7 @@ class PhoneNumberValidationTest(TestCase):
         self.assertTrue(validation_code.isnumeric())
 
     @pytest.mark.asyncio
-    @patch("covidflow.lib.phone_number_validation.ClientSession")
+    @patch("covidflow.utils.phone_number_validation.ClientSession")
     async def test_send_validation_code_555_number(self, mock_client_session):
         validation_code = await send_validation_code("15145554321", "fr", "Myname")
         self.assertEqual(validation_code, "4321")
@@ -30,7 +30,7 @@ class PhoneNumberValidationTest(TestCase):
 
     @skip("Async mocking problem")
     @pytest.mark.asyncio
-    @patch("covidflow.lib.phone_number_validation.ClientSession")
+    @patch("covidflow.utils.phone_number_validation.ClientSession")
     async def test_send_validation_code_success(self, mock_client_session):
         print(mock_client_session)
         mock_client_session.return_value.post.return_value = {"status": 200}
@@ -50,7 +50,7 @@ class PhoneNumberValidationTest(TestCase):
 
     @skip("Async mocking problem")
     @pytest.mark.asyncio
-    @patch("covidflow.lib.phone_number_validation.ClientSession")
+    @patch("covidflow.utils.phone_number_validation.ClientSession")
     async def test_send_validation_code_error(self, mock_client_session):
         mock_client_session.return_value.post.return_value = {"status": 500}
         validation_code = await send_validation_code("15148884321", "fr", "Myname")

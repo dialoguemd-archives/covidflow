@@ -8,11 +8,11 @@ from rasa_sdk.executor import CollectingDispatcher
 
 from covidflow.db.base import session_factory
 from covidflow.db.reminder import Reminder
-from covidflow.lib.exceptions import (
+from covidflow.exceptions import (
     InvalidExternalEventException,
     ReminderNotFoundException,
 )
-from covidflow.lib.hashids_util import create_hashids
+from covidflow.utils.hashids_util import create_hashids
 
 logger = logging.getLogger(__name__)
 

@@ -15,7 +15,7 @@ responses:
           payload: "/ask_question"
 
   utter_ask_severe_symptoms:
-    - text: "Premièrement, avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Avoir beaucoup de mal à se réveiller\n- Être confus\n- Perte de conscience"
+    - text: "Premièrement, avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Beaucoup de mal à se réveiller\n- Confusion\n- Perte de conscience"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -184,8 +184,8 @@ responses:
         - title: Non
           payload: "/deny"
 
-  utter_no_symptoms:
-    - text: "Il semble que vous n’ayez pas de symptômes de la Covid-19"
+  utter_tested_positive_no_symptoms:
+    - text: "Bien que votre test soit positif, il semble que vous ne présentiez pas de symptômes pour le moment"
 
   utter_ask_when_tested:
     - text: "Quand avez-vous reçu votre diagnostic?"
@@ -340,6 +340,9 @@ responses:
   utter_remind_monitor_symptoms_temperature:
     - text: Assurez-vous de prendre votre température régulièrement et surveiller vos symptômes pour tout changement
 
+  utter_returning_no_symptoms:
+    - text: "Il semble que vous n’ayez pas de symptômes de la Covid-19"
+
   utter_ask_when_first_symptoms:
     - text: Quand avez-vous commencé à avoir vos premiers symptômes?
       buttons:
@@ -441,8 +444,11 @@ responses:
   utter_returning_self_isolate:
     - text: "Puisque vous avez encore des symptômes, vous devez continuer à vous isoler. Il est essentiel que vous suiviez cette consigne"
 
-  utter_symptoms_self_isolate:
+  utter_moderate_symptoms_self_isolate:
     - text: "Étant donné que vous avez des symptômes, vous devez vous isoler pendant au moins 14 jours. Il est essentiel que vous suiviez cette consigne"
+
+  utter_mild_symptoms_self_isolate:
+    - text: "Puisque vous avez certains symptômes, vous devez vous isoler pendant au moins 14 jours. Il est essentiel que vous suiviez cette consigne"
 
   utter_tested_positive_self_isolate:
     - text: "Étant donné que vous avez obtenu un résultat positif à la Covid-19, vous devez vous isoler pendant au moins 14 jours. Il est essentiel que vous suiviez cette consigne"
@@ -451,7 +457,7 @@ responses:
     - text: "Étant donné que vous êtes à risque d’avoir contacté la Covid-19, vous devez vous isoler pendant au moins 14 jours. Il est essentiel que vous suiviez cette consigne"
 
   utter_ask_lives_alone:
-    - text: "Est-ce que vous habitez seul?"
+    - text: "Est-ce que vous habitez seul(e)?"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -537,7 +543,7 @@ responses:
   ## Daily check-in - feel worse
 
   utter_ask_daily_ci__feel_worse__severe_symptoms:
-    - text: "Avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Avoir beaucoup de mal à se réveiller\n- Être confus\n- Perte de conscience"
+    - text: "Avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Beaucoup de mal à se réveiller\n- Confusion\n- Perte de conscience"
       buttons:
         - title: Oui
           payload: "/affirm"

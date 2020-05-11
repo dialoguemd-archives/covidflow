@@ -62,9 +62,7 @@ services:
         - REMINDER_JOB_CORE_ENDPOINT_EN=http://core-en:8080
         - REMINDER_JOB_CORE_ENDPOINT_FR=http://core-fr:8080
     volumes:
-      - ./action-server/actions:/app/actions
-      - ./action-server/db:/app/db
-      - ./action-server/jobs:/app/jobs
+      - ./action-server/covidflow:/app/covidflow
 
   tracker-store:
     image: postgres:11

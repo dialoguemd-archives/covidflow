@@ -6,7 +6,7 @@ from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from covidflow.lib.provincial_811 import get_provincial_811
+from .lib.provincial_811 import get_provincial_811
 
 # isn't really an assessment slot, used for interpolation
 PROVINCIAL_811_SLOT = "provincial_811"

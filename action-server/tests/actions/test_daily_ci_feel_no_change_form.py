@@ -17,7 +17,8 @@ from covidflow.actions.daily_ci_feel_no_change_form import (
     FORM_NAME,
     DailyCiFeelNoChangeForm,
 )
-from tests.form_helper import FormTestCase
+
+from .form_helper import FormTestCase
 
 
 class TestDailyCiFeelNoChangeForm(FormTestCase):

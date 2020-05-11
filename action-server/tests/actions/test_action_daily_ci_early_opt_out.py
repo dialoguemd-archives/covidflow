@@ -6,7 +6,8 @@ from covidflow.actions.action_daily_ci_early_opt_out import (
     CANCEL_CI_SLOT,
     ActionDailyCiEarlyOptOut,
 )
-from tests.action_helper import ActionTestCase
+
+from .action_helper import ActionTestCase
 
 
 class ActionDailyCiEarlyOptOutTest(ActionTestCase):

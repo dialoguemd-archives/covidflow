@@ -6,7 +6,8 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import REQUESTED_SLOT, FormAction
 
 from covidflow.actions.assessment_common import AssessmentCommon
-from tests.form_helper import FormTestCase
+
+from .form_helper import FormTestCase
 
 DOMAIN = {
     "responses": {

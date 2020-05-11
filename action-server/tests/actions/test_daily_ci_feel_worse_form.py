@@ -21,7 +21,8 @@ from covidflow.actions.daily_ci_feel_worse_form import (
     SEVERE_SYMPTOMS_SLOT,
     DailyCiFeelWorseForm,
 )
-from tests.form_helper import FormTestCase
+
+from .form_helper import FormTestCase
 
 
 class TestDailyCiFeelWorseForm(FormTestCase):

@@ -19,7 +19,8 @@ from covidflow.actions.daily_ci_feel_better_form import (
     IS_SYMPTOM_FREE_SLOT,
     DailyCiFeelBetterForm,
 )
-from tests.form_helper import FormTestCase
+
+from .form_helper import FormTestCase
 
 
 class TestDailyCiFeelBetterForm(FormTestCase):

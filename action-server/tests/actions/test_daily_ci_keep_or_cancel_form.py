@@ -14,7 +14,8 @@ from covidflow.actions.daily_ci_keep_or_cancel_form import (
     SYMPTOMS_SLOT,
     DailyCiKeepOrCancelForm,
 )
-from tests.form_helper import FormTestCase
+
+from .form_helper import FormTestCase
 
 RECOMMENDATIONS_VULNERABLE__NOT_HAS_211 = [
     "utter_daily_ci__recommendations__more_information_vulnerable_population",

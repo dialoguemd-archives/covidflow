@@ -1,7 +1,8 @@
 from rasa_sdk.events import ConversationPaused
 
 from covidflow.actions.action_goodbye import ActionGoodbye
-from tests.action_helper import ActionTestCase
+
+from .action_helper import ActionTestCase
 
 
 class ActionGoodbyeTest(ActionTestCase):

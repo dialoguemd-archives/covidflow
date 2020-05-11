@@ -24,7 +24,8 @@ from covidflow.actions.constants import (
     PROVINCIAL_811_SLOT,
     SYMPTOMS_SLOT,
 )
-from tests.action_helper import ActionTestCase
+
+from .action_helper import ActionTestCase
 
 HASHIDS_SALT = "abcd1234"
 HASHIDS_MIN_LENGTH = 4

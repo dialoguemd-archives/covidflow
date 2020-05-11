@@ -21,7 +21,8 @@ from covidflow.actions.daily_ci_enroll_form import (
     WANTS_CANCEL_SLOT,
     DailyCiEnrollForm,
 )
-from tests.form_helper import FormTestCase
+
+from .form_helper import FormTestCase
 
 FIRST_NAME = "John"
 PHONE_NUMBER = "15145554567"

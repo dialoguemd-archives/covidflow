@@ -9,7 +9,6 @@ from covidflow.db.assessment import Assessment
 from covidflow.db.base import session_factory
 from covidflow.db.reminder import Reminder
 from covidflow.lib.hashids_util import create_hashids
-from covidflow.lib.provincial_811 import get_provincial_811
 
 from .constants import (
     AGE_OVER_65_SLOT,
@@ -23,6 +22,7 @@ from .constants import (
     PROVINCE_SLOT,
     PROVINCIAL_811_SLOT,
 )
+from .lib.provincial_811 import get_provincial_811
 
 logger = logging.getLogger(__name__)
 

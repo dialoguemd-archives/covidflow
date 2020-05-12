@@ -14,7 +14,7 @@ METADATA_SLOT = "metadata"
 REMINDER_ID_METADATA_PROPERTY = "reminder_id"
 
 
-def get_reminder_id(slot_values: Dict[Text, Any]) -> int:
+def _get_reminder_id(slot_values: Dict[Text, Any]) -> int:
     metadata = slot_values.get(METADATA_SLOT, {})
 
     if REMINDER_ID_METADATA_PROPERTY not in metadata:
@@ -55,7 +55,7 @@ def save_reminder(slot_values: Dict[Text, Any]):
 
 
 def cancel_reminder(slot_values: Dict[Text, Any]):
-    reminder_id = get_reminder_id(slot_values)
+    reminder_id = _get_reminder_id(slot_values)
 
     session = session_factory()
     try:

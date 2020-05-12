@@ -13,12 +13,12 @@ from covidflow.actions.constants import (
     LAST_HAS_FEVER_SLOT,
     LAST_SYMPTOMS_SLOT,
     SELF_ASSESS_DONE_SLOT,
+    SEVERE_SYMPTOMS_SLOT,
     SYMPTOMS_SLOT,
 )
 from covidflow.actions.daily_ci_feel_worse_form import (
     FORM_NAME,
     HAS_DIFF_BREATHING_WORSENED_SLOT,
-    SEVERE_SYMPTOMS_SLOT,
     DailyCiFeelWorseForm,
 )
 

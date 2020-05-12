@@ -9,6 +9,7 @@ from covidflow.utils.persistence import cancel_reminder
 
 from .constants import (
     AGE_OVER_65_SLOT,
+    CANCEL_CI_SLOT,
     FEEL_WORSE_SLOT,
     PRECONDITIONS_SLOT,
     PROVINCE_SLOT,
@@ -18,8 +19,6 @@ from .constants import (
 from .form_helper import request_next_slot
 
 FORM_NAME = "daily_ci_keep_or_cancel_form"
-
-CANCEL_CI_SLOT = "cancel_ci"
 
 
 class DailyCiKeepOrCancelForm(FormAction):

@@ -6,15 +6,17 @@ from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 from rasa_sdk.interfaces import ActionExecutionRejection
 
+from covidflow.actions.constants import (
+    FIRST_NAME_SLOT,
+    HAS_DIALOGUE_SLOT,
+    PHONE_NUMBER_SLOT,
+    PRECONDITIONS_SLOT,
+)
 from covidflow.actions.daily_ci_enroll_form import (
     CODE_TRY_COUNTER_SLOT,
     DO_ENROLL_SLOT,
-    FIRST_NAME_SLOT,
     FORM_NAME,
-    HAS_DIALOGUE_SLOT,
-    PHONE_NUMBER_SLOT,
     PHONE_TRY_COUNTER_SLOT,
-    PRE_EXISTING_CONDITIONS_SLOT,
     VALIDATION_CODE_REFERENCE_SLOT,
     VALIDATION_CODE_SLOT,
     WANTS_CANCEL_SLOT,
@@ -459,7 +461,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(VALIDATION_CODE_SLOT, VALIDATION_CODE),
-                SlotSet(REQUESTED_SLOT, PRE_EXISTING_CONDITIONS_SLOT),
+                SlotSet(REQUESTED_SLOT, PRECONDITIONS_SLOT),
             ],
         )
 
@@ -545,7 +547,7 @@ class TestDailyCiEnrollForm(FormTestCase):
     def test_provide_preconditions_affirm(self):
         tracker = self.create_tracker(
             slots={
-                REQUESTED_SLOT: PRE_EXISTING_CONDITIONS_SLOT,
+                REQUESTED_SLOT: PRECONDITIONS_SLOT,
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -558,7 +560,7 @@ class TestDailyCiEnrollForm(FormTestCase):
 
         self.assert_events(
             [
-                SlotSet(PRE_EXISTING_CONDITIONS_SLOT, True),
+                SlotSet(PRECONDITIONS_SLOT, True),
                 SlotSet(REQUESTED_SLOT, HAS_DIALOGUE_SLOT),
             ],
         )
@@ -570,7 +572,7 @@ class TestDailyCiEnrollForm(FormTestCase):
     def test_provide_preconditions_deny(self):
         tracker = self.create_tracker(
             slots={
-                REQUESTED_SLOT: PRE_EXISTING_CONDITIONS_SLOT,
+                REQUESTED_SLOT: PRECONDITIONS_SLOT,
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -583,7 +585,7 @@ class TestDailyCiEnrollForm(FormTestCase):
 
         self.assert_events(
             [
-                SlotSet(PRE_EXISTING_CONDITIONS_SLOT, False),
+                SlotSet(PRECONDITIONS_SLOT, False),
                 SlotSet(REQUESTED_SLOT, HAS_DIALOGUE_SLOT),
             ],
         )
@@ -595,7 +597,7 @@ class TestDailyCiEnrollForm(FormTestCase):
     def test_provide_preconditions_dont_know(self):
         tracker = self.create_tracker(
             slots={
-                REQUESTED_SLOT: PRE_EXISTING_CONDITIONS_SLOT,
+                REQUESTED_SLOT: PRECONDITIONS_SLOT,
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -608,7 +610,7 @@ class TestDailyCiEnrollForm(FormTestCase):
 
         self.assert_events(
             [
-                SlotSet(PRE_EXISTING_CONDITIONS_SLOT, True),
+                SlotSet(PRECONDITIONS_SLOT, True),
                 SlotSet(REQUESTED_SLOT, HAS_DIALOGUE_SLOT),
             ],
         )
@@ -620,7 +622,7 @@ class TestDailyCiEnrollForm(FormTestCase):
     def test_provide_preconditions_explain(self):
         tracker = self.create_tracker(
             slots={
-                REQUESTED_SLOT: PRE_EXISTING_CONDITIONS_SLOT,
+                REQUESTED_SLOT: PRECONDITIONS_SLOT,
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -641,7 +643,7 @@ class TestDailyCiEnrollForm(FormTestCase):
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
                 VALIDATION_CODE_SLOT: VALIDATION_CODE,
-                PRE_EXISTING_CONDITIONS_SLOT: True,
+                PRECONDITIONS_SLOT: True,
             },
             intent="affirm",
         )
@@ -673,7 +675,7 @@ class TestDailyCiEnrollForm(FormTestCase):
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
                 VALIDATION_CODE_SLOT: VALIDATION_CODE,
-                PRE_EXISTING_CONDITIONS_SLOT: True,
+                PRECONDITIONS_SLOT: True,
             },
             intent="deny",
         )
@@ -705,7 +707,7 @@ class TestDailyCiEnrollForm(FormTestCase):
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
                 VALIDATION_CODE_SLOT: VALIDATION_CODE,
-                PRE_EXISTING_CONDITIONS_SLOT: True,
+                PRECONDITIONS_SLOT: True,
             },
             intent="affirm",
         )

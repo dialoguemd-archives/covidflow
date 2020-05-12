@@ -13,23 +13,24 @@ from covidflow.utils.phone_number_validation import (
     send_validation_code,
 )
 
+from .constants import (
+    FIRST_NAME_SLOT,
+    HAS_DIALOGUE_SLOT,
+    LANGUAGE_SLOT,
+    PHONE_NUMBER_SLOT,
+    PRECONDITIONS_SLOT,
+)
 from .form_helper import request_next_slot
 
 logger = logging.getLogger(__name__)
 
 FORM_NAME = "daily_ci_enroll_form"
 
-LANGUAGE_SLOT = "language"
-
 DO_ENROLL_SLOT = "daily_ci_enroll__do_enroll"
-FIRST_NAME_SLOT = "first_name"
-PHONE_NUMBER_SLOT = "phone_number"
 PHONE_TRY_COUNTER_SLOT = "daily_ci_enroll__phone_number_error_counter"
 VALIDATION_CODE_SLOT = "daily_ci_enroll__validation_code"
 VALIDATION_CODE_REFERENCE_SLOT = "daily_ci_enroll__validation_code_reference"
 CODE_TRY_COUNTER_SLOT = "daily_ci_enroll__validation_code_error_counter"
-PRE_EXISTING_CONDITIONS_SLOT = "preconditions"
-HAS_DIALOGUE_SLOT = "has_dialogue"
 
 WANTS_CANCEL_SLOT = "daily_ci_enroll__wants_cancel"
 
@@ -71,7 +72,7 @@ class DailyCiEnrollForm(FormAction):
                 WANTS_CANCEL_SLOT,
                 PHONE_NUMBER_SLOT,
                 VALIDATION_CODE_SLOT,
-                PRE_EXISTING_CONDITIONS_SLOT,
+                PRECONDITIONS_SLOT,
                 HAS_DIALOGUE_SLOT,
             ]
         else:
@@ -96,7 +97,7 @@ class DailyCiEnrollForm(FormAction):
                 self.from_intent(intent="deny", value=False),
             ],
             VALIDATION_CODE_SLOT: self.from_text(),
-            PRE_EXISTING_CONDITIONS_SLOT: [
+            PRECONDITIONS_SLOT: [
                 self.from_intent(intent="affirm", value=True),
                 self.from_intent(intent="deny", value=False),
                 self.from_intent(intent="dont_know", value="dont_know"),
@@ -261,14 +262,14 @@ class DailyCiEnrollForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        slot_values = {PRE_EXISTING_CONDITIONS_SLOT: value}
+        slot_values = {PRECONDITIONS_SLOT: value}
 
         if value == "dont_know":
             dispatcher.utter_message(
                 template="utter_daily_ci_enroll__note_preconditions"
             )
 
-            slot_values[PRE_EXISTING_CONDITIONS_SLOT] = True
+            slot_values[PRECONDITIONS_SLOT] = True
         else:
             dispatcher.utter_message(template="utter_daily_ci_enroll__acknowledge")
 

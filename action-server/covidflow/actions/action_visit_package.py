@@ -3,8 +3,8 @@ from typing import Any, Dict, List, Text
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
-from .assessment_common import AssessmentSlots
 from .assessment_form import CONTACT_SLOT, TRAVEL_SLOT
+from .constants import AGE_OVER_65_SLOT, PROVINCE_SLOT, SYMPTOMS_SLOT
 
 RISK_LEVEL_MEDICAL = "elevated-medical-risk"
 RISK_LEVEL_COVID = "elevated-covid-risk"
@@ -22,7 +22,7 @@ class ActionVisitPackage(Action):
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
 
-        province = tracker.get_slot(AssessmentSlots.PROVINCE)
+        province = tracker.get_slot(PROVINCE_SLOT)
         risk_level = _get_risk_level_value(tracker)
 
         id = f"{province},{risk_level}" if province is not None else risk_level
@@ -35,8 +35,8 @@ class ActionVisitPackage(Action):
 def _get_risk_level_value(tracker: Tracker) -> str:
     risk_level_value = []
     if (
-        tracker.get_slot(AssessmentSlots.AGE_OVER_65) is True
-        or tracker.get_slot(AssessmentSlots.SYMPTOMS) == "moderate"
+        tracker.get_slot(AGE_OVER_65_SLOT) is True
+        or tracker.get_slot(SYMPTOMS_SLOT) == "moderate"
     ):
         risk_level_value.append(RISK_LEVEL_MEDICAL)
     if tracker.get_slot(CONTACT_SLOT) is True or tracker.get_slot(TRAVEL_SLOT) is True:

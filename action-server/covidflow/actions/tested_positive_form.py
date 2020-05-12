@@ -5,7 +5,8 @@ from rasa_sdk.events import EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from .assessment_common import AssessmentCommon, AssessmentSlots
+from .assessment_common import AssessmentCommon
+from .constants import LIVES_ALONE_SLOT
 
 FORM_NAME = "tested_positive_form"
 
@@ -28,9 +29,7 @@ class TestedPositiveForm(FormAction):
 
     @staticmethod
     def required_slots(tracker: Tracker) -> List[Text]:
-        return [
-            AssessmentSlots.LIVES_ALONE.value
-        ] + AssessmentCommon.base_required_slots(tracker)
+        return [LIVES_ALONE_SLOT] + AssessmentCommon.base_required_slots(tracker)
 
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return AssessmentCommon.slot_mappings(self)

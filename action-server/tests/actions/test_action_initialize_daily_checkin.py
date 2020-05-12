@@ -19,6 +19,7 @@ from covidflow.actions.constants import (
     LAST_HAS_DIFF_BREATHING_SLOT,
     LAST_HAS_FEVER_SLOT,
     LAST_SYMPTOMS_SLOT,
+    METADATA_SLOT,
     PRECONDITIONS_SLOT,
     PROVINCE_SLOT,
     PROVINCIAL_811_SLOT,
@@ -91,7 +92,7 @@ ENV = {
 def _create_tracker(reminder_id=DEFAULT_REMINDER_ID_HASH) -> Tracker:
     return Tracker(
         "sender_id",
-        {"metadata": {"reminder_id": reminder_id}},
+        {METADATA_SLOT: {"reminder_id": reminder_id}},
         {},
         [],
         False,

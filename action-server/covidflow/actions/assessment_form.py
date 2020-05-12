@@ -32,7 +32,10 @@ class AssessmentForm(FormAction):
             return base_assessment_slots
 
         # conditional mild symptoms-contact-travel logic
-        if tracker.get_slot(AssessmentSlots.HAS_COUGH) is False:
+        if (
+            tracker.get_slot(AssessmentSlots.HAS_COUGH) is False
+            and tracker.get_slot(AssessmentSlots.HAS_FEVER) is False
+        ):
             base_assessment_slots.append(CONTACT_SLOT)
         if tracker.get_slot(CONTACT_SLOT) is False:
             base_assessment_slots.append(TRAVEL_SLOT)

@@ -12,6 +12,7 @@ from .constants import (
     HAS_FEVER_SLOT,
     LAST_SYMPTOMS_SLOT,
     SYMPTOMS_SLOT,
+    Symptoms,
 )
 from .daily_ci_assessment_common import submit_daily_ci_assessment
 from .form_helper import request_next_slot
@@ -46,7 +47,7 @@ class DailyCiFeelNoChangeForm(FormAction):
 
         last_symptoms = tracker.get_slot(LAST_SYMPTOMS_SLOT)
 
-        if last_symptoms == "moderate":
+        if last_symptoms == Symptoms.MODERATE:
             slots.append(HAS_DIFF_BREATHING_SLOT)
 
         return slots
@@ -141,7 +142,7 @@ class DailyCiFeelNoChangeForm(FormAction):
                 tracker.get_slot(HAS_FEVER_SLOT) == False
                 and tracker.get_slot(HAS_COUGH_SLOT) == False
             ):
-                slots[SYMPTOMS_SLOT] = "mild"
+                slots[SYMPTOMS_SLOT] = Symptoms.MILD
 
             dispatcher.utter_message(
                 template="utter_daily_ci__feel_no_change__acknowledge_no_diff_breathing"
@@ -161,7 +162,7 @@ class DailyCiFeelNoChangeForm(FormAction):
 
         last_symptoms = tracker.get_slot(LAST_SYMPTOMS_SLOT)
 
-        if last_symptoms == "mild":
+        if last_symptoms == Symptoms.MILD:
             dispatcher.utter_message(
                 template="utter_daily_ci__feel_no_change__mild_last_symptoms_recommendation"
             )

@@ -12,6 +12,7 @@ from .constants import (
     HAS_FEVER_SLOT,
     LAST_SYMPTOMS_SLOT,
     SYMPTOMS_SLOT,
+    Symptoms,
 )
 from .daily_ci_assessment_common import submit_daily_ci_assessment
 from .form_helper import request_next_slot
@@ -53,10 +54,10 @@ class DailyCiFeelBetterForm(FormAction):
 
         last_symptoms = tracker.get_slot(LAST_SYMPTOMS_SLOT)
 
-        if last_symptoms not in ["moderate", "mild"]:
+        if last_symptoms not in [Symptoms.MODERATE, Symptoms.MILD]:
             return slots  # TODO: handle exception
 
-        if last_symptoms == "moderate":
+        if last_symptoms == Symptoms.MODERATE:
             slots.append(HAS_DIFF_BREATHING_SLOT)
 
             if tracker.get_slot(HAS_DIFF_BREATHING_SLOT) is True:
@@ -113,7 +114,7 @@ class DailyCiFeelBetterForm(FormAction):
 
         if (
             slot == HAS_OTHER_MILD_SYMPTOMS_SLOT
-            and tracker.get_slot(LAST_SYMPTOMS_SLOT) == "moderate"
+            and tracker.get_slot(LAST_SYMPTOMS_SLOT) == Symptoms.MODERATE
         ):
             return f"utter_ask_{slot}_with_acknowledge"
 
@@ -169,7 +170,7 @@ class DailyCiFeelBetterForm(FormAction):
                 template="utter_daily_ci__feel_better__breathing_difficulty_recommendation_2"
             )
         else:
-            slots[SYMPTOMS_SLOT] = "mild"
+            slots[SYMPTOMS_SLOT] = Symptoms.MILD
 
         return slots
 
@@ -201,7 +202,7 @@ class DailyCiFeelBetterForm(FormAction):
         slots = {IS_SYMPTOM_FREE_SLOT: value}
 
         if value is True:
-            slots[SYMPTOMS_SLOT] = "none"
+            slots[SYMPTOMS_SLOT] = Symptoms.NONE
         else:
             dispatcher.utter_message(
                 template="utter_daily_ci__feel_better__has_other_mild_symptoms_still_sick_recommendation"

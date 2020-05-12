@@ -6,7 +6,12 @@ from structlog import get_logger
 
 from covidflow.utils.persistence import cancel_reminder, save_assessment
 
-from .constants import LAST_ASSESSMENT_SLOTS, SELF_ASSESS_DONE_SLOT, SYMPTOMS_SLOT
+from .constants import (
+    LAST_ASSESSMENT_SLOTS,
+    SELF_ASSESS_DONE_SLOT,
+    SYMPTOMS_SLOT,
+    Symptoms,
+)
 
 logger = get_logger(__name__)
 
@@ -29,7 +34,7 @@ def submit_daily_ci_assessment(tracker: Tracker) -> List[dict]:
     except:
         logger.warn("Failed to save assessment", exc_info=True)
 
-    if tracker.get_slot(SYMPTOMS_SLOT) == "severe":
+    if tracker.get_slot(SYMPTOMS_SLOT) == Symptoms.SEVERE:
         try:
             cancel_reminder(tracker.current_slot_values())
         except:

@@ -16,6 +16,7 @@ from .constants import (
     SELF_ASSESS_DONE_SLOT,
     SEVERE_SYMPTOMS_SLOT,
     SYMPTOMS_SLOT,
+    Symptoms,
 )
 from .lib.provincial_811 import get_provincial_811
 
@@ -109,12 +110,12 @@ class AssessmentCommon:
 
 
 def _get_symptoms_value(tracker: Tracker) -> str:
-    symptoms_value = "none"
+    symptoms_value = Symptoms.NONE
     if tracker.get_slot(SEVERE_SYMPTOMS_SLOT):
-        symptoms_value = "severe"
+        symptoms_value = Symptoms.SEVERE
     elif tracker.get_slot(MODERATE_SYMPTOMS_SLOT):
-        symptoms_value = "moderate"
+        symptoms_value = Symptoms.MODERATE
     elif tracker.get_slot(HAS_COUGH_SLOT) or tracker.get_slot(HAS_FEVER_SLOT):
-        symptoms_value = "mild"
+        symptoms_value = Symptoms.MILD
 
     return symptoms_value

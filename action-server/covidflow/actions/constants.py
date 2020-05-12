@@ -1,3 +1,10 @@
+class Symptoms:  # Not using an enum to avoid persisting enum values
+    NONE = "none"
+    MILD = "mild"
+    MODERATE = "moderate"
+    SEVERE = "severe"
+
+
 PROVINCES_WITH_211 = ["bc", "ab", "sk", "mb", "on", "qc", "ns"]
 
 # Slots

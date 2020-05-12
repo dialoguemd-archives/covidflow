@@ -15,6 +15,7 @@ from .constants import (
     PROVINCE_SLOT,
     PROVINCES_WITH_211,
     SYMPTOMS_SLOT,
+    Symptoms,
 )
 from .form_helper import request_next_slot
 
@@ -35,7 +36,7 @@ class DailyCiKeepOrCancelForm(FormAction):
     ) -> List[EventType]:
         if (
             tracker.active_form.get("name") != FORM_NAME
-            and tracker.get_slot(SYMPTOMS_SLOT) == "none"
+            and tracker.get_slot(SYMPTOMS_SLOT) == Symptoms.NONE
         ):
             dispatcher.utter_message(
                 template="utter_daily_ci__keep_or_cancel__no_symptoms_recommendation"
@@ -69,7 +70,7 @@ class DailyCiKeepOrCancelForm(FormAction):
 
     def _utter_ask_slot_template(self, slot: str, tracker: Tracker) -> Optional[str]:
         if slot == CANCEL_CI_SLOT:
-            if tracker.get_slot(SYMPTOMS_SLOT) == "none":
+            if tracker.get_slot(SYMPTOMS_SLOT) == Symptoms.NONE:
                 return f"utter_ask_daily_ci__keep_or_cancel__{slot}_no_symptoms"
             else:
                 return f"utter_ask_daily_ci__keep_or_cancel__{slot}_symptoms"
@@ -110,19 +111,19 @@ class DailyCiKeepOrCancelForm(FormAction):
                 template="utter_daily_ci__keep_or_cancel__acknowledge_continue_ci"
             )
 
-            if tracker.get_slot(SYMPTOMS_SLOT) != "none":
+            if tracker.get_slot(SYMPTOMS_SLOT) != Symptoms.NONE:
                 _recommendations(dispatcher, tracker)
 
         return []
 
 
 def _mandatory_ci(tracker: Tracker) -> bool:
-    if tracker.get_slot(SYMPTOMS_SLOT) == "none":
+    if tracker.get_slot(SYMPTOMS_SLOT) == Symptoms.NONE:
         return False
 
     if tracker.get_slot(FEEL_WORSE_SLOT) is True:
         return (
-            tracker.get_slot(SYMPTOMS_SLOT) == "moderate"
+            tracker.get_slot(SYMPTOMS_SLOT) == Symptoms.MODERATE
             or tracker.get_slot(PRECONDITIONS_SLOT) is True
             or tracker.get_slot(AGE_OVER_65_SLOT) is True
         )

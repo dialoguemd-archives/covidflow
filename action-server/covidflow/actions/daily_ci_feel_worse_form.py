@@ -12,6 +12,7 @@ from .constants import (
     HAS_FEVER_SLOT,
     SEVERE_SYMPTOMS_SLOT,
     SYMPTOMS_SLOT,
+    Symptoms,
 )
 from .daily_ci_assessment_common import submit_daily_ci_assessment
 from .form_helper import request_next_slot
@@ -111,7 +112,7 @@ class DailyCiFeelWorseForm(FormAction):
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
         if value is True:
-            return {SEVERE_SYMPTOMS_SLOT: value, SYMPTOMS_SLOT: "severe"}
+            return {SEVERE_SYMPTOMS_SLOT: value, SYMPTOMS_SLOT: Symptoms.SEVERE}
 
         dispatcher.utter_message(
             template="utter_daily_ci__feel_worse__acknowledge_no_severe_symptoms"

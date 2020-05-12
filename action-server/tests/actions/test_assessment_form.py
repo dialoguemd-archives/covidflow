@@ -21,6 +21,7 @@ from covidflow.actions.constants import (
     SEVERE_SYMPTOMS_SLOT,
     SYMPTOMS_SLOT,
     TRAVEL_SLOT,
+    Symptoms,
 )
 
 from .form_helper import FormTestCase
@@ -70,7 +71,7 @@ class TestAssessmentForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(SEVERE_SYMPTOMS_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "severe"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.SEVERE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -236,7 +237,7 @@ class TestAssessmentForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(LIVES_ALONE_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "moderate"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -270,7 +271,7 @@ class TestAssessmentForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(LIVES_ALONE_SLOT, False),
-                SlotSet(SYMPTOMS_SLOT, "moderate"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -375,7 +376,7 @@ class TestAssessmentForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(LIVES_ALONE_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "mild"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -413,7 +414,7 @@ class TestAssessmentForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(LIVES_ALONE_SLOT, False),
-                SlotSet(SYMPTOMS_SLOT, "mild"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -498,7 +499,7 @@ class TestAssessmentForm(FormTestCase):
             [
                 SlotSet(LIVES_ALONE_SLOT, True),
                 SlotSet(HAS_CONTACT_RISK_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "none"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.NONE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -529,7 +530,7 @@ class TestAssessmentForm(FormTestCase):
             [
                 SlotSet(LIVES_ALONE_SLOT, False),
                 SlotSet(HAS_CONTACT_RISK_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "none"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.NONE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -617,7 +618,7 @@ class TestAssessmentForm(FormTestCase):
             [
                 SlotSet(LIVES_ALONE_SLOT, True),
                 SlotSet(HAS_CONTACT_RISK_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "none"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.NONE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -649,7 +650,7 @@ class TestAssessmentForm(FormTestCase):
             [
                 SlotSet(LIVES_ALONE_SLOT, False),
                 SlotSet(HAS_CONTACT_RISK_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "none"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.NONE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -686,7 +687,7 @@ class TestAssessmentForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(TRAVEL_SLOT, False),
-                SlotSet(SYMPTOMS_SLOT, "none"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.NONE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),

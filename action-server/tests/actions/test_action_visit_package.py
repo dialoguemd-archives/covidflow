@@ -17,6 +17,7 @@ from covidflow.actions.constants import (
     PROVINCE_SLOT,
     SYMPTOMS_SLOT,
     TRAVEL_SLOT,
+    Symptoms,
 )
 
 
@@ -41,7 +42,7 @@ class TestActionVisitPackage(TestCase):
 
         def test_risk_level_no_symptoms_no_risk(self):
             slots = {
-                SYMPTOMS_SLOT: "none",
+                SYMPTOMS_SLOT: Symptoms.NONE,
                 PROVINCE_SLOT: "qc",
                 AGE_OVER_65_SLOT: False,
                 HAS_FEVER_SLOT: False,
@@ -52,7 +53,7 @@ class TestActionVisitPackage(TestCase):
         def test_risk_level_over_65(self):
 
             slots = {
-                SYMPTOMS_SLOT: "none",
+                SYMPTOMS_SLOT: Symptoms.NONE,
                 PROVINCE_SLOT: "qc",
                 AGE_OVER_65_SLOT: True,
                 HAS_FEVER_SLOT: False,
@@ -63,7 +64,7 @@ class TestActionVisitPackage(TestCase):
 
         def test_risk_level_moderate_symptoms(self):
             slots = {
-                SYMPTOMS_SLOT: "moderate",
+                SYMPTOMS_SLOT: Symptoms.MODERATE,
                 PROVINCE_SLOT: "qc",
                 AGE_OVER_65_SLOT: False,
                 HAS_FEVER_SLOT: False,
@@ -74,7 +75,7 @@ class TestActionVisitPackage(TestCase):
         def test_risk_level_mild_symptoms(self):
             slots = (
                 {
-                    SYMPTOMS_SLOT: "mild",
+                    SYMPTOMS_SLOT: Symptoms.MILD,
                     PROVINCE_SLOT: "qc",
                     AGE_OVER_65_SLOT: False,
                     HAS_FEVER_SLOT: False,
@@ -86,7 +87,7 @@ class TestActionVisitPackage(TestCase):
 
         def test_risk_level_travel_risk(self):
             slots = {
-                SYMPTOMS_SLOT: "none",
+                SYMPTOMS_SLOT: Symptoms.NONE,
                 PROVINCE_SLOT: "qc",
                 AGE_OVER_65_SLOT: False,
                 HAS_FEVER_SLOT: False,
@@ -98,7 +99,7 @@ class TestActionVisitPackage(TestCase):
 
         def test_risk_level_contact_risk(self):
             slots = {
-                SYMPTOMS_SLOT: "none",
+                SYMPTOMS_SLOT: Symptoms.NONE,
                 PROVINCE_SLOT: "qc",
                 AGE_OVER_65_SLOT: False,
                 HAS_FEVER_SLOT: False,
@@ -110,7 +111,7 @@ class TestActionVisitPackage(TestCase):
 
         def test_risk_level_medical_and_covid_risk(self):
             slots = {
-                SYMPTOMS_SLOT: "none",
+                SYMPTOMS_SLOT: Symptoms.NONE,
                 PROVINCE_SLOT: "qc",
                 AGE_OVER_65_SLOT: True,
                 HAS_FEVER_SLOT: False,
@@ -124,7 +125,7 @@ class TestActionVisitPackage(TestCase):
 
         def test_no_province(self):
             slots = {
-                SYMPTOMS_SLOT: "none",
+                SYMPTOMS_SLOT: Symptoms.NONE,
                 AGE_OVER_65_SLOT: False,
                 HAS_FEVER_SLOT: False,
                 HAS_COUGH_SLOT: False,

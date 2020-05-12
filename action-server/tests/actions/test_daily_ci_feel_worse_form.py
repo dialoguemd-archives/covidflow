@@ -15,6 +15,7 @@ from covidflow.actions.constants import (
     SELF_ASSESS_DONE_SLOT,
     SEVERE_SYMPTOMS_SLOT,
     SYMPTOMS_SLOT,
+    Symptoms,
 )
 from covidflow.actions.daily_ci_feel_worse_form import (
     FORM_NAME,
@@ -59,7 +60,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: SEVERE_SYMPTOMS_SLOT,
-                LAST_SYMPTOMS_SLOT: "moderate",
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
                 LAST_HAS_FEVER_SLOT: True,
                 LAST_HAS_DIFF_BREATHING_SLOT: True,
                 LAST_HAS_COUGH_SLOT: True,
@@ -72,7 +73,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(SEVERE_SYMPTOMS_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "severe"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.SEVERE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 SlotSet(HAS_FEVER_SLOT, True),
                 SlotSet(HAS_COUGH_SLOT, True),
@@ -192,7 +193,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: HAS_DIFF_BREATHING_WORSENED_SLOT,
-                LAST_SYMPTOMS_SLOT: "moderate",
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
                 LAST_HAS_COUGH_SLOT: False,
                 SEVERE_SYMPTOMS_SLOT: False,
                 HAS_FEVER_SLOT: fever,
@@ -207,7 +208,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             [
                 SlotSet(HAS_DIFF_BREATHING_WORSENED_SLOT, True),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "moderate"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
                 SlotSet(HAS_COUGH_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -231,7 +232,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: HAS_DIFF_BREATHING_WORSENED_SLOT,
-                LAST_SYMPTOMS_SLOT: "moderate",
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
                 LAST_HAS_COUGH_SLOT: False,
                 SEVERE_SYMPTOMS_SLOT: False,
                 HAS_FEVER_SLOT: fever,
@@ -246,7 +247,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             [
                 SlotSet(HAS_DIFF_BREATHING_WORSENED_SLOT, False),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "moderate"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
                 SlotSet(HAS_COUGH_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -270,7 +271,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: HAS_DIFF_BREATHING_SLOT,
-                LAST_SYMPTOMS_SLOT: "moderate",
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
                 SEVERE_SYMPTOMS_SLOT: False,
                 HAS_FEVER_SLOT: fever,
             },
@@ -303,7 +304,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: HAS_COUGH_SLOT,
-                LAST_SYMPTOMS_SLOT: "moderate",
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
                 SEVERE_SYMPTOMS_SLOT: False,
                 HAS_FEVER_SLOT: fever,
                 HAS_DIFF_BREATHING_SLOT: False,
@@ -317,7 +318,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             [
                 SlotSet(HAS_COUGH_SLOT, True),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "moderate"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
@@ -342,7 +343,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: HAS_COUGH_SLOT,
-                LAST_SYMPTOMS_SLOT: "moderate",
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
                 SEVERE_SYMPTOMS_SLOT: False,
                 HAS_FEVER_SLOT: fever,
                 HAS_DIFF_BREATHING_SLOT: False,
@@ -356,7 +357,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             [
                 SlotSet(HAS_COUGH_SLOT, False),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "moderate"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],

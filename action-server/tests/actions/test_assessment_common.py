@@ -5,7 +5,11 @@ from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import REQUESTED_SLOT, FormAction
 
-from covidflow.actions.assessment_common import AssessmentCommon
+from covidflow.actions.assessment_common import (
+    PROVINCIAL_811_SLOT,
+    AssessmentCommon,
+    AssessmentSlots,
+)
 
 from .form_helper import FormTestCase
 
@@ -52,16 +56,16 @@ class TestAssessmentForm(FormAction):
 class BaseTestAssessmentForm:
     def test_provide_severe_symptoms_affirm(self):
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: "severe_symptoms",}, intent="affirm",
+            slots={REQUESTED_SLOT: AssessmentSlots.SEVERE_SYMPTOMS}, intent="affirm",
         )
 
         self.run_form(tracker)
 
         self.assert_events(
             [
-                SlotSet("severe_symptoms", True),
-                SlotSet("symptoms", "severe"),
-                SlotSet("self_assess_done", True),
+                SlotSet(AssessmentSlots.SEVERE_SYMPTOMS, True),
+                SlotSet(AssessmentSlots.SYMPTOMS, "severe"),
+                SlotSet(AssessmentSlots.SELF_ASSESS_DONE, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
@@ -71,20 +75,26 @@ class BaseTestAssessmentForm:
 
     def test_provide_severe_symptoms_deny(self):
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: "severe_symptoms",}, intent="deny",
+            slots={REQUESTED_SLOT: AssessmentSlots.SEVERE_SYMPTOMS,}, intent="deny",
         )
 
         self.run_form(tracker)
 
         self.assert_events(
-            [SlotSet("severe_symptoms", False), SlotSet(REQUESTED_SLOT, "province"),],
+            [
+                SlotSet(AssessmentSlots.SEVERE_SYMPTOMS, False),
+                SlotSet(REQUESTED_SLOT, AssessmentSlots.PROVINCE),
+            ],
         )
 
         self.assert_templates(["utter_ask_province"])
 
     def test_provide_province_specific_provincial_811(self):
         tracker = self.create_tracker(
-            slots={"severe_symptoms": False, REQUESTED_SLOT: "province",},
+            slots={
+                AssessmentSlots.SEVERE_SYMPTOMS: False,
+                REQUESTED_SLOT: AssessmentSlots.PROVINCE,
+            },
             intent="inform",
             entities=[{"entity": "province", "value": "qc"}],
         )
@@ -93,9 +103,9 @@ class BaseTestAssessmentForm:
 
         self.assert_events(
             [
-                SlotSet("province", "qc"),
-                SlotSet("provincial_811", "811 qc"),
-                SlotSet(REQUESTED_SLOT, "age_over_65"),
+                SlotSet(AssessmentSlots.PROVINCE, "qc"),
+                SlotSet(PROVINCIAL_811_SLOT, "811 qc"),
+                SlotSet(REQUESTED_SLOT, AssessmentSlots.AGE_OVER_65),
             ],
         )
 
@@ -103,7 +113,10 @@ class BaseTestAssessmentForm:
 
     def test_provide_province_default_provincial_811(self):
         tracker = self.create_tracker(
-            slots={"severe_symptoms": False, REQUESTED_SLOT: "province",},
+            slots={
+                AssessmentSlots.SEVERE_SYMPTOMS: False,
+                REQUESTED_SLOT: AssessmentSlots.PROVINCE,
+            },
             intent="inform",
             entities=[{"entity": "province", "value": "bc"}],
         )
@@ -112,9 +125,9 @@ class BaseTestAssessmentForm:
 
         self.assert_events(
             [
-                SlotSet("province", "bc"),
-                SlotSet("provincial_811", "811 default"),
-                SlotSet(REQUESTED_SLOT, "age_over_65"),
+                SlotSet(AssessmentSlots.PROVINCE, "bc"),
+                SlotSet(PROVINCIAL_811_SLOT, "811 default"),
+                SlotSet(REQUESTED_SLOT, AssessmentSlots.AGE_OVER_65),
             ],
         )
 
@@ -123,9 +136,9 @@ class BaseTestAssessmentForm:
     def test_provide_age_over_65_affirm(self):
         tracker = self.create_tracker(
             slots={
-                "severe_symptoms": False,
-                "province": "qc",
-                REQUESTED_SLOT: "age_over_65",
+                AssessmentSlots.SEVERE_SYMPTOMS: False,
+                AssessmentSlots.PROVINCE: "qc",
+                REQUESTED_SLOT: AssessmentSlots.AGE_OVER_65,
             },
             intent="affirm",
         )
@@ -133,7 +146,10 @@ class BaseTestAssessmentForm:
         self.run_form(tracker)
 
         self.assert_events(
-            [SlotSet("age_over_65", True), SlotSet(REQUESTED_SLOT, "has_fever"),],
+            [
+                SlotSet(AssessmentSlots.AGE_OVER_65, True),
+                SlotSet(REQUESTED_SLOT, AssessmentSlots.HAS_FEVER),
+            ],
         )
 
         self.assert_templates(["utter_ask_has_fever"])
@@ -141,47 +157,9 @@ class BaseTestAssessmentForm:
     def test_provide_age_over_65_deny(self):
         tracker = self.create_tracker(
             slots={
-                "severe_symptoms": False,
-                "province": "qc",
-                REQUESTED_SLOT: "age_over_65",
-            },
-            intent="deny",
-        )
-
-        self.run_form(tracker)
-
-        self.assert_events(
-            [SlotSet("age_over_65", False), SlotSet(REQUESTED_SLOT, "has_fever"),],
-        )
-
-        self.assert_templates(["utter_ask_has_fever"])
-
-    def test_provide_has_fever_affirm(self):
-        tracker = self.create_tracker(
-            slots={
-                "severe_symptoms": False,
-                "province": "qc",
-                "age_over_65": False,
-                REQUESTED_SLOT: "has_fever",
-            },
-            intent="affirm",
-        )
-
-        self.run_form(tracker)
-
-        self.assert_events(
-            [SlotSet("has_fever", True), SlotSet(REQUESTED_SLOT, "moderate_symptoms"),],
-        )
-
-        self.assert_templates(["utter_ask_moderate_symptoms"])
-
-    def test_provide_has_fever_deny(self):
-        tracker = self.create_tracker(
-            slots={
-                "severe_symptoms": False,
-                "province": "qc",
-                "age_over_65": False,
-                REQUESTED_SLOT: "has_fever",
+                AssessmentSlots.SEVERE_SYMPTOMS: False,
+                AssessmentSlots.PROVINCE: "qc",
+                REQUESTED_SLOT: AssessmentSlots.AGE_OVER_65,
             },
             intent="deny",
         )
@@ -190,8 +168,52 @@ class BaseTestAssessmentForm:
 
         self.assert_events(
             [
-                SlotSet("has_fever", False),
-                SlotSet(REQUESTED_SLOT, "moderate_symptoms"),
+                SlotSet(AssessmentSlots.AGE_OVER_65, False),
+                SlotSet(REQUESTED_SLOT, AssessmentSlots.HAS_FEVER),
+            ],
+        )
+
+        self.assert_templates(["utter_ask_has_fever"])
+
+    def test_provide_has_fever_affirm(self):
+        tracker = self.create_tracker(
+            slots={
+                AssessmentSlots.SEVERE_SYMPTOMS: False,
+                AssessmentSlots.PROVINCE: "qc",
+                AssessmentSlots.AGE_OVER_65: False,
+                REQUESTED_SLOT: AssessmentSlots.HAS_FEVER,
+            },
+            intent="affirm",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(AssessmentSlots.HAS_FEVER, True),
+                SlotSet(REQUESTED_SLOT, AssessmentSlots.MODERATE_SYMPTOMS),
+            ],
+        )
+
+        self.assert_templates(["utter_ask_moderate_symptoms"])
+
+    def test_provide_has_fever_deny(self):
+        tracker = self.create_tracker(
+            slots={
+                AssessmentSlots.SEVERE_SYMPTOMS: False,
+                AssessmentSlots.PROVINCE: "qc",
+                AssessmentSlots.AGE_OVER_65: False,
+                REQUESTED_SLOT: AssessmentSlots.HAS_FEVER,
+            },
+            intent="deny",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(AssessmentSlots.HAS_FEVER, False),
+                SlotSet(REQUESTED_SLOT, AssessmentSlots.MODERATE_SYMPTOMS),
             ],
         )
 
@@ -200,11 +222,11 @@ class BaseTestAssessmentForm:
     def test_provide_moderate_symptoms_affirm(self):
         tracker = self.create_tracker(
             slots={
-                "severe_symptoms": False,
-                "province": "qc",
-                "age_over_65": False,
-                "has_fever": False,
-                REQUESTED_SLOT: "moderate_symptoms",
+                AssessmentSlots.SEVERE_SYMPTOMS: False,
+                AssessmentSlots.PROVINCE: "qc",
+                AssessmentSlots.AGE_OVER_65: False,
+                AssessmentSlots.HAS_FEVER: False,
+                REQUESTED_SLOT: AssessmentSlots.MODERATE_SYMPTOMS,
             },
             intent="affirm",
         )
@@ -213,9 +235,9 @@ class BaseTestAssessmentForm:
 
         self.assert_events(
             [
-                SlotSet("moderate_symptoms", True),
-                SlotSet("symptoms", "moderate"),
-                SlotSet("self_assess_done", True),
+                SlotSet(AssessmentSlots.MODERATE_SYMPTOMS, True),
+                SlotSet(AssessmentSlots.SYMPTOMS, "moderate"),
+                SlotSet(AssessmentSlots.SELF_ASSESS_DONE, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
@@ -226,11 +248,11 @@ class BaseTestAssessmentForm:
     def test_provide_moderate_symptoms_deny(self):
         tracker = self.create_tracker(
             slots={
-                "severe_symptoms": False,
-                "province": "qc",
-                "age_over_65": False,
-                "has_fever": False,
-                REQUESTED_SLOT: "moderate_symptoms",
+                AssessmentSlots.SEVERE_SYMPTOMS: False,
+                AssessmentSlots.PROVINCE: "qc",
+                AssessmentSlots.AGE_OVER_65: False,
+                AssessmentSlots.HAS_FEVER: False,
+                REQUESTED_SLOT: AssessmentSlots.MODERATE_SYMPTOMS,
             },
             intent="deny",
         )
@@ -239,22 +261,22 @@ class BaseTestAssessmentForm:
 
         self.assert_events(
             [
-                SlotSet("moderate_symptoms", False),
-                SlotSet(REQUESTED_SLOT, "has_cough"),
+                SlotSet(AssessmentSlots.MODERATE_SYMPTOMS, False),
+                SlotSet(REQUESTED_SLOT, AssessmentSlots.HAS_COUGH),
             ],
         )
 
         self.assert_templates(["utter_ask_has_cough"])
 
-    def test_provide_has_cough_affirm(self):
+    def test_provide_has_cough_affirm_no_fever(self):
         tracker = self.create_tracker(
             slots={
-                "severe_symptoms": False,
-                "province": "qc",
-                "age_over_65": False,
-                "has_fever": False,
-                "moderate_symptoms": False,
-                REQUESTED_SLOT: "has_cough",
+                AssessmentSlots.SEVERE_SYMPTOMS: False,
+                AssessmentSlots.PROVINCE: "qc",
+                AssessmentSlots.AGE_OVER_65: False,
+                AssessmentSlots.HAS_FEVER: False,
+                AssessmentSlots.MODERATE_SYMPTOMS: False,
+                REQUESTED_SLOT: AssessmentSlots.HAS_COUGH,
             },
             intent="affirm",
         )
@@ -263,9 +285,9 @@ class BaseTestAssessmentForm:
 
         self.assert_events(
             [
-                SlotSet("has_cough", True),
-                SlotSet("symptoms", "mild"),
-                SlotSet("self_assess_done", True),
+                SlotSet(AssessmentSlots.HAS_COUGH, True),
+                SlotSet(AssessmentSlots.SYMPTOMS, "mild"),
+                SlotSet(AssessmentSlots.SELF_ASSESS_DONE, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
@@ -273,15 +295,42 @@ class BaseTestAssessmentForm:
 
         self.assert_templates([])
 
-    def test_provide_has_cough_deny(self):
+    def test_provide_has_cough_affirm_has_fever(self):
         tracker = self.create_tracker(
             slots={
-                "severe_symptoms": False,
-                "province": "qc",
-                "age_over_65": False,
-                "has_fever": False,
-                "moderate_symptoms": False,
-                REQUESTED_SLOT: "has_cough",
+                AssessmentSlots.SEVERE_SYMPTOMS: False,
+                AssessmentSlots.PROVINCE: "qc",
+                AssessmentSlots.AGE_OVER_65: False,
+                AssessmentSlots.HAS_FEVER: True,
+                AssessmentSlots.MODERATE_SYMPTOMS: False,
+                REQUESTED_SLOT: AssessmentSlots.HAS_COUGH,
+            },
+            intent="affirm",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(AssessmentSlots.HAS_COUGH, True),
+                SlotSet(AssessmentSlots.SYMPTOMS, "mild"),
+                SlotSet(AssessmentSlots.SELF_ASSESS_DONE, True),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ],
+        )
+
+        self.assert_templates([])
+
+    def test_provide_has_cough_deny_no_fever(self):
+        tracker = self.create_tracker(
+            slots={
+                AssessmentSlots.SEVERE_SYMPTOMS: False,
+                AssessmentSlots.PROVINCE: "qc",
+                AssessmentSlots.AGE_OVER_65: False,
+                AssessmentSlots.HAS_FEVER: False,
+                AssessmentSlots.MODERATE_SYMPTOMS: False,
+                REQUESTED_SLOT: AssessmentSlots.HAS_COUGH,
             },
             intent="deny",
         )
@@ -290,9 +339,36 @@ class BaseTestAssessmentForm:
 
         self.assert_events(
             [
-                SlotSet("has_cough", False),
-                SlotSet("symptoms", "none"),
-                SlotSet("self_assess_done", True),
+                SlotSet(AssessmentSlots.HAS_COUGH, False),
+                SlotSet(AssessmentSlots.SYMPTOMS, "none"),
+                SlotSet(AssessmentSlots.SELF_ASSESS_DONE, True),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ],
+        )
+
+        self.assert_templates([])
+
+    def test_provide_has_cough_deny_has_fever(self):
+        tracker = self.create_tracker(
+            slots={
+                AssessmentSlots.SEVERE_SYMPTOMS: False,
+                AssessmentSlots.PROVINCE: "qc",
+                AssessmentSlots.AGE_OVER_65: False,
+                AssessmentSlots.HAS_FEVER: True,
+                AssessmentSlots.MODERATE_SYMPTOMS: False,
+                REQUESTED_SLOT: AssessmentSlots.HAS_COUGH,
+            },
+            intent="deny",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(AssessmentSlots.HAS_COUGH, False),
+                SlotSet(AssessmentSlots.SYMPTOMS, "mild"),
+                SlotSet(AssessmentSlots.SELF_ASSESS_DONE, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],

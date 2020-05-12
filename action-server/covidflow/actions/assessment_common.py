@@ -132,7 +132,9 @@ def _get_symptoms_value(tracker: Tracker) -> str:
         symptoms_value = "severe"
     elif tracker.get_slot(AssessmentSlots.MODERATE_SYMPTOMS):
         symptoms_value = "moderate"
-    elif tracker.get_slot(AssessmentSlots.HAS_COUGH):
+    elif tracker.get_slot(AssessmentSlots.HAS_COUGH) or tracker.get_slot(
+        AssessmentSlots.HAS_FEVER
+    ):
         symptoms_value = "mild"
 
     return symptoms_value

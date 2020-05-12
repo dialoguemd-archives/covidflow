@@ -1,6 +1,6 @@
-import logging
 from typing import Any, Dict, List, Text
 
+import structlog
 from rasa_sdk import Action, Tracker
 from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
@@ -24,9 +24,10 @@ from .constants import (
     PROVINCIAL_811_SLOT,
     Symptoms,
 )
+from .lib.log_util import bind_logger
 from .lib.provincial_811 import get_provincial_811
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger()
 
 ACTION_NAME = "action_initialize_daily_checkin"
 
@@ -65,6 +66,7 @@ class ActionInitializeDailyCheckin(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
+        bind_logger(tracker)
         metadata = tracker.get_slot(METADATA_SLOT)
         hashed_id = metadata[REMINDER_ID_PROPERTY_NAME]
         reminder_id = self.hashids.decode(hashed_id)[0]

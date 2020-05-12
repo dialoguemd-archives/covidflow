@@ -5,6 +5,7 @@ from rasa_sdk.events import ConversationPaused
 from rasa_sdk.executor import CollectingDispatcher
 
 from .constants import CANCEL_CI_SLOT
+from .lib.log_util import bind_logger
 
 
 class ActionQaGoodbye(Action):
@@ -17,6 +18,7 @@ class ActionQaGoodbye(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
+        bind_logger(tracker)
         if tracker.get_slot(CANCEL_CI_SLOT) is False:
             dispatcher.utter_message(
                 template="utter_daily_ci__qa__will_contact_tomorrow"

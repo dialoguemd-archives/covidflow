@@ -1,6 +1,6 @@
 from typing import Any, Dict, Text
 
-from structlog import get_logger
+import structlog
 
 from covidflow.db.assessment import Assessment
 from covidflow.db.base import session_factory
@@ -9,7 +9,7 @@ from covidflow.db.reminder import Reminder
 from .hashids_util import decode_reminder_id, encode_reminder_id
 from .phone_number_validation import is_test_phone_number
 
-logger = get_logger(__name__)
+logger = structlog.get_logger()
 
 PHONE_NUMBER_SLOT = "phone_number"
 METADATA_SLOT = "metadata"

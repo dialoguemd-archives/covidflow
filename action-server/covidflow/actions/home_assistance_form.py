@@ -5,6 +5,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
 from .constants import HAS_ASSISTANCE_SLOT, PROVINCE_SLOT, PROVINCES_WITH_211
+from .lib.log_util import bind_logger
 
 FORM_NAME = "home_assistance_form"
 
@@ -18,6 +19,12 @@ class HomeAssistanceForm(FormAction):
     def name(self) -> Text:
 
         return FORM_NAME
+
+    async def run(
+        self, dispatcher, tracker, domain,
+    ):
+        bind_logger(tracker)
+        return await super().run(dispatcher, tracker, domain)
 
     @staticmethod
     def required_slots(tracker: Tracker) -> List[Text]:

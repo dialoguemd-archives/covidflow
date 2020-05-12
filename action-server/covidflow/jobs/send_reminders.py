@@ -4,10 +4,10 @@ from datetime import datetime
 
 import aiohttp
 import backoff
+import structlog
 from aiohttp import ClientSession
 from hashids import Hashids
 from sqlalchemy import and_
-from structlog import get_logger
 
 from covidflow.actions.action_send_daily_checkin_reminder import (
     METADATA_ENTITY_NAME,
@@ -16,7 +16,7 @@ from covidflow.actions.action_send_daily_checkin_reminder import (
 from covidflow.db.base import session_factory
 from covidflow.db.reminder import Reminder
 
-logger = get_logger(__name__)
+logger = structlog.get_logger()
 
 EN = "en"
 FR = "fr"

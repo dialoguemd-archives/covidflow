@@ -1,6 +1,6 @@
-import logging
 from typing import Any, Dict, List, Text
 
+import structlog
 from rasa_sdk import Action, Tracker
 from rasa_sdk.events import Restarted
 from rasa_sdk.executor import CollectingDispatcher
@@ -10,7 +10,9 @@ from covidflow.utils.phone_number_validation import (
     VALIDATION_CODE_ENTITY,
 )
 
-logger = logging.getLogger(__name__)
+from .lib.log_util import bind_logger
+
+logger = structlog.get_logger()
 
 
 class ActionSendValidationCode(Action):
@@ -23,6 +25,7 @@ class ActionSendValidationCode(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
+        bind_logger(tracker)
         first_name = next(tracker.get_latest_entity_values(FIRST_NAME_ENTITY))
         validation_code = next(tracker.get_latest_entity_values(VALIDATION_CODE_ENTITY))
 

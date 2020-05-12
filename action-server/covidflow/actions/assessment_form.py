@@ -16,6 +16,7 @@ from .constants import (
     SEVERE_SYMPTOMS_SLOT,
     TRAVEL_SLOT,
 )
+from .lib.log_util import bind_logger
 
 FORM_NAME = "assessment_form"
 
@@ -24,6 +25,12 @@ class AssessmentForm(FormAction):
     def name(self) -> Text:
 
         return FORM_NAME
+
+    async def run(
+        self, dispatcher, tracker, domain,
+    ):
+        bind_logger(tracker)
+        return await super().run(dispatcher, tracker, domain)
 
     @staticmethod
     def required_slots(tracker: Tracker) -> List[Text]:
@@ -133,7 +140,6 @@ class AssessmentForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict]:
-
         if (
             tracker.get_slot(CONTACT_SLOT) is True
             or tracker.get_slot(TRAVEL_SLOT) is True

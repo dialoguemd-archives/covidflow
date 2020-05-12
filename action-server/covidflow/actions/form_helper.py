@@ -1,12 +1,12 @@
-import logging
 from typing import Any, Callable, Dict, List, Optional, Text
 
+import structlog
 from rasa_sdk import Tracker
 from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import REQUESTED_SLOT, FormAction
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger()
 
 
 def request_next_slot(

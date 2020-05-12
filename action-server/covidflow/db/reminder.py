@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, Text
 
 import pytz
+import structlog
 from sqlalchemy import (
     Boolean,
     CheckConstraint,
@@ -18,11 +19,10 @@ from sqlalchemy import (
 )
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.hybrid import hybrid_property
-from structlog import get_logger
 
 from .base import Base
 
-logger = get_logger(__name__)
+logger = structlog.get_logger()
 
 
 FIRST_NAME_ATTRIBUTE = "first_name"

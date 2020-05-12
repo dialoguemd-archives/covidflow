@@ -13,7 +13,7 @@ from sqlalchemy.types import Integer, String
 
 from alembic import op
 
-log = structlog.get_logger(__name__)
+log = structlog.get_logger()
 
 revision = "00001"
 down_revision = None

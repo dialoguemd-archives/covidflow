@@ -1,4 +1,3 @@
-import logging
 import re
 from typing import Any, Dict, List, Optional, Text, Union
 
@@ -21,8 +20,7 @@ from .constants import (
     PRECONDITIONS_SLOT,
 )
 from .form_helper import request_next_slot
-
-logger = logging.getLogger(__name__)
+from .lib.log_util import bind_logger
 
 FORM_NAME = "daily_ci_enroll_form"
 
@@ -44,6 +42,12 @@ class DailyCiEnrollForm(FormAction):
     def name(self) -> Text:
 
         return FORM_NAME
+
+    async def run(
+        self, dispatcher, tracker, domain,
+    ):
+        bind_logger(tracker)
+        return await super().run(dispatcher, tracker, domain)
 
     ## override to play initial message
     async def _activate_if_required(

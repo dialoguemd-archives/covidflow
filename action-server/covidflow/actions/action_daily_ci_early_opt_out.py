@@ -7,6 +7,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from covidflow.utils.persistence import cancel_reminder
 
 from .constants import CANCEL_CI_SLOT
+from .lib.log_util import bind_logger
 
 ACTION_NAME = "action_daily_ci_early_opt_out"
 
@@ -21,7 +22,7 @@ class ActionDailyCiEarlyOptOut(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-
+        bind_logger(tracker)
         dispatcher.utter_message(
             template="utter_daily_ci__early_opt_out__acknowledge_cancel_ci"
         )

@@ -1,7 +1,7 @@
-import logging
 from random import randrange
 from typing import Optional
 
+import structlog
 from aiohttp import ClientSession
 
 VALIDATION_CODE_LENGTH = 4
@@ -23,7 +23,7 @@ HTTP_OK = 200
 # app.yml.
 CORE_SERVER_PREFIX = "core-"
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger()
 
 
 def _generate_validation_code() -> str:

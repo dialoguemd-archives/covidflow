@@ -1,8 +1,8 @@
-import logging
 import os
 from datetime import datetime
 from typing import Any, Dict, List, Text
 
+import structlog
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
@@ -14,7 +14,9 @@ from covidflow.exceptions import (
 )
 from covidflow.utils.hashids_util import create_hashids
 
-logger = logging.getLogger(__name__)
+from .lib.log_util import bind_logger
+
+logger = structlog.get_logger()
 
 METADATA_ENTITY_NAME = "metadata"
 REMINDER_ID_PROPERTY_NAME = "reminder_id"
@@ -53,6 +55,7 @@ class ActionSendDailyCheckInReminder(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
+        bind_logger(tracker)
         metadata = next(tracker.get_latest_entity_values(METADATA_ENTITY_NAME))
         hashed_id = metadata[REMINDER_ID_PROPERTY_NAME]
         reminder_id = self.hashids.decode(hashed_id)[0]

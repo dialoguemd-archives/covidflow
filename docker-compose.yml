@@ -52,6 +52,7 @@ services:
     ports:
       - 5055:8080
     environment:
+        - LOG_STYLE=pretty
         - DAILY_CHECKIN_URL_PATTERN=http://localhost:3000/?lng={language}#/rasa/ci/{reminder_id}
         - REMINDER_ID_HASHIDS_MIN_LENGTH=8
         - REMINDER_ID_HASHIDS_SALT=abcd1234

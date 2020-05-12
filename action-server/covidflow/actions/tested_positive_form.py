@@ -7,6 +7,7 @@ from rasa_sdk.forms import FormAction
 
 from .assessment_common import AssessmentCommon
 from .constants import LIVES_ALONE_SLOT
+from .lib.log_util import bind_logger
 
 FORM_NAME = "tested_positive_form"
 
@@ -15,6 +16,12 @@ class TestedPositiveForm(FormAction):
     def name(self) -> Text:
 
         return FORM_NAME
+
+    async def run(
+        self, dispatcher, tracker, domain,
+    ):
+        bind_logger(tracker)
+        return await super().run(dispatcher, tracker, domain)
 
     ## override to play initial message
     async def _activate_if_required(

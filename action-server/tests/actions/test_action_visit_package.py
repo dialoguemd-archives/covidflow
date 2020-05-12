@@ -9,8 +9,15 @@ from covidflow.actions.action_visit_package import (
     RISK_LEVEL_MEDICAL,
     ActionVisitPackage,
 )
-from covidflow.actions.assessment_common import AssessmentSlots
-from covidflow.actions.assessment_form import CONTACT_SLOT, TRAVEL_SLOT
+from covidflow.actions.constants import (
+    AGE_OVER_65_SLOT,
+    CONTACT_SLOT,
+    HAS_COUGH_SLOT,
+    HAS_FEVER_SLOT,
+    PROVINCE_SLOT,
+    SYMPTOMS_SLOT,
+    TRAVEL_SLOT,
+)
 
 
 def _create_tracker(slots={}) -> Tracker:
@@ -34,32 +41,32 @@ class TestActionVisitPackage(TestCase):
 
         def test_risk_level_no_symptoms_no_risk(self):
             slots = {
-                AssessmentSlots.SYMPTOMS: "none",
-                AssessmentSlots.PROVINCE: "qc",
-                AssessmentSlots.AGE_OVER_65: False,
-                AssessmentSlots.HAS_FEVER: False,
-                AssessmentSlots.HAS_COUGH: False,
+                SYMPTOMS_SLOT: "none",
+                PROVINCE_SLOT: "qc",
+                AGE_OVER_65_SLOT: False,
+                HAS_FEVER_SLOT: False,
+                HAS_COUGH_SLOT: False,
             }
             self.assert_package_id(slots, f"ca-qc,{RISK_LEVEL_DEFAULT}")
 
         def test_risk_level_over_65(self):
 
             slots = {
-                AssessmentSlots.SYMPTOMS: "none",
-                AssessmentSlots.PROVINCE: "qc",
-                AssessmentSlots.AGE_OVER_65: True,
-                AssessmentSlots.HAS_FEVER: False,
-                AssessmentSlots.HAS_COUGH: False,
+                SYMPTOMS_SLOT: "none",
+                PROVINCE_SLOT: "qc",
+                AGE_OVER_65_SLOT: True,
+                HAS_FEVER_SLOT: False,
+                HAS_COUGH_SLOT: False,
             }
 
             self.assert_package_id(slots, f"ca-qc,{RISK_LEVEL_MEDICAL}"),
 
         def test_risk_level_moderate_symptoms(self):
             slots = {
-                AssessmentSlots.SYMPTOMS: "moderate",
-                AssessmentSlots.PROVINCE: "qc",
-                AssessmentSlots.AGE_OVER_65: False,
-                AssessmentSlots.HAS_FEVER: False,
+                SYMPTOMS_SLOT: "moderate",
+                PROVINCE_SLOT: "qc",
+                AGE_OVER_65_SLOT: False,
+                HAS_FEVER_SLOT: False,
             }
 
             self.assert_package_id(slots, f"ca-qc,{RISK_LEVEL_MEDICAL}")
@@ -67,11 +74,11 @@ class TestActionVisitPackage(TestCase):
         def test_risk_level_mild_symptoms(self):
             slots = (
                 {
-                    AssessmentSlots.SYMPTOMS: "mild",
-                    AssessmentSlots.PROVINCE: "qc",
-                    AssessmentSlots.AGE_OVER_65: False,
-                    AssessmentSlots.HAS_FEVER: False,
-                    AssessmentSlots.HAS_COUGH: True,
+                    SYMPTOMS_SLOT: "mild",
+                    PROVINCE_SLOT: "qc",
+                    AGE_OVER_65_SLOT: False,
+                    HAS_FEVER_SLOT: False,
+                    HAS_COUGH_SLOT: True,
                 },
             )
 
@@ -79,11 +86,11 @@ class TestActionVisitPackage(TestCase):
 
         def test_risk_level_travel_risk(self):
             slots = {
-                AssessmentSlots.SYMPTOMS: "none",
-                AssessmentSlots.PROVINCE: "qc",
-                AssessmentSlots.AGE_OVER_65: False,
-                AssessmentSlots.HAS_FEVER: False,
-                AssessmentSlots.HAS_COUGH: False,
+                SYMPTOMS_SLOT: "none",
+                PROVINCE_SLOT: "qc",
+                AGE_OVER_65_SLOT: False,
+                HAS_FEVER_SLOT: False,
+                HAS_COUGH_SLOT: False,
                 TRAVEL_SLOT: True,
             }
 
@@ -91,11 +98,11 @@ class TestActionVisitPackage(TestCase):
 
         def test_risk_level_contact_risk(self):
             slots = {
-                AssessmentSlots.SYMPTOMS: "none",
-                AssessmentSlots.PROVINCE: "qc",
-                AssessmentSlots.AGE_OVER_65: False,
-                AssessmentSlots.HAS_FEVER: False,
-                AssessmentSlots.HAS_COUGH: False,
+                SYMPTOMS_SLOT: "none",
+                PROVINCE_SLOT: "qc",
+                AGE_OVER_65_SLOT: False,
+                HAS_FEVER_SLOT: False,
+                HAS_COUGH_SLOT: False,
                 CONTACT_SLOT: True,
             }
 
@@ -103,11 +110,11 @@ class TestActionVisitPackage(TestCase):
 
         def test_risk_level_medical_and_covid_risk(self):
             slots = {
-                AssessmentSlots.SYMPTOMS: "none",
-                AssessmentSlots.PROVINCE: "qc",
-                AssessmentSlots.AGE_OVER_65: True,
-                AssessmentSlots.HAS_FEVER: False,
-                AssessmentSlots.HAS_COUGH: False,
+                SYMPTOMS_SLOT: "none",
+                PROVINCE_SLOT: "qc",
+                AGE_OVER_65_SLOT: True,
+                HAS_FEVER_SLOT: False,
+                HAS_COUGH_SLOT: False,
                 TRAVEL_SLOT: True,
             }
 
@@ -117,10 +124,10 @@ class TestActionVisitPackage(TestCase):
 
         def test_no_province(self):
             slots = {
-                AssessmentSlots.SYMPTOMS: "none",
-                AssessmentSlots.AGE_OVER_65: False,
-                AssessmentSlots.HAS_FEVER: False,
-                AssessmentSlots.HAS_COUGH: False,
+                SYMPTOMS_SLOT: "none",
+                AGE_OVER_65_SLOT: False,
+                HAS_FEVER_SLOT: False,
+                HAS_COUGH_SLOT: False,
             }
 
             self.assert_package_id(slots, f"{RISK_LEVEL_DEFAULT}")

@@ -5,14 +5,19 @@ from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from .assessment_common import AssessmentCommon, AssessmentSlots
+from .assessment_common import AssessmentCommon
+from .constants import (
+    CONTACT_SLOT,
+    HAS_CONTACT_RISK_SLOT,
+    HAS_COUGH_SLOT,
+    HAS_FEVER_SLOT,
+    LIVES_ALONE_SLOT,
+    MODERATE_SYMPTOMS_SLOT,
+    SEVERE_SYMPTOMS_SLOT,
+    TRAVEL_SLOT,
+)
 
 FORM_NAME = "assessment_form"
-
-CONTACT_SLOT = "contact"
-TRAVEL_SLOT = "travel"
-
-CONTACT_RISK_SLOT = "has_contact_risk"
 
 
 class AssessmentForm(FormAction):
@@ -26,21 +31,21 @@ class AssessmentForm(FormAction):
 
         # When we don't display self-isolation messages
         if (
-            tracker.get_slot(AssessmentSlots.SEVERE_SYMPTOMS) is True
+            tracker.get_slot(SEVERE_SYMPTOMS_SLOT) is True
             or tracker.get_slot(TRAVEL_SLOT) is False
         ):
             return base_assessment_slots
 
         # conditional mild symptoms-contact-travel logic
         if (
-            tracker.get_slot(AssessmentSlots.HAS_COUGH) is False
-            and tracker.get_slot(AssessmentSlots.HAS_FEVER) is False
+            tracker.get_slot(HAS_COUGH_SLOT) is False
+            and tracker.get_slot(HAS_FEVER_SLOT) is False
         ):
             base_assessment_slots.append(CONTACT_SLOT)
         if tracker.get_slot(CONTACT_SLOT) is False:
             base_assessment_slots.append(TRAVEL_SLOT)
 
-        base_assessment_slots.append(AssessmentSlots.LIVES_ALONE)
+        base_assessment_slots.append(LIVES_ALONE_SLOT)
         return base_assessment_slots
 
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
@@ -75,7 +80,7 @@ class AssessmentForm(FormAction):
         if value is True:
             dispatcher.utter_message(template="utter_moderate_symptoms_self_isolate")
 
-        return {AssessmentSlots.MODERATE_SYMPTOMS: value}
+        return {MODERATE_SYMPTOMS_SLOT: value}
 
     def validate_has_cough(
         self,
@@ -87,7 +92,7 @@ class AssessmentForm(FormAction):
         if value is True:
             dispatcher.utter_message(template="utter_mild_symptoms_self_isolate")
 
-        return {AssessmentSlots.HAS_COUGH: value}
+        return {HAS_COUGH_SLOT: value}
 
     def validate_contact(
         self,
@@ -133,7 +138,7 @@ class AssessmentForm(FormAction):
             tracker.get_slot(CONTACT_SLOT) is True
             or tracker.get_slot(TRAVEL_SLOT) is True
         ):
-            return [SlotSet(CONTACT_RISK_SLOT, True,)] + AssessmentCommon.submit(
+            return [SlotSet(HAS_CONTACT_RISK_SLOT, True)] + AssessmentCommon.submit(
                 self, dispatcher, tracker, domain
             )
 

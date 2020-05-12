@@ -6,9 +6,9 @@ from rasa_sdk.executor import CollectingDispatcher
 
 from covidflow.utils.persistence import cancel_reminder
 
-ACTION_NAME = "action_daily_ci_early_opt_out"
+from .constants import CANCEL_CI_SLOT
 
-CANCEL_CI_SLOT = "cancel_ci"
+ACTION_NAME = "action_daily_ci_early_opt_out"
 
 
 class ActionDailyCiEarlyOptOut(Action):

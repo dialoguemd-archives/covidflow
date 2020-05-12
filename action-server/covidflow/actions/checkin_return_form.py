@@ -5,7 +5,15 @@ from rasa_sdk.events import EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from .assessment_common import AssessmentCommon, AssessmentSlots
+from .assessment_common import AssessmentCommon
+from .constants import (
+    AGE_OVER_65_SLOT,
+    HAS_COUGH_SLOT,
+    HAS_FEVER_SLOT,
+    MODERATE_SYMPTOMS_SLOT,
+    PROVINCE_SLOT,
+    SEVERE_SYMPTOMS_SLOT,
+)
 
 FORM_NAME = "checkin_return_form"
 
@@ -29,18 +37,18 @@ class CheckinReturnForm(FormAction):
 
     @staticmethod
     def required_slots(tracker: Tracker) -> List[Text]:
-        slots = [AssessmentSlots.SEVERE_SYMPTOMS]
+        slots: List[str] = [SEVERE_SYMPTOMS_SLOT]
 
-        if tracker.get_slot(AssessmentSlots.SEVERE_SYMPTOMS) is False:
+        if tracker.get_slot(SEVERE_SYMPTOMS_SLOT) is False:
             slots += [
-                AssessmentSlots.PROVINCE,
-                AssessmentSlots.AGE_OVER_65,
-                AssessmentSlots.HAS_FEVER,
-                AssessmentSlots.MODERATE_SYMPTOMS,
+                PROVINCE_SLOT,
+                AGE_OVER_65_SLOT,
+                HAS_FEVER_SLOT,
+                MODERATE_SYMPTOMS_SLOT,
             ]
 
-            if tracker.get_slot(AssessmentSlots.MODERATE_SYMPTOMS) is False:
-                slots += [AssessmentSlots.HAS_COUGH]
+            if tracker.get_slot(MODERATE_SYMPTOMS_SLOT) is False:
+                slots += [HAS_COUGH_SLOT]
 
         return cast(List[str], slots)
 
@@ -58,7 +66,7 @@ class CheckinReturnForm(FormAction):
             dispatcher.utter_message(template="utter_returning_self_isolate")
             dispatcher.utter_message(template="utter_self_isolation_link")
 
-        return {AssessmentSlots.HAS_COUGH: value}
+        return {HAS_COUGH_SLOT: value}
 
     def validate_province(
         self,

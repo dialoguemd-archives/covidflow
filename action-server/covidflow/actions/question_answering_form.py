@@ -12,11 +12,11 @@ from .answers import (
     QuestionAnsweringResponse,
     QuestionAnsweringStatus,
 )
+from .constants import LANGUAGE_SLOT
 
 FAQ_URL_ENV_KEY = "COVID_FAQ_SERVICE_URL"
 DEFAULT_FAQ_URL = "https://covidfaq.dialoguecorp.com"
 
-LANGUAGE_SLOT = "language"
 QUESTION_SLOT = "active_question"
 FEEDBACK_SLOT = "feedback"
 STATUS_SLOT = "question_answering_status"

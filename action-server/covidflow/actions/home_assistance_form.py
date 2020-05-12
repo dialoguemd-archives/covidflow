@@ -4,10 +4,9 @@ from rasa_sdk import Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from .constants import PROVINCES_WITH_211
+from .constants import HAS_ASSISTANCE_SLOT, PROVINCE_SLOT, PROVINCES_WITH_211
 
-PROVINCE_SLOT = "province"
-HAS_ASSISTANCE_SLOT = "has_assistance"
+FORM_NAME = "home_assistance_form"
 
 
 def _has_211(tracker: Tracker) -> bool:
@@ -18,7 +17,7 @@ def _has_211(tracker: Tracker) -> bool:
 class HomeAssistanceForm(FormAction):
     def name(self) -> Text:
 
-        return "home_assistance_form"
+        return FORM_NAME
 
     @staticmethod
     def required_slots(tracker: Tracker) -> List[Text]:

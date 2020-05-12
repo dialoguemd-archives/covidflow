@@ -1,4 +1,3 @@
-from enum import Enum
 from typing import Any, Dict, List, Text, Union, cast
 
 from rasa_sdk import Tracker
@@ -6,80 +5,63 @@ from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
+from .constants import (
+    AGE_OVER_65_SLOT,
+    HAS_COUGH_SLOT,
+    HAS_FEVER_SLOT,
+    LIVES_ALONE_SLOT,
+    MODERATE_SYMPTOMS_SLOT,
+    PROVINCE_SLOT,
+    PROVINCIAL_811_SLOT,
+    SELF_ASSESS_DONE_SLOT,
+    SEVERE_SYMPTOMS_SLOT,
+    SYMPTOMS_SLOT,
+)
 from .lib.provincial_811 import get_provincial_811
-
-# isn't really an assessment slot, used for interpolation
-PROVINCIAL_811_SLOT = "provincial_811"
-
-
-class AssessmentSlots(str, Enum):
-    SEVERE_SYMPTOMS = "severe_symptoms"
-    MODERATE_SYMPTOMS = "moderate_symptoms"
-    HAS_FEVER = "has_fever"
-    PROVINCE = "province"
-    AGE_OVER_65 = "age_over_65"
-    HAS_COUGH = "has_cough"
-
-    # From the self-isolation flow
-    LIVES_ALONE = "lives_alone"
-
-    # Optional, added by the calling form
-    CONTACT = "contact"
-    TRAVEL = "travel"
-
-    RISK_LEVEL = "risk_level"
-    SYMPTOMS = "symptoms"
-    SELF_ASSESS_DONE = "self_assess_done"
-
-
-class SelfIsolationPosition:
-    START = "start"
-    AFTER_FEVER = "after_fever"
-    END = "end"
 
 
 class AssessmentCommon:
     @staticmethod
     def base_required_slots(tracker: Tracker) -> List[Text]:
-        slots = [AssessmentSlots.SEVERE_SYMPTOMS]
+        slots: List[str] = [SEVERE_SYMPTOMS_SLOT]
 
-        if tracker.get_slot(AssessmentSlots.SEVERE_SYMPTOMS) is False:
+        if tracker.get_slot(SEVERE_SYMPTOMS_SLOT) is False:
             slots += [
-                AssessmentSlots.PROVINCE,
-                AssessmentSlots.AGE_OVER_65,
-                AssessmentSlots.HAS_FEVER,
-                AssessmentSlots.MODERATE_SYMPTOMS,
+                PROVINCE_SLOT,
+                AGE_OVER_65_SLOT,
+                HAS_FEVER_SLOT,
+                MODERATE_SYMPTOMS_SLOT,
             ]
 
-            if tracker.get_slot(AssessmentSlots.MODERATE_SYMPTOMS) is False:
-                slots += [AssessmentSlots.HAS_COUGH]
+            if tracker.get_slot(MODERATE_SYMPTOMS_SLOT) is False:
+                slots += [HAS_COUGH_SLOT]
 
         return cast(List[str], slots)
 
     @staticmethod
     def slot_mappings(form: FormAction) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {
-            AssessmentSlots.AGE_OVER_65: [
+            AGE_OVER_65_SLOT: [
                 form.from_intent(intent="affirm", value=True),
                 form.from_intent(intent="deny", value=False),
             ],
-            AssessmentSlots.SEVERE_SYMPTOMS: [
+            SEVERE_SYMPTOMS_SLOT: [
                 form.from_intent(intent="affirm", value=True),
                 form.from_intent(intent="deny", value=False),
             ],
-            AssessmentSlots.HAS_FEVER: [
+            HAS_FEVER_SLOT: [
                 form.from_intent(intent="affirm", value=True),
                 form.from_intent(intent="deny", value=False),
             ],
-            AssessmentSlots.MODERATE_SYMPTOMS: [
+            MODERATE_SYMPTOMS_SLOT: [
                 form.from_intent(intent="affirm", value=True),
                 form.from_intent(intent="deny", value=False),
             ],
-            AssessmentSlots.HAS_COUGH: [
+            HAS_COUGH_SLOT: [
                 form.from_intent(intent="affirm", value=True),
                 form.from_intent(intent="deny", value=False),
             ],
-            AssessmentSlots.LIVES_ALONE: [
+            LIVES_ALONE_SLOT: [
                 form.from_intent(intent="affirm", value=True),
                 form.from_intent(intent="deny", value=False),
             ],
@@ -90,7 +72,7 @@ class AssessmentCommon:
         provincial_811 = get_provincial_811(value, domain)
 
         return {
-            AssessmentSlots.PROVINCE: value,
+            PROVINCE_SLOT: value,
             PROVINCIAL_811_SLOT: provincial_811,
         }
 
@@ -108,7 +90,7 @@ class AssessmentCommon:
 
         dispatcher.utter_message(template="utter_self_isolation_link")
 
-        return {AssessmentSlots.LIVES_ALONE: value}
+        return {LIVES_ALONE_SLOT: value}
 
     @staticmethod
     def submit(
@@ -121,20 +103,18 @@ class AssessmentCommon:
         symptoms_value = _get_symptoms_value(tracker)
 
         return [
-            SlotSet(AssessmentSlots.SYMPTOMS, symptoms_value),
-            SlotSet(AssessmentSlots.SELF_ASSESS_DONE, True),
+            SlotSet(SYMPTOMS_SLOT, symptoms_value),
+            SlotSet(SELF_ASSESS_DONE_SLOT, True),
         ]
 
 
 def _get_symptoms_value(tracker: Tracker) -> str:
     symptoms_value = "none"
-    if tracker.get_slot(AssessmentSlots.SEVERE_SYMPTOMS):
+    if tracker.get_slot(SEVERE_SYMPTOMS_SLOT):
         symptoms_value = "severe"
-    elif tracker.get_slot(AssessmentSlots.MODERATE_SYMPTOMS):
+    elif tracker.get_slot(MODERATE_SYMPTOMS_SLOT):
         symptoms_value = "moderate"
-    elif tracker.get_slot(AssessmentSlots.HAS_COUGH) or tracker.get_slot(
-        AssessmentSlots.HAS_FEVER
-    ):
+    elif tracker.get_slot(HAS_COUGH_SLOT) or tracker.get_slot(HAS_FEVER_SLOT):
         symptoms_value = "mild"
 
     return symptoms_value

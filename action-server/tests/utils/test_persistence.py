@@ -1,6 +1,8 @@
 from typing import Any, Dict
 from unittest import TestCase
-from unittest.mock import call, patch
+from unittest.mock import patch
+
+from toolz import dissoc
 
 from covidflow.db.assessment import (
     FEEL_WORSE_SLOT,
@@ -15,150 +17,159 @@ from covidflow.utils.persistence import (
     METADATA_SLOT,
     REMINDER_ID_METADATA_PROPERTY,
     cancel_reminder,
+    ci_enroll,
     save_assessment,
-    save_reminder,
 )
 
-HASHIDS_SALT = "abcd1234"
-HASHIDS_MIN_LENGTH = 4
-ENV = {
-    "REMINDER_ID_HASHIDS_SALT": HASHIDS_SALT,
-    "REMINDER_ID_HASHIDS_MIN_LENGTH": str(HASHIDS_MIN_LENGTH),
-}
+REMINDER_ID = 11
+ASSESSMENT_ID = 42
+HASHED_ID = "foo"
 
-REMINDER_ID = 1
-HASHED_ID = "ZaeZ"
-
-DEFAULT_ASSESSMENT_SLOT_VALUES: Dict[str, Any] = {
+DEFAULT_ASSESSMENT_SLOTS: Dict[str, Any] = {
     SYMPTOMS_SLOT: "moderate",
     FEEL_WORSE_SLOT: True,
     HAS_COUGH_SLOT: True,
     HAS_DIFF_BREATHING_SLOT: True,
     HAS_FEVER_SLOT: True,
 }
+DEFAULT_REMINDER_SLOTS: Dict[str, Any] = {PHONE_NUMBER_SLOT: "12223334444"}
+DEFAULT_555_REMINDER_SLOTS: Dict[str, Any] = {PHONE_NUMBER_SLOT: "12225554444"}
 
-DEFAULT_SLOTS_VALUES: Dict[str, Any] = {
+DEFAULT_SELF_ASSESSMENT_SLOTS: Dict[str, Any] = {
+    **DEFAULT_REMINDER_SLOTS,
+    **DEFAULT_ASSESSMENT_SLOTS,
+    "ignored_slot": "Jango Fett",
+}
+DEFAULT_DAILY_CI_SLOTS: Dict[str, Any] = {
     METADATA_SLOT: {REMINDER_ID_METADATA_PROPERTY: HASHED_ID},
-    **DEFAULT_ASSESSMENT_SLOT_VALUES,
-    "ignored_solt": "Boba Fett",
+    **DEFAULT_ASSESSMENT_SLOTS,
+    "ignored_slot": "Boba Fett",
 }
 
-DEFAULT_ASSESSMENT = Assessment(REMINDER_ID, attributes=DEFAULT_ASSESSMENT_SLOT_VALUES)
+DEFAULT_REMINDER = Reminder(id=REMINDER_ID, attributes=DEFAULT_REMINDER_SLOTS)
+DEFAULT_555_REMINDER = Reminder(id=REMINDER_ID, attributes=DEFAULT_555_REMINDER_SLOTS)
+DEFAULT_ASSESSMENT = Assessment(
+    id=ASSESSMENT_ID, reminder_id=REMINDER_ID, attributes=DEFAULT_ASSESSMENT_SLOTS
+)
 
 
-class PersistenceTest(TestCase):
-    #####
-    ## save_reminder
+def _set_id(x):
+    if isinstance(x, Reminder):
+        x.id = REMINDER_ID
+    elif isinstance(x, Assessment):
+        x.id = ASSESSMENT_ID
+    else:
+        raise
 
-    @patch.dict("os.environ", ENV)
+
+class AssessmentPersistenceTest(TestCase):
+    @patch("covidflow.utils.persistence.encode_reminder_id", return_value=HASHED_ID)
     @patch("covidflow.utils.persistence.session_factory")
-    @patch.object(Reminder, "create_from_slot_values")
-    @patch.object(Assessment, "create_from_slot_values")
-    def test_save_reminder(
-        self,
-        create_assessment_from_slot_values,
-        create_reminder_from_slot_values,
-        mock_session_factory,
-    ):
-        REMINDER_ID = 42
-        PHONE_NUMBER = "12223334444"
-        SLOTS = {
-            PHONE_NUMBER_SLOT: PHONE_NUMBER,
-        }
-
+    def test_save_reminder(self, mock_session_factory, mock_encode_reminder_id):
         mock_session = mock_session_factory.return_value
-        expected_assessment = create_assessment_from_slot_values.return_value
-        expected_reminder = create_reminder_from_slot_values.return_value
-        expected_reminder.id = REMINDER_ID
-        expected_reminder.phone_number = PHONE_NUMBER
+        mock_session.add.side_effect = _set_id
 
-        # Save with success
-        save_reminder(SLOTS)
+        ci_enroll(DEFAULT_SELF_ASSESSMENT_SLOTS)
 
-        create_assessment_from_slot_values.assert_called_with(REMINDER_ID, SLOTS)
-        mock_session.add.assert_has_calls(
-            [call(expected_reminder), call(expected_assessment)]
+        mock_session.add.assert_called_with(DEFAULT_ASSESSMENT)
+
+    @patch("covidflow.utils.persistence.encode_reminder_id", return_value=HASHED_ID)
+    @patch("covidflow.utils.persistence.session_factory")
+    def test_save_reminder_with_555_phone_number_does_nothing(
+        self, mock_session_factory, mock_encode_reminder_id
+    ):
+        mock_session = mock_session_factory.return_value
+        mock_session.add.side_effect = _set_id
+
+        ci_enroll(DEFAULT_555_REMINDER_SLOTS)
+
+        mock_session.add.assert_not_called()
+
+    @patch("covidflow.utils.persistence.decode_reminder_id", return_value=REMINDER_ID)
+    @patch("covidflow.utils.persistence.session_factory")
+    def test_cancel_reminder(self, mock_session_factory, mock_decode_reminder_id):
+        mock_session = mock_session_factory.return_value
+        mock_session.query.return_value.get.return_value = DEFAULT_REMINDER
+
+        cancel_reminder(DEFAULT_DAILY_CI_SLOTS)
+
+        self.assertIs(DEFAULT_REMINDER.is_canceled, True)
+
+    @patch("covidflow.utils.persistence.decode_reminder_id", return_value=REMINDER_ID)
+    @patch("covidflow.utils.persistence.session_factory")
+    def test_cancel_reminder_with_555_phone_number_does_nothing(
+        self, mock_session_factory, mock_decode_reminder_id
+    ):
+        mock_session = mock_session_factory.return_value
+        mock_session.query.return_value.get.return_value = DEFAULT_REMINDER
+
+        cancel_reminder(
+            {**DEFAULT_SELF_ASSESSMENT_SLOTS, PHONE_NUMBER_SLOT: "12225554444"}
         )
-        mock_session.commit.assert_called()
-        mock_session.rollback.assert_not_called()
-        mock_session.close.assert_called()
 
-        ## Save with failure
-        mock_session.commit.side_effect = Exception("not this time")
-        save_reminder(SLOTS)
+        mock_session.add.assert_not_called()
 
-        mock_session.add.assert_called()
-        mock_session.commit.assert_called()
-        mock_session.rollback.assert_called()
-        mock_session.close.assert_called()
-
-    #####
-    ## cancel_reminder
-
-    @patch.dict("os.environ", ENV)
+    @patch("covidflow.utils.persistence.decode_reminder_id", return_value=REMINDER_ID)
     @patch("covidflow.utils.persistence.session_factory")
-    def test_cancel_reminder_valid(self, mock_session_factory):
-        mock_reminder = (
-            mock_session_factory.return_value.query.return_value.get.return_value
-        )
+    def test_cancel_reminder_missing_metadata(
+        self, mock_session_factory, mock_decode_reminder_id
+    ):
+        mock_session = mock_session_factory.return_value
+        mock_session.query.return_value.get.return_value = DEFAULT_REMINDER
 
-        cancel_reminder(DEFAULT_SLOTS_VALUES)
-        self.assertIs(mock_reminder.is_canceled, True)
+        daily_ci_slots_without_metadata = dissoc(DEFAULT_DAILY_CI_SLOTS, METADATA_SLOT)
 
-        mock_session_factory.return_value.commit.assert_called()
-        mock_session_factory.return_value.close.assert_called()
+        with self.assertRaises(expected_exception=Exception):
+            # None metadata
+            cancel_reminder(daily_ci_slots_without_metadata)
 
-    def test_cancel_reminder_missing_env(self):
-        with self.assertRaises(Exception):
-            cancel_reminder(DEFAULT_SLOTS_VALUES)
+        with self.assertRaises(expected_exception=Exception):
+            # Empty metadata
+            cancel_reminder({**daily_ci_slots_without_metadata, METADATA_SLOT: {}})
 
-    @patch.dict("os.environ", ENV)
+        mock_session.add.assert_not_called()
+
+    @patch("covidflow.utils.persistence.decode_reminder_id", return_value=REMINDER_ID)
     @patch("covidflow.utils.persistence.session_factory")
-    def test_cancel_reminder_missing_reminder_id(self, mock_session_factory):
-        with self.assertRaises(KeyError):
-            cancel_reminder(DEFAULT_ASSESSMENT_SLOT_VALUES)
+    def test_save_assessment(self, mock_session_factory, mock_decode_reminder_id):
+        mock_session = mock_session_factory.return_value
+        mock_session.add.side_effect = _set_id
+        mock_session.query.return_value.get.return_value = DEFAULT_REMINDER
 
-    @patch.dict("os.environ", ENV)
+        save_assessment(DEFAULT_DAILY_CI_SLOTS)
+
+        mock_session.add.assert_called_with(DEFAULT_ASSESSMENT)
+
+    @patch("covidflow.utils.persistence.decode_reminder_id", return_value=REMINDER_ID)
     @patch("covidflow.utils.persistence.session_factory")
-    def test_cancel_reminder_commit_error(self, mock_session_factory):
-        mock_session_factory.return_value.commit.side_effect = Exception("no way")
+    def test_save_assessment_with_555_phone_number_does_nothing(
+        self, mock_session_factory, mock_decode_reminder_id
+    ):
+        mock_session = mock_session_factory.return_value
+        mock_session.add.side_effect = _set_id
+        mock_session.query.return_value.get.return_value = DEFAULT_555_REMINDER
 
-        cancel_reminder(DEFAULT_SLOTS_VALUES)
+        save_assessment(DEFAULT_DAILY_CI_SLOTS)
 
-        mock_session_factory.return_value.commit.assert_called()
-        mock_session_factory.return_value.rollback.assert_called()
-        mock_session_factory.return_value.close.assert_called()
+        mock_session.add.assert_not_called()
 
-    #####
-    ## save_assessment
-
-    @patch.dict("os.environ", ENV)
+    @patch("covidflow.utils.persistence.decode_reminder_id", return_value=REMINDER_ID)
     @patch("covidflow.utils.persistence.session_factory")
-    def test_save_assessment_valid(self, mock_session_factory):
-        save_assessment(DEFAULT_SLOTS_VALUES)
+    def test_save_assessment_missing_metadata(
+        self, mock_session_factory, mock_decode_reminder_id
+    ):
+        mock_session = mock_session_factory.return_value
+        mock_session.add.side_effect = _set_id
+        mock_session.query.return_value.get.return_value = DEFAULT_REMINDER
 
-        mock_session_factory.return_value.add.assert_called_with(DEFAULT_ASSESSMENT)
-        mock_session_factory.return_value.commit.assert_called()
-        mock_session_factory.return_value.close.assert_called()
+        daily_ci_slots_without_metadata = dissoc(DEFAULT_DAILY_CI_SLOTS, METADATA_SLOT)
 
-    def test_save_assessment_missing_env(self):
-        with self.assertRaises(Exception):
-            save_assessment(DEFAULT_SLOTS_VALUES)
+        with self.assertRaises(expected_exception=Exception):
+            # None metadata
+            save_assessment(daily_ci_slots_without_metadata)
 
-    @patch.dict("os.environ", ENV)
-    @patch("covidflow.utils.persistence.session_factory")
-    def test_save_assessment_missing_reminder_id(self, mock_session_factory):
-        with self.assertRaises(KeyError):
-            save_assessment(DEFAULT_ASSESSMENT_SLOT_VALUES)
+        with self.assertRaises(expected_exception=Exception):
+            # Empty metadata
+            save_assessment({**daily_ci_slots_without_metadata, METADATA_SLOT: {}})
 
-    @patch.dict("os.environ", ENV)
-    @patch("covidflow.utils.persistence.session_factory")
-    def test_save_assessment_commit_error_no_raise(self, mock_session_factory):
-        mock_session_factory.return_value.commit.side_effect = Exception("no way")
-
-        save_assessment(DEFAULT_SLOTS_VALUES)
-
-        mock_session_factory.return_value.add.assert_called_with(DEFAULT_ASSESSMENT)
-        mock_session_factory.return_value.commit.assert_called()
-        mock_session_factory.return_value.rollback.assert_called()
-        mock_session_factory.return_value.close.assert_called()
+        mock_session.add.assert_not_called()

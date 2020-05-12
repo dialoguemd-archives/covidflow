@@ -1,6 +1,5 @@
 # type: ignore
-from unittest import skip
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 from rasa_sdk.events import Form, SlotSet
@@ -34,6 +33,7 @@ INITIAL_SLOT_VALUES = {
     WANTS_CANCEL_SLOT: False,
 }
 
+
 def AsyncMock(*args, **kwargs):
     mock = MagicMock(*args, **kwargs)
 
@@ -42,6 +42,7 @@ def AsyncMock(*args, **kwargs):
 
     mock_coro.mock = mock
     return mock_coro
+
 
 class TestDailyCiEnrollForm(FormTestCase):
     def setUp(self):
@@ -199,7 +200,8 @@ class TestDailyCiEnrollForm(FormTestCase):
         self.assert_templates(["utter_ask_first_name"])
 
     @patch(
-        "covidflow.actions.daily_ci_enroll_form.send_validation_code", new=AsyncMock(return_value=VALIDATION_CODE)
+        "covidflow.actions.daily_ci_enroll_form.send_validation_code",
+        new=AsyncMock(return_value=VALIDATION_CODE),
     )
     def test_provide_phone_number(self):
         tracker = self.create_tracker(
@@ -229,7 +231,8 @@ class TestDailyCiEnrollForm(FormTestCase):
         )
 
     @patch(
-        "covidflow.actions.daily_ci_enroll_form.send_validation_code", new=AsyncMock(return_value=None)
+        "covidflow.actions.daily_ci_enroll_form.send_validation_code",
+        new=AsyncMock(return_value=None),
     )
     def test_provide_phone_number_sms_error(self):
         tracker = self.create_tracker(
@@ -629,8 +632,8 @@ class TestDailyCiEnrollForm(FormTestCase):
         with self.assertRaises(ActionExecutionRejection):
             self.run_form(tracker)
 
-    @patch("covidflow.actions.daily_ci_enroll_form.save_reminder", return_value=True)
-    def test_provide_has_dialogue_affirm(self, mock_save_reminder):
+    @patch("covidflow.actions.daily_ci_enroll_form.ci_enroll", return_value=True)
+    def test_provide_has_dialogue_affirm(self, mock_ci_enroll):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: HAS_DIALOGUE_SLOT,
@@ -661,8 +664,8 @@ class TestDailyCiEnrollForm(FormTestCase):
             ]
         )
 
-    @patch("covidflow.actions.daily_ci_enroll_form.save_reminder", return_value=True)
-    def test_provide_has_dialogue_deny(self, mock_save_reminder):
+    @patch("covidflow.actions.daily_ci_enroll_form.ci_enroll", return_value=True)
+    def test_provide_has_dialogue_deny(self, mock_ci_enroll):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: HAS_DIALOGUE_SLOT,
@@ -693,8 +696,8 @@ class TestDailyCiEnrollForm(FormTestCase):
             ],
         )
 
-    @patch("covidflow.actions.daily_ci_enroll_form.save_reminder", return_value=False)
-    def test_provide_has_dialogue_enrollment_failed(self, mock_save_reminder):
+    @patch("covidflow.actions.daily_ci_enroll_form.ci_enroll", side_effect=Exception)
+    def test_provide_has_dialogue_enrollment_failed(self, mock_ci_enroll):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: HAS_DIALOGUE_SLOT,
@@ -725,4 +728,4 @@ class TestDailyCiEnrollForm(FormTestCase):
             ]
         )
 
-        mock_save_reminder.assert_called()
+        mock_ci_enroll.assert_called()

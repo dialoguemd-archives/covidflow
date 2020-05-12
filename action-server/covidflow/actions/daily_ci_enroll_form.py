@@ -7,7 +7,7 @@ from rasa_sdk.events import EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from covidflow.utils.persistence import save_reminder
+from covidflow.utils.persistence import ci_enroll
 from covidflow.utils.phone_number_validation import (
     VALIDATION_CODE_LENGTH,
     send_validation_code,
@@ -281,7 +281,9 @@ class DailyCiEnrollForm(FormAction):
         domain: Dict[Text, Any],
     ) -> List[Dict]:
         if tracker.get_slot(DO_ENROLL_SLOT) is True:
-            if save_reminder(tracker.current_slot_values()):
+            try:
+                ci_enroll(tracker.current_slot_values())
+
                 dispatcher.utter_message(
                     template="utter_daily_ci_enroll__enroll_done_1"
                 )
@@ -291,7 +293,7 @@ class DailyCiEnrollForm(FormAction):
                 dispatcher.utter_message(
                     template="utter_daily_ci_enroll__enroll_done_3"
                 )
-            else:
+            except:
                 dispatcher.utter_message(
                     template="utter_daily_ci_enroll__enroll_fail_1"
                 )

@@ -18,6 +18,7 @@ from .constants import (
     Symptoms,
 )
 from .form_helper import request_next_slot
+from .lib.log_util import bind_logger
 
 FORM_NAME = "daily_ci_keep_or_cancel_form"
 
@@ -26,6 +27,12 @@ class DailyCiKeepOrCancelForm(FormAction):
     def name(self) -> Text:
 
         return FORM_NAME
+
+    async def run(
+        self, dispatcher, tracker, domain,
+    ):
+        bind_logger(tracker)
+        return await super().run(dispatcher, tracker, domain)
 
     ## override to play initial message
     async def _activate_if_required(

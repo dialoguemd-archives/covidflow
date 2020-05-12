@@ -13,6 +13,7 @@ from .answers import (
     QuestionAnsweringStatus,
 )
 from .constants import LANGUAGE_SLOT
+from .lib.log_util import bind_logger
 
 FAQ_URL_ENV_KEY = "COVID_FAQ_SERVICE_URL"
 DEFAULT_FAQ_URL = "https://covidfaq.dialoguecorp.com"
@@ -28,6 +29,12 @@ class QuestionAnsweringForm(FormAction):
     def name(self) -> Text:
 
         return "question_answering_form"
+
+    async def run(
+        self, dispatcher, tracker, domain,
+    ):
+        bind_logger(tracker)
+        return await super().run(dispatcher, tracker, domain)
 
     @staticmethod
     def required_slots(tracker: Tracker) -> List[Text]:

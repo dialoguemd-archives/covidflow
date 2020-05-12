@@ -1,5 +1,6 @@
-import logging
 from typing import Any, Dict, Text
+
+import structlog
 
 from covidflow.db.assessment import Assessment
 from covidflow.db.base import session_factory
@@ -8,14 +9,14 @@ from covidflow.db.reminder import Reminder
 from .hashids_util import decode_reminder_id, encode_reminder_id
 from .phone_number_validation import is_test_phone_number
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger()
 
 METADATA_SLOT = "metadata"
 REMINDER_ID_METADATA_PROPERTY = "reminder_id"
 
 
 def get_reminder_id(slot_values: Dict[Text, Any]) -> int:
-    metadata = slot_values.get(METADATA_SLOT, {})
+    metadata = slot_values.get(METADATA_SLOT) or {}
 
     if REMINDER_ID_METADATA_PROPERTY not in metadata:
         raise KeyError(f"Missing {REMINDER_ID_METADATA_PROPERTY} in slot values")
@@ -70,7 +71,7 @@ def cancel_reminder(slot_values: Dict[Text, Any]):
 
 
 def store_assessment(slot_values: Dict[Text, Any]):
-    metadata = slot_values.get(METADATA_SLOT, {})
+    metadata = slot_values.get(METADATA_SLOT) or {}
 
     if REMINDER_ID_METADATA_PROPERTY not in metadata:
         raise KeyError(f"Missing {REMINDER_ID_METADATA_PROPERTY} in slot values")

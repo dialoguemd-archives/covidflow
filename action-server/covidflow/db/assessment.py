@@ -1,13 +1,10 @@
 import copy
-import logging
 from typing import Any, Dict, Text
 
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, func
 from sqlalchemy.dialects.postgresql import JSONB
 
 from .base import Base
-
-logger = logging.getLogger(__name__)
 
 SYMPTOMS_SLOT = "symptoms"
 HAS_FEVER_SLOT = "has_fever"

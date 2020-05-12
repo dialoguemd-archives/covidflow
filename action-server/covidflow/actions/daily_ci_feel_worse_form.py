@@ -16,6 +16,7 @@ from .constants import (
 )
 from .daily_ci_assessment_common import submit_daily_ci_assessment
 from .form_helper import request_next_slot
+from .lib.log_util import bind_logger
 
 FORM_NAME = "daily_ci_feel_worse_form"
 
@@ -26,6 +27,12 @@ class DailyCiFeelWorseForm(FormAction):
     def name(self) -> Text:
 
         return FORM_NAME
+
+    async def run(
+        self, dispatcher, tracker, domain,
+    ):
+        bind_logger(tracker)
+        return await super().run(dispatcher, tracker, domain)
 
     ## override to set feel_worse slot
     async def _activate_if_required(

@@ -5,6 +5,7 @@ from rasa_sdk.executor import CollectingDispatcher
 
 from .assessment_form import CONTACT_SLOT, TRAVEL_SLOT
 from .constants import AGE_OVER_65_SLOT, PROVINCE_SLOT, SYMPTOMS_SLOT, Symptoms
+from .lib.log_util import bind_logger
 
 RISK_LEVEL_MEDICAL = "elevated-medical-risk"
 RISK_LEVEL_COVID = "elevated-covid-risk"
@@ -21,7 +22,7 @@ class ActionVisitPackage(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-
+        bind_logger(tracker)
         province = tracker.get_slot(PROVINCE_SLOT)
         risk_level = _get_risk_level_value(tracker)
 

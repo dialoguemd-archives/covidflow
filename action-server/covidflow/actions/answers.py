@@ -1,11 +1,11 @@
-import logging
 from enum import Enum
 from typing import List, Optional
 
+import structlog
 from aiohttp import ClientSession
 from pydantic import BaseModel
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger()
 
 
 ANSWERS_PATH = "answers"

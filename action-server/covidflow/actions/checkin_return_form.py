@@ -14,6 +14,7 @@ from .constants import (
     PROVINCE_SLOT,
     SEVERE_SYMPTOMS_SLOT,
 )
+from .lib.log_util import bind_logger
 
 FORM_NAME = "checkin_return_form"
 
@@ -22,6 +23,12 @@ class CheckinReturnForm(FormAction):
     def name(self) -> Text:
 
         return FORM_NAME
+
+    async def run(
+        self, dispatcher, tracker, domain,
+    ):
+        bind_logger(tracker)
+        return await super().run(dispatcher, tracker, domain)
 
     ## override to play initial message
     async def _activate_if_required(

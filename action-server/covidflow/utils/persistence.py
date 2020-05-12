@@ -16,29 +16,6 @@ METADATA_SLOT = "metadata"
 REMINDER_ID_METADATA_PROPERTY = "reminder_id"
 
 
-def _get_reminder_id(slot_values: Dict[Text, Any]) -> int:
-    try:
-        metadata = slot_values[METADATA_SLOT]
-        hashed_id = metadata[REMINDER_ID_METADATA_PROPERTY]
-        return decode_reminder_id(hashed_id)
-    except:
-        raise
-
-
-def _is_test_session(session, slot_values: Dict[Text, Any]) -> bool:
-    phone_number = slot_values.get(PHONE_NUMBER_SLOT)
-
-    if phone_number:
-        return is_test_phone_number(phone_number)
-
-    reminder_id = _get_reminder_id(slot_values)
-    if reminder_id:
-        reminder = session.query(Reminder).get(reminder_id)
-        return is_test_phone_number(reminder.phone_number)
-
-    return False
-
-
 def ci_enroll(slot_values: Dict[Text, Any]):
     session = session_factory()
     try:
@@ -90,8 +67,7 @@ def save_assessment(slot_values: Dict[Text, Any], reminder_id=None):
             return
 
         reminder_id = reminder_id or _get_reminder_id(slot_values)
-        assessment = Assessment.create_from_slot_values(reminder_id, slot_values)
-        session.add(assessment)
+        assessment = _save_assessment(session, slot_values, reminder_id)
 
         session.commit()
 
@@ -113,3 +89,23 @@ def _save_assessment(session, slot_values: Dict[Text, Any], reminder_id):
     assessment = Assessment.create_from_slot_values(reminder_id, slot_values)
     session.add(assessment)
     return assessment
+
+
+def _get_reminder_id(slot_values: Dict[Text, Any]) -> int:
+    metadata = slot_values[METADATA_SLOT]
+    hashed_id = metadata[REMINDER_ID_METADATA_PROPERTY]
+    return decode_reminder_id(hashed_id)
+
+
+def _is_test_session(session, slot_values: Dict[Text, Any]) -> bool:
+    phone_number = slot_values.get(PHONE_NUMBER_SLOT)
+
+    if phone_number:
+        return is_test_phone_number(phone_number)
+
+    reminder_id = _get_reminder_id(slot_values)
+    if reminder_id:
+        reminder = session.query(Reminder).get(reminder_id)
+        return is_test_phone_number(reminder.phone_number)
+
+    return False

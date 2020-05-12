@@ -37,11 +37,11 @@ INITIAL_SLOT_VALUES = {
 def AsyncMock(*args, **kwargs):
     mock = MagicMock(*args, **kwargs)
 
-    async def mock_coro(*args, **kwargs):
+    async def mock_coroutine(*args, **kwargs):
         return mock(*args, **kwargs)
 
-    mock_coro.mock = mock
-    return mock_coro
+    mock_coroutine.mock = mock
+    return mock_coroutine
 
 
 class TestDailyCiEnrollForm(FormTestCase):
@@ -632,7 +632,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         with self.assertRaises(ActionExecutionRejection):
             self.run_form(tracker)
 
-    @patch("covidflow.actions.daily_ci_enroll_form.ci_enroll", return_value=True)
+    @patch("covidflow.actions.daily_ci_enroll_form.ci_enroll")
     def test_provide_has_dialogue_affirm(self, mock_ci_enroll):
         tracker = self.create_tracker(
             slots={
@@ -664,7 +664,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             ]
         )
 
-    @patch("covidflow.actions.daily_ci_enroll_form.ci_enroll", return_value=True)
+    @patch("covidflow.actions.daily_ci_enroll_form.ci_enroll")
     def test_provide_has_dialogue_deny(self, mock_ci_enroll):
         tracker = self.create_tracker(
             slots={

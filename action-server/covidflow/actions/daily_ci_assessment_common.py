@@ -2,10 +2,13 @@ from typing import List
 
 from rasa_sdk import Tracker
 from rasa_sdk.events import SlotSet
+from structlog import get_logger
 
 from covidflow.utils.persistence import cancel_reminder, save_assessment
 
 from .constants import LAST_ASSESSMENT_SLOTS, SELF_ASSESS_DONE_SLOT, SYMPTOMS_SLOT
+
+logger = get_logger(__name__)
 
 LAST_PREFIX = "last_"
 
@@ -21,9 +24,15 @@ def submit_daily_ci_assessment(tracker: Tracker) -> List[dict]:
             value = tracker.get_slot(last_slot)
             slots_to_add.update({current_slot: value})
 
-    save_assessment({**tracker.current_slot_values(), **slots_to_add})
+    try:
+        save_assessment({**tracker.current_slot_values(), **slots_to_add})
+    except:
+        logger.warn("Failed to save assessment", exc_info=True)
 
     if tracker.get_slot(SYMPTOMS_SLOT) == "severe":
-        cancel_reminder(tracker.current_slot_values())
+        try:
+            cancel_reminder(tracker.current_slot_values())
+        except:
+            logger.warn("Failed to cancel reminder", exc_info=True)
 
     return events + [SlotSet(key, value) for key, value in slots_to_add.items()]

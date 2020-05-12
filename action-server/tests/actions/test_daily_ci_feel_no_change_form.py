@@ -12,6 +12,7 @@ from covidflow.actions.constants import (
     LAST_SYMPTOMS_SLOT,
     SELF_ASSESS_DONE_SLOT,
     SYMPTOMS_SLOT,
+    Symptoms,
 )
 from covidflow.actions.daily_ci_feel_no_change_form import (
     FORM_NAME,
@@ -36,10 +37,10 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
         self.patcher.stop()
 
     def test_moderate_last_symptoms(self):
-        self._test_form_activation(last_symptoms="moderate")
+        self._test_form_activation(last_symptoms=Symptoms.MODERATE)
 
     def test_mild_last_symptoms(self):
-        self._test_form_activation(last_symptoms="mild")
+        self._test_form_activation(last_symptoms=Symptoms.MILD)
 
     def _test_form_activation(self, last_symptoms: str):
         tracker = self.create_tracker(
@@ -59,10 +60,10 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
         self.assert_templates(["utter_ask_daily_ci__feel_no_change__has_fever"])
 
     def test_moderate_last_symptoms__fever(self):
-        self._test_fever(last_symptoms="moderate")
+        self._test_fever(last_symptoms=Symptoms.MODERATE)
 
     def test_mild_last_symptoms__fever(self):
-        self._test_fever(last_symptoms="mild")
+        self._test_fever(last_symptoms=Symptoms.MILD)
 
     def _test_fever(self, last_symptoms: str):
         tracker = self.create_tracker(
@@ -86,10 +87,10 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
         )
 
     def test_moderate_last_symptoms__no_fever(self):
-        self._test_no_fever(last_symptoms="moderate")
+        self._test_no_fever(last_symptoms=Symptoms.MODERATE)
 
     def test_mild_last_symptoms__no_fever(self):
-        self._test_no_fever(last_symptoms="mild")
+        self._test_no_fever(last_symptoms=Symptoms.MILD)
 
     def _test_no_fever(self, last_symptoms: str):
         tracker = self.create_tracker(
@@ -119,7 +120,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
     def _test_moderate_last_symptoms__cough(self, fever: bool):
         tracker = self.create_tracker(
             slots={
-                LAST_SYMPTOMS_SLOT: "moderate",
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
                 REQUESTED_SLOT: HAS_COUGH_SLOT,
                 HAS_FEVER_SLOT: fever,
             },
@@ -152,7 +153,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
     def _test_moderate_last_symptoms__no_cough(self, fever: bool):
         tracker = self.create_tracker(
             slots={
-                LAST_SYMPTOMS_SLOT: "moderate",
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
                 REQUESTED_SLOT: HAS_COUGH_SLOT,
                 HAS_FEVER_SLOT: fever,
             },
@@ -190,7 +191,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
     def _test_diff_breathing(self, fever: bool, cough: bool):
         tracker = self.create_tracker(
             slots={
-                LAST_SYMPTOMS_SLOT: "moderate",
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
                 REQUESTED_SLOT: HAS_DIFF_BREATHING_SLOT,
                 HAS_FEVER_SLOT: fever,
                 HAS_COUGH_SLOT: cough,
@@ -204,7 +205,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
             [
                 SlotSet(HAS_DIFF_BREATHING_SLOT, True),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "moderate"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
@@ -227,12 +228,12 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
         self._test_no_diff_breathing(fever=True, cough=False)
 
     def test_moderate_last_symptoms__no_fever_no_cough__no_diff_breathing(self):
-        self._test_no_diff_breathing(fever=False, cough=False, symptoms="mild")
+        self._test_no_diff_breathing(fever=False, cough=False, symptoms=Symptoms.MILD)
 
     def _test_no_diff_breathing(self, fever: bool, cough: bool, symptoms: str = None):
         tracker = self.create_tracker(
             slots={
-                LAST_SYMPTOMS_SLOT: "moderate",
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
                 REQUESTED_SLOT: HAS_DIFF_BREATHING_SLOT,
                 HAS_FEVER_SLOT: fever,
                 HAS_COUGH_SLOT: cough,
@@ -251,7 +252,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
         else:
             slot_set_events += [
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "moderate"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
             ]
 
         self.assert_events(
@@ -274,7 +275,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
     def _test_mild_last_symptoms__cough(self, fever: bool):
         tracker = self.create_tracker(
             slots={
-                LAST_SYMPTOMS_SLOT: "mild",
+                LAST_SYMPTOMS_SLOT: Symptoms.MILD,
                 LAST_HAS_DIFF_BREATHING_SLOT: False,
                 REQUESTED_SLOT: HAS_COUGH_SLOT,
                 HAS_FEVER_SLOT: fever,
@@ -288,7 +289,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
             [
                 SlotSet(HAS_COUGH_SLOT, True),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "mild"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(HAS_DIFF_BREATHING_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -314,7 +315,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
     def _test_mild_last_symptoms__no_cough(self, fever: bool):
         tracker = self.create_tracker(
             slots={
-                LAST_SYMPTOMS_SLOT: "mild",
+                LAST_SYMPTOMS_SLOT: Symptoms.MILD,
                 LAST_HAS_DIFF_BREATHING_SLOT: False,
                 REQUESTED_SLOT: HAS_COUGH_SLOT,
                 HAS_FEVER_SLOT: fever,
@@ -328,7 +329,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
             [
                 SlotSet(HAS_COUGH_SLOT, False),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                SlotSet(SYMPTOMS_SLOT, "mild"),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(HAS_DIFF_BREATHING_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),

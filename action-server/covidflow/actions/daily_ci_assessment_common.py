@@ -5,7 +5,12 @@ from rasa_sdk.events import SlotSet
 
 from covidflow.utils.persistence import cancel_reminder, store_assessment
 
-from .constants import LAST_ASSESSMENT_SLOTS, SELF_ASSESS_DONE_SLOT, SYMPTOMS_SLOT
+from .constants import (
+    LAST_ASSESSMENT_SLOTS,
+    SELF_ASSESS_DONE_SLOT,
+    SYMPTOMS_SLOT,
+    Symptoms,
+)
 
 LAST_PREFIX = "last_"
 
@@ -23,7 +28,7 @@ def submit_daily_ci_assessment(tracker: Tracker) -> List[dict]:
 
     store_assessment({**tracker.current_slot_values(), **slots_to_add})
 
-    if tracker.get_slot(SYMPTOMS_SLOT) == "severe":
+    if tracker.get_slot(SYMPTOMS_SLOT) == Symptoms.SEVERE:
         cancel_reminder(tracker.current_slot_values())
 
     return events + [SlotSet(key, value) for key, value in slots_to_add.items()]

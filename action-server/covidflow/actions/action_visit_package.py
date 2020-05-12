@@ -4,7 +4,7 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
 from .assessment_form import CONTACT_SLOT, TRAVEL_SLOT
-from .constants import AGE_OVER_65_SLOT, PROVINCE_SLOT, SYMPTOMS_SLOT
+from .constants import AGE_OVER_65_SLOT, PROVINCE_SLOT, SYMPTOMS_SLOT, Symptoms
 
 RISK_LEVEL_MEDICAL = "elevated-medical-risk"
 RISK_LEVEL_COVID = "elevated-covid-risk"
@@ -36,7 +36,7 @@ def _get_risk_level_value(tracker: Tracker) -> str:
     risk_level_value = []
     if (
         tracker.get_slot(AGE_OVER_65_SLOT) is True
-        or tracker.get_slot(SYMPTOMS_SLOT) == "moderate"
+        or tracker.get_slot(SYMPTOMS_SLOT) == Symptoms.MODERATE
     ):
         risk_level_value.append(RISK_LEVEL_MEDICAL)
     if tracker.get_slot(CONTACT_SLOT) is True or tracker.get_slot(TRAVEL_SLOT) is True:

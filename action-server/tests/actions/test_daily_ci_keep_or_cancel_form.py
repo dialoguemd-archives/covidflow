@@ -11,6 +11,7 @@ from covidflow.actions.constants import (
     PRECONDITIONS_SLOT,
     PROVINCE_SLOT,
     SYMPTOMS_SLOT,
+    Symptoms,
 )
 from covidflow.actions.daily_ci_keep_or_cancel_form import (
     FORM_NAME,
@@ -98,7 +99,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
     ):
         tracker = self.create_tracker(
             slots={
-                SYMPTOMS_SLOT: "none",
+                SYMPTOMS_SLOT: Symptoms.NONE,
                 FEEL_WORSE_SLOT: feel_worse,
                 PRECONDITIONS_SLOT: preconditions,
                 AGE_OVER_65_SLOT: age_over_65,
@@ -119,29 +120,41 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
 
     def test_mild_symptoms__not_feel_worse__no_preconditions__age_not_over_65(self):
         self._test_symptoms_optional_ci(
-            symptoms="mild", feel_worse=False, preconditions=False, age_over_65=False
+            symptoms=Symptoms.MILD,
+            feel_worse=False,
+            preconditions=False,
+            age_over_65=False,
         )
 
     def test_mild_symptoms__not_feel_worse__preconditions__age_not_over_65(self):
         self._test_symptoms_optional_ci(
-            symptoms="mild", feel_worse=False, preconditions=True, age_over_65=False
+            symptoms=Symptoms.MILD,
+            feel_worse=False,
+            preconditions=True,
+            age_over_65=False,
         )
 
     def test_mild_symptoms__not_feel_worse__no_preconditions__age_over_65(self):
         self._test_symptoms_optional_ci(
-            symptoms="mild", feel_worse=False, preconditions=False, age_over_65=True
+            symptoms=Symptoms.MILD,
+            feel_worse=False,
+            preconditions=False,
+            age_over_65=True,
         )
 
     def test_mild_symptoms__feel_worse__no_preconditions__age_not_over_65(self):
         self._test_symptoms_optional_ci(
-            symptoms="mild", feel_worse=True, preconditions=False, age_over_65=False
+            symptoms=Symptoms.MILD,
+            feel_worse=True,
+            preconditions=False,
+            age_over_65=False,
         )
 
     def test_mild_symptoms__feel_worse__preconditions__age_not_over_65__not_has_211(
         self,
     ):
         self._test_symptoms_mandatory_ci(
-            symptoms="mild",
+            symptoms=Symptoms.MILD,
             feel_worse=True,
             preconditions=True,
             age_over_65=False,
@@ -153,7 +166,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
         self,
     ):
         self._test_symptoms_mandatory_ci(
-            symptoms="mild",
+            symptoms=Symptoms.MILD,
             feel_worse=True,
             preconditions=True,
             age_over_65=False,
@@ -165,7 +178,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
         self,
     ):
         self._test_symptoms_mandatory_ci(
-            symptoms="mild",
+            symptoms=Symptoms.MILD,
             feel_worse=True,
             preconditions=True,
             age_over_65=False,
@@ -177,7 +190,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
         self,
     ):
         self._test_symptoms_mandatory_ci(
-            symptoms="mild",
+            symptoms=Symptoms.MILD,
             feel_worse=True,
             preconditions=False,
             age_over_65=True,
@@ -189,7 +202,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
         self,
     ):
         self._test_symptoms_mandatory_ci(
-            symptoms="mild",
+            symptoms=Symptoms.MILD,
             feel_worse=True,
             preconditions=False,
             age_over_65=True,
@@ -199,7 +212,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
 
     def test_mild_symptoms__feel_worse__no_preconditions__age_over_65__has_211_qc(self):
         self._test_symptoms_mandatory_ci(
-            symptoms="mild",
+            symptoms=Symptoms.MILD,
             feel_worse=True,
             preconditions=False,
             age_over_65=True,
@@ -209,7 +222,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
 
     def test_moderate_symptoms__not_feel_worse__no_preconditions__age_not_over_65(self):
         self._test_symptoms_optional_ci(
-            symptoms="moderate",
+            symptoms=Symptoms.MODERATE,
             feel_worse=False,
             preconditions=False,
             age_over_65=False,
@@ -217,7 +230,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
 
     def test_moderate_symptoms__not_feel_worse__preconditions__age_not_over_65(self):
         self._test_symptoms_optional_ci(
-            symptoms="moderate",
+            symptoms=Symptoms.MODERATE,
             feel_worse=False,
             preconditions=True,
             age_over_65=False,
@@ -225,7 +238,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
 
     def test_moderate_symptoms__not_feel_worse__no_preconditions__age_over_65(self):
         self._test_symptoms_optional_ci(
-            symptoms="moderate",
+            symptoms=Symptoms.MODERATE,
             feel_worse=False,
             preconditions=False,
             age_over_65=True,
@@ -235,7 +248,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
         self,
     ):
         self._test_symptoms_mandatory_ci(
-            symptoms="moderate",
+            symptoms=Symptoms.MODERATE,
             feel_worse=True,
             preconditions=False,
             age_over_65=False,
@@ -247,7 +260,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
         self,
     ):
         self._test_symptoms_mandatory_ci(
-            symptoms="moderate",
+            symptoms=Symptoms.MODERATE,
             feel_worse=True,
             preconditions=False,
             age_over_65=False,
@@ -259,7 +272,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
         self,
     ):
         self._test_symptoms_mandatory_ci(
-            symptoms="moderate",
+            symptoms=Symptoms.MODERATE,
             feel_worse=True,
             preconditions=False,
             age_over_65=False,
@@ -329,7 +342,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
                 AGE_OVER_65_SLOT: False,
                 FEEL_WORSE_SLOT: False,
                 PRECONDITIONS_SLOT: False,
-                SYMPTOMS_SLOT: "none",
+                SYMPTOMS_SLOT: Symptoms.NONE,
             },
             intent="continue",
         )
@@ -368,7 +381,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
                 AGE_OVER_65_SLOT: False,
                 FEEL_WORSE_SLOT: False,
                 PRECONDITIONS_SLOT: False,
-                SYMPTOMS_SLOT: "mild",
+                SYMPTOMS_SLOT: Symptoms.MILD,
                 PROVINCE_SLOT: province,
             },
             intent="continue",
@@ -388,10 +401,10 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
         self.mock_cancel_reminder.assert_not_called()
 
     def test_no_symptoms_ci_cancel(self):
-        self._test_ci_cancel(symptoms="none")
+        self._test_ci_cancel(symptoms=Symptoms.NONE)
 
     def test_symptoms_ci_cancel(self):
-        self._test_ci_cancel(symptoms="mild")
+        self._test_ci_cancel(symptoms=Symptoms.MILD)
 
     def _test_ci_cancel(self, symptoms: str):
         tracker = self.create_tracker(

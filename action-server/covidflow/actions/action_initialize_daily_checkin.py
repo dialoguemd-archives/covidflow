@@ -22,6 +22,7 @@ from .constants import (
     PRECONDITIONS_SLOT,
     PROVINCE_SLOT,
     PROVINCIAL_811_SLOT,
+    Symptoms,
 )
 from .lib.provincial_811 import get_provincial_811
 
@@ -29,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 ACTION_NAME = "action_initialize_daily_checkin"
 
-DEFAULT_SYMPTOMS_VALUE = "moderate"
+DEFAULT_SYMPTOMS_VALUE = Symptoms.MODERATE
 DEFAULT_FIRST_NAME_VALUE = ""
 DEFAULT_PROVINCE_VALUE = None
 

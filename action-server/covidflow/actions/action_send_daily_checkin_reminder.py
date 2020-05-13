@@ -13,6 +13,7 @@ from covidflow.exceptions import (
     ReminderNotFoundException,
 )
 from covidflow.utils.hashids_util import create_hashids
+from covidflow.utils.phone_number_validation import is_test_phone_number
 
 from .lib.log_util import bind_logger
 
@@ -87,6 +88,12 @@ class ActionSendDailyCheckInReminder(Action):
         first_name = reminder.first_name
         phone_number = reminder.phone_number
         language = reminder.language
+
+        if is_test_phone_number(phone_number):
+            logger.debug(
+                f"Reminder with test phone number: {phone_number}, not sending reminder"
+            )
+            return
 
         if conversation_id != phone_number:
             raise InvalidExternalEventException(

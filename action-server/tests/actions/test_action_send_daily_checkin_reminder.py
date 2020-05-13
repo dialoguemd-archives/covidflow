@@ -111,6 +111,22 @@ class TestActionSendDailyCheckinReminder(TestCase):
 
     @patch.dict("os.environ", ENV)
     @patch("covidflow.actions.action_send_daily_checkin_reminder.session_factory")
+    @patch("covidflow.actions.action_send_daily_checkin_reminder.datetime")
+    def test_555_phone_number_no_reminder(self, mock_datetime, mock_session_factory):
+        _mock_reminder(mock_session_factory, "12345556789")
+        mock_datetime.utcnow.return_value = DEFAULT_NOW
+
+        tracker = _create_tracker()
+        dispatcher = CollectingDispatcher()
+
+        ActionSendDailyCheckInReminder().run(dispatcher, tracker, {})
+
+        self.assertListEqual(dispatcher.messages, [])
+        mock_session_factory.return_value.commit.assert_called()
+        mock_session_factory.return_value.close.assert_called()
+
+    @patch.dict("os.environ", ENV)
+    @patch("covidflow.actions.action_send_daily_checkin_reminder.session_factory")
     def test_reminder_not_found(self, mock_session_factory):
         mock_session_factory.return_value.query.return_value.get.return_value = None
 

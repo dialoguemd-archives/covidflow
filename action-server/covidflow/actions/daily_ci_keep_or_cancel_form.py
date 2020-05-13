@@ -108,7 +108,10 @@ class DailyCiKeepOrCancelForm(FormAction):
             dispatcher.utter_message(
                 template="utter_daily_ci__keep_or_cancel__cancel_ci_recommendation"
             )
-            cancel_reminder(tracker.current_slot_values())
+            try:
+                cancel_reminder(tracker.current_slot_values())
+            except:
+                pass
         else:
             # Optional check-in continue
             dispatcher.utter_message(

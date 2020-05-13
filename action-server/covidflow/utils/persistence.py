@@ -11,80 +11,101 @@ from .phone_number_validation import is_test_phone_number
 
 logger = structlog.get_logger()
 
+PHONE_NUMBER_SLOT = "phone_number"
 METADATA_SLOT = "metadata"
 REMINDER_ID_METADATA_PROPERTY = "reminder_id"
 
 
-def get_reminder_id(slot_values: Dict[Text, Any]) -> int:
-    metadata = slot_values.get(METADATA_SLOT) or {}
-
-    if REMINDER_ID_METADATA_PROPERTY not in metadata:
-        raise KeyError(f"Missing {REMINDER_ID_METADATA_PROPERTY} in slot values")
-
-    hashed_id = metadata.get(REMINDER_ID_METADATA_PROPERTY, None)
-    return decode_reminder_id(hashed_id)
-
-
-def save_reminder(slot_values: Dict[Text, Any]):
-    reminder = Reminder.create_from_slot_values(slot_values)
-
-    if is_test_phone_number(reminder.phone_number):
-        logger.info("555 number: not saving reminder to database")
-        return True
-
+def ci_enroll(slot_values: Dict[Text, Any]):
     session = session_factory()
     try:
-        session.add(reminder)
-        session.flush()
+        if _is_test_session(session, slot_values):
+            return
 
-        assessment = Assessment.create_from_slot_values(reminder.id, slot_values)
-        session.add(assessment)
+        reminder = _save_reminder(session, slot_values)
+        session.flush()
+        assessment = _save_assessment(session, slot_values, reminder.id)
 
         session.commit()
 
-        # the following is temporary and will allow us to get the hashids of the new reminders in the logs
         hashed_id = encode_reminder_id(reminder.id)
-        logger.info(f"Created new reminder (hashed_id={hashed_id}): {reminder}")
-
-        return True
+        logger.info("Saved reminder to database", hashed_id=hashed_id)
+        logger.debug("Saved assessment to database", assessment=assessment)
     except:
-        logger.exception("Could not save reminder instance")
         session.rollback()
-        return False
+        raise
     finally:
         session.close()
 
 
 def cancel_reminder(slot_values: Dict[Text, Any]):
-    reminder_id = get_reminder_id(slot_values)
-
     session = session_factory()
     try:
+        if _is_test_session(session, slot_values):
+            return
+
+        reminder_id = _get_reminder_id(slot_values)
         reminder = session.query(Reminder).get(reminder_id)
         reminder.is_canceled = True
+
         session.commit()
+
+        logger.debug("Canceled reminder", reminder=reminder)
     except:
-        logger.exception("Could not cancel reminder")
         session.rollback()
+        raise
     finally:
         session.close()
 
 
-def store_assessment(slot_values: Dict[Text, Any]):
-    metadata = slot_values.get(METADATA_SLOT) or {}
-
-    if REMINDER_ID_METADATA_PROPERTY not in metadata:
-        raise KeyError(f"Missing {REMINDER_ID_METADATA_PROPERTY} in slot values")
-
-    hashed_id = metadata.get(REMINDER_ID_METADATA_PROPERTY, None)
-    reminder_id = decode_reminder_id(hashed_id)
+def save_assessment(slot_values: Dict[Text, Any], reminder_id=None):
+    logger.debug("Saving assessment")
 
     session = session_factory()
     try:
-        session.add(Assessment.create_from_slot_values(reminder_id, slot_values))
+        if _is_test_session(session, slot_values):
+            return
+
+        reminder_id = reminder_id or _get_reminder_id(slot_values)
+        assessment = _save_assessment(session, slot_values, reminder_id)
+
         session.commit()
+
+        logger.debug("Saved assessment", assessment=assessment)
     except:
-        logger.exception("Could not save assessment")
         session.rollback()
+        raise
     finally:
         session.close()
+
+
+def _save_reminder(session, slot_values: Dict[Text, Any]):
+    reminder = Reminder.create_from_slot_values(slot_values)
+    session.add(reminder)
+    return reminder
+
+
+def _save_assessment(session, slot_values: Dict[Text, Any], reminder_id):
+    assessment = Assessment.create_from_slot_values(reminder_id, slot_values)
+    session.add(assessment)
+    return assessment
+
+
+def _get_reminder_id(slot_values: Dict[Text, Any]) -> int:
+    metadata = slot_values[METADATA_SLOT]
+    hashed_id = metadata[REMINDER_ID_METADATA_PROPERTY]
+    return decode_reminder_id(hashed_id)
+
+
+def _is_test_session(session, slot_values: Dict[Text, Any]) -> bool:
+    phone_number = slot_values.get(PHONE_NUMBER_SLOT)
+
+    if phone_number:
+        return is_test_phone_number(phone_number)
+
+    reminder_id = _get_reminder_id(slot_values)
+    if reminder_id:
+        reminder = session.query(Reminder).get(reminder_id)
+        return is_test_phone_number(reminder.phone_number)
+
+    return False

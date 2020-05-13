@@ -79,6 +79,8 @@ services:
       dockerfile: Dockerfile
     environment:
       - ALEMBIC_DATABASE_URI=postgresql+psycopg2://chloe:password@tracker-store:5432/chloe
+      - REMINDER_ID_HASHIDS_MIN_LENGTH=8
+      - REMINDER_ID_HASHIDS_SALT=abcd1234
     command: ["./wait-for-it.sh", "tracker-store:5432", "-s", "-t", "120", "--", "alembic", "upgrade", "head"]
     volumes:
       - ./action-server/alembic.ini:/app/alembic.ini

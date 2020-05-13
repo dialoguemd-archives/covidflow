@@ -89,15 +89,13 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
         _add_record(
             log_record,
             "timestamps",
-            (
-                {
-                    "epoch": record.created,
-                    "utc": timestamp.isoformat(),
-                    "montreal": timestamp.astimezone(
-                        pytz.timezone("America/Montreal")
-                    ).isoformat(),
-                },
-            ),
+            {
+                "epoch": record.created,
+                "utc": timestamp.isoformat(),
+                "montreal": timestamp.astimezone(
+                    pytz.timezone("America/Montreal")
+                ).isoformat(),
+            },
         )
         _add_record(log_record, "level", record.levelname.lower())
         _add_record(log_record, "lineno", record.lineno)

@@ -64,7 +64,11 @@ def run(
         _send_reminders(reminders, hashids, endpoints)
     )
 
-    logger.info("Sent reminders", sent_reminders=sent, errored_reminders=errored)
+    logger.info(
+        f"Sent reminders: {len(sent)} sent, {len(errored)} errored",
+        sent_reminders=sent,
+        errored_reminders=errored,
+    )
     return sent, errored
 
 

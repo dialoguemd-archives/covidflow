@@ -1,0 +1,6 @@
+- user: daily_ci/daily_checkin_profile_1
+  bot: daily_ci/greet_profile_1
+- user: daily_ci/opt_out
+  bot: daily_ci/early_opt_out
+- user: done
+  bot: thank_you_take_care

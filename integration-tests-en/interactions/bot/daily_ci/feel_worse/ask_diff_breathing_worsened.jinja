@@ -1,0 +1,8 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "Has this worsened since yesterday?",
+        {{ bot.confirmation_buttons() }}
+    }
+]

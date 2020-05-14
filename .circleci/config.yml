@@ -343,3 +343,6 @@ commands:
             echo 'export CORE_ENDPOINT_URL=${APP_SCHEME}://${APP_HOST}:${APP_PORT}' >> $BASH_ENV
             source $BASH_ENV
             poetry run python -m rasa_integration_testing ../integration-tests-<<parameters.language>>
+          environment:
+            INTEGRATION_TESTS_REMINDER_ID_PROFILE_1: NLBAvWPZ
+            INTEGRATION_TESTS_REMINDER_ID_PROFILE_2: qVQGKQKm

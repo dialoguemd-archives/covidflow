@@ -1,0 +1,11 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "That's good news"
+    },
+    {
+        "text": "Do you still have other symptoms, like fatigue or sore throat?",
+        {{ bot.confirmation_buttons() }}
+    }
+]

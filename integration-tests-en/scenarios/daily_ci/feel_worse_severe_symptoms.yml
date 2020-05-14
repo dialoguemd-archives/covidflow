@@ -1,0 +1,8 @@
+- user: daily_ci/daily_checkin_profile_1
+  bot: daily_ci/greet_profile_1
+- user: daily_ci/continue
+  bot: daily_ci/ask_feel
+- user: daily_ci/worse
+  bot: daily_ci/ask_symptoms_severe
+- user: affirm
+  bot: call_911

@@ -51,7 +51,6 @@ def setup_structlog(
             structlog.processors.UnicodeDecoder(),
             structlog.processors.ExceptionPrettyPrinter(),
             structlog.dev.ConsoleRenderer(),
-            _add_structlog_indicator,
         ]
 
     elif log_style == "json":

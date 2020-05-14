@@ -7,6 +7,8 @@ class Symptoms:  # Not using an enum to avoid persisting enum values
 
 PROVINCES_WITH_211 = ["bc", "ab", "sk", "mb", "on", "qc", "ns"]
 
+END_CONVERSATION_MESSAGE = {"data": {"endOfConversation": True}}
+
 # Slots
 
 ## Slots used by DB

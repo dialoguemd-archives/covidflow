@@ -57,7 +57,7 @@
   - action_visit_package
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## suspect - mild symptoms no checkin
 * get_assessment
@@ -132,7 +132,7 @@
   - action_visit_package
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## suspect - no symptoms contact risk no checkin
 * get_assessment
@@ -153,7 +153,7 @@
   - action_visit_package
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## suspect - no symptoms no contact risk
 * get_assessment
@@ -204,7 +204,7 @@
   - action_visit_package
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## tested positive - moderate symptoms
 * tested_positive
@@ -224,7 +224,7 @@
   - action_visit_package
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## tested positive - mild symptoms worse no check-in
 * tested_positive
@@ -282,7 +282,7 @@
   - action_visit_package
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## tested positive - mild symptoms not worse no check-in
 * tested_positive
@@ -303,7 +303,7 @@
   - action_visit_package
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## tested positive - mild symptoms not worse
 * tested_positive
@@ -324,7 +324,7 @@
   - action_visit_package
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 # tested positive - no symptoms tested less than 14 days no check-in
 * tested_positive
@@ -375,7 +375,7 @@
   - action_visit_package
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 # tested positive - cured
 * tested_positive
@@ -427,7 +427,7 @@
 * affirm
   - utter_contact_healthcare_professional
   - utter_contact_healthcare_professional_options
-  - utter_goodbye
+  - action_goodbye
 
 ## return for check-in - moderate symptoms - with check-in
 * checkin_return
@@ -480,7 +480,7 @@
   - form{"name": null}
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## return for check-in - mild symptoms - with check-in
 * checkin_return
@@ -499,7 +499,7 @@
   - form{"name": null}
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## return for check-in - mild symptoms - no check-in
 * checkin_return
@@ -540,7 +540,7 @@
   - utter_social_distancing_leave_home
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## return for check-in - no symptoms - first symptoms < 14 days ago
 * checkin_return
@@ -639,7 +639,7 @@
   - action_daily_ci_early_opt_out
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## daily check-in - early opt out - QA
 * daily_checkin{"metadata":{}}
@@ -750,7 +750,7 @@
   - form{"name": null}
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## daily check-in - feel no change - moderate symptoms
 * daily_checkin{"metadata":{}}
@@ -771,7 +771,7 @@
   - form{"name": null}
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## daily check-in - feel no change - mild symptoms
 * daily_checkin{"metadata":{}}
@@ -827,7 +827,7 @@
   - form{"name": null}
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## daily check-in - feel better - moderate symptoms
 * daily_checkin{"metadata":{}}
@@ -848,7 +848,7 @@
   - form{"name": null}
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## daily check-in - feel better - mild symptoms
 * daily_checkin{"metadata":{}}
@@ -869,7 +869,7 @@
   - form{"name": null}
   - utter_ask_anything_else
 * done
-  - utter_goodbye
+  - action_goodbye
 
 ## daily check-in - feel better - no symptoms
 * daily_checkin{"metadata":{}}

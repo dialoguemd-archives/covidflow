@@ -207,6 +207,9 @@ slots:
   daily_ci_enroll__validation_no_code_solution:
     type: unfeaturized
 
+  daily_ci_enroll__just_sent_code:
+    type: unfeaturized
+
   daily_ci_enroll__wants_cancel:
     type: unfeaturized
     initial_value: false

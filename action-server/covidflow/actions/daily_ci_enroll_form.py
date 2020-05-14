@@ -31,6 +31,7 @@ VALIDATION_CODE_SLOT = "daily_ci_enroll__validation_code"
 VALIDATION_CODE_REFERENCE_SLOT = "daily_ci_enroll__validation_code_reference"
 CODE_TRY_COUNTER_SLOT = "daily_ci_enroll__validation_code_error_counter"
 NO_CODE_SOLUTION_SLOT = "daily_ci_enroll__no_code_solution"
+JUST_SENT_CODE_SLOT = "daily_ci_enroll__just_sent_code"
 WANTS_CANCEL_SLOT = "daily_ci_enroll__wants_cancel"
 
 PHONE_TRY_MAX = 2
@@ -143,8 +144,8 @@ class DailyCiEnrollForm(FormAction):
 
         if (
             slot == VALIDATION_CODE_SLOT
-            and tracker.get_slot(CODE_TRY_COUNTER_SLOT) > 0
-            and tracker.latest_message["intent"].get("name") != "resend_code"
+            # The message after a send or re-send should never be an error message
+            and not (tracker.get_slot(JUST_SENT_CODE_SLOT) is True)
         ):
             return "utter_ask_daily_ci_enroll__validation_code_error"
 
@@ -281,12 +282,18 @@ class DailyCiEnrollForm(FormAction):
 
         if value == "did_not_get_code":
             error_result = _check_code_error_counter(tracker, dispatcher)
-            return {**error_result, NO_CODE_SOLUTION_SLOT: None}
+            return {
+                **error_result,
+                NO_CODE_SOLUTION_SLOT: None,
+            }
 
         validation_code = _get_validation_code(value)
         if validation_code == tracker.get_slot(VALIDATION_CODE_REFERENCE_SLOT):
             dispatcher.utter_message(template="utter_daily_ci_enroll__thanks")
-            return {VALIDATION_CODE_SLOT: validation_code}
+            return {
+                VALIDATION_CODE_SLOT: validation_code,
+                JUST_SENT_CODE_SLOT: False,
+            }
 
         return _check_code_error_counter(tracker, dispatcher)
 
@@ -402,7 +409,7 @@ async def _send_validation_code(
 
         return {DO_ENROLL_SLOT: False}
 
-    return {VALIDATION_CODE_REFERENCE_SLOT: validation_code}
+    return {VALIDATION_CODE_REFERENCE_SLOT: validation_code, JUST_SENT_CODE_SLOT: True}
 
 
 def _check_code_error_counter(
@@ -416,4 +423,8 @@ def _check_code_error_counter(
         )
         return {VALIDATION_CODE_SLOT: None, DO_ENROLL_SLOT: False}
 
-    return {VALIDATION_CODE_SLOT: None, CODE_TRY_COUNTER_SLOT: try_counter + 1}
+    return {
+        VALIDATION_CODE_SLOT: None,
+        CODE_TRY_COUNTER_SLOT: try_counter + 1,
+        JUST_SENT_CODE_SLOT: False,
+    }

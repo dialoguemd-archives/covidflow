@@ -1,3 +1,4 @@
+import re
 from enum import Enum
 from typing import List, Optional
 
@@ -13,6 +14,8 @@ QUESTION_KEY = "question"
 RESPONSE_ANSWERS_KEY = "answers"
 HEADER_ACCEPT_LANGUAGE_KEY = "Accept-Language"
 HTTP_OK = 200
+
+REGEX_HTML_TAG = re.compile("<.*?>")
 
 
 class QuestionAnsweringStatus(str, Enum):
@@ -48,12 +51,17 @@ class QuestionAnsweringProtocol:
             json_dict = await response.json()
             logger.info("Got question answering response: %s", response)
             if response.status == HTTP_OK:
-                qa_response = QuestionAnsweringResponse(
-                    **json_dict,
+                return QuestionAnsweringResponse(
+                    answers=format_answers(json_dict.get(RESPONSE_ANSWERS_KEY, None)),
                     status=QuestionAnsweringStatus.SUCCESS
                     if json_dict.get(RESPONSE_ANSWERS_KEY, None)
                     else QuestionAnsweringStatus.OUT_OF_DISTRIBUTION,
                 )
-                return qa_response
             else:
                 return QuestionAnsweringResponse(status=QuestionAnsweringStatus.FAILURE)
+
+
+def format_answers(answers: Optional[List[str]]) -> Optional[List[str]]:
+    return (
+        [re.sub(REGEX_HTML_TAG, "", answer) for answer in answers] if answers else None
+    )

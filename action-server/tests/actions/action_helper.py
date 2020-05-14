@@ -58,9 +58,15 @@ class ActionTestCase(TestCase):
         )
 
         self.templates = [message["template"] for message in self.dispatcher.messages]
+        self.json_messages = [message["custom"] for message in self.dispatcher.messages]
 
     def assert_events(self, expected_events: List[Dict]) -> None:
         self.assertEqual(self.events, expected_events)
 
+    # If a message does not contain templates, it appears as None in the list
     def assert_templates(self, expected_templates: List[str]) -> None:
         self.assertEqual(self.templates, expected_templates)
+
+    # If a message does not contain a json custom message, it appears as {} in the list
+    def assert_json_messages(self, expected_messages: List[Dict[str, Any]]) -> None:
+        self.assertEqual(self.json_messages, expected_messages)

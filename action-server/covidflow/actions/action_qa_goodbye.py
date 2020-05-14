@@ -4,7 +4,7 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.events import ConversationPaused
 from rasa_sdk.executor import CollectingDispatcher
 
-from .constants import CANCEL_CI_SLOT
+from .constants import CANCEL_CI_SLOT, END_CONVERSATION_MESSAGE
 from .lib.log_util import bind_logger
 
 
@@ -25,5 +25,7 @@ class ActionQaGoodbye(Action):
             )
 
         dispatcher.utter_message(template="utter_goodbye")
+
+        dispatcher.utter_message(json_message=END_CONVERSATION_MESSAGE)
 
         return [ConversationPaused()]

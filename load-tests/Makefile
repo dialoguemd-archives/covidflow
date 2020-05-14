@@ -1,7 +1,6 @@
-.PHONY: init install install-dev install-rasa-sdk clean lint format test
+.PHONY: init install lint format test locust-rasa
 
-# include source code in any python subprocess
-export PYTHONPATH = .
+RASA_VERSION=1.9.4
 
 UID:=$(shell id -u)
 GID:=$(shell id -g)
@@ -11,25 +10,20 @@ help:
 	@echo "        Initialize virtual environment"
 	@echo "    install"
 	@echo "        Install dependencies"
-	@echo "    install-dev"
-	@echo "        Install dev dependencies"
-	@echo "    clean"
-	@echo "        Remove Python artifacts"
 	@echo "    lint"
 	@echo "        Check style with pylama, mypy and black"
 	@echo "    format"
 	@echo "        Format code with black"
 	@echo "    test"
 	@echo "        Run py.test (use TEST_FILE variable to test a single file)"
+	@echo "    locust-rasa"
+	@echo "        Execute locust file, starting the locust web server"
 
 init:
 	curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 
 install:
 	poetry install
-
-install-dev:
-	poetry install --no-root
 
 lint:
 	poetry run pylama
@@ -45,3 +39,6 @@ test:
 	poetry run py.test \
 		--cov-report term-missing:skip-covered \
 		--cov-report html
+
+locust-rasa:
+	poetry run locust -f load_tests/socketio_locustfile.py --no-web -c 5 -r 5 --run-time 1200s

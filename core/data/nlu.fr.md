@@ -29,3 +29,36 @@
 - 1234
 - le code est 1234
 - c'est 1234
+
+## intent: change_phone
+- pas le bon numéro
+- pas le bon numéro de téléphone
+- changer le numéro
+- changer mon numéro
+- changer numéro de téléphone
+- changer numéro de cell
+- changer numéro de cellulaire
+- corriger le numéro
+- corriger mon numéro
+- je me suis trompé
+- je me suis trompée
+- autre numéro
+- autre numéro de téléphone
+- autre cellulaire
+- autre téléphone
+
+## intent: did_not_get_code
+- pas de code
+- pas de code de validation
+- pas eu de code
+- pas eu de code de validation
+- pas reçu de code
+- pas reçu de code de validation
+- je l'ai pas eu
+- je l'ai pas reçu
+- je ne l'ai pas eu
+- je ne l'ai pas reçu
+- j'ai rien eu
+- j'ai rien reçu
+- je n'ai rien eu
+- je n'ai rien reçu

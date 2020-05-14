@@ -26,10 +26,11 @@ FORM_NAME = "daily_ci_enroll_form"
 
 DO_ENROLL_SLOT = "daily_ci_enroll__do_enroll"
 PHONE_TRY_COUNTER_SLOT = "daily_ci_enroll__phone_number_error_counter"
+PHONE_TO_CHANGE_SLOT = "daily_ci_enroll__phone_number_to_change"
 VALIDATION_CODE_SLOT = "daily_ci_enroll__validation_code"
 VALIDATION_CODE_REFERENCE_SLOT = "daily_ci_enroll__validation_code_reference"
 CODE_TRY_COUNTER_SLOT = "daily_ci_enroll__validation_code_error_counter"
-
+NO_CODE_SOLUTION_SLOT = "daily_ci_enroll__no_code_solution"
 WANTS_CANCEL_SLOT = "daily_ci_enroll__wants_cancel"
 
 PHONE_TRY_MAX = 2
@@ -75,6 +76,7 @@ class DailyCiEnrollForm(FormAction):
                 FIRST_NAME_SLOT,
                 WANTS_CANCEL_SLOT,
                 PHONE_NUMBER_SLOT,
+                NO_CODE_SOLUTION_SLOT,
                 VALIDATION_CODE_SLOT,
                 PRECONDITIONS_SLOT,
                 HAS_DIALOGUE_SLOT,
@@ -100,7 +102,17 @@ class DailyCiEnrollForm(FormAction):
                 self.from_intent(intent="affirm", value=True),
                 self.from_intent(intent="deny", value=False),
             ],
-            VALIDATION_CODE_SLOT: self.from_text(),
+            VALIDATION_CODE_SLOT: [
+                self.from_intent(intent="did_not_get_code", value="did_not_get_code"),
+                self.from_intent(intent="change_phone", value="change_phone"),
+                self.from_text(),
+            ],
+            NO_CODE_SOLUTION_SLOT: [
+                self.from_intent(intent="resend_code", value="resend_code"),
+                self.from_intent(
+                    intent="reenter_phone_number", value="reenter_phone_number"
+                ),
+            ],
             PRECONDITIONS_SLOT: [
                 self.from_intent(intent="affirm", value=True),
                 self.from_intent(intent="deny", value=False),
@@ -123,10 +135,17 @@ class DailyCiEnrollForm(FormAction):
         )
 
     def _utter_ask_slot_template(self, slot: str, tracker: Tracker) -> Optional[str]:
+        if slot == PHONE_NUMBER_SLOT and tracker.get_slot(PHONE_TO_CHANGE_SLOT) is True:
+            return "utter_ask_phone_number_new"
+
         if slot == PHONE_NUMBER_SLOT and tracker.get_slot(PHONE_TRY_COUNTER_SLOT) > 0:
             return "utter_ask_phone_number_error"
 
-        if slot == VALIDATION_CODE_SLOT and tracker.get_slot(CODE_TRY_COUNTER_SLOT) > 0:
+        if (
+            slot == VALIDATION_CODE_SLOT
+            and tracker.get_slot(CODE_TRY_COUNTER_SLOT) > 0
+            and tracker.latest_message["intent"].get("name") != "resend_code"
+        ):
             return "utter_ask_daily_ci_enroll__validation_code_error"
 
         return None
@@ -170,42 +189,27 @@ class DailyCiEnrollForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
+        slots = {PHONE_TO_CHANGE_SLOT: False}
         if value == "no_phone":
             dispatcher.utter_message(
                 template="utter_daily_ci_enroll__no_phone_no_checkin"
             )
             dispatcher.utter_message(template="utter_daily_ci_enroll__continue")
 
-            return {PHONE_NUMBER_SLOT: None, DO_ENROLL_SLOT: False}
+            return {**slots, PHONE_NUMBER_SLOT: None, DO_ENROLL_SLOT: False}
 
         if value == "cancel":
-            return {PHONE_NUMBER_SLOT: None, WANTS_CANCEL_SLOT: None}
+            return {**slots, PHONE_NUMBER_SLOT: None, WANTS_CANCEL_SLOT: None}
 
         phone_number = _get_phone_number(value)
 
         if phone_number is not None:
             dispatcher.utter_message(template="utter_daily_ci_enroll__acknowledge")
 
-            first_name = tracker.get_slot(FIRST_NAME_SLOT)
-            language = tracker.get_slot(LANGUAGE_SLOT)
-
-            validation_code = await send_validation_code(
-                phone_number, language, first_name
-            )
-            if validation_code is None:
-                dispatcher.utter_message(
-                    template="utter_daily_ci_enroll__validation_code_not_sent_1"
-                )
-                dispatcher.utter_message(
-                    template="utter_daily_ci_enroll__validation_code_not_sent_2"
-                )
-                dispatcher.utter_message(template="utter_daily_ci_enroll__continue")
-
-                return {PHONE_NUMBER_SLOT: None, DO_ENROLL_SLOT: False}
-
             return {
                 PHONE_NUMBER_SLOT: phone_number,
-                VALIDATION_CODE_REFERENCE_SLOT: validation_code,
+                **slots,
+                **await _send_validation_code(tracker, dispatcher, phone_number),
             }
 
         try_counter = tracker.get_slot(PHONE_TRY_COUNTER_SLOT)
@@ -213,11 +217,15 @@ class DailyCiEnrollForm(FormAction):
             dispatcher.utter_message(
                 template="utter_daily_ci_enroll__invalid_phone_no_checkin"
             )
-            return {PHONE_NUMBER_SLOT: None, DO_ENROLL_SLOT: False}
+            return {**slots, PHONE_NUMBER_SLOT: None, DO_ENROLL_SLOT: False}
 
         dispatcher.utter_message(template="utter_daily_ci_enroll__invalid_phone_number")
 
-        return {PHONE_NUMBER_SLOT: None, PHONE_TRY_COUNTER_SLOT: try_counter + 1}
+        return {
+            **slots,
+            PHONE_NUMBER_SLOT: None,
+            PHONE_TRY_COUNTER_SLOT: try_counter + 1,
+        }
 
     def validate_daily_ci_enroll__wants_cancel(
         self,
@@ -233,31 +241,67 @@ class DailyCiEnrollForm(FormAction):
             return {WANTS_CANCEL_SLOT: value, DO_ENROLL_SLOT: False}
 
         dispatcher.utter_message(template="utter_daily_ci_enroll__ok_continue")
+
         return {
             WANTS_CANCEL_SLOT: value,
             PHONE_TRY_COUNTER_SLOT: tracker.get_slot(PHONE_TRY_COUNTER_SLOT) + 1,
         }
 
-    def validate_daily_ci_enroll__validation_code(
+    async def validate_daily_ci_enroll__validation_code(
         self,
         value: Text,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
+
+        # User corrects phone number
+        phone_number_in_message = _get_phone_number(
+            tracker.latest_message.get("text", "")
+        )
+        if phone_number_in_message is not None:
+            dispatcher.utter_message(
+                template="utter_daily_ci_enroll__acknowledge_new_phone_number"
+            )
+            return {
+                VALIDATION_CODE_SLOT: None,
+                PHONE_NUMBER_SLOT: phone_number_in_message,
+                PHONE_TO_CHANGE_SLOT: False,
+                **await _send_validation_code(
+                    tracker, dispatcher, phone_number_in_message
+                ),
+            }
+
+        if value == "change_phone":
+            return {
+                VALIDATION_CODE_SLOT: None,
+                PHONE_NUMBER_SLOT: None,
+                PHONE_TO_CHANGE_SLOT: True,
+            }
+
+        if value == "did_not_get_code":
+            error_result = _check_code_error_counter(tracker, dispatcher)
+            return {**error_result, NO_CODE_SOLUTION_SLOT: None}
+
         validation_code = _get_validation_code(value)
         if validation_code == tracker.get_slot(VALIDATION_CODE_REFERENCE_SLOT):
             dispatcher.utter_message(template="utter_daily_ci_enroll__thanks")
             return {VALIDATION_CODE_SLOT: validation_code}
 
-        try_counter = tracker.get_slot(CODE_TRY_COUNTER_SLOT)
-        if try_counter == CODE_TRY_MAX:
-            dispatcher.utter_message(
-                template="utter_daily_ci_enroll__invalid_phone_no_checkin"
-            )
-            return {VALIDATION_CODE_SLOT: None, DO_ENROLL_SLOT: False}
+        return _check_code_error_counter(tracker, dispatcher)
 
-        return {VALIDATION_CODE_SLOT: None, CODE_TRY_COUNTER_SLOT: try_counter + 1}
+    async def validate_daily_ci_enroll__no_code_solution(
+        self,
+        value: Text,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        slots = {NO_CODE_SOLUTION_SLOT: value}
+        if value == "reenter_phone_number":
+            return {**slots, PHONE_NUMBER_SLOT: None, PHONE_TO_CHANGE_SLOT: True}
+
+        return {**slots, **await _send_validation_code(tracker, dispatcher)}
 
     def validate_preconditions(
         self,
@@ -333,3 +377,43 @@ def _get_validation_code(text: Text) -> Optional[Text]:
     valid_length = len(digits) == VALIDATION_CODE_LENGTH
 
     return digits if valid_length else None
+
+
+async def _send_validation_code(
+    tracker: Tracker,
+    dispatcher: CollectingDispatcher,
+    phone_number: Optional[str] = None,
+) -> Dict[Text, Any]:
+    if phone_number is None:
+        phone_number = tracker.get_slot(PHONE_NUMBER_SLOT)
+
+    first_name = tracker.get_slot(FIRST_NAME_SLOT)
+    language = tracker.get_slot(LANGUAGE_SLOT)
+
+    validation_code = await send_validation_code(phone_number, language, first_name)
+    if validation_code is None:
+        dispatcher.utter_message(
+            template="utter_daily_ci_enroll__validation_code_not_sent_1"
+        )
+        dispatcher.utter_message(
+            template="utter_daily_ci_enroll__validation_code_not_sent_2"
+        )
+        dispatcher.utter_message(template="utter_daily_ci_enroll__continue")
+
+        return {DO_ENROLL_SLOT: False}
+
+    return {VALIDATION_CODE_REFERENCE_SLOT: validation_code}
+
+
+def _check_code_error_counter(
+    tracker: Tracker, dispatcher: CollectingDispatcher
+) -> Dict[Text, Any]:
+    try_counter = tracker.get_slot(CODE_TRY_COUNTER_SLOT)
+
+    if try_counter == CODE_TRY_MAX:
+        dispatcher.utter_message(
+            template="utter_daily_ci_enroll__invalid_phone_no_checkin"
+        )
+        return {VALIDATION_CODE_SLOT: None, DO_ENROLL_SLOT: False}
+
+    return {VALIDATION_CODE_SLOT: None, CODE_TRY_COUNTER_SLOT: try_counter + 1}

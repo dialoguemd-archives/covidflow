@@ -26,3 +26,35 @@
 - 1234
 - the code is 1234
 - it's 1234
+
+## intent: change_phone
+- change number
+- wrong number
+- change phone number
+- wrong phone number
+- replace number
+- replace phone number
+- i made a mistake
+- not the right number
+- not the right phone number
+
+## intent: did_not_get_code
+
+- no code
+- no validation code
+- didn't receive a code
+- didn't receive a validation code
+- didn't get a code
+- didn't get a validation code
+- did not receive a code
+- did not receive a validation code
+- did not get a code
+- did not get a validation code
+- haven't received a code
+- haven't received a validation code
+- haven't gotten a code
+- haven't gotten a validation code
+- didn't receive it
+- didn't get it
+- received nothing
+- got nothing

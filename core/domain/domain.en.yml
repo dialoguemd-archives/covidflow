@@ -274,6 +274,20 @@ responses:
   utter_ask_daily_ci_enroll__validation_code_error:
     - text: I’m sorry, this is not a valid code. Please try again and enter the 4-digit code that you received by text
 
+  utter_daily_ci_enroll__acknowledge_new_phone_number:
+    - text: OK, I’ll use this phone number instead
+
+  utter_ask_daily_ci_enroll__no_code_solution:
+    - text: Sorry about that. I can send a new code to the same number or you can re-enter your number. Which would you like?
+      buttons:
+        - title: Re-send code
+          payload: "/resend_code"
+        - title: Re-enter my number
+          payload: "/reenter_phone_number"
+
+  utter_ask_phone_number_new:
+    - text: OK, please enter your mobile phone number, so that I can reach you
+
   utter_ask_preconditions:
     - text: Do you have any pre-existing conditions that may affect your immunity?
       buttons:

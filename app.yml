@@ -51,5 +51,16 @@ environments:
     environment:
       TWILIO_NUMBER: "+14382996778"
   prod-ca:
+    components:
+      core-en:
+        public:
+          ingress:
+            additionalHostnames:
+              - covidflow-core-en.dialogue.co
+      core-fr:
+        public:
+          ingress:
+            additionalHostnames:
+              - covidflow-core-fr.dialogue.co
     environment:
       TWILIO_NUMBER: "+14382996828"

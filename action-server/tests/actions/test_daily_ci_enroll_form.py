@@ -16,6 +16,7 @@ from covidflow.actions.daily_ci_enroll_form import (
     CODE_TRY_COUNTER_SLOT,
     DO_ENROLL_SLOT,
     FORM_NAME,
+    JUST_SENT_CODE_SLOT,
     NO_CODE_SOLUTION_SLOT,
     PHONE_TO_CHANGE_SLOT,
     PHONE_TRY_COUNTER_SLOT,
@@ -225,6 +226,42 @@ class TestDailyCiEnrollForm(FormTestCase):
                 SlotSet(PHONE_NUMBER_SLOT, PHONE_NUMBER),
                 SlotSet(PHONE_TO_CHANGE_SLOT, False),
                 SlotSet(VALIDATION_CODE_REFERENCE_SLOT, VALIDATION_CODE),
+                SlotSet(JUST_SENT_CODE_SLOT, True),
+                SlotSet(REQUESTED_SLOT, VALIDATION_CODE_SLOT),
+            ],
+        )
+
+        self.assert_templates(
+            [
+                "utter_daily_ci_enroll__acknowledge",
+                "utter_ask_daily_ci_enroll__validation_code",
+            ]
+        )
+
+    @patch(
+        "covidflow.actions.daily_ci_enroll_form.send_validation_code",
+        new=AsyncMock(return_value=VALIDATION_CODE),
+    )
+    def test_provide_phone_number_after_change(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: PHONE_NUMBER_SLOT,
+                JUST_SENT_CODE_SLOT: True,
+                CODE_TRY_COUNTER_SLOT: 1,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+            },
+            text=PHONE_NUMBER,
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(PHONE_NUMBER_SLOT, PHONE_NUMBER),
+                SlotSet(PHONE_TO_CHANGE_SLOT, False),
+                SlotSet(VALIDATION_CODE_REFERENCE_SLOT, VALIDATION_CODE),
+                SlotSet(JUST_SENT_CODE_SLOT, True),
                 SlotSet(REQUESTED_SLOT, VALIDATION_CODE_SLOT),
             ],
         )
@@ -471,6 +508,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(VALIDATION_CODE_SLOT, VALIDATION_CODE),
+                SlotSet(JUST_SENT_CODE_SLOT, False),
                 SlotSet(REQUESTED_SLOT, PRECONDITIONS_SLOT),
             ],
         )
@@ -497,6 +535,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             [
                 SlotSet(VALIDATION_CODE_SLOT, None),
                 SlotSet(CODE_TRY_COUNTER_SLOT, 1),
+                SlotSet(JUST_SENT_CODE_SLOT, False),
                 SlotSet(REQUESTED_SLOT, VALIDATION_CODE_SLOT),
             ],
         )
@@ -522,6 +561,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             [
                 SlotSet(VALIDATION_CODE_SLOT, None),
                 SlotSet(CODE_TRY_COUNTER_SLOT, 2),
+                SlotSet(JUST_SENT_CODE_SLOT, False),
                 SlotSet(REQUESTED_SLOT, VALIDATION_CODE_SLOT),
             ],
         )
@@ -603,6 +643,7 @@ class TestDailyCiEnrollForm(FormTestCase):
                 SlotSet(PHONE_NUMBER_SLOT, PHONE_NUMBER),
                 SlotSet(PHONE_TO_CHANGE_SLOT, False),
                 SlotSet(VALIDATION_CODE_REFERENCE_SLOT, VALIDATION_CODE),
+                SlotSet(JUST_SENT_CODE_SLOT, True),
                 SlotSet(REQUESTED_SLOT, VALIDATION_CODE_SLOT),
             ],
         )
@@ -639,6 +680,7 @@ class TestDailyCiEnrollForm(FormTestCase):
                 SlotSet(PHONE_NUMBER_SLOT, PHONE_NUMBER),
                 SlotSet(PHONE_TO_CHANGE_SLOT, False),
                 SlotSet(VALIDATION_CODE_REFERENCE_SLOT, VALIDATION_CODE),
+                SlotSet(JUST_SENT_CODE_SLOT, True),
                 SlotSet(REQUESTED_SLOT, VALIDATION_CODE_SLOT),
             ],
         )
@@ -706,6 +748,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             [
                 SlotSet(VALIDATION_CODE_SLOT, None),
                 SlotSet(CODE_TRY_COUNTER_SLOT, 1),
+                SlotSet(JUST_SENT_CODE_SLOT, False),
                 SlotSet(NO_CODE_SOLUTION_SLOT, None),
                 SlotSet(REQUESTED_SLOT, NO_CODE_SOLUTION_SLOT),
             ],
@@ -734,6 +777,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             [
                 SlotSet(VALIDATION_CODE_SLOT, None),
                 SlotSet(CODE_TRY_COUNTER_SLOT, 2),
+                SlotSet(JUST_SENT_CODE_SLOT, False),
                 SlotSet(NO_CODE_SOLUTION_SLOT, None),
                 SlotSet(REQUESTED_SLOT, NO_CODE_SOLUTION_SLOT),
             ],
@@ -795,6 +839,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             [
                 SlotSet(NO_CODE_SOLUTION_SLOT, "resend_code"),
                 SlotSet(VALIDATION_CODE_REFERENCE_SLOT, VALIDATION_CODE),
+                SlotSet(JUST_SENT_CODE_SLOT, True),
                 SlotSet(REQUESTED_SLOT, VALIDATION_CODE_SLOT),
             ],
         )

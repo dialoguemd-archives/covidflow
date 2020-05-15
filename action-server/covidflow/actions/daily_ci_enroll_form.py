@@ -371,7 +371,7 @@ def _get_first_name(text: Text) -> Optional[Text]:
 
 def _get_phone_number(text: Text) -> Optional[Text]:
     digits = NOT_DIGIT_REGEX.sub("", text)
-    if len(digits) == 11:
+    if len(digits) == 11 and digits[0] == "1":
         return digits
     if len(digits) == 10:
         return f"1{digits}"

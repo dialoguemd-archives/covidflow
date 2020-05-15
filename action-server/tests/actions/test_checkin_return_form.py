@@ -6,7 +6,11 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.assessment_common import AssessmentCommon
-from covidflow.actions.checkin_return_form import FORM_NAME, CheckinReturnForm
+from covidflow.actions.checkin_return_form import (
+    FORM_NAME,
+    MODERATE_SYMPTOMS_WORSENED_SLOT,
+    CheckinReturnForm,
+)
 from covidflow.actions.constants import (
     AGE_OVER_65_SLOT,
     HAS_COUGH_SLOT,
@@ -202,6 +206,37 @@ class TestCheckinReturnForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(MODERATE_SYMPTOMS_SLOT, True),
+                SlotSet(REQUESTED_SLOT, MODERATE_SYMPTOMS_WORSENED_SLOT),
+            ]
+        )
+
+        self.assert_templates(["utter_ask_checkin_return__moderate_symptoms_worsened"])
+
+    def test_fever_moderate_symptoms_worsened(self):
+        self._test_moderate_symptoms_worsened(fever=True)
+
+    def test_no_fever_moderate_symptoms_worsened(self):
+        self._test_moderate_symptoms_worsened(fever=False)
+
+    def _test_moderate_symptoms_worsened(self, fever: bool):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: MODERATE_SYMPTOMS_WORSENED_SLOT,
+                MODERATE_SYMPTOMS_SLOT: True,
+                SEVERE_SYMPTOMS_SLOT: False,
+                PROVINCE_SLOT: "qc",
+                PROVINCIAL_811_SLOT: "811 qc",
+                AGE_OVER_65_SLOT: False,
+                HAS_FEVER_SLOT: fever,
+            },
+            intent="affirm",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(MODERATE_SYMPTOMS_WORSENED_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 Form(None),
@@ -209,15 +244,63 @@ class TestCheckinReturnForm(FormTestCase):
             ]
         )
 
-        self.assert_templates([])
+        self.assert_templates(
+            [
+                "utter_contact_healthcare_professional",
+                "utter_contact_healthcare_professional_options",
+                "utter_symptoms_worsen_emergency",
+                "utter_returning_self_isolate",
+                "utter_self_isolation_link",
+            ]
+        )
 
-    def test_fever_mild_symptoms(self):
-        self._test_mild_symptoms(fever=True)
+    def test_fever_moderate_symptoms_not_worsened(self):
+        self._test_moderate_symptoms_not_worsened(fever=True)
 
-    def test_no_fever_mild_symptoms(self):
-        self._test_mild_symptoms(fever=False)
+    def test_no_fever_moderate_symptoms_not_worsened(self):
+        self._test_moderate_symptoms_not_worsened(fever=False)
 
-    def _test_mild_symptoms(self, fever: bool):
+    def _test_moderate_symptoms_not_worsened(self, fever: bool):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: MODERATE_SYMPTOMS_WORSENED_SLOT,
+                MODERATE_SYMPTOMS_SLOT: True,
+                SEVERE_SYMPTOMS_SLOT: False,
+                PROVINCE_SLOT: "qc",
+                PROVINCIAL_811_SLOT: "811 qc",
+                AGE_OVER_65_SLOT: False,
+                HAS_FEVER_SLOT: fever,
+            },
+            intent="deny",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(MODERATE_SYMPTOMS_WORSENED_SLOT, False),
+                SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
+                SlotSet(SELF_ASSESS_DONE_SLOT, True),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ]
+        )
+
+        self.assert_templates(
+            [
+                "utter_symptoms_worsen_emergency",
+                "utter_returning_self_isolate",
+                "utter_self_isolation_link",
+            ]
+        )
+
+    def test_fever_no_moderate_symptoms(self):
+        self._test_no_moderate_symptoms(fever=True)
+
+    def test_no_fever_no_moderate_symptoms(self):
+        self._test_no_moderate_symptoms(fever=False)
+
+    def _test_no_moderate_symptoms(self, fever: bool):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: MODERATE_SYMPTOMS_SLOT,
@@ -241,13 +324,13 @@ class TestCheckinReturnForm(FormTestCase):
 
         self.assert_templates(["utter_ask_has_cough"])
 
-    def test_fever_mild_symptoms_cough(self):
-        self._test_mild_symptoms_cough(fever=True)
+    def test_fever_cough(self):
+        self._test_cough(fever=True)
 
-    def test_no_fever_mild_symptoms_cough(self):
-        self._test_mild_symptoms_cough(fever=False)
+    def test_no_fever_cough(self):
+        self._test_cough(fever=False)
 
-    def _test_mild_symptoms_cough(self, fever: bool):
+    def _test_cough(self, fever: bool):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: HAS_COUGH_SLOT,
@@ -277,7 +360,7 @@ class TestCheckinReturnForm(FormTestCase):
             ["utter_returning_self_isolate", "utter_self_isolation_link"]
         )
 
-    def test_fever_mild_symptoms_no_cough(self):
+    def test_fever_no_cough(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: HAS_COUGH_SLOT,
@@ -303,9 +386,11 @@ class TestCheckinReturnForm(FormTestCase):
             ]
         )
 
-        self.assert_templates([])
+        self.assert_templates(
+            ["utter_returning_self_isolate", "utter_self_isolation_link"]
+        )
 
-    def test_no_fever_mild_symptoms_no_cough(self):
+    def test_no_symptoms(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: HAS_COUGH_SLOT,

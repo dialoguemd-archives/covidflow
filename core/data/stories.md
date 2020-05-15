@@ -416,19 +416,6 @@
   - slot{"symptoms": "severe"}
   - action_severe_symptoms_recommendations
 
-## return for check-in - moderate symptoms worse
-* checkin_return
-  - checkin_return_form
-  - form{"name": "checkin_return_form"}
-  - form{"name": null}
-  - slot{"self_assess_done": true}
-  - slot{"symptoms": "moderate"}
-  - utter_ask_symptoms_worsened
-* affirm
-  - utter_contact_healthcare_professional
-  - utter_contact_healthcare_professional_options
-  - action_goodbye
-
 ## return for check-in - moderate symptoms - with check-in
 * checkin_return
   - checkin_return_form
@@ -436,9 +423,6 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
-  - utter_ask_symptoms_worsened
-* deny
-  - action_returning_symptoms_not_worsened_recommendations
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
@@ -467,9 +451,6 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
-  - utter_ask_symptoms_worsened
-* deny
-  - action_returning_symptoms_not_worsened_recommendations
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}

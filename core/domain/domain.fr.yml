@@ -345,6 +345,14 @@ responses:
   utter_returning_for_checkin:
     - text: "Merci de me contacter pour un suivi. Voyons voir comment vous vous portez aujourd'hui"
 
+  utter_ask_checkin_return__moderate_symptoms_worsened:
+    - text: "Est-ce que vos symptômes ont empiré dans les 24 dernières heures?"
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
   utter_contact_healthcare_professional:
     - text: Dans ce cas, vous devriez discuter de votre situation avec un professionnel de la santé
 

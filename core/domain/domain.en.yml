@@ -345,6 +345,14 @@ responses:
   utter_returning_for_checkin:
     - text: Thanks for checking in. Let's see how you're doing today
 
+  utter_ask_checkin_return__moderate_symptoms_worsened:
+    - text: "Have your symptoms worsened in the last 24 hours?"
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
   utter_contact_healthcare_professional:
     - text: In this case, you should speak to a healthcare professional to discuss your situation
 

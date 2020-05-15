@@ -347,6 +347,30 @@ class TestAssessmentForm(FormTestCase):
             ["utter_mild_symptoms_self_isolate", "utter_ask_lives_alone"]
         )
 
+    def test_fever_mild_symptoms_no_cough(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: HAS_COUGH_SLOT,
+                SEVERE_SYMPTOMS_SLOT: False,
+                PROVINCE_SLOT: "qc",
+                PROVINCIAL_811_SLOT: "811 qc",
+                AGE_OVER_65_SLOT: False,
+                HAS_FEVER_SLOT: True,
+                MODERATE_SYMPTOMS_SLOT: False,
+            },
+            intent="deny",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [SlotSet(HAS_COUGH_SLOT, False), SlotSet(REQUESTED_SLOT, LIVES_ALONE_SLOT),]
+        )
+
+        self.assert_templates(
+            ["utter_mild_symptoms_self_isolate", "utter_ask_lives_alone"]
+        )
+
     def test_fever_cough_lives_alone(self):
         self._test_mild_symptoms_lives_alone(fever=True, cough=True)
 

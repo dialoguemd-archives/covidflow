@@ -96,7 +96,7 @@ class AssessmentForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        if value is True:
+        if value is True or tracker.get_slot(HAS_FEVER_SLOT) is True:
             dispatcher.utter_message(template="utter_mild_symptoms_self_isolate")
 
         return {HAS_COUGH_SLOT: value}

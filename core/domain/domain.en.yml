@@ -2,6 +2,9 @@ responses:
   utter_greet:
     - text: "Hi, I′m Chloe, your virtual medical assistant, I′m here to help you assess your symptoms and provide information about Covid-19"
 
+  utter_greet_warning:
+    - text: Please note that the information you′ll receive is not a medical assessment. If you are experiencing severe symptoms, seek medical attention. This service is not a substitute for consulting with your doctor. The information we supply is from publicly available sources and is subject to frequent change
+
   utter_ask_how_may_i_help:
     - text: How may I help you today?
       buttons:
@@ -22,8 +25,17 @@ responses:
         - title: No
           payload: "/deny"
 
-  utter_call_911:
+  utter_severe_symptoms_recommendations_1:
     - text: These symptoms require immediate response, so please call 911 immediately, or go to your nearest emergency department
+
+  utter_severe_symptoms_recommendations_2:
+    - text: If possible, make sure you bring all medications you are currently taking
+
+  utter_severe_symptoms_recommendations_3:
+    - text: If you don’t know which hospital is closest to you, 911 personnel will be able to direct you, and send an ambulance if you can’t get there by your own means
+
+  utter_severe_symptoms_recommendations_4:
+    - text: Most importantly, do not wait, as your symptoms need immediate medical attention
 
   utter_ask_has_fever:
     - text: Do you have fever (higher than 38°C or 100.4°F)?
@@ -729,7 +741,7 @@ responses:
           payload: "/still_sick"
 
   utter_daily_ci__feel_better__breathing_difficulty_recommendation_1:
-    - text: Sorry about that. If this gets worse, I recommend that you contact your doctor or call 811 to discuss your symptoms
+    - text: Sorry about that. If this gets worse, I recommend that you contact your doctor or call {provincial_811} to discuss your symptoms
 
   utter_daily_ci__feel_better__breathing_difficulty_recommendation_2:
     - text: Since you are still sick, you should stay isolated, rest, and continue monitoring your symptoms

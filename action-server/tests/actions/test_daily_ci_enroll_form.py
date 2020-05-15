@@ -83,6 +83,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         await self._validate_phone_number("it's 1 514 555 4567", "15145554567")
 
         await self._validate_phone_number("145554567", None)
+        await self._validate_phone_number("25145554567", None)
 
     async def _validate_phone_number(self, text: str, expected_phone_number: str):
         tracker = self.create_tracker(

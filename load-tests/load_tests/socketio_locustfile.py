@@ -32,34 +32,29 @@ scenarios_path = folder_path.joinpath(SCENARIOS_FOLDER)
 scenarios: List[Scenario] = load_scenarios(scenarios_path, SCENARIOS_GLOB)
 
 runner: LocustRunner = LocustRunner(
-    InteractionLoader(folder_path), ScenarioFragmentLoader(folder_path),
+    InteractionLoader(folder_path), ScenarioFragmentLoader(folder_path)
 )
 
 
 def _create_scenario_task(scenario: Scenario):
     @task
     def _scenario_task(self) -> None:
+        client = Client()
+        client.connect(os.environ[ENV_LOAD_TEST_TARGET_URL])
         session_id = generate_tracker_id_from_scenario_name(time.time(), scenario.name)
-        self.socketio.emit("session_request", {SESSION_ID_KEY: session_id})
-        runner.run(scenario, self.socketio, session_id)
+        client.emit("session_request", {SESSION_ID_KEY: session_id})
+        runner.run(scenario, client, session_id)
 
     return _scenario_task
 
 
 class IntegrationTestingSet(TaskSet):
-    def on_start(self):
-        self.socketio = Client()
-        self.socketio.connect(os.environ[ENV_LOAD_TEST_TARGET_URL])
-
-    def on_quit(self):
-        self.socketio.disconnect()
-
     tasks = [_create_scenario_task(scenario) for scenario in scenarios]
 
 
 class User(Locust):
     task_set = IntegrationTestingSet
     wait_time = between(
-        os.environ.get(ENV_MINIMUM_WAIT_TIME, DEFAULT_MINIMUM_WAIT_TIME),
-        os.environ.get(ENV_MAXIMUM_WAIT_TIME, DEFAULT_MAXIMUM_WAIT_TIME),
+        float(os.environ.get(ENV_MINIMUM_WAIT_TIME, DEFAULT_MINIMUM_WAIT_TIME)),
+        float(os.environ.get(ENV_MAXIMUM_WAIT_TIME, DEFAULT_MAXIMUM_WAIT_TIME)),
     )

@@ -1,6 +1,6 @@
 responses:
   utter_greet:
-    - text: "Bonjour, je m'appelle Chloé, votre assistante médicale. Je peux vous aider à évaluer vos symptômes et vous donner de l'information en lien avec la Covid-19"
+    - text: "Bonjour, je m'appelle Chloé, votre assistante médicale virtuelle. Je peux vous aider à évaluer vos symptômes et vous donner de l'information en lien avec la Covid-19"
 
   utter_ask_how_may_i_help:
     - text: Que puis-je faire pour vous aujourd'hui?
@@ -518,7 +518,7 @@ responses:
     - text: "La plupart des pharmacies et plusieurs épiceries offrent la livraison. Renseignez-vous auprès de votre pharmacie ou de votre épicerie pour savoir s’ils offrent ce service"
 
   utter_may_call_211:
-    - text: "Si cela n’est pas possible, vous pouvez appeler au 211 ou visiter le 211.ca pour de l’assistance"
+    - text: "Si cela n’est pas possible, vous pouvez appeler au 211 ou visiter le [211.ca](https://211.ca/) pour de l’assistance"
 
   utter_explain_211:
     - text: "Le service 211 peut vous diriger vers une variété de ressources dans votre région pour de l’assistance alimentaire, des services de santé ou communautaires"
@@ -788,10 +788,10 @@ responses:
     - text: Pour plus d’informations et de recommandations, consultez [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common)
 
   utter_daily_ci__recommendations__211_qc:
-    - text: Et si vous avez besoin d’aide à domicile et vivez dans la grande région de Montréal ou à Québec, vous pouvez appeler au 211 ou consulter [211.ca](211.ca)
+    - text: Et si vous avez besoin d’aide à domicile et vivez dans la grande région de Montréal ou à Québec, vous pouvez appeler au 211 ou consulter [211.ca](https://211.ca/)
 
   utter_daily_ci__recommendations__211_other_provinces:
-    - text: Et pour de l’aide à domicile, vous pouvez appeler au 211 ou consulter [211.ca](211.ca)
+    - text: Et pour de l’aide à domicile, vous pouvez appeler au 211 ou consulter [211.ca](https://211.ca/)
 
   utter_daily_ci__recommendations__tomorrow_ci:
     - text: Je vais communiquer avec vous demain environ au même moment

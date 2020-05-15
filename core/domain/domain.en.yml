@@ -1,6 +1,6 @@
 responses:
   utter_greet:
-    - text: "Hi, I′m Chloe, your medical assistant, I′m here to help you assess your symptoms and provide information about Covid-19"
+    - text: "Hi, I′m Chloe, your virtual medical assistant, I′m here to help you assess your symptoms and provide information about Covid-19"
 
   utter_ask_how_may_i_help:
     - text: How may I help you today?
@@ -518,7 +518,7 @@ responses:
     - text: "Most pharmacies and many grocery stores offer delivery services. You can check with your local pharmacy or grocery store if they offer this service"
 
   utter_may_call_211:
-    - text: "If that’s not possible for you, you may call 211 or visit 211.ca for assistance"
+    - text: "If that’s not possible for you, you may call 211 or visit [211.ca](https://211.ca/) for assistance"
 
   utter_explain_211:
     - text: "The 211 service can direct you to a variety of local resources for assistance with food, health, or community services"
@@ -788,10 +788,10 @@ responses:
     - text: If you want more information and recommendations, please visit [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common)
 
   utter_daily_ci__recommendations__211_qc:
-    - text: And if you need home assistance and live in the greater Montreal area or in Quebec City, you may call 211 or visit [211.ca](211.ca)
+    - text: And if you need home assistance and live in the greater Montreal area or in Quebec City, you may call 211 or visit [211.ca](https://211.ca/)
 
   utter_daily_ci__recommendations__211_other_provinces:
-    - text: And if you need home assistance, you may call 211 or visit [211.ca](211.ca)
+    - text: And if you need home assistance, you may call 211 or visit [211.ca](https://211.ca/)
 
   utter_daily_ci__recommendations__tomorrow_ci:
     - text: I will check-in with you tomorrow around the same time

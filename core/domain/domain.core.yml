@@ -180,6 +180,9 @@ slots:
   last_has_diff_breathing:
     type: unfeaturized
 
+  checkin_return__moderate_symptoms_worsened:
+    type: unfeaturized
+
   daily_ci_enroll__do_enroll:
     type: unfeaturized
 

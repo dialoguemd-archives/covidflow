@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Text, Union, cast
+from typing import Any, Dict, List, Text, Union
 
 from rasa_sdk import Tracker
 from rasa_sdk.events import EventType
@@ -17,6 +17,8 @@ from .constants import (
 from .lib.log_util import bind_logger
 
 FORM_NAME = "checkin_return_form"
+
+MODERATE_SYMPTOMS_WORSENED_SLOT = "checkin_return__moderate_symptoms_worsened"
 
 
 class CheckinReturnForm(FormAction):
@@ -54,26 +56,21 @@ class CheckinReturnForm(FormAction):
                 MODERATE_SYMPTOMS_SLOT,
             ]
 
-            if tracker.get_slot(MODERATE_SYMPTOMS_SLOT) is False:
+            if tracker.get_slot(MODERATE_SYMPTOMS_SLOT) is True:
+                slots += [MODERATE_SYMPTOMS_WORSENED_SLOT]
+            else:
                 slots += [HAS_COUGH_SLOT]
 
-        return cast(List[str], slots)
+        return slots
 
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
-        return AssessmentCommon.slot_mappings(self)
-
-    def validate_has_cough(
-        self,
-        value: Text,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        if value is True:
-            dispatcher.utter_message(template="utter_returning_self_isolate")
-            dispatcher.utter_message(template="utter_self_isolation_link")
-
-        return {HAS_COUGH_SLOT: value}
+        return {
+            **AssessmentCommon.slot_mappings(self),
+            MODERATE_SYMPTOMS_WORSENED_SLOT: [
+                self.from_intent(intent="affirm", value=True),
+                self.from_intent(intent="deny", value=False),
+            ],
+        }
 
     def validate_province(
         self,
@@ -84,11 +81,35 @@ class CheckinReturnForm(FormAction):
     ) -> Dict[Text, Any]:
         return AssessmentCommon.validate_province(value, domain)
 
+    def validate_checkin_return__moderate_symptoms_worsened(
+        self,
+        value: Text,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        if value is True:
+            dispatcher.utter_message(template="utter_contact_healthcare_professional")
+            dispatcher.utter_message(
+                template="utter_contact_healthcare_professional_options"
+            )
+
+        dispatcher.utter_message(template="utter_symptoms_worsen_emergency")
+
+        return {MODERATE_SYMPTOMS_WORSENED_SLOT: value}
+
     def submit(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict]:
+        if (
+            tracker.get_slot(MODERATE_SYMPTOMS_SLOT) is True
+            or tracker.get_slot(HAS_COUGH_SLOT) is True
+            or tracker.get_slot(HAS_FEVER_SLOT) is True
+        ):
+            dispatcher.utter_message(template="utter_returning_self_isolate")
+            dispatcher.utter_message(template="utter_self_isolation_link")
 
         return AssessmentCommon.submit(self, dispatcher, tracker, domain)

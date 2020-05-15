@@ -1,7 +1,6 @@
 ## greet
 * greet{"metadata":{}}
-  - utter_greet
-  - utter_ask_how_may_i_help
+  - action_greeting_messages
 
 ## suspect - severe symptoms
 * get_assessment
@@ -547,8 +546,7 @@
 
 ## QA - failure - no assessment after
 * greet{"metadata":{}}
-  - utter_greet
-  - utter_ask_how_may_i_help
+  - action_greeting_messages
 * ask_question
   - utter_can_help_with_questions
   - question_answering_form
@@ -563,8 +561,7 @@
 
 ## QA - success
 * greet{"metadata":{}}
-  - utter_greet
-  - utter_ask_how_may_i_help
+  - action_greeting_messages
 * ask_question
   - utter_can_help_with_questions
   - question_answering_form
@@ -577,8 +574,7 @@
 
 ## QA - success - another question
 * greet{"metadata":{}}
-  - utter_greet
-  - utter_ask_how_may_i_help
+  - action_greeting_messages
 * ask_question
   - utter_can_help_with_questions
   - question_answering_form
@@ -597,8 +593,7 @@
 
 ## QA - need_assessment - no assessment after
 * greet{"metadata":{}}
-  - utter_greet
-  - utter_ask_how_may_i_help
+  - action_greeting_messages
 * ask_question
   - utter_can_help_with_questions
   - question_answering_form

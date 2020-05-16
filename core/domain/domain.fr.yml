@@ -2,6 +2,9 @@ responses:
   utter_greet:
     - text: "Bonjour, je m'appelle Chloé, votre assistante médicale virtuelle. Je peux vous aider à évaluer vos symptômes et vous donner de l'information en lien avec la Covid-19"
 
+  utter_greet_warning:
+    - text: Veuillez noter que les informations que vous recevrez ne constituent pas une évaluation médicale. Ce service ne remplace pas une consultation avec votre médecin. Si vous présentez des symptômes graves, consultez un médecin. Les informations que nous fournissons proviennent de sources officielles et sont sujettes à changement
+
   utter_ask_how_may_i_help:
     - text: Que puis-je faire pour vous aujourd'hui?
       buttons:
@@ -30,8 +33,17 @@ responses:
         - title: Non
           payload: "/deny"
 
-  utter_call_911:
+  utter_severe_symptoms_recommendations_1:
     - text: Ces symptômes exigent une attention immédiate. Vous devriez appeler le 911 immédiatement ou vous rendre directement au service d’urgence le plus proche
+
+  utter_severe_symptoms_recommendations_2:
+    - text: Si c’est possible, assurez-vous d’apporter tous les médicaments que vous prenez actuellement
+
+  utter_severe_symptoms_recommendations_3:
+    - text: Si vous ne savez pas quel est l’hôpital le plus près pouvant vous accueillir, le personnel du 911 pourra vous aider et envoyer une ambulance si vous n’avez pas d’autre moyen de vous y rendre
+
+  utter_severe_symptoms_recommendations_4:
+    - text: Le plus important est de ne pas attendre, car vos symptômes requièrent une attention médicale immédiate
 
   utter_ask_moderate_symptoms:
     - text: "Avez-vous un ou plusieurs des symptômes suivants:\n- Essoufflement léger à modéré\n- Incapacité à vous allonger en raison de difficultés respiratoires\n- Problèmes de santé chroniques que vous avez du mal à gérer en raison de difficultés respiratoires\n- Perte soudaine du goût ou de l'odorat"
@@ -521,7 +533,7 @@ responses:
     - text: "La plupart des pharmacies et plusieurs épiceries offrent la livraison. Renseignez-vous auprès de votre pharmacie ou de votre épicerie pour savoir s’ils offrent ce service"
 
   utter_may_call_211:
-    - text: "Si cela n’est pas possible, vous pouvez appeler au 211 ou visiter le [211.ca](https://211.ca/) pour de l’assistance"
+    - text: "Si cela n’est pas possible, vous pouvez appeler au 211 ou visiter le [211.ca](https://211.ca/fr/) pour de l’assistance"
 
   utter_explain_211:
     - text: "Le service 211 peut vous diriger vers une variété de ressources dans votre région pour de l’assistance alimentaire, des services de santé ou communautaires"
@@ -732,7 +744,7 @@ responses:
           payload: "/still_sick"
 
   utter_daily_ci__feel_better__breathing_difficulty_recommendation_1:
-    - text: Désolée de l'apprendre. Si cela empire, je vous conseille de contacter votre médecin, si c'est possible, ou d'appeler le 811 pour discuter de vos symptômes
+    - text: Désolée de l'apprendre. Si cela empire, je vous conseille de contacter votre médecin, si c'est possible, ou d'appeler le {provincial_811} pour discuter de vos symptômes
 
   utter_daily_ci__feel_better__breathing_difficulty_recommendation_2:
     - text: Puisque vous êtes encore malade, je vous conseille de continuer à vous isoler et à vous reposer
@@ -791,10 +803,10 @@ responses:
     - text: Pour plus d’informations et de recommandations, consultez [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common)
 
   utter_daily_ci__recommendations__211_qc:
-    - text: Et si vous avez besoin d’aide à domicile et vivez dans la grande région de Montréal ou à Québec, vous pouvez appeler au 211 ou consulter [211.ca](https://211.ca/)
+    - text: Et si vous avez besoin d’aide à domicile et vivez dans la grande région de Montréal ou à Québec, vous pouvez appeler au 211 ou consulter [211.ca](https://211.ca/fr/)
 
   utter_daily_ci__recommendations__211_other_provinces:
-    - text: Et pour de l’aide à domicile, vous pouvez appeler au 211 ou consulter [211.ca](https://211.ca/)
+    - text: Et pour de l’aide à domicile, vous pouvez appeler au 211 ou consulter [211.ca](https://211.ca/fr/)
 
   utter_daily_ci__recommendations__tomorrow_ci:
     - text: Je vais communiquer avec vous demain environ au même moment

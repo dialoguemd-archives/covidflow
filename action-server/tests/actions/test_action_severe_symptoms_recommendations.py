@@ -20,6 +20,14 @@ class ActionSevereSymptomsRecommendationsTest(ActionTestCase):
 
         self.assert_events([ConversationPaused()])
 
-        self.assert_templates(["utter_call_911", None])
+        self.assert_templates(
+            [
+                "utter_severe_symptoms_recommendations_1",
+                "utter_severe_symptoms_recommendations_2",
+                "utter_severe_symptoms_recommendations_3",
+                "utter_severe_symptoms_recommendations_4",
+                None,
+            ]
+        )
 
-        self.assert_json_messages([{}, END_CONVERSATION_MESSAGE])
+        self.assert_json_messages([{}, {}, {}, {}, END_CONVERSATION_MESSAGE])

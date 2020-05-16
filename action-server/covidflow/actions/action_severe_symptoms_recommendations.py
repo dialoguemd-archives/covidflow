@@ -19,7 +19,10 @@ class ActionSevereSymptomsRecommendations(Action):
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
         bind_logger(tracker)
-        dispatcher.utter_message(template="utter_call_911")
+        dispatcher.utter_message(template="utter_severe_symptoms_recommendations_1")
+        dispatcher.utter_message(template="utter_severe_symptoms_recommendations_2")
+        dispatcher.utter_message(template="utter_severe_symptoms_recommendations_3")
+        dispatcher.utter_message(template="utter_severe_symptoms_recommendations_4")
 
         dispatcher.utter_message(json_message=END_CONVERSATION_MESSAGE)
 

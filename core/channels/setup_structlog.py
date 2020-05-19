@@ -89,7 +89,7 @@ def _add_structlog_indicator(logger, name, log_event):
     return log_event
 
 
-def _add_record(log_record, key, value):
+def _add_record(log_record: Dict[str, Any], key: str, value: Any):
     if not log_record.get(key):
         log_record[key] = value
 

@@ -7,6 +7,9 @@ authors = ["Nu Echo"]
 [tool.poetry.dependencies]
 rasa-integration-testing = "0.1.2"
 python = "^3.6"
+structlog = "^20.1.0"
+python-json-logger = "^0.1.11"
+pytz = "^2020.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "5.3.4"

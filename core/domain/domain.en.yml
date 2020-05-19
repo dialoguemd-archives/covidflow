@@ -164,6 +164,45 @@ responses:
   provincial_811_default:
     - text: "811"
 
+  provincial_info_link_bc:
+    - text: "http://www.bccdc.ca/health-info/diseases-conditions/covid-19?utm_campaign=20200311_GCPE_AM_COVID_2_NOTIFICATION_BCGOV_BCGOV_EN_BC__NOTIFICATION"
+
+  provincial_info_link_ab:
+    - text: "https://www.alberta.ca/coronavirus-info-for-albertans.aspx"
+
+  provincial_info_link_sk:
+    - text: "https://www.saskatchewan.ca/government/health-care-administration-and-provider-resources/treatment-procedures-and-guidelines/emerging-public-health-issues/2019-novel-coronavirus"
+
+  provincial_info_link_mb:
+    - text: "https://www.gov.mb.ca/covid19/index.html"
+
+  provincial_info_link_on:
+    - text: "https://covid-19.ontario.ca/"
+
+  provincial_info_link_qc:
+    - text: "https://www.quebec.ca/en/health/health-issues/a-z/2019-coronavirus/"
+
+  provincial_info_link_nb:
+    - text: "https://www2.gnb.ca/content/gnb/en/corporate/promo/covid-19.html"
+
+  provincial_info_link_ns:
+    - text: "https://novascotia.ca/coronavirus/"
+
+  provincial_info_link_pe:
+    - text: "https://www.princeedwardisland.ca/en/topic/covid-19"
+
+  provincial_info_link_nl:
+    - text: "https://www.gov.nl.ca/covid-19/"
+
+  provincial_info_link_yu:
+    - text: "https://yukon.ca/covid-19"
+
+  provincial_info_link_nt:
+    - text: "https://www.gov.nt.ca/covid-19/"
+
+  provincial_info_link_nu:
+    - text: "https://www.gov.nu.ca/health/information/covid-19-novel-coronavirus"
+
   utter_ask_age_over_65:
     - text: Are you older than 65?
       buttons:
@@ -532,7 +571,10 @@ responses:
   utter_check_delivery_services:
     - text: "Most pharmacies and many grocery stores offer delivery services. You can check with your local pharmacy or grocery store if they offer this service"
 
-  utter_may_call_211:
+  utter_may_call_211_qc:
+    - text: "If that's not possible for you, and if you live in the greater Montreal area or in Quebec City, you may call 211, or visit [211.quebec](http://www.211quebecregions.ca/), or [211.montreal](https://www.211qc.ca/), for assistance"
+
+  utter_may_call_211_other_provinces:
     - text: "If that’s not possible for you, you may call 211 or visit [211.ca](https://211.ca/) for assistance"
 
   utter_explain_211:
@@ -797,13 +839,13 @@ responses:
   ## Daily check-in - recommendations
 
   utter_daily_ci__recommendations__more_information_vulnerable_population:
-    - text: If you want more information and recommendations, please visit [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common) or [canada.ca](https://www.canada.ca/en/public-health/services/publications/diseases-conditions/vulnerable-populations-covid-19.html)
+    - text: If you want more information and recommendations, please visit [covid19.info]({provincial_link}) or [canada.ca/vulnerable-populations](https://www.canada.ca/en/public-health/services/publications/diseases-conditions/vulnerable-populations-covid-19.html)
 
   utter_daily_ci__recommendations__more_information_general:
-    - text: If you want more information and recommendations, please visit [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common)
+    - text: If you want more information and recommendations, please visit [covid19.info]({provincial_link}) or [canada.ca/general](https://www.canada.ca/en/public-health/services/diseases/coronavirus-disease-covid-19.html)
 
   utter_daily_ci__recommendations__211_qc:
-    - text: And if you need home assistance and live in the greater Montreal area or in Quebec City, you may call 211 or visit [211.ca](https://211.ca/)
+    - text: And if you need home assistance and live in the greater Montreal area or in Quebec City, you may call 211 or visit [211.quebec](http://www.211quebecregions.ca/), or [211.montreal](https://www.211qc.ca/)
 
   utter_daily_ci__recommendations__211_other_provinces:
     - text: And if you need home assistance, you may call 211 or visit [211.ca](https://211.ca/)

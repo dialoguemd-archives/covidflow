@@ -20,6 +20,13 @@ from covidflow.actions.daily_ci_keep_or_cancel_form import (
 
 from .form_helper import FormTestCase
 
+DOMAIN = {
+    "responses": {
+        "provincial_info_link_qc": [{"text": "info link qc"}],
+        "provincial_info_link_bc": [{"text": "info link bc"}],
+    }
+}
+
 RECOMMENDATIONS_VULNERABLE__NOT_HAS_211 = [
     "utter_daily_ci__recommendations__more_information_vulnerable_population",
     "utter_daily_ci__recommendations__tomorrow_ci",
@@ -107,7 +114,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
             active_form=False,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, CANCEL_CI_SLOT)])
 
@@ -293,7 +300,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
             active_form=False,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, CANCEL_CI_SLOT)])
 
@@ -321,7 +328,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
             active_form=False,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [Form(FORM_NAME), Form(None), SlotSet(REQUESTED_SLOT, None),]
@@ -347,7 +354,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
             intent="continue",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [SlotSet(CANCEL_CI_SLOT, False), Form(None), SlotSet(REQUESTED_SLOT, None)]
@@ -387,7 +394,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
             intent="continue",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [SlotSet(CANCEL_CI_SLOT, False), Form(None), SlotSet(REQUESTED_SLOT, None),]
@@ -418,7 +425,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
             intent="cancel",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [SlotSet(CANCEL_CI_SLOT, True), Form(None), SlotSet(REQUESTED_SLOT, None)]

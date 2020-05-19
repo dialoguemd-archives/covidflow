@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Text, Union
 
 from aiohttp import ClientSession
 from rasa_sdk import Tracker
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
@@ -24,17 +24,41 @@ STATUS_SLOT = "question_answering_status"
 ANSWERS_SLOT = "answers"
 ASKED_QUESTION_SLOT = "asked_question"
 
+ANSWERS_KEY = "answers"
+STATUS_KEY = "status"
+FEEDBACK_KEY = "feedback"
+QUESTION_KEY = "question"
+
+FORM_NAME = "question_answering_form"
+
 
 class QuestionAnsweringForm(FormAction):
     def name(self) -> Text:
 
-        return "question_answering_form"
+        return FORM_NAME
 
     async def run(
         self, dispatcher, tracker, domain,
     ):
         bind_logger(tracker)
         return await super().run(dispatcher, tracker, domain)
+
+    ## override to play initial messages
+    async def _activate_if_required(
+        self,
+        dispatcher: "CollectingDispatcher",
+        tracker: "Tracker",
+        domain: Dict[Text, Any],
+    ) -> List[EventType]:
+        # Messages are only played for the first question
+        if (
+            tracker.active_form.get("name") != FORM_NAME
+            and tracker.get_slot(ASKED_QUESTION_SLOT) is None
+        ):
+            dispatcher.utter_message(template="utter_can_help_with_questions")
+            dispatcher.utter_message(template="utter_qa_disclaimer")
+
+        return await super()._activate_if_required(dispatcher, tracker, domain)
 
     @staticmethod
     def required_slots(tracker: Tracker) -> List[Text]:
@@ -72,8 +96,8 @@ class QuestionAnsweringForm(FormAction):
 
             if result.status == QuestionAnsweringStatus.OUT_OF_DISTRIBUTION:
                 full_result = {
-                    "question": value,
-                    "status": result.status,
+                    QUESTION_KEY: value,
+                    STATUS_KEY: result.status,
                 }
                 dispatcher.utter_message(template="utter_cant_answer")
 
@@ -107,10 +131,10 @@ class QuestionAnsweringForm(FormAction):
         domain: Dict[Text, Any],
     ) -> List[Dict]:
         full_question_result = {
-            "question": tracker.get_slot(QUESTION_SLOT),
-            "answers": tracker.get_slot(ANSWERS_SLOT),
-            "status": tracker.get_slot(STATUS_SLOT),
-            "feedback": tracker.get_slot(FEEDBACK_SLOT),
+            QUESTION_KEY: tracker.get_slot(QUESTION_SLOT),
+            ANSWERS_KEY: tracker.get_slot(ANSWERS_SLOT),
+            STATUS_KEY: tracker.get_slot(STATUS_SLOT),
+            FEEDBACK_KEY: tracker.get_slot(FEEDBACK_SLOT),
         }
 
         # Clearing and saving in case of re-rentry in the form.

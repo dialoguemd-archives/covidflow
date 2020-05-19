@@ -404,6 +404,9 @@ responses:
   utter_can_help_with_questions:
     - text: "Je peux répondre à vos questions sur une variété de sujets entourant la Covid-19"
 
+  utter_qa_disclaimer:
+    - text: "Veuillez noter que pour le moment, je suis en mesure de répondre à un nombre limité de questions, mais je m'améliore constamment et j'apprends à l'aide des questions que vous me posez"
+
   utter_ask_active_question:
     - text: "Veuillez écrire votre question au sujet de la Covid-19:"
 

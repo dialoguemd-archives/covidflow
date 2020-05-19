@@ -29,7 +29,7 @@
   - action_visit_package
   - utter_ask_anything_else
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -76,7 +76,6 @@
   - action_visit_package
   - utter_ask_anything_else
 * ask_question
-  - utter_can_help_with_questions
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -103,7 +102,7 @@
   - action_visit_package
   - utter_ask_anything_else
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -165,7 +164,7 @@
   - action_visit_package
   - utter_ask_anything_else
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -245,7 +244,7 @@
   - action_visit_package
   - utter_ask_anything_else
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -345,7 +344,7 @@
   - action_visit_package
   - utter_ask_anything_else
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -389,7 +388,7 @@
   - action_tested_positive_maybe_cured_final_recommendations
   - utter_ask_anything_else
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -432,7 +431,7 @@
   - form{"name": null}
   - utter_ask_anything_else
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -498,7 +497,7 @@
   - form{"name": null}
   - utter_ask_anything_else
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -535,7 +534,7 @@
   - utter_self_isolate_symptom_free
   - utter_ask_anything_else
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -548,7 +547,7 @@
 * greet{"metadata":{}}
   - action_greeting_messages
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -563,7 +562,7 @@
 * greet{"metadata":{}}
   - action_greeting_messages
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -576,7 +575,7 @@
 * greet{"metadata":{}}
   - action_greeting_messages
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -595,7 +594,7 @@
 * greet{"metadata":{}}
   - action_greeting_messages
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -669,7 +668,7 @@
   - form{"name": null}
   - utter_ask_anything_else
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -697,7 +696,7 @@
   - form{"name": null}
   - utter_ask_anything_else
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -774,7 +773,7 @@
   - slot{"question_answering_status": "success"}
   - utter_ask_another_question
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -866,7 +865,7 @@
   - form{"name": null}
   - utter_ask_anything_else
 * ask_question
-  - utter_can_help_with_questions
+
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}

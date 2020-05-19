@@ -12,7 +12,7 @@ from structlog.contextvars import merge_contextvars
 IS_STRUCTLOG_KEY = "is_structlog"
 
 ###
-### FIXME: This file is a duplicate of "core/channels/setup_structlog.py".
+### FIXME: This file is a duplicate of "action-server/covidflow/setup_structlog.py".
 ###
 
 

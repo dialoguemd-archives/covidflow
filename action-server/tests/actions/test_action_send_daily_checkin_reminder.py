@@ -14,7 +14,7 @@ from covidflow.exceptions import (
     ReminderNotFoundException,
 )
 
-CHECKIN_URL_PATTERN = "http://test.com/?lng={language}#rasa/ci/{reminder_id}"
+CHECKIN_URL_PATTERN = "http://test.com/?lng={language}#chat/ci/{reminder_id}"
 HASHIDS_SALT = "abcd1234"
 HASHIDS_MIN_LENGTH = 4
 hashids = Hashids(HASHIDS_SALT, min_length=HASHIDS_MIN_LENGTH)
@@ -35,7 +35,7 @@ ENV = {
 INVALID_PATTERN_ENV = {
     "REMINDER_ID_HASHIDS_SALT": HASHIDS_SALT,
     "REMINDER_ID_HASHIDS_MIN_LENGTH": str(HASHIDS_MIN_LENGTH),
-    "DAILY_CHECKIN_URL_PATTERN": "http://test.com/?lng={language}#rasa/ci/{rem}",
+    "DAILY_CHECKIN_URL_PATTERN": "http://test.com/?lng={language}#chat/ci/{rem}",
 }
 
 

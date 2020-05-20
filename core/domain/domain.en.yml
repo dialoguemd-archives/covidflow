@@ -904,3 +904,48 @@ responses:
 
   utter_daily_checkin__invalid_id__visit_dialogue:
     - text: At any time, you can visit [our website](https://covid19.dialogue.co/) for information, or to get a self-assessment
+
+  # Test Navigation
+
+  utter_test_navigation__explanations_1:
+    - text: I can help you find testing sites near you
+
+  utter_test_navigation__explanations_2:
+    - text: Depending on the area where you live, or the testing site, you may need to have a referral from your doctor or a nurse in order to get tested
+
+  utter_test_navigation__explanations_3:
+    - text: "You can get a referral by either: \n- Talking to your doctor, if that’s possible, or \n- Calling {provincial_811} and discussing your symptoms with a nurse"
+
+  utter_test_navigation__explanations_4:
+    - text: I will provide information about referrals, as well as other details, such as appointment policy, for each available testing site in your area
+
+  utter_ask_test_navigation__continue_no_assessment:
+    - text: Do you want to continue and search for a testing site?
+      buttons:
+        - title: Yes continue
+          payload: /continue
+        - title: No I will come back later
+          payload: /later
+        - title: No but I want to assess my symptoms
+          payload: /get_assessment
+        - title: No but I have other questions
+          payload: /ask_question
+
+  utter_ask_test_navigation__continue_assessment_done:
+    - text: Do you want to continue and search for a testing site?
+      buttons:
+        - title: Yes continue
+          payload: /continue
+        - title: No I will come back later
+          payload: /later
+        - title: No but I have other questions
+          payload: /ask_question
+
+  utter_test_navigation__come_back:
+    - text: OK, when you’re ready, come back here (https://covid19.dialogue.co/#/chat) and I’ll help you
+
+  utter_test_navigation__acknowledge_continue:
+    - text: OK, let’s continue!
+
+  utter_test_navigation__placeholder:
+    - text: What follows will row to here soon...

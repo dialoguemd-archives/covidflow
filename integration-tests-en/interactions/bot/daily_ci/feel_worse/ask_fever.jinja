@@ -1,0 +1,11 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "OK, now, let's check your symptoms"
+    },
+    {
+        "text": "Is your temperature higher than 38°C or 100.4°F? (You can take your temperature now if you're not sure)",
+        {{ bot.confirmation_buttons() }}
+    }
+]

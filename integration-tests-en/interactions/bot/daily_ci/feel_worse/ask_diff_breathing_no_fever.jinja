@@ -1,0 +1,11 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "OK, I'm taking note that you don't have a fever today"
+    },
+    {
+        "text": "And are you experiencing shortness of breath or difficulty breathing?",
+        {{ bot.confirmation_buttons() }}
+    }
+]

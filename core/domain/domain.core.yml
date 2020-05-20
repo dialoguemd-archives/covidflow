@@ -181,6 +181,9 @@ slots:
   last_has_diff_breathing:
     type: unfeaturized
 
+  invalid_reminder_id:
+    type: bool
+
   checkin_return__moderate_symptoms_worsened:
     type: unfeaturized
 

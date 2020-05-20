@@ -485,8 +485,8 @@ responses:
       buttons:
         - title: Oui
           payload: "/get_assessment"
-        - title: Non
-          payload: "/deny"
+        - title: Non j'ai terminé
+          payload: "/done"
 
   utter_need_assessment_already_done:
     - text: "Il semble que pour répondre à votre question, j’aurais besoin d’évaluer vos symptômes. Or, c’est ce que nous venons de faire"
@@ -877,3 +877,30 @@ responses:
 
   utter_daily_ci__early_opt_out__cancel_ci_recommendation:
     - text: Si vous remarquez des changements, ou si vous avez des symptômes, n'hésitez pas à communiquer avec moi pour une évaluation
+
+  ## Daily check-in invalid ID
+
+  utter_daily_ci__invalid_id__invalid_link:
+    - text: Je suis désolée mais ce lien ne semble pas valide
+
+  utter_daily_ci__invalid_id__try_again:
+    - text: Veuillez essayer de nouveau, et si vous copiez le lien dans votre fureteur, assurez-vous de copier exactement la même chose
+
+  utter_ask_daily_checkin__invalid_id__want_assessment:
+    - text: Si ça ne fonctionne pas, voudriez-vous évaluer vos symptômes?
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_ask_daily_checkin__invalid_id__anything_else:
+    - text: "D'accord, puis-je faire autre chose pour vous aider?"
+      buttons:
+        - title: J'ai des questions
+          payload: "/ask_question"
+        - title: Non j'ai terminé
+          payload: "/done"
+
+  utter_daily_checkin__invalid_id__visit_dialogue:
+    - text: À tout moment, vous pouvez consultez [notre site](https://covid19.dialogue.co/) pour des informations, ou pour une auto-évaluation de vos symptômes

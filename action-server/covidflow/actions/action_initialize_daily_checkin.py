@@ -1,24 +1,21 @@
-from typing import Any, Dict, List, Text
+from typing import Any, Dict, List, Optional, Text
 
 import structlog
 from rasa_sdk import Action, Tracker
 from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 
-from covidflow.db.assessment import Assessment
-from covidflow.db.base import session_factory
-from covidflow.db.reminder import Reminder
-from covidflow.utils.hashids_util import create_hashids
+from covidflow.utils.persistence import get_last_assessment, get_reminder
 
 from .constants import (
     AGE_OVER_65_SLOT,
     FIRST_NAME_SLOT,
     HAS_DIALOGUE_SLOT,
+    INVALID_REMINDER_ID_SLOT,
     LAST_HAS_COUGH_SLOT,
     LAST_HAS_DIFF_BREATHING_SLOT,
     LAST_HAS_FEVER_SLOT,
     LAST_SYMPTOMS_SLOT,
-    METADATA_SLOT,
     PRECONDITIONS_SLOT,
     PROVINCE_SLOT,
     PROVINCIAL_811_SLOT,
@@ -35,14 +32,6 @@ DEFAULT_SYMPTOMS_VALUE = Symptoms.MODERATE
 DEFAULT_FIRST_NAME_VALUE = ""
 DEFAULT_PROVINCE_VALUE = None
 
-DEFAULT_REMINDER_VALUES = {
-    FIRST_NAME_SLOT: DEFAULT_FIRST_NAME_VALUE,
-    PROVINCE_SLOT: DEFAULT_PROVINCE_VALUE,
-    AGE_OVER_65_SLOT: False,
-    PRECONDITIONS_SLOT: False,
-    HAS_DIALOGUE_SLOT: False,
-}
-
 DEFAULT_ASSESSMENT_VALUES = {
     LAST_SYMPTOMS_SLOT: DEFAULT_SYMPTOMS_VALUE,
     LAST_HAS_COUGH_SLOT: False,
@@ -50,13 +39,8 @@ DEFAULT_ASSESSMENT_VALUES = {
     LAST_HAS_DIFF_BREATHING_SLOT: False,
 }
 
-REMINDER_ID_PROPERTY_NAME = "reminder_id"
-
 
 class ActionInitializeDailyCheckin(Action):
-    def __init__(self):
-        self.hashids = create_hashids()
-
     def name(self) -> Text:
         return ACTION_NAME
 
@@ -67,16 +51,17 @@ class ActionInitializeDailyCheckin(Action):
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
         bind_logger(tracker)
-        metadata = tracker.get_slot(METADATA_SLOT)
-        hashed_id = metadata[REMINDER_ID_PROPERTY_NAME]
-        reminder_id = self.hashids.decode(hashed_id)[0]
+        current_slot_values = tracker.current_slot_values()
 
-        session = session_factory()
+        user_slots = _get_user_info(current_slot_values, domain)
+        if user_slots is None:
+            dispatcher.utter_message(
+                template="utter_daily_ci__invalid_id__invalid_link"
+            )
+            dispatcher.utter_message(template="utter_daily_ci__invalid_id__try_again")
+            return [SlotSet(INVALID_REMINDER_ID_SLOT, True)]
 
-        user_slots = _get_user_info(session, reminder_id, domain)
-        assessment_slots = _get_last_assessment_slots(session, reminder_id)
-
-        session.close()
+        assessment_slots = _get_last_assessment_slots(current_slot_values)
 
         return [
             SlotSet(name, value)
@@ -84,20 +69,14 @@ class ActionInitializeDailyCheckin(Action):
         ]
 
 
-def _get_user_info(session, reminder_id: str, domain: Dict[Text, Any]) -> dict:
+def _get_user_info(
+    current_slot_values: Dict[Text, Any], domain: Dict[Text, Any]
+) -> Optional[dict]:
     try:
-        reminder = session.query(Reminder).get(reminder_id)
+        reminder = get_reminder(current_slot_values)
     except:
-        reminder = None
-
-    if reminder is None:
-        logger.warning(
-            f"Reminder with id '{reminder_id}' does not exist. Could not fetch user profile. Filling up with defaults."
-        )
-        return {
-            **DEFAULT_REMINDER_VALUES,
-            PROVINCIAL_811_SLOT: get_provincial_811(DEFAULT_PROVINCE_VALUE, domain),
-        }
+        logger.warning(f"Could not fetch user profile. Encoded ID is invalid.")
+        return None
 
     province = reminder.province
     return {
@@ -110,20 +89,12 @@ def _get_user_info(session, reminder_id: str, domain: Dict[Text, Any]) -> dict:
     }
 
 
-def _get_last_assessment_slots(session, reminder_id: str) -> dict:
+def _get_last_assessment_slots(current_slot_values: Dict[Text, Any]) -> dict:
     try:
-        assessment = (
-            session.query(Assessment)
-            .filter_by(reminder_id=reminder_id)
-            .order_by(Assessment.completed_at.desc())
-            .first()
-        )
+        assessment = get_last_assessment(current_slot_values)
     except:
-        assessment = None
-
-    if assessment is None:
         logger.error(
-            f"Could not fetch last assessment for reminder id: {reminder_id}. Filling up last assessment values with defaults."
+            f"Could not fetch last assessment. Filling up last assessment values with defaults."
         )
         return DEFAULT_ASSESSMENT_VALUES
 

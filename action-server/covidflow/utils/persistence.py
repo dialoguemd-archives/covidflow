@@ -79,6 +79,48 @@ def save_assessment(slot_values: Dict[Text, Any], reminder_id=None):
         session.close()
 
 
+def get_reminder(slot_values: Dict[Text, Any]) -> Reminder:
+    logger.debug("Fetching reminder")
+
+    session = session_factory()
+    try:
+        reminder_id = _get_reminder_id(slot_values)
+        reminder = session.query(Reminder).get(reminder_id)
+        if reminder is None:
+            raise Exception("Reminder does not exist")
+
+    except:
+        raise
+    finally:
+        session.close()
+
+    return reminder
+
+
+def get_last_assessment(slot_values: Dict[Text, Any]) -> Assessment:
+    logger.debug("Fetching last assessment")
+
+    session = session_factory()
+    try:
+
+        reminder_id = _get_reminder_id(slot_values)
+        assessment = (
+            session.query(Assessment)
+            .filter_by(reminder_id=reminder_id)
+            .order_by(Assessment.completed_at.desc())
+            .first()
+        )
+        if assessment is None:
+            raise Exception("There are no assessments linked to this reminder")
+
+    except:
+        raise
+    finally:
+        session.close()
+
+    return assessment
+
+
 def _save_reminder(session, slot_values: Dict[Text, Any]):
     reminder = Reminder.create_from_slot_values(slot_values)
     session.add(reminder)

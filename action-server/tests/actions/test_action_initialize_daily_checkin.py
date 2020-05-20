@@ -15,6 +15,7 @@ from covidflow.actions.constants import (
     HAS_DIALOGUE_SLOT,
     HAS_DIFF_BREATHING_SLOT,
     HAS_FEVER_SLOT,
+    INVALID_REMINDER_ID_SLOT,
     LAST_HAS_COUGH_SLOT,
     LAST_HAS_DIFF_BREATHING_SLOT,
     LAST_HAS_FEVER_SLOT,
@@ -68,13 +69,7 @@ NON_DEFAULT_ASSESSMENT_VALUES_ENTRY = {
     HAS_FEVER_SLOT: False,
 }
 
-DEFAULT_VALUES = {
-    FIRST_NAME_SLOT: "",
-    PROVINCE_SLOT: None,
-    AGE_OVER_65_SLOT: False,
-    PRECONDITIONS_SLOT: False,
-    HAS_DIALOGUE_SLOT: False,
-    PROVINCIAL_811_SLOT: DEFAULT_PROVINCIAL_811,
+DEFAULT_ASSESSMENT_VALUES = {
     LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
     LAST_HAS_COUGH_SLOT: False,
     LAST_HAS_FEVER_SLOT: False,
@@ -121,18 +116,15 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
             ActionInitializeDailyCheckin().name(), "action_initialize_daily_checkin",
         )
 
-    @patch("covidflow.actions.action_initialize_daily_checkin.session_factory")
-    def test_happy_path(self, mock_session_factory):
-        mock_session_factory.return_value.query.return_value.get.return_value = namedtuple(
+    @patch("covidflow.actions.action_initialize_daily_checkin.get_reminder")
+    @patch("covidflow.actions.action_initialize_daily_checkin.get_last_assessment")
+    def test_happy_path(self, mock_get_last_assessment, mock_get_reminder):
+        mock_get_reminder.return_value = namedtuple(
             "Reminder", NON_DEFAULT_REMINDER_VALUES.keys()
-        )(
-            *NON_DEFAULT_REMINDER_VALUES.values()
-        )
-        mock_session_factory.return_value.query.return_value.filter_by.return_value.order_by.return_value.first.return_value = namedtuple(
+        )(*NON_DEFAULT_REMINDER_VALUES.values())
+        mock_get_last_assessment.return_value = namedtuple(
             "Assessment", NON_DEFAULT_ASSESSMENT_VALUES_ENTRY.keys()
-        )(
-            *NON_DEFAULT_ASSESSMENT_VALUES_ENTRY.values()
-        )
+        )(*NON_DEFAULT_ASSESSMENT_VALUES_ENTRY.values())
 
         tracker = _create_tracker()
 
@@ -150,14 +142,40 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
             [SlotSet(slot, value) for slot, value in expected_slots.items()]
         )
 
-        mock_session_factory.return_value.close.assert_called()
+    @patch(
+        "covidflow.actions.action_initialize_daily_checkin.get_reminder",
+        side_effect=Exception,
+    )
+    @patch("covidflow.actions.action_initialize_daily_checkin.get_last_assessment")
+    def test_reminder_not_found(self, mock_get_last_assessment, mock_get_reminder):
+        mock_get_last_assessment.return_value = namedtuple(
+            "Assessment", NON_DEFAULT_ASSESSMENT_VALUES_ENTRY.keys()
+        )(*NON_DEFAULT_ASSESSMENT_VALUES_ENTRY.values())
 
-    @patch("covidflow.actions.action_initialize_daily_checkin.session_factory")
-    def test_reminder_not_found_default_user_values(self, mock_session_factory):
-        mock_session_factory.return_value.query.return_value.get.return_value = None
-        mock_session_factory.return_value.query.return_value.filter_by.return_value.order_by.return_value.first.return_value = (
-            None
+        tracker = _create_tracker()
+
+        self.run_action(tracker, DOMAIN)
+
+        self.assert_templates(
+            [
+                "utter_daily_ci__invalid_id__invalid_link",
+                "utter_daily_ci__invalid_id__try_again",
+            ]
         )
+
+        self.assert_events([SlotSet(INVALID_REMINDER_ID_SLOT, True)])
+
+    @patch("covidflow.actions.action_initialize_daily_checkin.get_reminder")
+    @patch(
+        "covidflow.actions.action_initialize_daily_checkin.get_last_assessment",
+        side_effect=Exception,
+    )
+    def test_assessment_not_found_default_values(
+        self, mock_get_last_assessment, mock_get_reminder
+    ):
+        mock_get_reminder.return_value = namedtuple(
+            "Reminder", NON_DEFAULT_REMINDER_VALUES.keys()
+        )(*NON_DEFAULT_REMINDER_VALUES.values())
 
         tracker = _create_tracker()
 
@@ -165,10 +183,12 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
 
         self.assert_templates([])
 
-        expected_slots = DEFAULT_VALUES
+        expected_slots = {
+            **NON_DEFAULT_REMINDER_VALUES,
+            PROVINCIAL_811_SLOT: NON_DEFAULT_PROVINCIAL_811,
+            **DEFAULT_ASSESSMENT_VALUES,
+        }
 
         self.assert_events(
             [SlotSet(slot, value) for slot, value in expected_slots.items()]
         )
-
-        mock_session_factory.return_value.close.assert_called()

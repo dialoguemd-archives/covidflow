@@ -485,8 +485,8 @@ responses:
       buttons:
         - title: Yes
           payload: "/get_assessment"
-        - title: No
-          payload: "/deny"
+        - title: No I'm done
+          payload: "/done"
 
   utter_need_assessment_already_done:
     - text: It seems that to answer your question, I would need to assess your symptoms. However, we have already done that
@@ -877,3 +877,30 @@ responses:
 
   utter_daily_ci__early_opt_out__cancel_ci_recommendation:
     - text: If you notice any changes or get symptoms, feel free to check with me to reassess your symptoms
+
+  ## Daily check-in invalid ID
+
+  utter_daily_ci__invalid_id__invalid_link:
+    - text: I’m sorry but this link does not seem to be valid
+
+  utter_daily_ci__invalid_id__try_again:
+    - text: Please try again and make sure, if you copy the link in your browser, that you copy the exact same thing
+
+  utter_ask_daily_checkin__invalid_id__want_assessment:
+    - text: If that doesn’t work, would you like to assess your symptoms?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_ask_daily_checkin__invalid_id__anything_else:
+    - text: "OK, is there anything else I can help you with?"
+      buttons:
+        - title: I have questions
+          payload: "/ask_question"
+        - title: No I'm done
+          payload: "/done"
+
+  utter_daily_checkin__invalid_id__visit_dialogue:
+    - text: At any time, you can visit [our website](https://covid19.dialogue.co/) for information, or to get a self-assessment

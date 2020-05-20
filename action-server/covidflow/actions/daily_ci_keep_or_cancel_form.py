@@ -22,6 +22,8 @@ from .lib.log_util import bind_logger
 
 FORM_NAME = "daily_ci_keep_or_cancel_form"
 
+DEFAULT_INFO_LINK = "https://covid19.dialogue.co/#/info?id=common"
+
 
 class DailyCiKeepOrCancelForm(FormAction):
     def name(self) -> Text:
@@ -98,7 +100,7 @@ class DailyCiKeepOrCancelForm(FormAction):
             dispatcher.utter_message(
                 template="utter_daily_ci__keep_or_cancel__feel_worse_recommendation"
             )
-            _recommendations(dispatcher, tracker)
+            _recommendations(dispatcher, tracker, domain)
 
         # Optional check-in cancel
         elif tracker.get_slot(CANCEL_CI_SLOT) is True:
@@ -119,7 +121,7 @@ class DailyCiKeepOrCancelForm(FormAction):
             )
 
             if tracker.get_slot(SYMPTOMS_SLOT) != Symptoms.NONE:
-                _recommendations(dispatcher, tracker)
+                _recommendations(dispatcher, tracker, domain)
 
         return []
 
@@ -138,17 +140,22 @@ def _mandatory_ci(tracker: Tracker) -> bool:
     return False
 
 
-def _recommendations(dispatcher: CollectingDispatcher, tracker: Tracker) -> None:
+def _recommendations(
+    dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+) -> None:
+    provincial_link = _get_provincial__info_link(tracker, domain)
     if (
         tracker.get_slot(AGE_OVER_65_SLOT) is True
         or tracker.get_slot(PRECONDITIONS_SLOT) is True
     ):
         dispatcher.utter_message(
-            template="utter_daily_ci__recommendations__more_information_vulnerable_population"
+            template="utter_daily_ci__recommendations__more_information_vulnerable_population",
+            provincial_link=provincial_link,
         )
     else:
         dispatcher.utter_message(
-            template="utter_daily_ci__recommendations__more_information_general"
+            template="utter_daily_ci__recommendations__more_information_general",
+            provincial_link=provincial_link,
         )
 
     if tracker.get_slot(PROVINCE_SLOT) in PROVINCES_WITH_211:
@@ -168,3 +175,11 @@ def _recommendations(dispatcher: CollectingDispatcher, tracker: Tracker) -> None
     dispatcher.utter_message(
         template="utter_daily_ci__recommendations__recommendation_2"
     )
+
+
+def _get_provincial__info_link(tracker: Tracker, domain: Dict[Text, Any]) -> str:
+    province = tracker.get_slot(PROVINCE_SLOT)
+    response = domain.get("responses", {}).get(
+        f"provincial_info_link_{province}", [{"text": DEFAULT_INFO_LINK}]
+    )
+    return response[0].get("text", DEFAULT_INFO_LINK)

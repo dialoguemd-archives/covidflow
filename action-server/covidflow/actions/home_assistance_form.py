@@ -50,7 +50,10 @@ class HomeAssistanceForm(FormAction):
 
         if _has_211(tracker) and not tracker.get_slot(HAS_ASSISTANCE_SLOT):
             dispatcher.utter_message(template="utter_check_delivery_services")
-            dispatcher.utter_message(template="utter_may_call_211")
+            if tracker.get_slot(PROVINCE_SLOT) == "qc":
+                dispatcher.utter_message(template="utter_may_call_211_qc")
+            else:
+                dispatcher.utter_message(template="utter_may_call_211_other_provinces")
             dispatcher.utter_message(template="utter_explain_211")
         else:
             dispatcher.utter_message(template="utter_remind_delivery_services")

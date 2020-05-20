@@ -54,7 +54,7 @@ class TestHomeAssistanceForm(FormTestCase):
             ["utter_remind_delivery_services", "utter_remind_pharmacist_services"]
         )
 
-    def test_has_211_not_has_assistance(self):
+    def test_has_211_not_has_assistance_qc(self):
         tracker = self.create_tracker(
             slots={REQUESTED_SLOT: HAS_ASSISTANCE_SLOT, PROVINCE_SLOT: "qc"},
             intent="deny",
@@ -73,7 +73,32 @@ class TestHomeAssistanceForm(FormTestCase):
         self.assert_templates(
             [
                 "utter_check_delivery_services",
-                "utter_may_call_211",
+                "utter_may_call_211_qc",
+                "utter_explain_211",
+                "utter_remind_pharmacist_services",
+            ]
+        )
+
+    def test_has_211_not_has_assistance_other_province(self):
+        tracker = self.create_tracker(
+            slots={REQUESTED_SLOT: HAS_ASSISTANCE_SLOT, PROVINCE_SLOT: "bc"},
+            intent="deny",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(HAS_ASSISTANCE_SLOT, False),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ]
+        )
+
+        self.assert_templates(
+            [
+                "utter_check_delivery_services",
+                "utter_may_call_211_other_provinces",
                 "utter_explain_211",
                 "utter_remind_pharmacist_services",
             ]

@@ -54,3 +54,6 @@ MODERATE_SYMPTOMS_SLOT = "moderate_symptoms"
 CONTACT_SLOT = "contact"
 TRAVEL_SLOT = "travel"
 HAS_CONTACT_RISK_SLOT = "has_contact_risk"
+
+# Shared with stories
+INVALID_REMINDER_ID_SLOT = "invalid_reminder_id"

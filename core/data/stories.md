@@ -11,7 +11,7 @@
   - slot{"symptoms": "severe"}
   - action_severe_symptoms_recommendations
 
-## suspect - moderate symptoms
+## suspect - moderate symptoms question
 * get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
@@ -29,7 +29,6 @@
   - action_visit_package
   - utter_ask_anything_else
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -38,7 +37,7 @@
 * done
   - action_qa_goodbye
 
-## suspect - moderate symptoms no checkin
+## suspect - moderate symptoms
 * get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
@@ -57,32 +56,6 @@
   - utter_ask_anything_else
 * done
   - action_goodbye
-
-## suspect - mild symptoms no checkin
-* get_assessment
-  - assessment_form
-  - form{"name": "assessment_form"}
-  - form{"name": null}
-  - slot{"self_assess_done": true}
-  - slot{"symptoms": "mild"}
-  - home_assistance_form
-  - form{"name": "home_assistance_form"}
-  - form{"name": null}
-  - action_suspect_mild_symptoms_exposure_recommendations
-  - daily_ci_enroll_form
-  - form{"name": "daily_ci_enroll_form"}
-  - form{"name": null}
-  - action_suspect_mild_symptoms_exposure_final_recommendations
-  - action_visit_package
-  - utter_ask_anything_else
-* ask_question
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_try_again_later
-  - action_qa_goodbye
 
 ## suspect - mild symptoms
 * get_assessment
@@ -102,7 +75,6 @@
   - action_visit_package
   - utter_ask_anything_else
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -111,7 +83,7 @@
   - utter_try_again_later
   - action_qa_goodbye
 
-## suspect - no symptoms contact risk
+## suspect - no symptoms contact risk - question
 * get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
@@ -129,10 +101,17 @@
   - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_visit_package
   - utter_ask_anything_else
-* done
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "failure"}
+  - utter_question_answering_error
+  - utter_try_again_later
+  - action_qa_goodbye
   - action_goodbye
 
-## suspect - no symptoms contact risk no checkin
+## suspect - no symptoms contact risk
 * get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
@@ -164,7 +143,6 @@
   - action_visit_package
   - utter_ask_anything_else
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -244,7 +222,6 @@
   - action_visit_package
   - utter_ask_anything_else
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -344,7 +321,6 @@
   - action_visit_package
   - utter_ask_anything_else
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -388,7 +364,6 @@
   - action_tested_positive_maybe_cured_final_recommendations
   - utter_ask_anything_else
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -431,7 +406,6 @@
   - form{"name": null}
   - utter_ask_anything_else
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -497,7 +471,6 @@
   - form{"name": null}
   - utter_ask_anything_else
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -534,7 +507,6 @@
   - utter_self_isolate_symptom_free
   - utter_ask_anything_else
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -547,7 +519,6 @@
 * greet{"metadata":{}}
   - action_greeting_messages
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -562,7 +533,6 @@
 * greet{"metadata":{}}
   - action_greeting_messages
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -575,7 +545,6 @@
 * greet{"metadata":{}}
   - action_greeting_messages
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -594,7 +563,6 @@
 * greet{"metadata":{}}
   - action_greeting_messages
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -668,7 +636,6 @@
   - form{"name": null}
   - utter_ask_anything_else
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -696,7 +663,6 @@
   - form{"name": null}
   - utter_ask_anything_else
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -773,7 +739,6 @@
   - slot{"question_answering_status": "success"}
   - utter_ask_another_question
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
@@ -865,11 +830,211 @@
   - form{"name": null}
   - utter_ask_anything_else
 * ask_question
-
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
   - slot{"question_answering_status": "failure"}
   - utter_question_answering_error
   - utter_try_again_later
+  - action_qa_goodbye
+
+## daily check-in - invalid ID - nothing else
+* daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
+  - slot{"invalid_reminder_id": true}
+  - utter_ask_daily_checkin__invalid_id__want_assessment
+* deny
+  - utter_ask_daily_checkin__invalid_id__anything_else
+* done
+  - utter_daily_checkin__invalid_id__visit_dialogue
+  - action_goodbye
+
+## daily check-in - invalid ID - wants assessment - severe symptoms
+* daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
+  - slot{"invalid_reminder_id": true}
+  - utter_ask_daily_checkin__invalid_id__want_assessment
+* affirm
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"self_assess_done": true}
+  - slot{"symptoms": "severe"}
+  - action_severe_symptoms_recommendations
+
+## daily check-in - invalid ID - wants assessment - moderate symptoms
+* daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
+  - slot{"invalid_reminder_id": true}
+  - utter_ask_daily_checkin__invalid_id__want_assessment
+* affirm
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"self_assess_done": true}
+  - slot{"symptoms": "moderate"}
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
+  - form{"name": null}
+  - action_suspect_moderate_symptoms_recommendations
+  - daily_ci_enroll_form
+  - form{"name": "daily_ci_enroll_form"}
+  - form{"name": null}
+  - action_suspect_moderate_symptoms_final_recommendations
+  - action_visit_package
+  - utter_ask_anything_else
+* done
+  - action_goodbye
+
+## daily check-in - invalid ID - wants assessment - mild symptoms
+* daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
+  - slot{"invalid_reminder_id": true}
+  - utter_ask_daily_checkin__invalid_id__want_assessment
+* affirm
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"self_assess_done": true}
+  - slot{"symptoms": "mild"}
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
+  - form{"name": null}
+  - action_suspect_mild_symptoms_exposure_recommendations
+  - daily_ci_enroll_form
+  - form{"name": "daily_ci_enroll_form"}
+  - form{"name": null}
+  - action_suspect_mild_symptoms_exposure_final_recommendations
+  - action_visit_package
+  - utter_ask_anything_else
+* done
+  - action_goodbye
+
+## daily check-in - invalid ID - wants assessment - mild symptoms
+* daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
+  - slot{"invalid_reminder_id": true}
+  - utter_ask_daily_checkin__invalid_id__want_assessment
+* affirm
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"self_assess_done": true}
+  - slot{"symptoms": "none"}
+  - action_suspect_no_symptoms_recommendations
+  - action_visit_package
+  - utter_ask_anything_else
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "need_assessment"}
+  - utter_need_assessment_already_done
+  - utter_ask_another_question
+* done
+  - utter_please_visit_again
+  - action_qa_goodbye
+
+## daily check-in - invalid ID - wants assessment - no symptoms no contact
+* daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
+  - slot{"invalid_reminder_id": true}
+  - utter_ask_daily_checkin__invalid_id__want_assessment
+* affirm
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"self_assess_done": true}
+  - slot{"symptoms": "none"}
+  - action_suspect_no_symptoms_recommendations
+  - action_visit_package
+  - utter_ask_anything_else
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "failure"}
+  - utter_question_answering_error
+  - utter_try_again_later
+  - action_qa_goodbye
+
+## daily check-in - invalid ID - wants assessment - no symptoms contact risk
+* daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
+  - slot{"invalid_reminder_id": true}
+  - utter_ask_daily_checkin__invalid_id__want_assessment
+* affirm
+  - assessment_form
+  - form{"name": "assessment_form"}
+  - form{"name": null}
+  - slot{"self_assess_done": true}
+  - slot{"symptoms": "none"}
+  - slot{"has_contact_risk": true}
+  - home_assistance_form
+  - form{"name": "home_assistance_form"}
+  - form{"name": null}
+  - action_suspect_mild_symptoms_exposure_recommendations
+  - daily_ci_enroll_form
+  - form{"name": "daily_ci_enroll_form"}
+  - form{"name": null}
+  - action_suspect_mild_symptoms_exposure_final_recommendations
+  - action_visit_package
+  - utter_ask_anything_else
+* done
+  - action_goodbye
+
+## daily check-in - invalid ID - ask question - failure example
+* daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
+  - slot{"invalid_reminder_id": true}
+  - utter_ask_daily_checkin__invalid_id__want_assessment
+* deny
+  - utter_ask_daily_checkin__invalid_id__anything_else
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "failure"}
+  - utter_question_answering_error
+  - utter_try_again_later
+  - action_qa_goodbye
+
+## daily check-in - invalid ID - ask question - success two questions
+* daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
+  - slot{"invalid_reminder_id": true}
+  - utter_ask_daily_checkin__invalid_id__want_assessment
+* deny
+  - utter_ask_daily_checkin__invalid_id__anything_else
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "success"}
+  - utter_ask_another_question
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "success"}
+  - utter_ask_another_question
+* done
+  - action_qa_goodbye
+
+## daily check-in - invalid ID - ask question - need assessment
+* daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
+  - slot{"invalid_reminder_id": true}
+  - utter_ask_daily_checkin__invalid_id__want_assessment
+* deny
+  - utter_ask_daily_checkin__invalid_id__anything_else
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "need_assessment"}
+  - utter_need_assessment
+  - utter_ask_assess_to_answer
+* done
+  - utter_please_visit_again
   - action_qa_goodbye

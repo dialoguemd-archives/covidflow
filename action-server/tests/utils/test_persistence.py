@@ -18,6 +18,8 @@ from covidflow.utils.persistence import (
     REMINDER_ID_METADATA_PROPERTY,
     cancel_reminder,
     ci_enroll,
+    get_last_assessment,
+    get_reminder,
     save_assessment,
 )
 
@@ -173,3 +175,115 @@ class AssessmentPersistenceTest(TestCase):
             save_assessment({**daily_ci_slots_without_metadata, METADATA_SLOT: {}})
 
         mock_session.add.assert_not_called()
+
+    @patch("covidflow.utils.persistence.decode_reminder_id", return_value=REMINDER_ID)
+    @patch("covidflow.utils.persistence.session_factory")
+    def test_get_reminder(self, mock_session_factory, mock_decode_reminder_id):
+        mock_session = mock_session_factory.return_value
+        mock_session.query.return_value.get.return_value = DEFAULT_REMINDER
+
+        self.assertEqual(get_reminder(DEFAULT_DAILY_CI_SLOTS), DEFAULT_REMINDER)
+
+    @patch("covidflow.utils.persistence.decode_reminder_id", side_effect=Exception)
+    @patch("covidflow.utils.persistence.session_factory")
+    def test_get_reminder_invalid_id(
+        self, mock_session_factory, mock_decode_reminder_id
+    ):
+        mock_session = mock_session_factory.return_value
+        mock_session.query.return_value.get.return_value = DEFAULT_REMINDER
+
+        with self.assertRaises(expected_exception=Exception):
+            get_reminder(DEFAULT_DAILY_CI_SLOTS)
+
+        mock_session.query.assert_not_called()
+
+    @patch("covidflow.utils.persistence.decode_reminder_id", return_value=REMINDER_ID)
+    @patch("covidflow.utils.persistence.session_factory")
+    def test_get_reminder_missing_metadata(
+        self, mock_session_factory, mock_decode_reminder_id
+    ):
+        mock_session = mock_session_factory.return_value
+        mock_session.query.return_value.get.return_value = DEFAULT_REMINDER
+
+        daily_ci_slots_without_metadata = dissoc(DEFAULT_DAILY_CI_SLOTS, METADATA_SLOT)
+
+        with self.assertRaises(expected_exception=Exception):
+            # None metadata
+            get_reminder(daily_ci_slots_without_metadata)
+
+        with self.assertRaises(expected_exception=Exception):
+            # Empty metadata
+            get_reminder({**daily_ci_slots_without_metadata, METADATA_SLOT: {}})
+
+        mock_session.query.assert_not_called()
+
+    @patch("covidflow.utils.persistence.decode_reminder_id", return_value=REMINDER_ID)
+    @patch("covidflow.utils.persistence.session_factory")
+    def test_get_reminder_none(self, mock_session_factory, mock_decode_reminder_id):
+        mock_session = mock_session_factory.return_value
+        mock_session.query.return_value.get.return_value = None
+
+        with self.assertRaises(expected_exception=Exception):
+            get_reminder(DEFAULT_DAILY_CI_SLOTS)
+
+    @patch("covidflow.utils.persistence.decode_reminder_id", return_value=REMINDER_ID)
+    @patch("covidflow.utils.persistence.session_factory")
+    def test_get_last_assessment(self, mock_session_factory, mock_decode_reminder_id):
+        mock_session = mock_session_factory.return_value
+        mock_session.query.return_value.filter_by.return_value.order_by.return_value.first.return_value = (
+            DEFAULT_ASSESSMENT
+        )
+
+        self.assertEqual(
+            get_last_assessment(DEFAULT_DAILY_CI_SLOTS), DEFAULT_ASSESSMENT
+        )
+
+    @patch("covidflow.utils.persistence.decode_reminder_id", side_effect=Exception)
+    @patch("covidflow.utils.persistence.session_factory")
+    def test_get_last_assessment_invalid_id(
+        self, mock_session_factory, mock_decode_reminder_id
+    ):
+        mock_session = mock_session_factory.return_value
+        mock_session.query.return_value.filter_by.return_value.order_by.return_value.first.return_value = (
+            DEFAULT_ASSESSMENT
+        )
+
+        with self.assertRaises(expected_exception=Exception):
+            get_last_assessment(DEFAULT_DAILY_CI_SLOTS)
+
+        mock_session.query.assert_not_called()
+
+    @patch("covidflow.utils.persistence.decode_reminder_id", return_value=REMINDER_ID)
+    @patch("covidflow.utils.persistence.session_factory")
+    def test_get_last_assessment_missing_metadata(
+        self, mock_session_factory, mock_decode_reminder_id
+    ):
+        mock_session = mock_session_factory.return_value
+        mock_session.query.return_value.filter_by.return_value.order_by.return_value.first.return_value = (
+            DEFAULT_ASSESSMENT
+        )
+
+        daily_ci_slots_without_metadata = dissoc(DEFAULT_DAILY_CI_SLOTS, METADATA_SLOT)
+
+        with self.assertRaises(expected_exception=Exception):
+            # None metadata
+            get_last_assessment(daily_ci_slots_without_metadata)
+
+        with self.assertRaises(expected_exception=Exception):
+            # Empty metadata
+            get_last_assessment({**daily_ci_slots_without_metadata, METADATA_SLOT: {}})
+
+        mock_session.query.assert_not_called()
+
+    @patch("covidflow.utils.persistence.decode_reminder_id", return_value=REMINDER_ID)
+    @patch("covidflow.utils.persistence.session_factory")
+    def test_get_last_assessment_none(
+        self, mock_session_factory, mock_decode_reminder_id
+    ):
+        mock_session = mock_session_factory.return_value
+        mock_session.query.return_value.filter_by.return_value.order_by.return_value.first.return_value = (
+            None
+        )
+
+        with self.assertRaises(expected_exception=Exception):
+            get_last_assessment(DEFAULT_DAILY_CI_SLOTS)

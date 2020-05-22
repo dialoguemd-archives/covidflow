@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Iterable, Tuple, Union
+from typing import Iterable, Optional, Tuple
 
 import backoff
 import structlog
@@ -28,22 +28,22 @@ class TestingLocationAddress:
         self.raw_address = raw_address_data
 
     @property
-    def street_address(self) -> Union[None, str]:
+    def street_address(self) -> Optional[str]:
         # ie: 5800 Cavendish Blvd
         return self.raw_address.get("streetAddress")
 
     @property
-    def region_code(self) -> Union[None, str]:
+    def region_code(self) -> Optional[str]:
         # ie: QC
         return self.raw_address.get("regionCode")
 
     @property
-    def country(self) -> Union[None, str]:
+    def country(self) -> Optional[str]:
         # ie: Canada
         return self.raw_address.get("country")
 
     @property
-    def place(self) -> Union[None, str]:
+    def place(self) -> Optional[str]:
         # ie: Lachine
         return self.raw_address.get("place")
 
@@ -53,11 +53,11 @@ class TestingLocationPhone:
         self.raw_phone = raw_phone_data
 
     @property
-    def number(self) -> Union[None, str]:
+    def number(self) -> Optional[str]:
         return self.raw_phone.get("number")
 
     @property
-    def extension(self) -> Union[None, str]:
+    def extension(self) -> Optional[str]:
         return self.raw_phone.get("extension")
 
 
@@ -76,30 +76,30 @@ class TestingLocation:
         self.phones = [TestingLocationPhone(i) for i in raw_phones_data]
 
     @property
-    def name(self) -> Union[None, str]:
+    def name(self) -> Optional[str]:
         return self.raw_data.get("name")
 
     @property
-    def require_referal(self) -> Union[None, bool]:
+    def require_referal(self) -> Optional[bool]:
         return self.raw_data.get("requireReferral")
 
     @property
-    def require_appointment(self) -> Union[None, bool]:
+    def require_appointment(self) -> Optional[bool]:
         return self.raw_data.get("requireAppointment")
 
     @property
-    def coordinates(self) -> Union[None, Tuple[float, float]]:
+    def coordinates(self) -> Optional[Tuple[float, float]]:
         geo_point = self.raw_data.get("_geoPoint")
         if geo_point is None:
             return None
         return (float(geo_point.get("lat")), float(geo_point.get("lon")))
 
     @property
-    def clientele(self) -> Union[None, str]:
+    def clientele(self) -> Optional[str]:
         return self.raw_data.get("clientele")
 
     @property
-    def websites(self) -> Union[Iterable[str]]:
+    def websites(self) -> Iterable[str]:
         return self.raw_data.get("websites", [])
 
     def __repr__(self):

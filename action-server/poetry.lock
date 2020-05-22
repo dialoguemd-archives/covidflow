@@ -227,6 +227,17 @@ flake8 = "*"
 
 [[package]]
 category = "main"
+description = "Python client library for Google Maps Platform"
+name = "googlemaps"
+optional = false
+python-versions = ">=3.5"
+version = "4.4.0"
+
+[package.dependencies]
+requests = ">=2.20.0,<3.0"
+
+[[package]]
+category = "main"
 description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
 name = "h11"
 optional = false
@@ -956,7 +967,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "4b87ca1f0588f35172f1082b5f049006e843a4999c7ee6ce89995591f2a6e019"
+content-hash = "2be320bbd7f448c8d614f2277f83515dd122b471cb2598c4095a5311981a597f"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1076,6 +1087,9 @@ flake8 = [
 flake8-polyfill = [
     {file = "flake8-polyfill-1.0.2.tar.gz", hash = "sha256:e44b087597f6da52ec6393a709e7108b2905317d0c0b744cdca6208e670d8eda"},
     {file = "flake8_polyfill-1.0.2-py2.py3-none-any.whl", hash = "sha256:12be6a34ee3ab795b19ca73505e7b55826d5f6ad7230d31b18e106400169b9e9"},
+]
+googlemaps = [
+    {file = "googlemaps-4.4.0.tar.gz", hash = "sha256:0336594884640d5a299b84d2ec1700908d5d1d049ea08e7efddca5fc94226d23"},
 ]
 h11 = [
     {file = "h11-0.8.1-py2.py3-none-any.whl", hash = "sha256:f2b1ca39bfed357d1f19ac732913d5f9faa54a5062eca7d2ec3a916cfb7ae4c7"},

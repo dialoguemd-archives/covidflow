@@ -3,7 +3,7 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from aiohttp import web
-from aiohttp.test_utils import TestServer, unused_port
+from aiohttp.test_utils import unused_port
 
 from covidflow.db.reminder import Reminder
 from covidflow.jobs.send_reminders import (
@@ -15,6 +15,9 @@ from covidflow.jobs.send_reminders import (
     _send_reminder,
     run,
 )
+from tests.utils.fake_server import FakeServer
+
+ROUTE = "/conversations/{phone_number}/trigger_intent"
 
 HASHIDS_SALT = "abcd1234"
 HASHIDS_MIN_LENGTH = 4
@@ -41,9 +44,11 @@ class TestJobSendReminder(TestCase):
         start_server=True,
     ):
         loop = asyncio.get_event_loop()
+
+        reponse = web.HTTPBadRequest if fail_request else web.Response
         self.server = {
-            EN: FakeCoreServer(fail_request),
-            FR: FakeCoreServer(fail_request),
+            EN: FakeServer(ROUTE, reponse),
+            FR: FakeServer(ROUTE, reponse),
         }
 
         self.core_endpoints = {
@@ -152,28 +157,3 @@ class TestJobSendReminder(TestCase):
 
         self.assertCountEqual(sent, [])
         self.assertCountEqual(errored, [REMINDER_1.id, REMINDER_2.id])
-
-
-class FakeCoreServer:
-    route = "/conversations/{phone_number}/trigger_intent"
-
-    def __init__(self, fail):
-        self.app = web.Application()
-        if fail:
-            self.app.router.add_routes([web.post(self.route, self.trigger_intent_fail)])
-        else:
-            self.app.router.add_routes([web.post(self.route, self.trigger_intent)])
-        self.server = TestServer(self.app)
-
-    async def start(self):
-        await self.server.start_server()
-        return f"http://{self.server.host}:{self.server.port}"
-
-    async def stop(self):
-        await self.server.close()
-
-    async def trigger_intent(self, request):
-        return web.Response()
-
-    async def trigger_intent_fail(self, request):
-        raise web.HTTPBadRequest()

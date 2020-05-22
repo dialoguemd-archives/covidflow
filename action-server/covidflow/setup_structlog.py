@@ -5,9 +5,16 @@ from datetime import datetime
 from typing import Any, Dict, Optional
 
 import pytz
+import sanic
 import structlog
 from pythonjsonlogger import jsonlogger
 from structlog.contextvars import merge_contextvars
+
+IS_STRUCTLOG_KEY = "is_structlog"
+
+###
+### FIXME: This file is a duplicate of "core/channels/setup_structlog.py".
+###
 
 
 def setup_structlog(
@@ -30,9 +37,13 @@ def setup_structlog(
         default = "pretty" if sys.stdout.isatty() else "json"
         log_style = environ.get("log_style", default)
 
+    rasa_handler = logging.StreamHandler()
+    sanic.log.access_logger.handlers.append(rasa_handler)
+    sanic.log.error_logger.handlers.append(rasa_handler)
+    sanic.log.logger.handlers.append(rasa_handler)
+
     if not logging.root.handlers:
-        handler = logging.StreamHandler()
-        logging.root.handlers.append(handler)
+        logging.root.handlers.append(rasa_handler)
 
     if log_style == "pretty":
         processors = [
@@ -58,10 +69,12 @@ def setup_structlog(
             structlog.processors.format_exc_info,
             structlog.processors.UnicodeDecoder(),
             structlog.stdlib.render_to_log_kwargs,
+            _add_structlog_indicator,
         ]
+        rasa_handler.setFormatter(CustomJsonFormatter())
+
         for handler in logging.root.handlers:  # type: ignore
             handler.setFormatter(CustomJsonFormatter())
-
     else:
         raise NotImplementedError(f"LOG_STYLE='{log_style}' is not implemented!")
 
@@ -76,7 +89,12 @@ def setup_structlog(
     logging.root.setLevel(level)  # type: ignore
 
 
-def _add_record(log_record, key, value):
+def _add_structlog_indicator(logger, name, log_event):
+    log_event["extra"][IS_STRUCTLOG_KEY] = True
+    return log_event
+
+
+def _add_record(log_record: Dict[str, Any], key: str, value: Any):
     if not log_record.get(key):
         log_record[key] = value
 
@@ -84,6 +102,14 @@ def _add_record(log_record, key, value):
 class CustomJsonFormatter(jsonlogger.JsonFormatter):
     def add_fields(self, log_record, record, message_dict):
         super(CustomJsonFormatter, self).add_fields(log_record, record, message_dict)
+
+        if log_record.get(IS_STRUCTLOG_KEY) is True:
+            del log_record[IS_STRUCTLOG_KEY]
+        else:
+            # Applying contextvars to non-structlog events
+            contextvars = merge_contextvars(None, None, {})
+            log_record.update(contextvars)
+
         timestamp = datetime.fromtimestamp(record.created, tz=pytz.utc)
         _add_record(log_record, "timestamp", timestamp.isoformat())
         _add_record(

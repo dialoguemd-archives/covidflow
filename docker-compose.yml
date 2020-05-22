@@ -15,10 +15,12 @@ services:
       - TWILIO_AUTH_TOKEN
       - TWILIO_NUMBER
       - LOG_LEVEL=DEBUG
+      - LOG_STYLE=pretty
     volumes:
       - ./core/models/en:/app/models
       - ./core/credentials.yml:/app/credentials.yml
       - ./core/endpoints.yml:/app/endpoints.yml
+      - ./core/channels:/app/channels
     depends_on:
       - action-server
       - tracker-store
@@ -37,10 +39,12 @@ services:
       - TWILIO_AUTH_TOKEN
       - TWILIO_NUMBER
       - LOG_LEVEL=DEBUG
+      - LOG_STYLE=pretty
     volumes:
       - ./core/models/fr:/app/models
       - ./core/credentials.yml:/app/credentials.yml
       - ./core/endpoints.yml:/app/endpoints.yml
+      - ./core/channels:/app/channels
     depends_on:
       - action-server
       - tracker-store
@@ -52,16 +56,16 @@ services:
     ports:
       - 5055:8080
     environment:
-        - LOG_STYLE=pretty
-        - DAILY_CHECKIN_URL_PATTERN=http://localhost:3000/?lng={language}#/rasa/ci/{reminder_id}
-        - REMINDER_ID_HASHIDS_MIN_LENGTH=8
-        - REMINDER_ID_HASHIDS_SALT=abcd1234
-        - SQL_TRACKER_STORE_URL=tracker-store
-        - SQL_TRACKER_STORE_USER=chloe
-        - SQL_TRACKER_STORE_PASSWORD=password
-        - SQL_TRACKER_STORE_DB=chloe
-        - REMINDER_JOB_CORE_ENDPOINT_EN=http://core-en:8080
-        - REMINDER_JOB_CORE_ENDPOINT_FR=http://core-fr:8080
+      - LOG_STYLE=pretty
+      - DAILY_CHECKIN_URL_PATTERN=http://localhost:3000/?lng={language}#/chat/ci/{reminder_id}
+      - REMINDER_ID_HASHIDS_MIN_LENGTH=8
+      - REMINDER_ID_HASHIDS_SALT=abcd1234
+      - SQL_TRACKER_STORE_URL=tracker-store
+      - SQL_TRACKER_STORE_USER=chloe
+      - SQL_TRACKER_STORE_PASSWORD=password
+      - SQL_TRACKER_STORE_DB=chloe
+      - REMINDER_JOB_CORE_ENDPOINT_EN=http://core-en:8080
+      - REMINDER_JOB_CORE_ENDPOINT_FR=http://core-fr:8080
     volumes:
       - ./action-server/covidflow:/app/covidflow
 
@@ -81,7 +85,18 @@ services:
       - ALEMBIC_DATABASE_URI=postgresql+psycopg2://chloe:password@tracker-store:5432/chloe
       - REMINDER_ID_HASHIDS_MIN_LENGTH=8
       - REMINDER_ID_HASHIDS_SALT=abcd1234
-    command: ["./wait-for-it.sh", "tracker-store:5432", "-s", "-t", "120", "--", "alembic", "upgrade", "head"]
+    command:
+      [
+        "./wait-for-it.sh",
+        "tracker-store:5432",
+        "-s",
+        "-t",
+        "120",
+        "--",
+        "alembic",
+        "upgrade",
+        "head",
+      ]
     volumes:
       - ./action-server/alembic.ini:/app/alembic.ini
       - ./action-server/alembic:/app/alembic

@@ -1,0 +1,6 @@
+- user: daily_ci/daily_checkin_invalid_id
+  bot: daily_ci/invalid_url/greet
+- user: deny
+  bot: daily_ci/invalid_url/anything_else
+- user: done
+  bot: daily_ci/invalid_url/goodbye

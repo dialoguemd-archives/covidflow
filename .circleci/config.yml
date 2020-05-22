@@ -139,22 +139,36 @@ workflows:
             branches:
               ignore: master
 
-      - test_integration:
+      - app/test_system:
           name: dev-integration-tests-en
-          context: org-global-v2
+          stage: dev
+          place: ca2
+          component: core-en
           working_directory: core
-          language: en
-          core_endpoint_url: https://${CIRCLE_PROJECT_REPONAME}-pr-${CIRCLE_PR_NUMBER}-core-en.dev.dialoguecorp.com
           requires:
             - deploy-dev-ca2-ephemeral
-      - test_integration:
+          context: org-global-v2
+          filters:
+            branches:
+              ignore: master
+          steps:
+            - run-integration-tests:
+                language: en
+      - app/test_system:
           name: dev-integration-tests-fr
-          context: org-global-v2
+          stage: dev
+          place: ca2
+          component: core-fr
           working_directory: core
-          language: fr
-          core_endpoint_url: https://${CIRCLE_PROJECT_REPONAME}-pr-${CIRCLE_PR_NUMBER}-core-fr.dev.dialoguecorp.com
           requires:
             - deploy-dev-ca2-ephemeral
+          context: org-global-v2
+          filters:
+            branches:
+              ignore: master
+          steps:
+            - run-integration-tests:
+                language: fr
 
       # master deployments
       - app/deploy:
@@ -191,28 +205,36 @@ workflows:
             branches:
               only: master
 
-      - test_integration:
+      - app/test_system:
           name: master-integration-tests-en
+          stage: dev
+          place: ca2
+          component: core-en
+          working_directory: core
+          requires:
+            - deploy-dev-ca2
           context: org-global-v2
           filters:
             branches:
               only: master
-          working_directory: core
-          language: en
-          core_endpoint_url: https://${CIRCLE_PROJECT_REPONAME}-core-en.dev.dialoguecorp.com
-          requires:
-            - deploy-dev-ca2
-      - test_integration:
+          steps:
+            - run-integration-tests:
+                language: en
+      - app/test_system:
           name: master-integration-tests-fr
+          stage: dev
+          place: ca2
+          component: core-fr
+          working_directory: core
+          requires:
+            - deploy-dev-ca2
           context: org-global-v2
           filters:
             branches:
               only: master
-          working_directory: core
-          language: fr
-          core_endpoint_url: https://${CIRCLE_PROJECT_REPONAME}-core-fr.dev.dialoguecorp.com
-          requires:
-            - deploy-dev-ca2
+          steps:
+            - run-integration-tests:
+                language: fr
 
       - app/deploy:
           name: deploy-prod-ca
@@ -247,10 +269,6 @@ aliases:
       type: string
       default: "."
       description: Directory to run post-checkout steps
-  - &param__core_endpoint_url
-    core_endpoint_url:
-      type: string
-      description: URL pointing to the endpoint of Rasa core.
 
 jobs:
   mypy:
@@ -297,6 +315,7 @@ jobs:
             cp Dockerfile ${COMPONENT_PATH}
             cp credentials.yml ${COMPONENT_PATH}
             cp endpoints.yml ${COMPONENT_PATH}
+            cp -r channels ${COMPONENT_PATH}
       - run:
           name: Train the NLU model
           command: |
@@ -306,25 +325,24 @@ jobs:
           root: /app
           paths:
             - core-<<parameters.language>>
-  test_integration:
-    description: Run integration tests against deployed dev service.
-    parameters:
-      <<: *param__working_directory
-      <<: *param__language
-      <<: *param__core_endpoint_url
-    working_directory: ~/project/<<parameters.working_directory>>
-    executor: python/python
-    steps:
-      - setup-project
-      - run:
-          name: Run integration tests
-          command: |
-            echo 'export CORE_ENDPOINT_URL=<<parameters.core_endpoint_url>>' >> $BASH_ENV
-            source $BASH_ENV
-            poetry run python -m rasa_integration_testing ../integration-tests-<<parameters.language>>
 commands:
   setup-project:
     steps:
       - base/setup
       - python/setup
       - python/install_deps
+  run-integration-tests:
+    parameters: 
+      <<: *param__language
+    steps:
+      - python/setup
+      - python/install_deps
+      - run:
+          name: Run integration tests
+          command: |
+            echo 'export CORE_ENDPOINT_URL=${APP_SCHEME}://${APP_HOST}:${APP_PORT}' >> $BASH_ENV
+            source $BASH_ENV
+            poetry run python -m rasa_integration_testing ../integration-tests-<<parameters.language>>
+          environment:
+            INTEGRATION_TESTS_REMINDER_ID_PROFILE_1: NLBAvWPZ
+            INTEGRATION_TESTS_REMINDER_ID_PROFILE_2: qVQGKQKm

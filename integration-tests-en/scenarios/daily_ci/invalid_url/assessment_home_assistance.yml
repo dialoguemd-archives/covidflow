@@ -1,0 +1,8 @@
+- user: daily_ci/daily_checkin_invalid_id
+  bot: daily_ci/invalid_url/greet
+- user: affirm
+  bot: symptoms_severe
+- suspect_reach_moderate
+- suspect_reach_home_assistance
+- user: deny
+  bot: home_assistance/no_help

@@ -1,0 +1,14 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "Cough syrup may help, but please make sure that it doesn't interact with other medications you take or any underlying medical condition"
+    },
+    {
+        "text": "If you're not sure, you should speak to your pharmacist"
+    },
+    {
+        "text": "Do you still have shortness of breath or difficulty breathing?",
+        {{ bot.confirmation_buttons() }}
+    }
+]

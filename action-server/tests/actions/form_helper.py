@@ -1,5 +1,5 @@
 import asyncio
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Text
 from unittest import TestCase
 
 from rasa_sdk import Tracker
@@ -57,11 +57,13 @@ class FormTestCase(TestCase):
             last_action,
         )
 
-    def run_form(self, tracker: Tracker):
+    def run_form(self, tracker: Tracker, domain: Optional[Dict[Text, Any]] = None):
         loop = asyncio.get_event_loop()
 
         self.events = loop.run_until_complete(
-            self.form.run(dispatcher=self.dispatcher, tracker=tracker, domain=None)
+            self.form.run(
+                dispatcher=self.dispatcher, tracker=tracker, domain=domain or {}
+            )
         )
 
         self.templates = [message["template"] for message in self.dispatcher.messages]

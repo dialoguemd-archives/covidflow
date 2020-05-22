@@ -1,0 +1,23 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "You might have recovered. I invite you to stay home as much as possible and comply with social distancing rules. If you go outside, I recommend that you wear a mask"
+    },
+    {
+        "text": "You can find more information, resources and recommendations about Covid-19 [here](https://covid19.dialogue.co/#/info?id=common)"
+    },
+    {
+        "text": "Is there anything else I can help you with?",
+        "buttons": [
+            {
+                "payload": "/ask_question",
+                "title": "I have other questions"
+            },
+            {
+                "payload": "/done",
+                "title": "No thanks"
+            }
+        ]
+    }
+] 

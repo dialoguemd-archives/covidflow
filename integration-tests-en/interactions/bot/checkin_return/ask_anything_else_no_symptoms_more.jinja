@@ -1,0 +1,20 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "OK, you should keep complying with social distancing rules, and if you leave your home, I recommend that you wear a mask"
+    },
+    {
+        "text": "Is there anything else I can help you with?",
+        "buttons": [
+            {
+                "payload": "/ask_question",
+                "title": "I have other questions"
+            },
+            {
+                "payload": "/done",
+                "title": "No thanks"
+            }
+        ]
+    }
+] 

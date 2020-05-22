@@ -1,0 +1,8 @@
+- user: greet
+  bot: welcome
+- user: tested_positive
+  bot: tested_positive/ask_lives_alone
+- user: affirm
+  bot: tested_positive/ask_severe_symptoms_lives_alone
+- user: affirm
+  bot: call_911

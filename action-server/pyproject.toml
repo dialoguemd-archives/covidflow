@@ -20,6 +20,7 @@ backoff = "^1.10.0"
 toolz = "^0.10.0"
 python-json-logger = "^0.1.11"
 sanic = "^19.12.2"
+googlemaps = "^4.4.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "5.4.1" # 5.4.2 breaks pytest-asyncio markers

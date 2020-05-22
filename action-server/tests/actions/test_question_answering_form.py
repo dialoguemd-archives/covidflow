@@ -160,20 +160,26 @@ class TestQuestionAnsweringForm(FormTestCase):
 
         self.assert_events(
             [
+                SlotSet(QUESTION_SLOT, QUESTION),
+                SlotSet(STATUS_SLOT, QuestionAnsweringStatus.OUT_OF_DISTRIBUTION),
+                SlotSet(ANSWERS_SLOT, None),
                 SlotSet(QUESTION_SLOT, None),
+                SlotSet(FEEDBACK_SLOT, None),
                 SlotSet(
                     ASKED_QUESTION_SLOT,
                     {
                         QUESTION_KEY: QUESTION,
                         STATUS_KEY: QuestionAnsweringStatus.OUT_OF_DISTRIBUTION,
+                        ANSWERS_KEY: None,
+                        FEEDBACK_KEY: None,
                     },
                 ),
-                SlotSet(STATUS_SLOT, None),
-                SlotSet(REQUESTED_SLOT, QUESTION_SLOT),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
             ]
         )
 
-        self.assert_templates(["utter_cant_answer", "utter_ask_active_question"])
+        self.assert_templates(["utter_cant_answer"])
 
     def test_provide_feedback_affirm(self):
         tracker = self.create_tracker(

@@ -95,17 +95,7 @@ class QuestionAnsweringForm(FormAction):
             )
 
             if result.status == QuestionAnsweringStatus.OUT_OF_DISTRIBUTION:
-                full_result = {
-                    QUESTION_KEY: value,
-                    STATUS_KEY: result.status,
-                }
                 dispatcher.utter_message(template="utter_cant_answer")
-
-                return {
-                    ASKED_QUESTION_SLOT: full_result,
-                    QUESTION_SLOT: None,
-                    STATUS_SLOT: None,
-                }
 
             if result.status == QuestionAnsweringStatus.SUCCESS and result.answers:
                 dispatcher.utter_message(result.answers[0])

@@ -9,6 +9,7 @@ python = "^3.6.8"
 rasa-integration-testing = "0.1.2"
 python-socketio = "^4.5.1"
 locustio = "^0.14.6"
+python-socketio-client = "^1.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "5.3.4"

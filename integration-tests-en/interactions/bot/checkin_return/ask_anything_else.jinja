@@ -1,0 +1,24 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "Don't forget to take your temperature regularly and monitor your symptoms for any changes"
+    },
+    {
+        "text": "At any time, you can check-in with me to monitor your symptoms"
+    },
+    {% include 'bot/common/home_assistance_not_has_211.jinja' %},
+    {
+        "text": "Is there anything else I can help you with?",
+        "buttons": [
+            {
+                "payload": "/ask_question",
+                "title": "I have other questions"
+            },
+            {
+                "payload": "/done",
+                "title": "No thanks"
+            }
+        ]
+    }
+] 

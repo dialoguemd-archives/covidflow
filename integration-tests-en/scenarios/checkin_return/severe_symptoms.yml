@@ -1,0 +1,6 @@
+- user: greet
+  bot: welcome
+- user: checkin_return
+  bot: checkin_return/ask_severe_symptoms
+- user: affirm
+  bot: call_911

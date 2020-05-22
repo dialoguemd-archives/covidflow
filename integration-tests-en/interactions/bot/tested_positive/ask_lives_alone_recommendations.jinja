@@ -1,0 +1,14 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "Don't forget to take your temperature regularly and monitor your symptoms for any changes"
+    },
+    {
+        "text": "At any time, you can check-in with me to monitor your symptoms"
+    },
+    {
+        "text": "Are you the only person in your household?",
+        {{ bot.confirmation_buttons() }}
+    }
+]

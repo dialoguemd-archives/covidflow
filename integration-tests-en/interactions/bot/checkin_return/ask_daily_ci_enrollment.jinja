@@ -1,0 +1,11 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "Since you still have symptoms, you must continue to self-isolate. It is extremely important that you follow this directive"
+    },
+    {
+        "text": "For more information about self-isolation, and to learn what you can do to protect others, visit [canada.ca](https://www.canada.ca/en/public-health/services/publications/diseases-conditions/covid-19-how-to-isolate-at-home.html)"
+    },
+    {% include 'bot/common/offer_daily_ci_enrollment.jinja' %}
+]

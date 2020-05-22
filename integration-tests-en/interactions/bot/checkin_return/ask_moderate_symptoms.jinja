@@ -1,0 +1,8 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "OK, do you have any of the following:\n- Mild to moderate shortness of breath\n- Inability to lie down because of difficulty breathing\n- Chronic health conditions that you are having difficulty managing because of difficulty breathing\n- Sudden loss of taste or smell",
+        {{ bot.confirmation_buttons() }}
+    }
+]

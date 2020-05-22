@@ -1038,3 +1038,83 @@
 * done
   - utter_please_visit_again
   - action_qa_goodbye
+
+## Test navigation - do nothing
+* navigate_test_locations
+  - action_test_navigation_explanations
+  - utter_ask_test_navigation__continue_no_assessment
+* later
+  - utter_test_navigation__come_back
+  - action_goodbye
+
+## Test navigation - ask question - failure
+* navigate_test_locations
+  - action_test_navigation_explanations
+  - utter_ask_test_navigation__continue_no_assessment
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "failure"}
+  - utter_question_answering_error
+  - utter_ask_assess_after_error
+* deny
+  - utter_try_again_later
+  - action_qa_goodbye
+
+## Test navigation - ask question - need assessment
+* navigate_test_locations
+  - action_test_navigation_explanations
+  - utter_ask_test_navigation__continue_no_assessment
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "need_assessment"}
+  - utter_need_assessment
+  - utter_ask_assess_to_answer
+* done
+  - utter_please_visit_again
+  - action_qa_goodbye
+
+## Test navigation - ask question - success
+* navigate_test_locations
+  - action_test_navigation_explanations
+  - utter_ask_test_navigation__continue_no_assessment
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "success"}
+  - utter_ask_what_next_after_answer
+* done
+  - action_qa_goodbye
+
+## Test navigation - ask question - two questions
+* navigate_test_locations
+  - action_test_navigation_explanations
+  - utter_ask_test_navigation__continue_no_assessment
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "success"}
+  - utter_ask_what_next_after_answer
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "failure"}
+  - utter_question_answering_error
+  - utter_ask_assess_after_error
+* deny
+  - utter_try_again_later
+  - action_qa_goodbye
+
+## Test navigation - navigate tests
+* navigate_test_locations
+  - action_test_navigation_explanations
+  - utter_ask_test_navigation__continue_no_assessment
+* continue
+  - utter_test_navigation__acknowledge_continue
+  - utter_test_navigation__placeholder

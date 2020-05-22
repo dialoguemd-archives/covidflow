@@ -1,6 +1,6 @@
-- user: daily_ci/daily_checkin_invalid_id
-  bot: daily_ci/invalid_url/greet
-- user: affirm
+- user: navigate_tests
+  bot: test_navigation/explanations
+- user: get_assessment
   bot: symptoms_severe
 - suspect_reach_moderate
 - suspect_reach_home_assistance

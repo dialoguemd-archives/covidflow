@@ -1,0 +1,5 @@
+- user: navigate_tests
+  bot: test_navigation/explanations
+- user: get_assessment
+  bot: symptoms_severe
+- assessment_not_infected

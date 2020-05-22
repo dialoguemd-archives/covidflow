@@ -904,3 +904,48 @@ responses:
 
   utter_daily_checkin__invalid_id__visit_dialogue:
     - text: À tout moment, vous pouvez consultez [notre site](https://covid19.dialogue.co/) pour des informations, ou pour une auto-évaluation de vos symptômes
+
+  # Test Navigation - to be translated
+
+  utter_test_navigation__explanations_1:
+    - text: Je peux vous aider à trouver une clinique de dépistage dans votre région
+
+  utter_test_navigation__explanations_2:
+    - text: Selon l’endroit où vous vous trouvez, ou en fonction de la clinique, vous pourriez avoir besoin d’une référence de votre médecin ou d’une infirmière pour obtenir un test
+
+  utter_test_navigation__explanations_3:
+    - text: "Vous pouvez obtenir une référence soit:\n- Auprès de votre médecin, si c’est possible, ou\n- En appelant le {provincial_811} et en discutant de vos symptômes avec une infirmière"
+
+  utter_test_navigation__explanations_4:
+    - text: Pour chaque clinique de dépistage disponible dans votre région, je vais vous donner diverses informations, dont la politique de rendez-vous et de référence
+
+  utter_ask_test_navigation__continue_no_assessment:
+    - text: Voulez-vous que je cherche des cliniques de dépistage maintenant?
+      buttons:
+        - title: Oui
+          payload: /continue
+        - title: Non je vais revenir plus tard
+          payload: /later
+        - title: Non mais je veux évaluer mes symptômes
+          payload: /get_assessment
+        - title: Non mais j’ai d’autres questions
+          payload: /ask_question
+
+  utter_ask_test_navigation__continue_assessment_done:
+    - text: Voulez-vous que je cherche des cliniques de dépistage maintenant?
+      buttons:
+        - title: Oui
+          payload: /continue
+        - title: Non je vais revenir plus tard
+          payload: /later
+        - title: Non mais j’ai d’autres questions
+          payload: /ask_question
+
+  utter_test_navigation__come_back:
+    - text: D’accord. Quand vous serez prêt(e), revenez me voir (https://covid19.dialogue.co/#/chat) et je pourrai vous aider
+
+  utter_test_navigation__acknowledge_continue:
+    - text: D’accord, continuons!
+
+  utter_test_navigation__placeholder:
+    - text: Ce qui suit ramera bientôt jusqu'ici...

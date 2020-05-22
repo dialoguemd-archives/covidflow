@@ -1,17 +1,2 @@
 - suspect
-- user: deny
-  bot: select_province
-- user: province/qc
-  bot: older_65
-- user: deny
-  bot: symptoms_fever
-- user: deny
-  bot: symptoms_moderate
-- user: deny
-  bot: symptoms_mild
-- user: deny
-  bot: close_contact
-- user: deny
-  bot: travel
-- user: deny
-  bot: not_infected
+- assessment_not_infected

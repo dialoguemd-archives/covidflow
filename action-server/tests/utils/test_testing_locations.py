@@ -6,9 +6,9 @@ from unittest.mock import patch
 from aiohttp import ClientResponseError, web
 from aiohttp.test_utils import unused_port
 
+from covidflow.utils.testing_locations import CLINIA_API_ROUTE
+from covidflow.utils.testing_locations import TestingLocation as Location
 from covidflow.utils.testing_locations import (
-    CLINIA_API_ROUTE,
-    TestingLocation,
     _fetch_testing_locations,
     get_testing_locations,
 )
@@ -123,7 +123,7 @@ SAMPLE = {
 
 class TestTestingLocationsClasses(TestCase):
     def test_parse_sample(self):
-        location = TestingLocation(SAMPLE)
+        location = Location(SAMPLE)
 
         self.assertEqual(location.name, SAMPLE["name"])
         self.assertEqual(location.require_referal, SAMPLE["requireReferral"])
@@ -143,7 +143,7 @@ class TestTestingLocationsClasses(TestCase):
         self.assertEqual(location.phones[0].extension, SAMPLE["phones"][0]["extension"])
 
     def test_parse_empty(self):
-        location = TestingLocation({})
+        location = Location({})
 
         self.assertEqual(location.name, None)
         self.assertEqual(location.require_referal, None)

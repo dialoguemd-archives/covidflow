@@ -615,6 +615,19 @@ client = ["requests (>=2.21.0)", "websocket-client (>=0.54.0)"]
 
 [[package]]
 category = "main"
+description = "Engine.IO client"
+name = "python-engineio-client"
+optional = false
+python-versions = "*"
+version = "1.1"
+
+[package.dependencies]
+gevent = ">=1.0.2"
+requests = ">=2.9.1"
+six = ">=1.9.0"
+
+[[package]]
+category = "main"
 description = "Socket.IO server"
 name = "python-socketio"
 optional = false
@@ -628,6 +641,18 @@ six = ">=1.9.0"
 [package.extras]
 asyncio_client = ["aiohttp (>=3.4)", "websockets (>=7.0)"]
 client = ["requests (>=2.21.0)", "websocket-client (>=0.54.0)"]
+
+[[package]]
+category = "main"
+description = "Socket.IO client"
+name = "python-socketio-client"
+optional = false
+python-versions = "*"
+version = "1.1"
+
+[package.dependencies]
+gevent = ">=1.0.2"
+python-engineio-client = ">=1.1"
 
 [[package]]
 category = "main"
@@ -803,7 +828,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "a83fe75b9df01e7028a9db6170a249693fb07767203cb0732cd4796ceb72090b"
+content-hash = "5e814fda7d316f9286c69accbca82c686e23f9958614d62e52f9d0b6cbefb652"
 python-versions = "^3.6.8"
 
 [metadata.files]
@@ -1230,9 +1255,15 @@ python-engineio = [
     {file = "python-engineio-3.12.1.tar.gz", hash = "sha256:2481732d93646998f7372ef0ecf003af7817b82720b881db173c3d50b4887916"},
     {file = "python_engineio-3.12.1-py2.py3-none-any.whl", hash = "sha256:222926adb4bc6e03a8fc8e0ef2a3309f030c1c3f8e0fcc94c9ba214574565f02"},
 ]
+python-engineio-client = [
+    {file = "python-engineio-client-1.1.tar.gz", hash = "sha256:f35a8fb2e5dac6ad4ef93cf09171d118a0a33284e1bf2b36f750616872f3f055"},
+]
 python-socketio = [
     {file = "python-socketio-4.5.1.tar.gz", hash = "sha256:149b98c33f8c3d09273fb4ebeb83781e4dc9411b56b27d9f058bec1bd1ed74b7"},
     {file = "python_socketio-4.5.1-py2.py3-none-any.whl", hash = "sha256:81280cbbb7018d8ecdd006bf6025979733d347c0f2612282c1e21f6ed7d3b55b"},
+]
+python-socketio-client = [
+    {file = "python-socketio-client-1.1.tar.gz", hash = "sha256:373c856bd9698c575e68970c098b6261092b22eb2d69001fe22b6bedf2e17c4a"},
 ]
 pyzmq = [
     {file = "pyzmq-19.0.1-cp27-cp27m-macosx_10_9_intel.whl", hash = "sha256:58688a2dfa044fad608a8e70ba8d019d0b872ec2acd75b7b5e37da8905605891"},

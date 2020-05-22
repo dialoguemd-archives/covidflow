@@ -41,4 +41,4 @@ test:
 		--cov-report html
 
 locust-rasa:
-	poetry run locust -f load_tests/socketio_locustfile.py --no-web -c 5 -r 5 --run-time 1200s
+	poetry run locust -f load_tests/socketio_locustfile.py --no-web -c 5 -r 5 --run-time 30s

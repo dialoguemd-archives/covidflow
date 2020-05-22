@@ -475,7 +475,7 @@ responses:
     - text: "Veuillez essayer de poser vos questions un peu plus tard"
 
   utter_cant_answer:
-    - text: "Je suis désolée, je ne peux pas répondre à votre question. Veuillez essayer de nouveau"
+    - text: "Je suis désolée, je ne peux pas répondre à votre question"
 
   utter_need_assessment:
     - text: "Il semble que vous ayez besoin d’aide pour évaluer vos symptômes"
@@ -504,11 +504,29 @@ responses:
         - title: "J'ai terminé"
           payload: "/done"
 
-  utter_ask_another_question:
+  utter_ask_other_questions_after_answer:
+    - text: "Avez-vous d'autres questions?"
+      buttons:
+        - title: Oui
+          payload: "/ask_question"
+        - title: "Non j'ai terminé"
+          payload: "/done"
+
+  utter_ask_another_question_assessment_done:
     - text: "Aimeriez-vous poser une autre question?"
       buttons:
         - title: Oui
           payload: "/ask_question"
+        - title: "Non j'ai terminé"
+          payload: "/done"
+
+  utter_ask_another_question_no_assessment:
+    - text: "Aimeriez-vous poser une autre question?"
+      buttons:
+        - title: Oui
+          payload: "/ask_question"
+        - title: Non évaluer mes symptômes
+          payload: /get_assessment
         - title: "Non j'ai terminé"
           payload: "/done"
 

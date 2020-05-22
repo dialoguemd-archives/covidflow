@@ -32,8 +32,8 @@
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
+  - slot{"question_answering_status": "out_of_distribution"}
+  - utter_ask_another_question_assessment_done
 * done
   - action_qa_goodbye
 
@@ -101,14 +101,7 @@
   - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_visit_package
   - utter_ask_anything_else
-* ask_question
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_try_again_later
-  - action_qa_goodbye
+* done
   - action_goodbye
 
 ## suspect - no symptoms contact risk
@@ -148,7 +141,7 @@
   - form{"name": null}
   - slot{"question_answering_status": "need_assessment"}
   - utter_need_assessment_already_done
-  - utter_ask_another_question
+  - utter_ask_another_question_assessment_done
 * done
   - utter_please_visit_again
   - action_qa_goodbye
@@ -179,8 +172,15 @@
   - form{"name": null}
   - action_visit_package
   - utter_ask_anything_else
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "out_of_distribution"}
+  - utter_ask_another_question_assessment_done
 * done
-  - action_goodbye
+  - utter_please_visit_again
+  - action_qa_goodbye
 
 ## tested positive - moderate symptoms
 * tested_positive
@@ -227,13 +227,13 @@
   - form{"name": null}
   - slot{"question_answering_status": "need_assessment"}
   - utter_need_assessment_already_done
-  - utter_ask_another_question
+  - utter_ask_another_question_assessment_done
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
+  - slot{"question_answering_status": "out_of_distribution"}
+  - utter_ask_another_question_assessment_done
 * done
   - action_qa_goodbye
 
@@ -277,8 +277,14 @@
   - form{"name": null}
   - action_visit_package
   - utter_ask_anything_else
-* done
-  - action_goodbye
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "failure"}
+  - utter_question_answering_error
+  - utter_try_again_later
+  - action_qa_goodbye
 
 ## tested positive - mild symptoms not worse
 * tested_positive
@@ -368,14 +374,14 @@
   - form{"name": "question_answering_form"}
   - form{"name": null}
   - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
+  - utter_ask_other_questions_after_answer
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
   - slot{"question_answering_status": "need_assessment"}
   - utter_need_assessment_already_done
-  - utter_ask_another_question
+  - utter_ask_another_question_assessment_done
 * done
   - utter_please_visit_again
   - action_qa_goodbye
@@ -411,7 +417,7 @@
   - form{"name": null}
   - slot{"question_answering_status": "need_assessment"}
   - utter_need_assessment_already_done
-  - utter_ask_another_question
+  - utter_ask_another_question_assessment_done
 * done
   - utter_please_visit_again
   - action_qa_goodbye
@@ -475,7 +481,7 @@
   - form{"name": "question_answering_form"}
   - form{"name": null}
   - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
+  - utter_ask_other_questions_after_answer
 * done
   - action_qa_goodbye
 
@@ -541,6 +547,18 @@
 * done
   - action_qa_goodbye
 
+# QA - out of distribution
+* greet{"metadata":{}}
+  - action_greeting_messages
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "out_of_distribution"}
+  - utter_ask_another_question_no_assessment
+* done
+  - action_qa_goodbye
+
 ## QA - success - another question
 * greet{"metadata":{}}
   - action_greeting_messages
@@ -559,7 +577,25 @@
 * done
   - action_qa_goodbye
 
-## QA - need_assessment - no assessment after
+# QA - out of distribution - another question
+* greet{"metadata":{}}
+  - action_greeting_messages
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "out_of_distribution"}
+  - utter_ask_another_question_no_assessment
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "out_of_distribution"}
+  - utter_ask_another_question_no_assessment
+* done
+  - action_qa_goodbye
+
+## QA - need assessment - no assessment after
 * greet{"metadata":{}}
   - action_greeting_messages
 * ask_question
@@ -640,7 +676,7 @@
   - form{"name": "question_answering_form"}
   - form{"name": null}
   - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
+  - utter_ask_other_questions_after_answer
 * done
   - action_qa_goodbye
 
@@ -668,7 +704,7 @@
   - form{"name": null}
   - slot{"question_answering_status": "need_assessment"}
   - utter_need_assessment_already_done
-  - utter_ask_another_question
+  - utter_ask_another_question_assessment_done
 * done
   - action_qa_goodbye
 
@@ -690,8 +726,15 @@
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
   - utter_ask_anything_else
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "out_of_distribution"}
+  - utter_ask_another_question_assessment_done
 * done
-  - action_goodbye
+  - utter_please_visit_again
+  - action_qa_goodbye
 
 ## daily check-in - feel no change - moderate symptoms
 * daily_checkin{"metadata":{}}
@@ -736,15 +779,15 @@
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
+  - slot{"question_answering_status": "out_of_distribution"}
+  - utter_ask_another_question_assessment_done
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
   - slot{"question_answering_status": "need_assessment"}
   - utter_need_assessment_already_done
-  - utter_ask_another_question
+  - utter_ask_another_question_assessment_done
 * done
   - action_qa_goodbye
 
@@ -766,8 +809,15 @@
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
   - utter_ask_anything_else
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "out_of_distribution"}
+  - utter_ask_another_question_assessment_done
 * done
-  - action_goodbye
+  - utter_please_visit_again
+  - action_qa_goodbye
 
 ## daily check-in - feel better - moderate symptoms
 * daily_checkin{"metadata":{}}
@@ -787,8 +837,14 @@
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
   - utter_ask_anything_else
-* done
-  - action_goodbye
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "failure"}
+  - utter_question_answering_error
+  - utter_try_again_later
+  - action_qa_goodbye
 
 ## daily check-in - feel better - mild symptoms
 * daily_checkin{"metadata":{}}
@@ -883,8 +939,15 @@
   - action_suspect_moderate_symptoms_final_recommendations
   - action_visit_package
   - utter_ask_anything_else
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "success"}
+  - utter_ask_other_questions_after_answer
 * done
-  - action_goodbye
+  - utter_please_visit_again
+  - action_qa_goodbye
 
 ## daily check-in - invalid ID - wants assessment - mild symptoms
 * daily_checkin{"metadata":{}}
@@ -930,7 +993,7 @@
   - form{"name": null}
   - slot{"question_answering_status": "need_assessment"}
   - utter_need_assessment_already_done
-  - utter_ask_another_question
+  - utter_ask_another_question_assessment_done
 * done
   - utter_please_visit_again
   - action_qa_goodbye
@@ -996,10 +1059,11 @@
   - form{"name": null}
   - slot{"question_answering_status": "failure"}
   - utter_question_answering_error
+* deny
   - utter_try_again_later
   - action_qa_goodbye
 
-## daily check-in - invalid ID - ask question - success two questions
+## daily check-in - invalid ID - ask question - ood two questions
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin
   - slot{"invalid_reminder_id": true}
@@ -1010,15 +1074,15 @@
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
+  - slot{"question_answering_status": "out_of_distribution"}
+  - utter_ask_another_question_no_assessment
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
   - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
-* done
+  - slot{"question_answering_status": "failure"}
+  - utter_question_answering_error
+  - utter_try_again_later
   - action_qa_goodbye
 
 ## daily check-in - invalid ID - ask question - need assessment

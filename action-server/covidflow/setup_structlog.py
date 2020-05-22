@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Any, Dict, Optional
 
 import pytz
+import sanic
 import structlog
 from pythonjsonlogger import jsonlogger
 from structlog.contextvars import merge_contextvars
@@ -36,9 +37,13 @@ def setup_structlog(
         default = "pretty" if sys.stdout.isatty() else "json"
         log_style = environ.get("log_style", default)
 
+    rasa_handler = logging.StreamHandler()
+    sanic.log.access_logger.handlers.append(rasa_handler)
+    sanic.log.error_logger.handlers.append(rasa_handler)
+    sanic.log.logger.handlers.append(rasa_handler)
+
     if not logging.root.handlers:
-        handler = logging.StreamHandler()
-        logging.root.handlers.append(handler)
+        logging.root.handlers.append(rasa_handler)
 
     if log_style == "pretty":
         processors = [
@@ -66,9 +71,10 @@ def setup_structlog(
             structlog.stdlib.render_to_log_kwargs,
             _add_structlog_indicator,
         ]
+        rasa_handler.setFormatter(CustomJsonFormatter())
+
         for handler in logging.root.handlers:  # type: ignore
             handler.setFormatter(CustomJsonFormatter())
-
     else:
         raise NotImplementedError(f"LOG_STYLE='{log_style}' is not implemented!")
 

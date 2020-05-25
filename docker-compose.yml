@@ -21,6 +21,7 @@ services:
       - ./core/credentials.yml:/app/credentials.yml
       - ./core/endpoints.yml:/app/endpoints.yml
       - ./core/channels:/app/channels
+      - ./core/core:/app/core
     depends_on:
       - action-server
       - tracker-store
@@ -45,6 +46,7 @@ services:
       - ./core/credentials.yml:/app/credentials.yml
       - ./core/endpoints.yml:/app/endpoints.yml
       - ./core/channels:/app/channels
+      - ./core/core:/app/core
     depends_on:
       - action-server
       - tracker-store

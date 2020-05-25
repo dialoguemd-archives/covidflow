@@ -11,6 +11,7 @@ structlog = "^20.1.0"
 python-json-logger = "^0.1.11"
 pytz = "^2020.1"
 analytics-python = "^1.2.9"
+sanic = "^19.12.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "5.3.4"
@@ -22,7 +23,6 @@ mypy = "0.770"
 pep8-naming = "0.10.0"
 pylama = "^7.7.1"
 "ruamel.yaml" = "^0.16.10"
-sanic = "^19.12.2"
 
 [build-system]
 requires = ["poetry>=0.12"]

@@ -22,7 +22,7 @@ class LocustRunner(ScenarioRunner):
         self._interaction_loader = interaction_loader
         self._scenario_fragment_loader = scenario_fragment_loader
 
-    def run(self, scenario: Scenario, client: Client, session_id: str) -> None:
+    def run(self, scenario: Scenario, client: Client) -> None:
         interactions: List[Interaction] = self._resolve_interactions(scenario)
         start_time = time.time()
         accumulated_messages = []
@@ -51,7 +51,7 @@ class LocustRunner(ScenarioRunner):
 
         def user_uttered(interaction: Interaction):
             start_time = time.time()
-            user_input = {SESSION_ID_KEY: session_id}
+            user_input = {SESSION_ID_KEY: client.sid}
             user_input.update(
                 self._interaction_loader.render_user_turn(interaction.user)
             )

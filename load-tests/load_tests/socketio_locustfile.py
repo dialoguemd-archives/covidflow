@@ -1,10 +1,8 @@
 import os
-import time
 from pathlib import Path
 from typing import List
 
 from locust import Locust, TaskSet, between, task
-from rasa_integration_testing.helper import generate_tracker_id_from_scenario_name
 from rasa_integration_testing.interaction import InteractionLoader
 from rasa_integration_testing.scenario import (
     Scenario,
@@ -13,7 +11,6 @@ from rasa_integration_testing.scenario import (
 )
 from socketio import Client
 
-from load_tests.constants import SESSION_ID_KEY
 from load_tests.runner import LocustRunner
 
 ENV_INTEGRATION_TEST_PATH = "INTEGRATION_TEST_PATH"
@@ -41,9 +38,8 @@ def _create_scenario_task(scenario: Scenario):
     def _scenario_task(self) -> None:
         client = Client()
         client.connect(os.environ[ENV_LOAD_TEST_TARGET_URL])
-        session_id = generate_tracker_id_from_scenario_name(time.time(), scenario.name)
-        client.emit("session_request", {SESSION_ID_KEY: session_id})
-        runner.run(scenario, client, session_id)
+        client.emit("session_request")
+        runner.run(scenario, client)
 
     return _scenario_task
 

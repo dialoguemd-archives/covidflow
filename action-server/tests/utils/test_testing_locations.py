@@ -6,6 +6,7 @@ from unittest.mock import patch
 from aiohttp import ClientResponseError, web
 from aiohttp.test_utils import unused_port
 
+from covidflow.utils.geocoding import Coordinates
 from covidflow.utils.testing_locations import CLINIA_API_ROUTE
 from covidflow.utils.testing_locations import TestingLocation as Location
 from covidflow.utils.testing_locations import (
@@ -58,7 +59,7 @@ class TestGetTestingLocations(TestCase):
 
     def _get_testing_locations(self):
         loop = asyncio.get_event_loop()
-        return loop.run_until_complete(get_testing_locations(45, -75))
+        return loop.run_until_complete(get_testing_locations(Coordinates(45, -75)))
 
     def test_empty_result(self):
         self._setUp(create_api_success())
@@ -129,7 +130,9 @@ class TestTestingLocationsClasses(TestCase):
         self.assertEqual(location.require_referal, SAMPLE["requireReferral"])
         self.assertEqual(location.require_appointment, SAMPLE["requireAppointment"])
         self.assertEqual(location.coordinates[0], SAMPLE["_geoPoint"]["lat"])
+        self.assertEqual(location.coordinates.latitude, SAMPLE["_geoPoint"]["lat"])
         self.assertEqual(location.coordinates[1], SAMPLE["_geoPoint"]["lon"])
+        self.assertEqual(location.coordinates.longitude, SAMPLE["_geoPoint"]["lon"])
         self.assertEqual(location.clientele, SAMPLE["clientele"])
         self.assertEqual(location.websites, SAMPLE["websites"])
 
@@ -142,13 +145,13 @@ class TestTestingLocationsClasses(TestCase):
         self.assertEqual(location.phones[0].number, SAMPLE["phones"][0]["number"])
         self.assertEqual(location.phones[0].extension, SAMPLE["phones"][0]["extension"])
 
-    def test_parse_empty(self):
-        location = Location({})
+    def test_parse_empty_except_geopoint(self):
+        location = Location({"_geoPoint": {"lon": 1, "lat": 0}})
 
         self.assertEqual(location.name, None)
         self.assertEqual(location.require_referal, None)
         self.assertEqual(location.require_appointment, None)
-        self.assertEqual(location.coordinates, None)
+        self.assertEqual(location.coordinates, (0.0, 1.0))
         self.assertEqual(location.clientele, None)
         self.assertEqual(location.websites, [])
         self.assertEqual(location.address, None)

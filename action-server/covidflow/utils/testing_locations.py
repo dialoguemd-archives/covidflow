@@ -1,9 +1,11 @@
 from copy import deepcopy
-from typing import Iterable, Optional, Tuple
+from typing import List, Optional
 
 import backoff
 import structlog
 from aiohttp import ClientError, ClientSession
+
+from .geocoding import Coordinates
 
 logger = structlog.get_logger()
 
@@ -53,8 +55,8 @@ class TestingLocationPhone:
         self.raw_phone = raw_phone_data
 
     @property
-    def number(self) -> Optional[str]:
-        return self.raw_phone.get("number")
+    def number(self) -> str:
+        return self.raw_phone["number"]
 
     @property
     def extension(self) -> Optional[str]:
@@ -87,31 +89,34 @@ class TestingLocation:
     def require_appointment(self) -> Optional[bool]:
         return self.raw_data.get("requireAppointment")
 
+    # Raises if there is no geopoint because we depend on it
     @property
-    def coordinates(self) -> Optional[Tuple[float, float]]:
-        geo_point = self.raw_data.get("_geoPoint")
-        if geo_point is None:
-            return None
-        return (float(geo_point.get("lat")), float(geo_point.get("lon")))
+    def coordinates(self) -> Coordinates:
+        geo_point = self.raw_data["_geoPoint"]
+        return Coordinates(geo_point.get("lat"), geo_point.get("lon"))
 
     @property
     def clientele(self) -> Optional[str]:
         return self.raw_data.get("clientele")
 
     @property
-    def websites(self) -> Iterable[str]:
+    def websites(self) -> List[str]:
         return self.raw_data.get("websites", [])
+
+    @property
+    def description(self) -> dict:
+        return self.raw_data.get("description", {})
 
     def __repr__(self):
         return repr(self.raw_data)
 
 
 async def _fetch_testing_locations(
-    session: ClientSession, latitude: float, longitude: float, page: int = 0
+    session: ClientSession, coordinates: Coordinates, page: int = 0
 ):
     body = {
         **DEFAULT_SEARCH_PARAMETERS,
-        LOCATION_KEY: f"{latitude},{longitude}",
+        LOCATION_KEY: f"{coordinates[0]},{coordinates[1]}",
         PAGE_KEY: page,
     }
 
@@ -124,29 +129,27 @@ async def _fetch_testing_locations(
 
 @backoff.on_exception(backoff.expo, ClientError, max_time=3)
 async def _fetch_testing_locations_with_backoff(
-    session: ClientSession, latitude: float, longitude: float, page: int = 0
+    session: ClientSession, coordinates: Coordinates, page: int = 0
 ):
     return await _fetch_testing_locations(
-        session=session, latitude=latitude, longitude=longitude, page=page
+        session=session, coordinates=coordinates, page=page
     )
 
 
-async def get_testing_locations(
-    latitude: float, longitude: float
-) -> Iterable[TestingLocation]:
+async def get_testing_locations(coordinates: Coordinates) -> List[TestingLocation]:
     async with ClientSession(raise_for_status=True) as session:
         result = await _fetch_testing_locations_with_backoff(
-            session=session, latitude=latitude, longitude=longitude
+            session=session, coordinates=coordinates
         )
 
         if result is None or HITS_KEY not in result:
             logger.debug(
-                f"No testing location found for coordinates {latitude},{longitude}"
+                f"No testing location found for coordinates {coordinates[0]},{coordinates[1]}"
             )
             return []
 
         hits = result[HITS_KEY]
         logger.debug(
-            f"Found {len(hits)} testing location for coordinates {latitude},{longitude}"
+            f"Found {len(hits)} testing location for coordinates {coordinates[0]},{coordinates[1]}"
         )
         return [TestingLocation(i) for i in hits]

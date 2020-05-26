@@ -57,3 +57,4 @@ HAS_CONTACT_RISK_SLOT = "has_contact_risk"
 
 # Shared with stories
 INVALID_REMINDER_ID_SLOT = "invalid_reminder_id"
+TEST_NAVIGATION_SUCCESS_SLOT = "test_navigation_success"

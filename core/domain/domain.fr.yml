@@ -444,14 +444,12 @@ responses:
     - text: "Je peux répondre à vos questions sur une variété de sujets entourant la Covid-19"
 
   utter_qa_disclaimer:
-    - text:
-        "Veuillez noter que pour le moment, je suis en mesure de répondre à un
+    - text: "Veuillez noter que pour le moment, je suis en mesure de répondre à un
         nombre limité de questions, mais je m'améliore constamment et j'apprends
         à l'aide des questions que vous me posez"
 
   utter_qa_sample:
-    - text:
-        "Voici des exemples de questions que vous pouvez
+    - text: "Voici des exemples de questions que vous pouvez
         poser:\n{sample_questions}"
 
   utter_qa_sample_animal:
@@ -463,8 +461,7 @@ responses:
   utter_qa_sample_contagion:
     - text: "Si nous avons Covid-19, combien de temp sommes-nous contagieux?"
     - text: "Combien de temps sommes-nous contagieux quand nous avons Covid-19?"
-    - text:
-        "Après la disparition des symptômes, combien de temps une personne reste
+    - text: "Après la disparition des symptômes, combien de temps une personne reste
         contagieuse?"
     - text: "Combien de temps une personne est-elle contagieuse?"
     - text: "Suis-je contagieux longtemps après que j'ai contracté le virus?"
@@ -472,17 +469,13 @@ responses:
   utter_qa_sample_resistance:
     - text: "Est-il vrai que la chaleur tue le coronavirus?"
     - text: "Combien de temp le virus vit-il sur des surfaces?"
-    - text:
-        "Pour combien de temps COVID19 peut rester en vie sur des surfaces
+    - text: "Pour combien de temps COVID19 peut rester en vie sur des surfaces
         différentes?"
-    - text:
-        "Est-il vrai que Covid-19 peut survivre jusqu'à quelques jours sur les
+    - text: "Est-il vrai que Covid-19 peut survivre jusqu'à quelques jours sur les
         surfaces dures?"
-    - text:
-        "Combien de temps le virus survit-il sur une surface comme une poignée
+    - text: "Combien de temps le virus survit-il sur une surface comme une poignée
         de porte?"
-    - text:
-        "Combien de temps est-ce que la Covid 19 peut rester sur des surfaces?"
+    - text: "Combien de temps est-ce que la Covid 19 peut rester sur des surfaces?"
 
   utter_qa_sample_cure:
     - text: "Combien de temps faudra-t-il pour développer un vaccin?"
@@ -499,8 +492,7 @@ responses:
     - text: "Comment puis-je distinguer entre la grippe et le coronavirus?"
     - text: "Quelle est la différence entre Covid-19 et la grippe?"
     - text: "Comment différenciez-vous entre Covid et la grippe?"
-    - text:
-        "Quelle est la différence entre les symptômes de la grippe et Covid-19?"
+    - text: "Quelle est la différence entre les symptômes de la grippe et Covid-19?"
     - text: "Comment faire la différence entre Covid et une simple grippe?"
     - text: "J'ai un mal de tête et une gorge qui démange. Suis-je à risque?"
     - text: "Comment puis-je savoir si j'ai le coronavirus?"
@@ -535,8 +527,7 @@ responses:
     - text: "Comment prévenir la propagation de Covid-19?"
     - text: "Comment puis-je me protéger contre la Covid-19?"
     - text: "Précautions à prendre?"
-    - text:
-        "Est-ce que me laver les mains est vraiment la meilleure façon de
+    - text: "Est-ce que me laver les mains est vraiment la meilleure façon de
         prévenir la transmission?"
     - text: "Dois-je pratiquer la distanciation sociale?"
     - text: "Qu'est-ce que la distanciation sociale?"
@@ -556,15 +547,13 @@ responses:
     - text: "Suis-je autorisé à aller à l'extérieur?"
 
   utter_qa_sample_stats:
-    - text:
-        "Où puis-je trouver les statistiques à jour sur les cas et les décès?"
+    - text: "Où puis-je trouver les statistiques à jour sur les cas et les décès?"
     - text: "Combien de cas à Montréal?"
     - text: "Combien de personnes sont mortes à ce jour?"
     - text: "Combien de cas au Québec?"
     - text: "Combien de personnes sont infectées au Québec?"
     - text: "Combien de cas sont aux États-Unis?"
-    - text:
-        "De la population infectée dans le monde entier quel sera le rapport des
+    - text: "De la population infectée dans le monde entier quel sera le rapport des
         personnes asymptomatiques?"
 
   utter_ask_active_question:
@@ -1086,5 +1075,84 @@ responses:
   utter_test_navigation__acknowledge_continue:
     - text: D’accord, continuons!
 
-  utter_test_navigation__placeholder:
-    - text: Ce qui suit ramera bientôt jusqu'ici...
+  utter_ask_test_navigation__postal_code:
+    - text: Pour trouver la clinique la plus près, veuillez entrer votre code postal
+
+  utter_test_navigation__invalid_postal_code:
+    - text: Je suis désolée, ce code postal n’est pas valide. Veuillez essayer de nouveau
+
+  utter_test_navigation__invalid_postal_code_max:
+    - text: Je suis désolée, ce n’est toujours pas un code postal valide. Je ne serai pas en mesure de chercher une clinique
+
+  utter_test_navigation__could_not_fetch_1:
+    - text: Je suis désolée, je ne suis pas en mesure de trouver de clinique en ce moment
+
+  utter_test_navigation__could_not_fetch_2:
+    - text: Veuillez essayer plus tard
+
+  utter_test_navigation__no_locations:
+    - text: Je suis désolée, je ne trouve aucune clinique à proximité de cet emplacement
+
+  utter_test_navigation__one_location:
+    - text: J’ai trouvé une clinique de dépistage dans votre région
+
+  utter_test_navigation__many_locations_1:
+    - text: J’ai trouvé {nb_testing_sites} cliniques de dépistage dans votre région
+
+  utter_test_navigation__many_locations_2:
+    - text: Pour chaque clinique, vous pouvez obtenir les coordonnées, l’itinéraire et les heures d’ouverture
+
+  utter_test_navigation__many_location_3:
+    - text: Vous devrez communiquer directement avec la clinique pour plus d’information ou pour prendre rendez-vous pour un test
+
+  utter_test_navigation__display_titles:
+    - custom:
+        call_button: "Appeler le "
+        directions_button: "Itinéraire"
+
+  utter_ask_test_navigation__try_different_address:
+    - text: Voudriez-vous essayer une autre adresse?
+      buttons:
+        - title: Oui
+          payload: "/affirm"
+        - title: Non
+          payload: "/deny"
+
+  utter_test_navigation__acknowledge:
+    - text: D'accord
+
+  utter_test_navigation__what_next_no_assessment:
+    - text: Que puis-je faire d’autre pour vous aider?
+      buttons:
+        - title: Évaluer mes symptômes
+          payload: /get_assessment
+        - title: J’ai d’autres questions
+          payload: /ask_question
+        - title: J’ai terminé
+          payload: /done
+
+  utter_test_navigation__what_next_assessment_done:
+    - text: Que puis-je faire d’autre pour vous aider?
+      buttons:
+        - title: J’ai d’autres questions
+          payload: /ask_question
+        - title: J’ai terminé
+          payload: /done
+
+  utter_test_navigation__anything_else_no_assessment:
+    - text: Puis-je faire autre chose pour vous aider?
+      buttons:
+        - title: Oui évaluer mes symptômes
+          payload: /get_assessment
+        - title: Oui j’ai des questions
+          payload: /ask_question
+        - title: Non j’ai terminé
+          payload: /done
+
+  utter_test_navigation__anything_else_assessment_done:
+    - text: Puis-je faire autre chose pour vous aider?
+      buttons:
+        - title: Oui j’ai des questions
+          payload: /ask_question
+        - title: Non j’ai terminé
+          payload: /done

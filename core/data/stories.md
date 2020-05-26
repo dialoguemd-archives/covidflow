@@ -1111,7 +1111,7 @@
   - utter_test_navigation__come_back
   - action_goodbye
 
-## Test navigation - ask question - failure
+## Test navigation - early ask question - failure
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue_no_assessment
@@ -1126,7 +1126,7 @@
   - utter_try_again_later
   - action_qa_goodbye
 
-## Test navigation - ask question - need assessment
+## Test navigation - early ask question - need assessment
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue_no_assessment
@@ -1141,7 +1141,7 @@
   - utter_please_visit_again
   - action_qa_goodbye
 
-## Test navigation - ask question - success
+## Test navigation - early ask question - success
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue_no_assessment
@@ -1154,7 +1154,7 @@
 * done
   - action_qa_goodbye
 
-## Test navigation - ask question - two questions
+## Test navigation - early ask question - two questions
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue_no_assessment
@@ -1175,10 +1175,52 @@
   - utter_try_again_later
   - action_qa_goodbye
 
-## Test navigation - navigate tests
+## Test navigation - navigate tests - failure
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue_no_assessment
 * continue
   - utter_test_navigation__acknowledge_continue
-  - utter_test_navigation__placeholder
+  - test_navigation_form
+  - form{"name": "test_navigation_form"}
+  - form{"name": null}
+  - slot{"test_navigation_success": false}
+  - utter_test_navigation__anything_else_no_assessment
+* done
+  - action_goodbye
+
+## Test navigation - navigate tests - success
+* navigate_test_locations
+  - action_test_navigation_explanations
+  - utter_ask_test_navigation__continue_no_assessment
+* continue
+  - utter_test_navigation__acknowledge_continue
+  - test_navigation_form
+  - form{"name": "test_navigation_form"}
+  - form{"name": null}
+  - slot{"test_navigation_success": true}
+  - utter_test_navigation__what_next_no_assessment
+* done
+  - action_goodbye
+
+## Test navigation - navigate tests - success - question
+* navigate_test_locations
+  - action_test_navigation_explanations
+  - utter_ask_test_navigation__continue_no_assessment
+* continue
+  - utter_test_navigation__acknowledge_continue
+  - test_navigation_form
+  - form{"name": "test_navigation_form"}
+  - form{"name": null}
+  - slot{"test_navigation_success": true}
+  - utter_test_navigation__what_next_no_assessment
+* ask_question
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "failure"}
+  - utter_question_answering_error
+  - utter_ask_assess_after_error
+* deny
+  - utter_try_again_later
+  - action_qa_goodbye

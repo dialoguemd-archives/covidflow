@@ -1,4 +1,3 @@
-# type: ignore
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -31,12 +30,6 @@ from .form_helper import FormTestCase
 FIRST_NAME = "John"
 PHONE_NUMBER = "15141234567"
 VALIDATION_CODE = "4567"
-
-INITIAL_SLOT_VALUES = {
-    PHONE_TRY_COUNTER_SLOT: 0,
-    CODE_TRY_COUNTER_SLOT: 0,
-    WANTS_CANCEL_SLOT: False,
-}
 
 
 def AsyncMock(*args, **kwargs):

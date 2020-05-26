@@ -1,4 +1,3 @@
-# type: ignore
 from unittest import TestCase, skip
 from unittest.mock import patch
 

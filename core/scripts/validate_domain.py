@@ -28,6 +28,7 @@ RESPONSE_VARIANTS_EXCLUSIONS = {
     "utter_qa_sample_tests",
     "utter_qa_sample_walk",
     "utter_qa_sample_stats",
+    "utter_test_navigation__display_titles",
 }
 
 

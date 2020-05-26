@@ -444,14 +444,12 @@ responses:
     - text: "I can help answer your questions about Covid-19, on many different topics"
 
   utter_qa_disclaimer:
-    - text:
-        "Please note that at the moment, I can provide answers to a limited
+    - text: "Please note that at the moment, I can provide answers to a limited
         number of questions, but I'm constantly improving and learning from the
         questions you ask me"
 
   utter_qa_sample:
-    - text:
-        "Here are some examples of questions you can ask:\n{sample_questions}"
+    - text: "Here are some examples of questions you can ask:\n{sample_questions}"
 
   utter_qa_sample_animal:
     - text: "Can my cat get the virus?"
@@ -462,8 +460,7 @@ responses:
   utter_qa_sample_contagion:
     - text: "If we have covid-19, how long are we contagious?"
     - text: "How long are we contagious when we have COVID-19?"
-    - text:
-        "After symptoms disappear, how long does a person remain contagious?"
+    - text: "After symptoms disappear, how long does a person remain contagious?"
     - text: "How long is a person contagious?"
     - text: "Am I contagious long after I get the virus?"
 
@@ -471,8 +468,7 @@ responses:
     - text: "Is it true that warmth kills Coronavirus?"
     - text: "How long does the virus live on surfaces?"
     - text: "How long COVID19 can stay alive on different surfaces?"
-    - text:
-        "Is it true that COVID-19 can survive up to a few days on hard surfaces?"
+    - text: "Is it true that COVID-19 can survive up to a few days on hard surfaces?"
     - text: "How long does the virus survive on a surface like a doorknob?"
     - text: "How long is COVID-19 staying on surfaces?"
 
@@ -496,8 +492,7 @@ responses:
     - text: "How do I distinguish between the flu and coronavirus?"
     - text: "What is the difference between covid-19 and influenza?"
     - text: "How do you differentiate between covid and flu?"
-    - text:
-        "What is the difference between the symptoms of influenza and COVID-19?"
+    - text: "What is the difference between the symptoms of influenza and COVID-19?"
     - text: "How to tell the difference between covid and a simple flu?"
     - text: "What should I do if I am short of breath?"
     - text: "How to know if I have COVID-19 or not?"
@@ -546,8 +541,7 @@ responses:
     - text: "Am I allowed to go outside?"
 
   utter_qa_sample_stats:
-    - text:
-        "From the infected worldwide population what will be the ratio of
+    - text: "From the infected worldwide population what will be the ratio of
         asymptomatic people?"
     - text: "Where can I find most up to date numbers on cases and deaths?"
     - text: "How many cases in Montreal?"
@@ -1075,5 +1069,84 @@ responses:
   utter_test_navigation__acknowledge_continue:
     - text: OK, let’s continue!
 
-  utter_test_navigation__placeholder:
-    - text: What follows will row to here soon...
+  utter_ask_test_navigation__postal_code:
+    - text: To find the nearest testing sites, please type in your postal code
+
+  utter_test_navigation__invalid_postal_code:
+    - text: I’m sorry, this is not a valid postal code. Please try again
+
+  utter_test_navigation__invalid_postal_code_max:
+    - text: I’m sorry, this is still not a valid postal code. I will not be able to search for testing sites
+
+  utter_test_navigation__could_not_fetch_1:
+    - text: I’m sorry, I’m not able to find any testing sites at the moment
+
+  utter_test_navigation__could_not_fetch_2:
+    - text: Please try again later
+
+  utter_test_navigation__no_locations:
+    - text: I’m sorry, I can’t find any sites near that address
+
+  utter_test_navigation__one_location:
+    - text: I found 1 testing site in your area
+
+  utter_test_navigation__many_locations_1:
+    - text: I found {nb_testing_sites} testing sites in your area
+
+  utter_test_navigation__many_locations_2:
+    - text: For each testing site, you can get detailed contact information, directions and opening hours
+
+  utter_test_navigation__many_location_3:
+    - text: You will need to contact the testing site directly for more information or to make an appointment to get tested
+
+  utter_test_navigation__display_titles:
+    - custom:
+        call_button: "Call "
+        directions_button: "Directions"
+
+  utter_ask_test_navigation__try_different_address:
+    - text: Would you like to try a different address?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No
+          payload: "/deny"
+
+  utter_test_navigation__acknowledge:
+    - text: OK
+
+  utter_test_navigation__what_next_no_assessment:
+    - text: What else may I help you with?
+      buttons:
+        - title: Assess my symptoms
+          payload: /get_assessment
+        - title: I have other questions
+          payload: /ask_question
+        - title: I’m done
+          payload: /done
+
+  utter_test_navigation__what_next_assessment_done:
+    - text: What else may I help you with?
+      buttons:
+        - title: I have other questions
+          payload: /ask_question
+        - title: I’m done
+          payload: /done
+
+  utter_test_navigation__anything_else_no_assessment:
+    - text: May I help you with anything else?
+      buttons:
+        - title: Yes assess my symptoms
+          payload: /get_assessment
+        - title: Yes I have other questions
+          payload: /ask_question
+        - title: No I’m done
+          payload: /done
+
+  utter_test_navigation__anything_else_assessment_done:
+    - text: May I help you with anything else?
+      buttons:
+        - title: Yes I have other questions
+          payload: /ask_question
+        - title: No I’m done
+          payload: /done

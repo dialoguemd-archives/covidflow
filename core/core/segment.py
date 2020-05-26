@@ -4,6 +4,7 @@ from typing import Any, Dict, Optional, Text
 
 import analytics
 import structlog
+
 from rasa.core.brokers.broker import EventBroker
 from rasa.utils.endpoints import EndpointConfig
 
@@ -16,17 +17,22 @@ def on_segment_error(error, items):
     logger.warning("segment_tracking_failed", error=error, items=items)
 
 
+##
+# Taken (and adapted) from: https://github.com/dialoguemd/beautiful-mind/blob/master/rasa-stack/rasa_stack/segment.py
+
+
 class SegmentSource(EventBroker):
     """ Track events with Segment"""
 
     def __init__(self, write_key: Optional[str] = None):
-
         if write_key is None:
             write_key = os.environ.get("SEGMENT_WRITE_KEY")
 
+        self.disabled = False
         if write_key is None:
-            raise ValueError(
-                "Failed to create segment source. Specify a 'SEGMENT_WRITE_KEY' environment variable or set the 'write_key' property in the event broker config endpoints.yml"
+            self.disabled = True
+            logger.error(
+                "Failed to create segment source, segment source event broker is disabled. Specify a 'SEGMENT_WRITE_KEY' environment variable or set the 'write_key' property in the event broker config endpoints.yml"
             )
 
         logging.getLogger("segment").setLevel(logging.INFO)
@@ -41,6 +47,9 @@ class SegmentSource(EventBroker):
         return cls(**broker_config.kwargs)
 
     def publish(self, event: Dict[Text, Any]) -> None:
+        if self.disabled is True:
+            return
+
         sender_id = event.pop("sender_id", None)
         event_name = event.pop("event", None)
         if sender_id and event_name:

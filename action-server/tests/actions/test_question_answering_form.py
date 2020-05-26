@@ -60,7 +60,7 @@ class TestQuestionAnsweringForm(FormTestCase):
         super().setUp()
         self.form = QuestionAnsweringForm()
 
-    def test_form_activation_first_time(self):
+    def test_form_activation_first_time_without_qa_samples(self):
         tracker = self.create_tracker(active_form=False)
 
         self.run_form(tracker)
@@ -71,6 +71,24 @@ class TestQuestionAnsweringForm(FormTestCase):
             [
                 "utter_can_help_with_questions",
                 "utter_qa_disclaimer",
+                "utter_ask_active_question",
+            ]
+        )
+
+    def test_form_activation_first_time_with_qa_samples(self):
+        tracker = self.create_tracker(active_form=False)
+
+        self.run_form(
+            tracker, domain={"responses": {"utter_qa_sample_foo": [{"text": "bar"}]}}
+        )
+
+        self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, QUESTION_SLOT)])
+
+        self.assert_templates(
+            [
+                "utter_can_help_with_questions",
+                "utter_qa_disclaimer",
+                "utter_qa_sample",
                 "utter_ask_active_question",
             ]
         )

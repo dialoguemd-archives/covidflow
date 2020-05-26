@@ -1,4 +1,5 @@
 import os
+import random
 from typing import Any, Dict, List, Text, Union
 
 from aiohttp import ClientSession
@@ -57,6 +58,26 @@ class QuestionAnsweringForm(FormAction):
         ):
             dispatcher.utter_message(template="utter_can_help_with_questions")
             dispatcher.utter_message(template="utter_qa_disclaimer")
+
+            responses = domain.get("responses", {})
+            qa_samples_categories = [
+                key for key in responses.keys() if key.startswith("utter_qa_sample_")
+            ]
+            random_qa_samples_categories = random.sample(
+                qa_samples_categories, k=min(len(qa_samples_categories), 3)
+            )
+
+            random_qa_samples = [
+                f"- {random.choice(value).get('text')}"
+                for key, value in responses.items()
+                if key in random_qa_samples_categories
+            ]
+
+            if len(random_qa_samples) > 0:
+                dispatcher.utter_message(
+                    template="utter_qa_sample",
+                    sample_questions="\n".join(random_qa_samples),
+                )
 
         return await super()._activate_if_required(dispatcher, tracker, domain)
 

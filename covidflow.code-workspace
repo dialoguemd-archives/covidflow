@@ -5,6 +5,15 @@
 		},
 		{
 			"path": "action-server"
+		},
+		{
+			"path": "load-tests"
+		},
+		{
+			"path": "integration-tests-en"
+		},
+		{
+			"path": "integration-tests-fr"
 		}
 	],
 	"settings": {}

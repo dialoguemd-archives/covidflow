@@ -1,17 +1,9 @@
 responses:
   utter_greet:
-    - text:
-        "Bonjour, je m'appelle Chloé, votre assistante médicale virtuelle. Je
-        peux vous aider à évaluer vos symptômes et vous donner de l'information
-        en lien avec la Covid-19"
+    - text: "Bonjour, je m'appelle Chloé, votre assistante médicale virtuelle. Je peux vous aider à évaluer vos symptômes et vous donner de l'information en lien avec la Covid-19"
 
   utter_greet_warning:
-    - text:
-        Veuillez noter que les informations que vous recevrez ne constituent pas
-        une évaluation médicale. Ce service ne remplace pas une consultation
-        avec votre médecin. Si vous présentez des symptômes graves, consultez un
-        médecin. Les informations que nous fournissons proviennent de sources
-        officielles et sont sujettes à changement
+    - text: Veuillez noter que les informations que vous recevrez ne constituent pas une évaluation médicale. Ce service ne remplace pas une consultation avec votre médecin. Si vous présentez des symptômes graves, consultez un médecin. Les informations que nous fournissons proviennent de sources officielles et sont sujettes à changement
 
   utter_ask_how_may_i_help:
     - text: Que puis-je faire pour vous aujourd'hui?
@@ -26,10 +18,7 @@ responses:
           payload: "/ask_question"
 
   utter_ask_severe_symptoms:
-    - text:
-        "Premièrement, avez-vous un ou plusieurs des symptômes suivants:\n-
-        Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n-
-        Beaucoup de mal à se réveiller\n- Confusion\n- Perte de conscience"
+    - text: "Premièrement, avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Beaucoup de mal à se réveiller\n- Confusion\n- Perte de conscience"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -45,34 +34,19 @@ responses:
           payload: "/deny"
 
   utter_severe_symptoms_recommendations_1:
-    - text:
-        Ces symptômes exigent une attention immédiate. Vous devriez appeler le
-        911 immédiatement ou vous rendre directement au service d’urgence le
-        plus proche
+    - text: Ces symptômes exigent une attention immédiate. Vous devriez appeler le 911 immédiatement ou vous rendre directement au service d’urgence le plus proche
 
   utter_severe_symptoms_recommendations_2:
-    - text:
-        Si c’est possible, assurez-vous d’apporter tous les médicaments que vous
-        prenez actuellement
+    - text: Si c’est possible, assurez-vous d’apporter tous les médicaments que vous prenez actuellement
 
   utter_severe_symptoms_recommendations_3:
-    - text:
-        Si vous ne savez pas quel est l’hôpital le plus près pouvant vous
-        accueillir, le personnel du 911 pourra vous aider et envoyer une
-        ambulance si vous n’avez pas d’autre moyen de vous y rendre
+    - text: Si vous ne savez pas quel est l’hôpital le plus près pouvant vous accueillir, le personnel du 911 pourra vous aider et envoyer une ambulance si vous n’avez pas d’autre moyen de vous y rendre
 
   utter_severe_symptoms_recommendations_4:
-    - text:
-        Le plus important est de ne pas attendre, car vos symptômes requièrent
-        une attention médicale immédiate
+    - text: Le plus important est de ne pas attendre, car vos symptômes requièrent une attention médicale immédiate
 
   utter_ask_moderate_symptoms:
-    - text:
-        "Avez-vous un ou plusieurs des symptômes suivants:\n- Essoufflement
-        léger à modéré\n- Incapacité à vous allonger en raison de difficultés
-        respiratoires\n- Problèmes de santé chroniques que vous avez du mal à
-        gérer en raison de difficultés respiratoires\n- Perte soudaine du goût
-        ou de l'odorat"
+    - text: "Avez-vous un ou plusieurs des symptômes suivants:\n- Essoufflement léger à modéré\n- Incapacité à vous allonger en raison de difficultés respiratoires\n- Problèmes de santé chroniques que vous avez du mal à gérer en raison de difficultés respiratoires\n- Perte soudaine du goût ou de l'odorat"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -80,20 +54,13 @@ responses:
           payload: "/deny"
 
   utter_symptoms_worsen_emergency:
-    - text:
-        "Si vos symptômes empirent, ou si vous avez de la difficulté à respirer,
-        vous devrez vous rendre à l'urgence la plus près ou appeler le 911"
+    - text: "Si vos symptômes empirent, ou si vous avez de la difficulté à respirer, vous devrez vous rendre à l'urgence la plus près ou appeler le 911"
 
   utter_monitor_symptoms_assistance:
-    - text:
-        "Assurez-vous de suivre l'évolution de vos symptômes. Si vous avez
-        besoin d'assistance, vous devriez: \n- Communiquer avec votre médecin de
-        famille, si c'est possible, ou \n- Appeler le {provincial_811}"
+    - text: "Assurez-vous de suivre l'évolution de vos symptômes. Si vous avez besoin d'assistance, vous devriez: \n- Communiquer avec votre médecin de famille, si c'est possible, ou \n- Appeler le {provincial_811}"
 
   utter_ask_daily_ci_enroll__do_enroll:
-    - text:
-        "Aimeriez-vous que je fasse un suivi quotidien pour vous aider à évaluer
-        vos symptômes?"
+    - text: "Aimeriez-vous que je fasse un suivi quotidien pour vous aider à évaluer vos symptômes?"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -101,24 +68,16 @@ responses:
           payload: "/deny"
 
   utter_remind_stay_home_self_isolate:
-    - text:
-        "Veuillez vous assurer de rester à la maison et de vous isoler pendant
-        au moins 14 jours"
+    - text: "Veuillez vous assurer de rester à la maison et de vous isoler pendant au moins 14 jours"
 
   utter_monitor_symptoms_temperature:
-    - text:
-        "Prenez votre température régulièrement, surveillez l'évolution de vos
-        symptômes et notez tout changement"
+    - text: "Prenez votre température régulièrement, surveillez l'évolution de vos symptômes et notez tout changement"
 
   utter_remind_possible_checkin:
-    - text:
-        "À tout moment, vous pouvez communiquer avec moi pour faire un suivi de
-        vos symptômes"
+    - text: "À tout moment, vous pouvez communiquer avec moi pour faire un suivi de vos symptômes"
 
   utter_visit_package:
-    - text:
-        "Vous pouvez aussi consulter [votre trousse d'information
-        personnalisée](https://covid19.dialogue.co/#/info?id=ca-{id})"
+    - text: "Vous pouvez aussi consulter [votre trousse d'information personnalisée](https://covid19.dialogue.co/#/info?id=ca-{id})"
 
   utter_goodbye:
     - text: "Merci, et prenez bien soin de vous!"
@@ -134,21 +93,10 @@ responses:
           payload: "/deny"
 
   utter_monitor_symptoms_changes:
-    - text:
-        "Veuillez suivre l'évolution de vos symptômes et notez tout changement,
-        en particulier si vous développez de nouveaux symptômes ou s'ils
-        empirent"
+    - text: "Veuillez suivre l'évolution de vos symptômes et notez tout changement, en particulier si vous développez de nouveaux symptômes ou s'ils empirent"
 
   utter_ask_contact:
-    - text:
-        "Avez-vous récemment été en contact étroit avec une personne atteinte de
-        la Covid-19?\nUne personne ayant eu des contacts étroits est définie
-        comme:\n- Une personne qui a fourni des soins à la personne malade sans
-        équipement de protection adéquat\n- Une personne qui a vécu ou travaillé
-        avec la personne malade pendant qu’elle était contagieuse\n- Une
-        personne qui a eu un contact direct avec des fluides corporels
-        infectieux de la personne malade (qui était, par exemple, à proximité
-        lorsque la personne malade a toussé ou éternué)"
+    - text: "Avez-vous récemment été en contact étroit avec une personne atteinte de la Covid-19?\nUne personne ayant eu des contacts étroits est définie comme:\n- Une personne qui a fourni des soins à la personne malade sans équipement de protection adéquat\n- Une personne qui a vécu ou travaillé avec la personne malade pendant qu’elle était contagieuse\n- Une personne qui a eu un contact direct avec des fluides corporels infectieux de la personne malade (qui était, par exemple, à proximité lorsque la personne malade a toussé ou éternué)"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -156,9 +104,7 @@ responses:
           payload: "/deny"
 
   utter_ask_travel:
-    - text:
-        "Avez-vous voyagé à l'extérieur du Canada durant les 14 derniers jours
-        (Ceci inclut le passage dans un aéroport étranger)?"
+    - text: "Avez-vous voyagé à l'extérieur du Canada durant les 14 derniers jours (Ceci inclut le passage dans un aéroport étranger)?"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -169,21 +115,13 @@ responses:
     - text: Dans ce cas, vous n'avez probablement pas la Covid-19
 
   utter_social_distancing:
-    - text:
-        "Assurez-vous de suivre les consignes de distanciation sociale et ne
-        sortez pas de chez vous à moins que ce soit vraiment nécessaire"
+    - text: "Assurez-vous de suivre les consignes de distanciation sociale et ne sortez pas de chez vous à moins que ce soit vraiment nécessaire"
 
   utter_checkin_if_developments:
-    - text:
-        "Si vous développez des symptômes, ou si vous entrez en contact avec une
-        personne atteinte de la Covid-19, veuillez communiquer avec moi pour
-        obtenir une évaluation et des recommandations"
+    - text: "Si vous développez des symptômes, ou si vous entrez en contact avec une personne atteinte de la Covid-19, veuillez communiquer avec moi pour obtenir une évaluation et des recommandations"
 
   utter_link_if_anxious:
-    - text:
-        "Si vous êtes anxieux au sujet de la Covid-19 ou de votre propre
-        bien-être, consultez [Espace mieux-être
-        Canada](https://ca.portal.gs/?lang=fr-ca)"
+    - text: "Si vous êtes anxieux au sujet de la Covid-19 ou de votre propre bien-être, consultez [Espace mieux-être Canada](https://ca.portal.gs/?lang=fr-ca)"
 
   # province age form
   utter_ask_province:
@@ -217,8 +155,7 @@ responses:
           payload: '/inform{"province": "nu"}'
 
   provincial_811_mb:
-    - text:
-        "1-866-999-9698 option 4 ou 1-888-315-9257 dans la région de Winnipeg"
+    - text: "1-866-999-9698 option 4 ou 1-888-315-9257 dans la région de Winnipeg"
 
   provincial_811_on:
     - text: "1-866-797-0000"
@@ -288,11 +225,7 @@ responses:
     - text: "J’aimerais maintenant évaluer vos symptômes"
 
   utter_symptoms_worsen_emergency_assistance:
-    - text:
-        "Si vos symptômes s’aggravent, vous pourriez devoir vous rendre à
-        l’urgence la plus près ou appeler le 911. Si vous avez besoin d’aide,
-        vous devriez:\n- Communiquer avec votre médecin de famille, si c′est
-        possible, ou\n- Appeler le {provincial_811}"
+    - text: "Si vos symptômes s’aggravent, vous pourriez devoir vous rendre à l’urgence la plus près ou appeler le 911. Si vous avez besoin d’aide, vous devriez:\n- Communiquer avec votre médecin de famille, si c′est possible, ou\n- Appeler le {provincial_811}"
 
   utter_ask_symptoms_worsened:
     - text: "Est-ce que vos symptômes ont empiré dans les 24 dernières heures?"
@@ -303,9 +236,7 @@ responses:
           payload: "/deny"
 
   utter_tested_positive_no_symptoms:
-    - text:
-        "Bien que votre test soit positif, il semble que vous ne présentiez pas
-        de symptômes pour le moment"
+    - text: "Bien que votre test soit positif, il semble que vous ne présentiez pas de symptômes pour le moment"
 
   utter_ask_when_tested:
     - text: "Quand avez-vous reçu votre diagnostic?"
@@ -316,41 +247,24 @@ responses:
           payload: "/less"
 
   utter_maybe_recovered:
-    - text:
-        "Il se peut que vous soyez guéri(e). Je vous invite à rester à la maison
-        et à suivre les consignes de distanciation sociale. Si vous sortez, je
-        vous recommande fortement de porter un masque"
+    - text: "Il se peut que vous soyez guéri(e). Je vous invite à rester à la maison et à suivre les consignes de distanciation sociale. Si vous sortez, je vous recommande fortement de porter un masque"
 
   utter_more_information:
-    - text:
-        "Vous pouvez trouver d’autres informations, ressources et
-        recommandations sur la Covid-19 [ici](https://covid19.dialogue.co/#/)"
+    - text: "Vous pouvez trouver d’autres informations, ressources et recommandations sur la Covid-19 [ici](https://covid19.dialogue.co/#/)"
 
   # Daily CI enroll flow
 
   utter_daily_ci_enroll__offer_checkin:
-    - text:
-        "Si ça vous intéresse, vous pouvez vous inscrire à notre suivi quotidien"
+    - text: "Si ça vous intéresse, vous pouvez vous inscrire à notre suivi quotidien"
 
   utter_daily_ci_enroll__explain_checkin_1:
-    - text:
-        "Ainsi, je vais vous contacter à chaque jour pour voir comment vous
-        allez, évaluer vos symptômes et votre état de santé général, et vous
-        donner des conseils et des recommandations pour vous aider à prendre
-        soin de vous et à soulager vos symptômes"
+    - text: "Ainsi, je vais vous contacter à chaque jour pour voir comment vous allez, évaluer vos symptômes et votre état de santé général, et vous donner des conseils et des recommandations pour vous aider à prendre soin de vous et à soulager vos symptômes"
 
   utter_daily_ci_enroll__explain_checkin_2:
-    - text:
-        "Notre suivi quotidien vous offre une évaluation de votre condition au
-        jour le jour, de telle sorte que vous recevrez les conseils et les
-        recommandations les plus pertinents en fonction de votre condition
-        réelle"
+    - text: "Notre suivi quotidien vous offre une évaluation de votre condition au jour le jour, de telle sorte que vous recevrez les conseils et les recommandations les plus pertinents en fonction de votre condition réelle"
 
   utter_daily_ci_enroll__start_enroll:
-    - text:
-        D'accord! Pour faire un suivi quotidien avec vous et vous donner des
-        recommandations personnalisées, j'ai besoin de vous poser quelques
-        questions
+    - text: D'accord! Pour faire un suivi quotidien avec vous et vous donner des recommandations personnalisées, j'ai besoin de vous poser quelques questions
 
   utter_ask_first_name:
     - text: D'abord, quel est votre prénom?
@@ -359,17 +273,13 @@ responses:
     - text: "Merci, {first_name}"
 
   utter_daily_ci_enroll__text_message_checkin:
-    - text:
-        "Je vais communiquer avec vous par message texte à chaque jour pour
-        faire votre suivi"
+    - text: "Je vais communiquer avec vous par message texte à chaque jour pour faire votre suivi"
 
   utter_ask_phone_number:
     - text: Pour que je puisse vous joindre, quel est votre numéro de téléphone?
 
   utter_daily_ci_enroll__no_phone_no_checkin:
-    - text:
-        Malheureusement, si vous n’avez pas de téléphone mobile, il ne sera pas
-        possible de vous inscrire au suivi quotidien
+    - text: Malheureusement, si vous n’avez pas de téléphone mobile, il ne sera pas possible de vous inscrire au suivi quotidien
 
   utter_daily_ci_enroll__continue:
     - text: Continuons
@@ -392,48 +302,34 @@ responses:
     - text: Désolée, ce numéro n’est pas valide. Essayons de nouveau
 
   utter_ask_phone_number_error:
-    - text:
-        Veuillez entrer votre numéro de téléphone, en incluant l’indicatif
-        régional
+    - text: Veuillez entrer votre numéro de téléphone, en incluant l’indicatif régional
 
   utter_daily_ci_enroll__invalid_phone_no_checkin:
-    - text:
-        "Désolée, je ne suis pas en mesure de compléter votre inscription.
-        Continuons"
+    - text: "Désolée, je ne suis pas en mesure de compléter votre inscription. Continuons"
 
   utter_daily_ci_enroll__acknowledge:
     - text: "C'est noté"
 
   utter_ask_daily_ci_enroll__validation_code:
-    - text:
-        Je vous ai envoyé un code de validation par texto. Dès que vous le
-        recevez, inscrivez-le ici
+    - text: Je vous ai envoyé un code de validation par texto. Dès que vous le recevez, inscrivez-le ici
 
   utter_daily_ci_enroll__validation_code_not_sent_1:
-    - text:
-        Je suis désolée, mais un problème technique m'empêche de compléter votre
-        inscription au suivi quotidien
+    - text: Je suis désolée, mais un problème technique m'empêche de compléter votre inscription au suivi quotidien
 
   utter_daily_ci_enroll__validation_code_not_sent_2:
-    - text:
-        You may try to enroll at another timeJe vous invite à réessayer plus
-        tard
+    - text: You may try to enroll at another timeJe vous invite à réessayer plus tard
 
   utter_daily_ci_enroll__thanks:
     - text: Merci
 
   utter_ask_daily_ci_enroll__validation_code_error:
-    - text:
-        Je suis désolée, ce code n’est pas valide. Veuillez entrer de nouveau le
-        code à 4 chiffres que vous venez de recevoir
+    - text: Je suis désolée, ce code n’est pas valide. Veuillez entrer de nouveau le code à 4 chiffres que vous venez de recevoir
 
   utter_daily_ci_enroll__acknowledge_new_phone_number:
     - text: Très bien, j’utiliserai plutôt ce numéro
 
   utter_ask_daily_ci_enroll__no_code_solution:
-    - text:
-        Je suis désolée. Je peux vous envoyer un nouveau code au même numéro ou
-        vous pouvez me redonner votre numéro. Que voulez-vous faire?
+    - text: Je suis désolée. Je peux vous envoyer un nouveau code au même numéro ou vous pouvez me redonner votre numéro. Que voulez-vous faire?
       buttons:
         - title: Renvoyez-moi un code
           payload: "/resend_code"
@@ -441,14 +337,10 @@ responses:
           payload: "/reenter_phone_number"
 
   utter_ask_phone_number_new:
-    - text:
-        D’accord, veuillez inscrire votre numéro de téléphone, pour que je
-        puisse vous joindre
+    - text: D’accord, veuillez inscrire votre numéro de téléphone, pour que je puisse vous joindre
 
   utter_ask_preconditions:
-    - text:
-        Avez-vous des problèmes de santé qui pourraient affecter votre système
-        immunitaire?
+    - text: Avez-vous des problèmes de santé qui pourraient affecter votre système immunitaire?
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -458,12 +350,7 @@ responses:
           payload: "/help_preconditions"
 
   utter_explain_preconditions:
-    - text:
-        "Vous pourriez être plus à risque si vous avez certains problèmes
-        médicaux (par ex.: problèmes cardiaques, hypertension, diabète, maladie
-        respiratoire chronique, cancer) ou si votre système immunitaire est
-        affaibli en raison d'une condition ou d'un traitement médical (par ex.:
-        chimiothérapie)"
+    - text: "Vous pourriez être plus à risque si vous avez certains problèmes médicaux (par ex.: problèmes cardiaques, hypertension, diabète, maladie respiratoire chronique, cancer) ou si votre système immunitaire est affaibli en raison d'une condition ou d'un traitement médical (par ex.: chimiothérapie)"
 
   utter_ask_preconditions_again:
     - text: Présentez-vous des facteurs de risque?
@@ -476,9 +363,7 @@ responses:
           payload: "/dont_know"
 
   utter_daily_ci_enroll__note_preconditions:
-    - text:
-        Si vous ne savez pas, je vais mettre une note à votre profil indiquant
-        que vous pourriez être à risque
+    - text: Si vous ne savez pas, je vais mettre une note à votre profil indiquant que vous pourriez être à risque
 
   utter_ask_has_dialogue:
     - text: Enfin, est-ce que vous avez le service de santé de Dialogue?
@@ -489,22 +374,16 @@ responses:
           payload: "/deny"
 
   utter_daily_ci_enroll__enroll_done_1:
-    - text:
-        Merci. J'ai enregistré toutes vos réponses dans votre profil personnel
+    - text: Merci. J'ai enregistré toutes vos réponses dans votre profil personnel
 
   utter_daily_ci_enroll__enroll_done_2:
     - text: Votre inscription au suivi quotidien est maintenant complétée
 
   utter_daily_ci_enroll__enroll_done_3:
-    - text:
-        Je vais faire un suivi avec vous à chaque jour environ à cette heure-ci
-        pour voir comment vous allez, vérifier vos symptômes et vous diriger
-        vers les bonnes ressources au besoin
+    - text: Je vais faire un suivi avec vous à chaque jour environ à cette heure-ci pour voir comment vous allez, vérifier vos symptômes et vous diriger vers les bonnes ressources au besoin
 
   utter_daily_ci_enroll__enroll_fail_1:
-    - text:
-        Je suis désolée, mais un problème technique m'empêche de compléter votre
-        inscription au suivi quotidien
+    - text: Je suis désolée, mais un problème technique m'empêche de compléter votre inscription au suivi quotidien
 
   utter_daily_ci_enroll__enroll_fail_2:
     - text: Je vous invite à réessayer plus tard
@@ -515,9 +394,7 @@ responses:
   ## Return for check-in
 
   utter_returning_for_checkin:
-    - text:
-        "Merci de me contacter pour un suivi. Voyons voir comment vous vous
-        portez aujourd'hui"
+    - text: "Merci de me contacter pour un suivi. Voyons voir comment vous vous portez aujourd'hui"
 
   utter_ask_checkin_return__moderate_symptoms_worsened:
     - text: "Est-ce que vos symptômes ont empiré dans les 24 dernières heures?"
@@ -528,19 +405,13 @@ responses:
           payload: "/deny"
 
   utter_contact_healthcare_professional:
-    - text:
-        Dans ce cas, vous devriez discuter de votre situation avec un
-        professionnel de la santé
+    - text: Dans ce cas, vous devriez discuter de votre situation avec un professionnel de la santé
 
   utter_contact_healthcare_professional_options:
-    - text:
-        "Vous devriez: \n- Communiquer avec votre médecin de famille, si c'est
-        possible, ou \n- Appeler le {provincial_811}"
+    - text: "Vous devriez: \n- Communiquer avec votre médecin de famille, si c'est possible, ou \n- Appeler le {provincial_811}"
 
   utter_remind_monitor_symptoms_temperature:
-    - text:
-        Assurez-vous de prendre votre température régulièrement et surveiller
-        vos symptômes pour tout changement
+    - text: Assurez-vous de prendre votre température régulièrement et surveiller vos symptômes pour tout changement
 
   utter_returning_no_symptoms:
     - text: "Il semble que vous n’ayez pas de symptômes de la Covid-19"
@@ -554,14 +425,10 @@ responses:
           payload: "/less"
 
   utter_social_distancing_leave_home:
-    - text:
-        D'accord. Assurez-vous de suivre les consignes de distanciation sociale,
-        et si vous devez sortir, je vous recommande de porter un masque
+    - text: D'accord. Assurez-vous de suivre les consignes de distanciation sociale, et si vous devez sortir, je vous recommande de porter un masque
 
   utter_self_isolate_symptom_free:
-    - text:
-        Dans ce cas, continuez à vous isoler jusqu'à ce que vous ayez passé au
-        moins 7 jours sans symptômes
+    - text: Dans ce cas, continuez à vous isoler jusqu'à ce que vous ayez passé au moins 7 jours sans symptômes
 
   # QA flow
 
@@ -574,9 +441,7 @@ responses:
           payload: "/done"
 
   utter_can_help_with_questions:
-    - text:
-        "Je peux répondre à vos questions sur une variété de sujets entourant la
-        Covid-19"
+    - text: "Je peux répondre à vos questions sur une variété de sujets entourant la Covid-19"
 
   utter_qa_disclaimer:
     - text:
@@ -715,15 +580,10 @@ responses:
           payload: "/deny"
 
   utter_post_feedback:
-    - text:
-        "Je suis désolée, c'est noté! J'apprends constamment, alors votre
-        opinion me permettra de m'améliorer et de vous donner de meilleurs
-        réponses"
+    - text: "Je suis désolée, c'est noté! J'apprends constamment, alors votre opinion me permettra de m'améliorer et de vous donner de meilleurs réponses"
 
   utter_question_answering_error:
-    - text:
-        "Je suis désolée, il n’est pas possible d’obtenir de réponse à vos
-        questions en ce moment"
+    - text: "Je suis désolée, il n’est pas possible d’obtenir de réponse à vos questions en ce moment"
 
   utter_ask_assess_after_error:
     - text: "Voudriez-vous que je vous aide à évaluer vos symptômes?"
@@ -751,14 +611,10 @@ responses:
           payload: "/done"
 
   utter_need_assessment_already_done:
-    - text:
-        "Il semble que pour répondre à votre question, j’aurais besoin d’évaluer
-        vos symptômes. Or, c’est ce que nous venons de faire"
+    - text: "Il semble que pour répondre à votre question, j’aurais besoin d’évaluer vos symptômes. Or, c’est ce que nous venons de faire"
 
   utter_please_visit_again:
-    - text:
-        "Très bien. N’hésitez pas à revenir si vous avez besoin d’aide ou si
-        vous avez d’autres questions"
+    - text: "Très bien. N’hésitez pas à revenir si vous avez besoin d’aide ou si vous avez d’autres questions"
 
   utter_ask_what_next_after_answer:
     - text: "Que voulez-vous faire maintenant?"
@@ -802,31 +658,19 @@ responses:
   ## action self-isolation
 
   utter_returning_self_isolate:
-    - text:
-        "Puisque vous avez encore des symptômes, vous devez continuer à vous
-        isoler. Il est essentiel que vous suiviez cette consigne"
+    - text: "Puisque vous avez encore des symptômes, vous devez continuer à vous isoler. Il est essentiel que vous suiviez cette consigne"
 
   utter_moderate_symptoms_self_isolate:
-    - text:
-        "Étant donné que vous avez des symptômes, vous devez vous isoler pendant
-        au moins 14 jours. Il est essentiel que vous suiviez cette consigne"
+    - text: "Étant donné que vous avez des symptômes, vous devez vous isoler pendant au moins 14 jours. Il est essentiel que vous suiviez cette consigne"
 
   utter_mild_symptoms_self_isolate:
-    - text:
-        "Puisque vous avez certains symptômes, vous devez vous isoler pendant au
-        moins 14 jours. Il est essentiel que vous suiviez cette consigne"
+    - text: "Puisque vous avez certains symptômes, vous devez vous isoler pendant au moins 14 jours. Il est essentiel que vous suiviez cette consigne"
 
   utter_tested_positive_self_isolate:
-    - text:
-        "Étant donné que vous avez obtenu un résultat positif à la Covid-19,
-        vous devez vous isoler pendant au moins 14 jours. Il est essentiel que
-        vous suiviez cette consigne"
+    - text: "Étant donné que vous avez obtenu un résultat positif à la Covid-19, vous devez vous isoler pendant au moins 14 jours. Il est essentiel que vous suiviez cette consigne"
 
   utter_contact_risk_self_isolate:
-    - text:
-        "Étant donné que vous êtes à risque d’avoir contacté la Covid-19, vous
-        devez vous isoler pendant au moins 14 jours. Il est essentiel que vous
-        suiviez cette consigne"
+    - text: "Étant donné que vous êtes à risque d’avoir contacté la Covid-19, vous devez vous isoler pendant au moins 14 jours. Il est essentiel que vous suiviez cette consigne"
 
   utter_ask_lives_alone:
     - text: "Est-ce que vous habitez seul(e)?"
@@ -837,41 +681,24 @@ responses:
           payload: "/deny"
 
   utter_dont_leave_home:
-    - text:
-        "Dans ce cas, je vous conseille de ne pas quitter votre domicile, à part
-        si vous avez un rendez-vous chez le médecin, ou si vous devez vous
-        rendre à l’hôpital"
+    - text: "Dans ce cas, je vous conseille de ne pas quitter votre domicile, à part si vous avez un rendez-vous chez le médecin, ou si vous devez vous rendre à l’hôpital"
 
   utter_stay_separate_room:
-    - text:
-        "Dans ce cas, vous devriez, autant que possible, rester dans une pièce à
-        part et utiliser une salle de bain séparée"
+    - text: "Dans ce cas, vous devriez, autant que possible, rester dans une pièce à part et utiliser une salle de bain séparée"
 
   utter_distance_clean_surfaces:
-    - text:
-        "Si ce n’est pas possible, assurez-vous de toujours garder une distance
-        d’au moins 2 mètres, ou six pieds, entre vous et les autres en tout
-        temps. Lavez-vous les mains souvent, et nettoyez bien les surfaces et
-        les objets après les avoir touchés"
+    - text: "Si ce n’est pas possible, assurez-vous de toujours garder une distance d’au moins 2 mètres, ou six pieds, entre vous et les autres en tout temps. Lavez-vous les mains souvent, et nettoyez bien les surfaces et les objets après les avoir touchés"
 
   utter_wear_mask_same_room:
-    - text:
-        "Vous devriez aussi porter un masque à chaque fois qu’il y a quelqu’un
-        d’autre dans la même pièce que vous"
+    - text: "Vous devriez aussi porter un masque à chaque fois qu’il y a quelqu’un d’autre dans la même pièce que vous"
 
   utter_self_isolation_link:
-    - text:
-        "Pour plus d’information, et pour en savoir davantage sur les façons de
-        protéger les autres, rendez-vous au
-        [canada.ca](https://www.canada.ca/fr/sante-publique/services/publications/maladies-et-affections/covid-19-comment-isoler-chez-soi.html)"
+    - text: "Pour plus d’information, et pour en savoir davantage sur les façons de protéger les autres, rendez-vous au [canada.ca](https://www.canada.ca/fr/sante-publique/services/publications/maladies-et-affections/covid-19-comment-isoler-chez-soi.html)"
 
   ## action home-assistance
 
   utter_ask_has_assistance:
-    - text:
-        "Est-ce que quelqu’un peut faire des courses pour vous (un parent, un
-        conjoint, un ami ou un voisin), comme aller à l’épicerie ou chercher vos
-        médicaments?"
+    - text: "Est-ce que quelqu’un peut faire des courses pour vous (un parent, un conjoint, un ami ou un voisin), comme aller à l’épicerie ou chercher vos médicaments?"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -879,52 +706,30 @@ responses:
           payload: "/deny"
 
   utter_remind_delivery_services:
-    - text:
-        "N’oubliez pas que la plupart des pharmacies et plusieurs épiceries
-        offrent la livraison. Renseignez-vous auprès de votre pharmacie ou de
-        votre épicerie pour savoir s’ils offrent ce service"
+    - text: "N’oubliez pas que la plupart des pharmacies et plusieurs épiceries offrent la livraison. Renseignez-vous auprès de votre pharmacie ou de votre épicerie pour savoir s’ils offrent ce service"
 
   utter_check_delivery_services:
-    - text:
-        "La plupart des pharmacies et plusieurs épiceries offrent la livraison.
-        Renseignez-vous auprès de votre pharmacie ou de votre épicerie pour
-        savoir s’ils offrent ce service"
+    - text: "La plupart des pharmacies et plusieurs épiceries offrent la livraison. Renseignez-vous auprès de votre pharmacie ou de votre épicerie pour savoir s’ils offrent ce service"
 
   utter_may_call_211_qc:
-    - text:
-        "Si cela n'est pas possible, et si vous vivez dans la grande région de
-        Montréal ou à Québec, vous pouvez appeler au 211 ou consulter
-        [211.quebec](http://www.211quebecregions.ca/), ou
-        [211.montreal](https://www.211qc.ca/), pour de l'assistance"
+    - text: "Si cela n'est pas possible, et si vous vivez dans la grande région de Montréal ou à Québec, vous pouvez appeler au 211 ou consulter [211.quebec](http://www.211quebecregions.ca/), ou [211.montreal](https://www.211qc.ca/), pour de l'assistance"
 
   utter_may_call_211_other_provinces:
-    - text:
-        "Si cela n’est pas possible, vous pouvez appeler au 211 ou visiter le
-        [211.ca](https://211.ca/fr/) pour de l’assistance"
+    - text: "Si cela n’est pas possible, vous pouvez appeler au 211 ou visiter le [211.ca](https://211.ca/fr/) pour de l’assistance"
 
   utter_explain_211:
-    - text:
-        "Le service 211 peut vous diriger vers une variété de ressources dans
-        votre région pour de l’assistance alimentaire, des services de santé ou
-        communautaires"
+    - text: "Le service 211 peut vous diriger vers une variété de ressources dans votre région pour de l’assistance alimentaire, des services de santé ou communautaires"
 
   utter_remind_pharmacist_services:
-    - text:
-        "Votre pharmacien(ne) peut également vous offrir des conseils pour
-        soulager vos symptômes, et vous indiquer quels médicaments en vente
-        libre sont indiqués et sécuritaires pour vous"
+    - text: "Votre pharmacien(ne) peut également vous offrir des conseils pour soulager vos symptômes, et vous indiquer quels médicaments en vente libre sont indiqués et sécuritaires pour vous"
 
   ## Daily check-in
 
   utter_checkin_reminder:
-    - text:
-        "Bonjour {first_name}, ici Chloé, pour votre suivi quotidien. Pour
-        poursuivre, veuillez suivre ce lien: {check_in_url}"
+    - text: "Bonjour {first_name}, ici Chloé, pour votre suivi quotidien. Pour poursuivre, veuillez suivre ce lien: {check_in_url}"
 
   utter_daily_ci__greet:
-    - text:
-        Bonjour {first_name}, ici Chloé, pour votre suivi quotidien. Voyons voir
-        comment ça va aujourd'hui
+    - text: Bonjour {first_name}, ici Chloé, pour votre suivi quotidien. Voyons voir comment ça va aujourd'hui
 
   utter_ask_daily_ci__feel:
     - text: D'abord, comment vous sentez-vous par rapport à hier?
@@ -940,20 +745,13 @@ responses:
     - text: Entendu, je note que vous faites de la fièvre aujourd'hui
 
   utter_daily_ci__take_acetaminophen:
-    - text:
-        Vous pouvez prendre de l'acétaminophène (ex. Tylenol) pour soulager la
-        fièvre et les douleurs
+    - text: Vous pouvez prendre de l'acétaminophène (ex. Tylenol) pour soulager la fièvre et les douleurs
 
   utter_daily_ci__avoid_ibuprofen:
-    - text:
-        Vous devriez cependant *éviter l'ibuprofène* (ex. Advil ou Motrin), car
-        cela pourrait causer des effets secondaires importants
+    - text: Vous devriez cependant *éviter l'ibuprofène* (ex. Advil ou Motrin), car cela pourrait causer des effets secondaires importants
 
   utter_daily_ci__cough_syrup_may_help:
-    - text:
-        Vous pouvez prendre du sirop pour la toux pour vous soulager, mais
-        assurez-vous qu'il n'y ait pas de contre-indications en raison de votre
-        état de santé, ou que ça n'interagisse pas avec vos médicaments
+    - text: Vous pouvez prendre du sirop pour la toux pour vous soulager, mais assurez-vous qu'il n'y ait pas de contre-indications en raison de votre état de santé, ou que ça n'interagisse pas avec vos médicaments
 
   utter_daily_ci__cough_syrup_pharmacist:
     - text: Dans le doute, n'hésitez pas à en parler avec votre pharmacien(ne)
@@ -964,10 +762,7 @@ responses:
   ## Daily check-in - feel worse
 
   utter_ask_daily_ci__feel_worse__severe_symptoms:
-    - text:
-        "Avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés
-        respiratoires graves\n- De fortes douleurs à la poitrine\n- Beaucoup de
-        mal à se réveiller\n- Confusion\n- Perte de conscience"
+    - text: "Avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Beaucoup de mal à se réveiller\n- Confusion\n- Perte de conscience"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -978,9 +773,7 @@ responses:
     - text: D'accord, voyons voir vos symptômes
 
   utter_ask_daily_ci__feel_worse__has_fever:
-    - text:
-        Est-ce que vous faites de la fièvre? (plus de 38°C or 100.4°F) (Prenez
-        votre température si vous ne savez pas)
+    - text: Est-ce que vous faites de la fièvre? (plus de 38°C or 100.4°F) (Prenez votre température si vous ne savez pas)
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -1010,9 +803,7 @@ responses:
           payload: "/deny"
 
   utter_daily_ci__feel_worse__no_cough_recommendation:
-    - text:
-        Mais puisque vous vous sentez encore malade, je vous conseille de
-        continuer à vous isoler et à vous reposer
+    - text: Mais puisque vous vous sentez encore malade, je vous conseille de continuer à vous isoler et à vous reposer
 
   utter_ask_daily_ci__feel_worse__has_diff_breathing_worsened:
     - text: Est-ce que ça a empiré depuis hier?
@@ -1023,32 +814,21 @@ responses:
           payload: "/deny"
 
   utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_1:
-    - text:
-        Vous devriez peut-être en discuter avec votre médecin, si c'est
-        possible, ou appeler au {provincial_811}
+    - text: Vous devriez peut-être en discuter avec votre médecin, si c'est possible, ou appeler au {provincial_811}
 
   utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_2:
-    - text:
-        Si vos symptômes empirent, vous pourriez devoir vous rendre à l'urgence
-        ou appeler le 911
+    - text: Si vos symptômes empirent, vous pourriez devoir vous rendre à l'urgence ou appeler le 911
 
   utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_1:
-    - text:
-        C’est noté. Si cela empire, je vous conseille de contacter votre
-        médecin, si possible, ou d'appeler le {provincial_811} pour discuter de
-        vos symptômes
+    - text: C’est noté. Si cela empire, je vous conseille de contacter votre médecin, si possible, ou d'appeler le {provincial_811} pour discuter de vos symptômes
 
   utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_2:
-    - text:
-        Dans tous les cas, assurez-vous de continuer à vous isoler et à vous
-        reposer
+    - text: Dans tous les cas, assurez-vous de continuer à vous isoler et à vous reposer
 
   ## Daily check-in - feel no change
 
   utter_ask_daily_ci__feel_no_change__has_fever:
-    - text:
-        Et est-ce que vous faites de la fièvre? (plus de 38°C ou 100,4°F)
-        (Prenez votre température si vous ne le savez pas)
+    - text: Et est-ce que vous faites de la fièvre? (plus de 38°C ou 100,4°F) (Prenez votre température si vous ne le savez pas)
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -1078,25 +858,16 @@ responses:
     - text: Je suis désolée que ce soit encore le cas
 
   utter_daily_ci__feel_no_change__diff_breathing_recommendation:
-    - text:
-        "Si vos symptômes empirent, vous pourriez devoir vous rendre à
-        l'urgence. Pour de l'assistance, vous devriez: \n- Soit appeler votre
-        médecin de famille, si c'est possible, ou \n- Appeler au
-        {provincial_811}\n Et assurez-vous de fournir les informations sur votre
-        condition"
+    - text: "Si vos symptômes empirent, vous pourriez devoir vous rendre à l'urgence. Pour de l'assistance, vous devriez: \n- Soit appeler votre médecin de famille, si c'est possible, ou \n- Appeler au {provincial_811}\n Et assurez-vous de fournir les informations sur votre condition"
 
   utter_daily_ci__feel_no_change__acknowledge_no_diff_breathing:
     - text: Bonne nouvelle, je suis heureuse de l'apprendre
 
   utter_daily_ci__feel_no_change__no_diff_breathing_recommendation:
-    - text:
-        Je vous conseille de continuer à vous reposer, à vous isoler et à
-        surveiller vos symptômes
+    - text: Je vous conseille de continuer à vous reposer, à vous isoler et à surveiller vos symptômes
 
   utter_daily_ci__feel_no_change__mild_last_symptoms_recommendation:
-    - text:
-        Puisque vous êtes encore malade, je vous conseille de continuer à vous
-        reposer, à vous isoler et à surveiller vos symptômes
+    - text: Puisque vous êtes encore malade, je vous conseille de continuer à vous reposer, à vous isoler et à surveiller vos symptômes
 
   ## Daily check-in - feel better
 
@@ -1104,9 +875,7 @@ responses:
     - text: Je suis heureuse d'apprendre que vous allez mieux
 
   utter_ask_daily_ci__feel_better__has_fever:
-    - text:
-        Est-ce que vous faites de la fièvre? (plus de 38°C ou 100,4°F) (Prenez
-        votre température si vous ne savez pas)
+    - text: Est-ce que vous faites de la fièvre? (plus de 38°C ou 100,4°F) (Prenez votre température si vous ne savez pas)
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -1125,9 +894,7 @@ responses:
           payload: "/deny"
 
   utter_ask_daily_ci__feel_better__has_diff_breathing:
-    - text:
-        Avez-vous encore d'autres symptômes, comme de l'essoufflement ou de la
-        difficulté à respirer?
+    - text: Avez-vous encore d'autres symptômes, comme de l'essoufflement ou de la difficulté à respirer?
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -1135,9 +902,7 @@ responses:
           payload: "/deny"
 
   utter_ask_daily_ci__feel_better__has_other_mild_symptoms_with_acknowledge:
-    - text:
-        Très bien, et avez-vous encore d'autres symptômes, comme des maux de
-        gorge ou de la fatigue inhabituelle?
+    - text: Très bien, et avez-vous encore d'autres symptômes, comme des maux de gorge ou de la fatigue inhabituelle?
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -1145,9 +910,7 @@ responses:
           payload: "/deny"
 
   utter_ask_daily_ci__feel_better__has_other_mild_symptoms:
-    - text:
-        Avez-vous encore d'autres symptômes, comme des maux de gorge ou de la
-        fatigue inhabituelle?
+    - text: Avez-vous encore d'autres symptômes, comme des maux de gorge ou de la fatigue inhabituelle?
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -1155,9 +918,7 @@ responses:
           payload: "/deny"
 
   utter_ask_daily_ci__feel_better__is_symptom_free:
-    - text:
-        Bonne nouvelle! Vous sentez-vous encore un peu malade, ou est-ce que
-        vous n'avez plus de symptômes du tout?
+    - text: Bonne nouvelle! Vous sentez-vous encore un peu malade, ou est-ce que vous n'avez plus de symptômes du tout?
       buttons:
         - title: Plus de symptômes
           payload: "/symptom_free"
@@ -1165,45 +926,27 @@ responses:
           payload: "/still_sick"
 
   utter_daily_ci__feel_better__breathing_difficulty_recommendation_1:
-    - text:
-        Désolée de l'apprendre. Si cela empire, je vous conseille de contacter
-        votre médecin, si c'est possible, ou d'appeler le {provincial_811} pour
-        discuter de vos symptômes
+    - text: Désolée de l'apprendre. Si cela empire, je vous conseille de contacter votre médecin, si c'est possible, ou d'appeler le {provincial_811} pour discuter de vos symptômes
 
   utter_daily_ci__feel_better__breathing_difficulty_recommendation_2:
-    - text:
-        Puisque vous êtes encore malade, je vous conseille de continuer à vous
-        isoler et à vous reposer
+    - text: Puisque vous êtes encore malade, je vous conseille de continuer à vous isoler et à vous reposer
 
   utter_daily_ci__feel_better__has_other_mild_symptoms_recommendation:
-    - text:
-        D'accord. Puisque vous avez encore certains symptômes, je vous conseille
-        de continuer à vous isoler et à vous reposer
+    - text: D'accord. Puisque vous avez encore certains symptômes, je vous conseille de continuer à vous isoler et à vous reposer
 
-  ? utter_daily_ci__feel_better__has_other_mild_symptoms_still_sick_recommendation
-  : - text:
-        C'est noté. Puisque vous êtes encore malade, je vous conseille de
-        continuer à vous isoler et à vous reposer
+  utter_daily_ci__feel_better__has_other_mild_symptoms_still_sick_recommendation:
+    - text: C'est noté. Puisque vous êtes encore malade, je vous conseille de continuer à vous isoler et à vous reposer
 
   utter_daily_checkin_validation_code:
-    - text:
-        "Bonjour {first_name}, voici le code de validation pour l’inscription au
-        suivi quotidien : {validation_code}. Si vous n’avez pas demandé à vous
-        inscrire au suivi quotidien, veuillez ignorer ce message"
+    - text: "Bonjour {first_name}, voici le code de validation pour l’inscription au suivi quotidien : {validation_code}. Si vous n’avez pas demandé à vous inscrire au suivi quotidien, veuillez ignorer ce message"
 
   ## Daily check-in - keep or cancel
 
   utter_daily_ci__keep_or_cancel__no_symptoms_recommendation:
-    - text:
-        Il se peut que vous ayez récupéré de la Covid-19. Assurez-vous de
-        continuer à prendre des mesures pour vous protéger et protéger les
-        autres, comme rester à la maison et porter un masque si vous devez
-        absolument sortir
+    - text: Il se peut que vous ayez récupéré de la Covid-19. Assurez-vous de continuer à prendre des mesures pour vous protéger et protéger les autres, comme rester à la maison et porter un masque si vous devez absolument sortir
 
   utter_ask_daily_ci__keep_or_cancel__cancel_ci_no_symptoms:
-    - text:
-        Voulez-vous que je continue à faire votre suivi à chaque jour, ou
-        aimeriez-vous annuler le suivi quotidien?
+    - text: Voulez-vous que je continue à faire votre suivi à chaque jour, ou aimeriez-vous annuler le suivi quotidien?
       buttons:
         - title: Continuer
           payload: "/continue"
@@ -1217,14 +960,10 @@ responses:
     - text: D'accord, j'annule votre suivi quotidien
 
   utter_daily_ci__keep_or_cancel__cancel_ci_recommendation:
-    - text:
-        Si vous remarquez des changements, ou si vous avez à nouveau des
-        symptômes, n'hésitez pas à communiquer avec moi pour une évaluation
+    - text: Si vous remarquez des changements, ou si vous avez à nouveau des symptômes, n'hésitez pas à communiquer avec moi pour une évaluation
 
   utter_ask_daily_ci__keep_or_cancel__cancel_ci_symptoms:
-    - text:
-        Je vais continuer à vous contacter à chaque jour, à moins que vous ne
-        souhaitiez annuler le suivi quotidien. Ça vous va?
+    - text: Je vais continuer à vous contacter à chaque jour, à moins que vous ne souhaitiez annuler le suivi quotidien. Ça vous va?
       buttons:
         - title: Oui continuer le suivi
           payload: "/continue"
@@ -1232,40 +971,24 @@ responses:
           payload: "/cancel"
 
   utter_daily_ci__keep_or_cancel__feel_worse_keep_ci:
-    - text:
-        Puisque vous vous sentez moins bien qu'hier, je vais m'assurer de faire
-        le suivi avec vous demain
+    - text: Puisque vous vous sentez moins bien qu'hier, je vais m'assurer de faire le suivi avec vous demain
 
   utter_daily_ci__keep_or_cancel__feel_worse_recommendation:
-    - text:
-        Entretemps, si votre condition change et que vous voulez réévaluer vos
-        symptômes, n'hésitez pas à communiquer avec moi
+    - text: Entretemps, si votre condition change et que vous voulez réévaluer vos symptômes, n'hésitez pas à communiquer avec moi
 
   ## Daily check-in - recommendations
 
   utter_daily_ci__recommendations__more_information_vulnerable_population:
-    - text:
-        Pour plus d’informations et de recommandations, consultez
-        [covid19.info]({provincial_link}) ou
-        [canada.ca/populations-vulnerables](https://www.canada.ca/fr/sante-publique/services/publications/maladies-et-affections/populations-vulnerables-covid-19.html)
+    - text: Pour plus d’informations et de recommandations, consultez [covid19.info]({provincial_link}) ou [canada.ca/populations-vulnerables](https://www.canada.ca/fr/sante-publique/services/publications/maladies-et-affections/populations-vulnerables-covid-19.html)
 
   utter_daily_ci__recommendations__more_information_general:
-    - text:
-        Pour plus d’informations et de recommandations, consultez
-        [covid19.info]({provincial_link}) ou
-        [canada.ca/general](https://www.canada.ca/fr/sante-publique/services/maladies/maladie-coronavirus-covid-19.html)
+    - text: Pour plus d’informations et de recommandations, consultez [covid19.info]({provincial_link}) ou [canada.ca/general](https://www.canada.ca/fr/sante-publique/services/maladies/maladie-coronavirus-covid-19.html)
 
   utter_daily_ci__recommendations__211_qc:
-    - text:
-        Et pour de l'aide à domicile, si vous vivez dans la grande région de
-        Montréal ou à Québec, vous pouvez appeler au 211 ou consulter
-        [211.quebec](http://www.211quebecregions.ca/), ou
-        [211.montreal](https://www.211qc.ca/)
+    - text: Et pour de l'aide à domicile, si vous vivez dans la grande région de Montréal ou à Québec, vous pouvez appeler au 211 ou consulter [211.quebec](http://www.211quebecregions.ca/), ou [211.montreal](https://www.211qc.ca/)
 
   utter_daily_ci__recommendations__211_other_provinces:
-    - text:
-        Et pour de l’aide à domicile, vous pouvez appeler au 211 ou consulter
-        [211.ca](https://211.ca/fr/)
+    - text: Et pour de l’aide à domicile, vous pouvez appeler au 211 ou consulter [211.ca](https://211.ca/fr/)
 
   utter_daily_ci__recommendations__tomorrow_ci:
     - text: Je vais communiquer avec vous demain environ au même moment
@@ -1274,18 +997,12 @@ responses:
     - text: Assurez-vous de bien vous hydrater et de vous reposer
 
   utter_daily_ci__recommendations__recommendation_2:
-    - text:
-        Vous pouvez aussi consulter
-        [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common) pour
-        des informations, si vous avez des questions, ou pour réévaluer vos
-        symptômes
+    - text: Vous pouvez aussi consulter [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common) pour des informations, si vous avez des questions, ou pour réévaluer vos symptômes
 
   ## Daily check-in - early opt out
 
   utter_ask_daily_ci__early_opt_out__cancel_ci:
-    - text:
-        Avant de poursuivre, si vous voulez vous désinscrire et annuler le suivi
-        quotidien, dites-le moi maintenant
+    - text: Avant de poursuivre, si vous voulez vous désinscrire et annuler le suivi quotidien, dites-le moi maintenant
       buttons:
         - title: Me désinscrire
           payload: "/opt_out"
@@ -1299,9 +1016,7 @@ responses:
     - text: Entendu, j'annule votre suivi quotidien
 
   utter_daily_ci__early_opt_out__cancel_ci_recommendation:
-    - text:
-        Si vous remarquez des changements, ou si vous avez des symptômes,
-        n'hésitez pas à communiquer avec moi pour une évaluation
+    - text: Si vous remarquez des changements, ou si vous avez des symptômes, n'hésitez pas à communiquer avec moi pour une évaluation
 
   ## Daily check-in invalid ID
 
@@ -1309,9 +1024,7 @@ responses:
     - text: Je suis désolée mais ce lien ne semble pas valide
 
   utter_daily_ci__invalid_id__try_again:
-    - text:
-        Veuillez essayer de nouveau, et si vous copiez le lien dans votre
-        fureteur, assurez-vous de copier exactement la même chose
+    - text: Veuillez essayer de nouveau, et si vous copiez le lien dans votre fureteur, assurez-vous de copier exactement la même chose
 
   utter_ask_daily_checkin__invalid_id__want_assessment:
     - text: Si ça ne fonctionne pas, voudriez-vous évaluer vos symptômes?
@@ -1330,34 +1043,21 @@ responses:
           payload: "/done"
 
   utter_daily_checkin__invalid_id__visit_dialogue:
-    - text:
-        À tout moment, vous pouvez consultez [notre
-        site](https://covid19.dialogue.co/) pour des informations, ou pour une
-        auto-évaluation de vos symptômes
+    - text: À tout moment, vous pouvez consultez [notre site](https://covid19.dialogue.co/) pour des informations, ou pour une auto-évaluation de vos symptômes
 
   # Test Navigation - to be translated
 
   utter_test_navigation__explanations_1:
-    - text:
-        Je peux vous aider à trouver une clinique de dépistage dans votre région
+    - text: Je peux vous aider à trouver une clinique de dépistage dans votre région
 
   utter_test_navigation__explanations_2:
-    - text:
-        Selon l’endroit où vous vous trouvez, ou en fonction de la clinique,
-        vous pourriez avoir besoin d’une référence de votre médecin ou d’une
-        infirmière pour obtenir un test
+    - text: Selon l’endroit où vous vous trouvez, ou en fonction de la clinique, vous pourriez avoir besoin d’une référence de votre médecin ou d’une infirmière pour obtenir un test
 
   utter_test_navigation__explanations_3:
-    - text:
-        "Vous pouvez obtenir une référence soit:\n- Auprès de votre médecin, si
-        c’est possible, ou\n- En appelant le {provincial_811} et en discutant de
-        vos symptômes avec une infirmière"
+    - text: "Vous pouvez obtenir une référence soit:\n- Auprès de votre médecin, si c’est possible, ou\n- En appelant le {provincial_811} et en discutant de vos symptômes avec une infirmière"
 
   utter_test_navigation__explanations_4:
-    - text:
-        Pour chaque clinique de dépistage disponible dans votre région, je vais
-        vous donner diverses informations, dont la politique de rendez-vous et
-        de référence
+    - text: Pour chaque clinique de dépistage disponible dans votre région, je vais vous donner diverses informations, dont la politique de rendez-vous et de référence
 
   utter_ask_test_navigation__continue_no_assessment:
     - text: Voulez-vous que je cherche des cliniques de dépistage maintenant?
@@ -1382,9 +1082,7 @@ responses:
           payload: /ask_question
 
   utter_test_navigation__come_back:
-    - text:
-        D’accord. Quand vous serez prêt(e), revenez me voir
-        (https://covid19.dialogue.co/#/chat) et je pourrai vous aider
+    - text: D’accord. Quand vous serez prêt(e), revenez me voir (https://covid19.dialogue.co/#/chat) et je pourrai vous aider
 
   utter_test_navigation__acknowledge_continue:
     - text: D’accord, continuons!

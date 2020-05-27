@@ -1,5 +1,4 @@
 import os
-import random
 from typing import Any, Dict, List, Text, Union
 
 from aiohttp import ClientSession
@@ -29,10 +28,10 @@ from .constants import (
 )
 from .lib.log_util import bind_logger
 
-FORM_NAME = "question_answering_form"
+FORM_NAME = "question_answering_fallback_form"
 
 
-class QuestionAnsweringForm(FormAction):
+class QuestionAnsweringFallbackForm(FormAction):
     def name(self) -> Text:
 
         return FORM_NAME
@@ -50,33 +49,29 @@ class QuestionAnsweringForm(FormAction):
         tracker: "Tracker",
         domain: Dict[Text, Any],
     ) -> List[EventType]:
-        # Messages are only played for the first question
-        if (
-            tracker.active_form.get("name") != FORM_NAME
-            and tracker.get_slot(QA_ASKED_QUESTION_SLOT) is None
-        ):
-            dispatcher.utter_message(template="utter_can_help_with_questions")
-            dispatcher.utter_message(template="utter_qa_disclaimer")
+        if tracker.active_form.get("name") != FORM_NAME:
+            question = tracker.latest_message.get("text", "")
 
-            responses = domain.get("responses", {})
-            qa_samples_categories = [
-                key for key in responses.keys() if key.startswith("utter_qa_sample_")
-            ]
-            random_qa_samples_categories = random.sample(
-                qa_samples_categories, k=min(len(qa_samples_categories), 3)
+            protocol = QuestionAnsweringProtocol(
+                os.environ.get(FAQ_URL_ENV_KEY, DEFAULT_FAQ_URL)
             )
 
-            random_qa_samples = [
-                f"- {random.choice(value).get('text')}"
-                for key, value in responses.items()
-                if key in random_qa_samples_categories
-            ]
-
-            if len(random_qa_samples) > 0:
-                dispatcher.utter_message(
-                    template="utter_qa_sample",
-                    sample_questions="\n".join(random_qa_samples),
+            language = tracker.get_slot(LANGUAGE_SLOT)
+            async with ClientSession() as session:
+                result: QuestionAnsweringResponse = await protocol.get_response(
+                    session, question, language
                 )
+
+                if result.status == QuestionAnsweringStatus.SUCCESS and result.answers:
+                    dispatcher.utter_message(result.answers[0])
+
+                return await super()._activate_if_required(
+                    dispatcher, tracker, domain
+                ) + [
+                    SlotSet(QA_ACTIVE_QUESTION_SLOT, question),
+                    SlotSet(QA_STATUS_SLOT, result.status),
+                    SlotSet(QA_ANSWERS_SLOT, result.answers),
+                ]
 
         return await super()._activate_if_required(dispatcher, tracker, domain)
 
@@ -84,43 +79,17 @@ class QuestionAnsweringForm(FormAction):
     def required_slots(tracker: Tracker) -> List[Text]:
         status = tracker.get_slot(QA_STATUS_SLOT)
         if status == QuestionAnsweringStatus.SUCCESS:
-            return [QA_ACTIVE_QUESTION_SLOT, QA_FEEDBACK_SLOT]
+            return [QA_FEEDBACK_SLOT]
 
-        return [QA_ACTIVE_QUESTION_SLOT]
+        return []
 
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {
-            QA_ACTIVE_QUESTION_SLOT: self.from_text(),
             QA_FEEDBACK_SLOT: [
                 self.from_intent(intent="affirm", value=True),
                 self.from_intent(intent="deny", value=False),
             ],
         }
-
-    async def validate_active_question(
-        self,
-        value: Text,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        protocol = QuestionAnsweringProtocol(
-            os.environ.get(FAQ_URL_ENV_KEY, DEFAULT_FAQ_URL)
-        )
-
-        language = tracker.get_slot(LANGUAGE_SLOT)
-        async with ClientSession() as session:
-            result: QuestionAnsweringResponse = await protocol.get_response(
-                session, value, language
-            )
-
-            if result.status == QuestionAnsweringStatus.OUT_OF_DISTRIBUTION:
-                dispatcher.utter_message(template="utter_cant_answer")
-
-            if result.status == QuestionAnsweringStatus.SUCCESS and result.answers:
-                dispatcher.utter_message(result.answers[0])
-
-            return {QA_STATUS_SLOT: result.status, QA_ANSWERS_SLOT: result.answers}
 
     def validate_feedback(
         self,

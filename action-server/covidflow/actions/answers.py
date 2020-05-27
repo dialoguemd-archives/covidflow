@@ -8,6 +8,8 @@ from pydantic import BaseModel
 
 logger = structlog.get_logger()
 
+FAQ_URL_ENV_KEY = "COVID_FAQ_SERVICE_URL"
+DEFAULT_FAQ_URL = "https://covidfaq.dialoguecorp.com"
 
 ANSWERS_PATH = "answers"
 QUESTION_KEY = "question"

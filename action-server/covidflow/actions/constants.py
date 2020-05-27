@@ -55,5 +55,17 @@ CONTACT_SLOT = "contact"
 TRAVEL_SLOT = "travel"
 HAS_CONTACT_RISK_SLOT = "has_contact_risk"
 
+QA_ACTIVE_QUESTION_SLOT = "active_question"
+QA_FEEDBACK_SLOT = "feedback"
+QA_ANSWERS_SLOT = "answers"
+QA_ASKED_QUESTION_SLOT = "asked_question"
+
 # Shared with stories
 INVALID_REMINDER_ID_SLOT = "invalid_reminder_id"
+QA_STATUS_SLOT = "question_answering_status"
+
+# Slot values
+QA_ASKED_QUESTION_ANSWERS_KEY = "answers"
+QA_ASKED_QUESTION_STATUS_KEY = "status"
+QA_ASKED_QUESTION_FEEDBACK_KEY = "feedback"
+QA_ASKED_QUESTION_QUESTION_KEY = "question"

@@ -1,4 +1,4 @@
-.PHONY: init install install-dev install-rasa-sdk clean lint format test
+.PHONY: init install install-dev clean lint format test
 
 # include source code in any python subprocess
 export PYTHONPATH = .

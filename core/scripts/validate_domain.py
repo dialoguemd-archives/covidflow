@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-from typing import List, Set
+from typing import List, Set, Dict
 
 import structlog
 from ruamel.yaml import YAML
@@ -16,17 +16,34 @@ PAYLOAD_KEY = "payload"
 
 log = structlog.get_logger()
 
+RESPONSE_VARIANTS_EXCLUSIONS = {
+    "utter_qa_sample_animal",
+    "utter_qa_sample_contagion",
+    "utter_qa_sample_resistance",
+    "utter_qa_sample_cure",
+    "utter_qa_sample_symptoms",
+    "utter_qa_sample_spread",
+    "utter_qa_sample_general",
+    "utter_qa_sample_prevention",
+    "utter_qa_sample_tests",
+    "utter_qa_sample_walk",
+    "utter_qa_sample_stats",
+}
+
 
 class ResponseVariantsNotSupported(Exception):
-    pass
+    def __init__(self, message):
+        self.message = message
 
 
-def get_text_elements(response: List[dict]) -> Set[str]:
+def get_text_elements(responses: Dict[str, List[dict]], response_id: str) -> Set[str]:
+    response = responses[response_id]
     if len(response) != 1:
-        raise ResponseVariantsNotSupported()
+        raise ResponseVariantsNotSupported(
+            f"Found response alternatives for response: {response_id}"
+        )
 
     first_variant = response[0]
-
     text_elements = {first_variant[TEXT_KEY]}
 
     if BUTTONS_KEY in first_variant:
@@ -35,9 +52,12 @@ def get_text_elements(response: List[dict]) -> Set[str]:
     return text_elements
 
 
-def get_buttons(response: List[dict]) -> List[str]:
+def get_buttons(responses: Dict[str, List[dict]], response_id: str) -> List[str]:
+    response = responses[response_id]
     if len(response) != 1:
-        raise ResponseVariantsNotSupported()
+        raise ResponseVariantsNotSupported(
+            f"Found response alternatives for response: {response_id}"
+        )
 
     first_variant = response[0]
     if BUTTONS_KEY in first_variant:
@@ -69,27 +89,17 @@ def validate_response_ids(english_responses: dict, french_responses: dict) -> bo
 
 def validate_button_payloads(english_responses: dict, french_responses: dict) -> bool:
     button_mismatches = set()
-    has_response_variants = set()
 
     for response_id in english_responses.keys():
         if response_id not in french_responses:
             continue
 
-        english_response = english_responses[response_id]
-        french_response = french_responses[response_id]
+        english_buttons = get_buttons(english_responses, response_id)
+        french_buttons = get_buttons(french_responses, response_id)
 
-        try:
-            if get_buttons(english_response) != get_buttons(french_response):
-                button_mismatches.add(response_id)
-        except ResponseVariantsNotSupported:
-            has_response_variants.add(response_id)
-            continue
+        if english_buttons != french_buttons:
+            button_mismatches.add(response_id)
 
-    if has_response_variants:
-        log.warn(
-            "Your domain has response variants which are not supported by this tool.",
-            response_ids=sorted(has_response_variants),
-        )
     if button_mismatches:
         log.error("Button mismatches", response_ids=sorted(button_mismatches))
 
@@ -98,32 +108,19 @@ def validate_button_payloads(english_responses: dict, french_responses: dict) ->
 
 def validate_translations(english_responses: dict, french_responses: dict) -> bool:
     missing_translations = set()
-    has_response_variants = set()
 
     for response_id in english_responses.keys():
         if response_id not in french_responses:
             continue
 
-        english_response = english_responses[response_id]
-        french_response = french_responses[response_id]
-
-        try:
-            english_text_elements = get_text_elements(english_response)
-            french_text_elements = get_text_elements(french_response)
-        except ResponseVariantsNotSupported:
-            has_response_variants.add(response_id)
-            continue
+        english_text_elements = get_text_elements(english_responses, response_id)
+        french_text_elements = get_text_elements(french_responses, response_id)
 
         if len(english_text_elements - french_text_elements) != len(
             english_text_elements
         ):
             missing_translations.add(response_id)
 
-    if has_response_variants:
-        log.warn(
-            "Your domain has response variants which are not supported by this tool.",
-            response_ids=sorted(has_response_variants),
-        )
     if missing_translations:
         log.warn("Missing translations", response_ids=sorted(missing_translations))
 
@@ -141,10 +138,27 @@ def validate_domain() -> int:
     french_responses = french[RESPONSES_KEY]
 
     has_errors |= validate_response_ids(english_responses, french_responses)
-    has_errors |= validate_button_payloads(english_responses, french_responses)
+
+    # Removing response variants exclusions
+    english_responses_without_alternatives = {
+        key: value
+        for key, value in english_responses.items()
+        if key not in RESPONSE_VARIANTS_EXCLUSIONS
+    }
+    french_responses_without_alternatives = {
+        key: value
+        for key, value in french_responses.items()
+        if key not in RESPONSE_VARIANTS_EXCLUSIONS
+    }
+
+    has_errors |= validate_button_payloads(
+        english_responses_without_alternatives, french_responses_without_alternatives
+    )
 
     # Don't fail for missing translation
-    validate_translations(english_responses, french_responses)
+    validate_translations(
+        english_responses_without_alternatives, french_responses_without_alternatives
+    )
 
     if has_errors:
         return 1

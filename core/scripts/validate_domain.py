@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-from typing import List, Set, Dict
+from typing import Dict, List, Set
 
 import structlog
 from ruamel.yaml import YAML

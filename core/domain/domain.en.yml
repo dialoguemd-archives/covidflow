@@ -444,7 +444,117 @@ responses:
     - text: "I can help answer your questions about Covid-19, on many different topics"
 
   utter_qa_disclaimer:
-    - text: "Please note that at the moment, I can provide answers to a limited number of questions, but I'm constantly improving and learning from the questions you ask me"
+    - text:
+        "Please note that at the moment, I can provide answers to a limited
+        number of questions, but I'm constantly improving and learning from the
+        questions you ask me"
+
+  utter_qa_sample:
+    - text:
+        "Here are some examples of questions you can ask:\n{sample_questions}"
+
+  utter_qa_sample_animal:
+    - text: "Can my cat get the virus?"
+    - text: "Can dogs transfer the virus?"
+    - text: "Can animals transmit COVID-19?"
+    - text: "Is the virus transmissible from animals to humans?"
+
+  utter_qa_sample_contagion:
+    - text: "If we have covid-19, how long are we contagious?"
+    - text: "How long are we contagious when we have COVID-19?"
+    - text:
+        "After symptoms disappear, how long does a person remain contagious?"
+    - text: "How long is a person contagious?"
+    - text: "Am I contagious long after I get the virus?"
+
+  utter_qa_sample_resistance:
+    - text: "Is it true that warmth kills Coronavirus?"
+    - text: "How long does the virus live on surfaces?"
+    - text: "How long COVID19 can stay alive on different surfaces?"
+    - text:
+        "Is it true that COVID-19 can survive up to a few days on hard surfaces?"
+    - text: "How long does the virus survive on a surface like a doorknob?"
+    - text: "How long is COVID-19 staying on surfaces?"
+
+  utter_qa_sample_cure:
+    - text: "How long will it take to develop a vaccine?"
+    - text: "Is there a cure for corona virus?"
+    - text: "Is there a vaccine for corona virus?"
+    - text: "Is there a treatment for corona virus?"
+
+  utter_qa_sample_symptoms:
+    - text: "What are the symptoms of COVID-19?"
+    - text: "Is vomiting one of the symptoms?"
+    - text: "Is fever a symptom of coronavirus?"
+    - text: "What are the main symptoms?"
+    - text: "Is coughing phlem a symptom?"
+    - text: "I have a headache and an itchy throat. Am I at risk?"
+    - text: "How do I know if I have the corona virus?"
+    - text: "I am coughing so you think I have Coronavirus?"
+    - text: "I have temperature, what should I do?"
+    - text: "How do I know if I have coronavirus?"
+    - text: "How do I distinguish between the flu and coronavirus?"
+    - text: "What is the difference between covid-19 and influenza?"
+    - text: "How do you differentiate between covid and flu?"
+    - text:
+        "What is the difference between the symptoms of influenza and COVID-19?"
+    - text: "How to tell the difference between covid and a simple flu?"
+    - text: "What should I do if I am short of breath?"
+    - text: "How to know if I have COVID-19 or not?"
+    - text: "What should I do if I start coughing?"
+    - text: "What if I got fever?"
+    - text: "How do I know if my cough is serious?"
+
+  utter_qa_sample_spread:
+    - text: "How does it spread?"
+    - text: "How is the corona virus being spread?"
+    - text: "How is it transmitted?"
+    - text: "Is it sexually transmissible?"
+
+  utter_qa_sample_general:
+    - text: "What's corona virus?"
+    - text: "What is Covid-19?"
+    - text: "Can you explain to me what is the covid19?"
+    - text: "What exactly is COVID-19?"
+    - text: "What does COVID-19 mean?"
+    - text: "Where did it start?"
+    - text: "How did it start?"
+    - text: "Where did COVID-19 start?"
+    - text: "How did Covid 19 start?"
+
+  utter_qa_sample_prevention:
+    - text: "How can I prevent myself from getting sick?"
+    - text: "How to prevent the spread of COVID-19?"
+    - text: "How can I protect myself from the covid-19?"
+    - text: "Precautions to measure?"
+    - text: "Is washing my hands really the best way to prevent transmission?"
+    - text: "Should I practice social distancing?"
+    - text: "What is social distancing?"
+    - text: "Why is social distancing important?"
+    - text: "Why do I have to stay at home?"
+    - text: "Why isolate yourself?"
+
+  utter_qa_sample_tests:
+    - text: "How do I know when to get tested?"
+    - text: "Should I get tested?"
+
+  utter_qa_sample_walk:
+    - text: "When will it be ok to go outside?"
+    - text: "Is it OK I go out for a walk alone?"
+    - text: "Can I go walking?"
+    - text: "Am I allowed to go for a walk?"
+    - text: "Am I allowed to go outside?"
+
+  utter_qa_sample_stats:
+    - text:
+        "From the infected worldwide population what will be the ratio of
+        asymptomatic people?"
+    - text: "Where can I find most up to date numbers on cases and deaths?"
+    - text: "How many cases in Montreal?"
+    - text: "How many people died so far?"
+    - text: "How many cases in Quebec?"
+    - text: "How many people are infected in Quebec?"
+    - text: "How many cases are in the US?"
 
   utter_ask_active_question:
     - text: "Please write your question about Covid-19:"

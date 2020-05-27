@@ -1,7 +1,8 @@
 import sys
 from pathlib import Path
-from typing import List, Set
+from typing import Dict, List, Set
 
+import structlog
 from ruamel.yaml import YAML
 
 ENGLISH_DOMAIN_FILENAME = "domain/domain.en.yml"
@@ -13,13 +14,36 @@ TEXT_KEY = "text"
 TITLE_KEY = "title"
 PAYLOAD_KEY = "payload"
 
+log = structlog.get_logger()
 
-def get_text_elements(response: List[dict]) -> Set[str]:
+RESPONSE_VARIANTS_EXCLUSIONS = {
+    "utter_qa_sample_animal",
+    "utter_qa_sample_contagion",
+    "utter_qa_sample_resistance",
+    "utter_qa_sample_cure",
+    "utter_qa_sample_symptoms",
+    "utter_qa_sample_spread",
+    "utter_qa_sample_general",
+    "utter_qa_sample_prevention",
+    "utter_qa_sample_tests",
+    "utter_qa_sample_walk",
+    "utter_qa_sample_stats",
+}
+
+
+class ResponseVariantsNotSupported(Exception):
+    def __init__(self, message):
+        self.message = message
+
+
+def get_text_elements(responses: Dict[str, List[dict]], response_id: str) -> Set[str]:
+    response = responses[response_id]
     if len(response) != 1:
-        raise Exception("This tool does not support checking response variants (yet).")
+        raise ResponseVariantsNotSupported(
+            f"Found response alternatives for response: {response_id}"
+        )
 
     first_variant = response[0]
-
     text_elements = {first_variant[TEXT_KEY]}
 
     if BUTTONS_KEY in first_variant:
@@ -28,9 +52,12 @@ def get_text_elements(response: List[dict]) -> Set[str]:
     return text_elements
 
 
-def get_buttons(response: List[dict]) -> List[str]:
+def get_buttons(responses: Dict[str, List[dict]], response_id: str) -> List[str]:
+    response = responses[response_id]
     if len(response) != 1:
-        raise Exception("This tool does not support checking response variants (yet).")
+        raise ResponseVariantsNotSupported(
+            f"Found response alternatives for response: {response_id}"
+        )
 
     first_variant = response[0]
     if BUTTONS_KEY in first_variant:
@@ -50,10 +77,12 @@ def validate_response_ids(english_responses: dict, french_responses: dict) -> bo
     missing_french_response_ids = english_response_ids - french_response_ids
 
     if missing_english_response_ids:
-        print(f"Missing english responses: {missing_english_response_ids}")
+        log.error(
+            "Missing english responses", response_ids=missing_english_response_ids
+        )
 
     if missing_french_response_ids:
-        print(f"Missing french responses: {missing_french_response_ids}")
+        log.error("Missing french responses", response_ids=missing_french_response_ids)
 
     return True
 
@@ -65,14 +94,14 @@ def validate_button_payloads(english_responses: dict, french_responses: dict) ->
         if response_id not in french_responses:
             continue
 
-        english_response = english_responses[response_id]
-        french_response = french_responses[response_id]
+        english_buttons = get_buttons(english_responses, response_id)
+        french_buttons = get_buttons(french_responses, response_id)
 
-        if get_buttons(english_response) != get_buttons(french_response):
+        if english_buttons != french_buttons:
             button_mismatches.add(response_id)
 
     if button_mismatches:
-        print(f"Button mismatches: {sorted(button_mismatches)}")
+        log.error("Button mismatches", response_ids=sorted(button_mismatches))
 
     return len(button_mismatches) != 0
 
@@ -84,11 +113,8 @@ def validate_translations(english_responses: dict, french_responses: dict) -> bo
         if response_id not in french_responses:
             continue
 
-        english_response = english_responses[response_id]
-        french_response = french_responses[response_id]
-
-        english_text_elements = get_text_elements(english_response)
-        french_text_elements = get_text_elements(french_response)
+        english_text_elements = get_text_elements(english_responses, response_id)
+        french_text_elements = get_text_elements(french_responses, response_id)
 
         if len(english_text_elements - french_text_elements) != len(
             english_text_elements
@@ -96,7 +122,7 @@ def validate_translations(english_responses: dict, french_responses: dict) -> bo
             missing_translations.add(response_id)
 
     if missing_translations:
-        print(f"Missing translations: {sorted(missing_translations)}")
+        log.warn("Missing translations", response_ids=sorted(missing_translations))
 
     return len(missing_translations) != 0
 
@@ -112,15 +138,32 @@ def validate_domain() -> int:
     french_responses = french[RESPONSES_KEY]
 
     has_errors |= validate_response_ids(english_responses, french_responses)
-    has_errors |= validate_button_payloads(english_responses, french_responses)
+
+    # Removing response variants exclusions
+    english_responses_without_alternatives = {
+        key: value
+        for key, value in english_responses.items()
+        if key not in RESPONSE_VARIANTS_EXCLUSIONS
+    }
+    french_responses_without_alternatives = {
+        key: value
+        for key, value in french_responses.items()
+        if key not in RESPONSE_VARIANTS_EXCLUSIONS
+    }
+
+    has_errors |= validate_button_payloads(
+        english_responses_without_alternatives, french_responses_without_alternatives
+    )
 
     # Don't fail for missing translation
-    validate_translations(english_responses, french_responses)
+    validate_translations(
+        english_responses_without_alternatives, french_responses_without_alternatives
+    )
 
     if has_errors:
         return 1
 
-    print("No error found in domain file.")
+    log.info("No error found in domain file.")
     return 0
 
 

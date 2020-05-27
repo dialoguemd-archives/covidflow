@@ -444,7 +444,128 @@ responses:
     - text: "Je peux répondre à vos questions sur une variété de sujets entourant la Covid-19"
 
   utter_qa_disclaimer:
-    - text: "Veuillez noter que pour le moment, je suis en mesure de répondre à un nombre limité de questions, mais je m'améliore constamment et j'apprends à l'aide des questions que vous me posez"
+    - text:
+        "Veuillez noter que pour le moment, je suis en mesure de répondre à un
+        nombre limité de questions, mais je m'améliore constamment et j'apprends
+        à l'aide des questions que vous me posez"
+
+  utter_qa_sample:
+    - text:
+        "Voici des exemples de questions que vous pouvez
+        poser:\n{sample_questions}"
+
+  utter_qa_sample_animal:
+    - text: "Mon chat peut-il contracter le virus?"
+    - text: "Les chiens peuvent-ils transférer le virus?"
+    - text: "Les animaux peuvent-ils transmettre la Covid-19?"
+    - text: "Le virus est-il transmissible des animaux aux humains?"
+
+  utter_qa_sample_contagion:
+    - text: "Si nous avons Covid-19, combien de temp sommes-nous contagieux?"
+    - text: "Combien de temps sommes-nous contagieux quand nous avons Covid-19?"
+    - text:
+        "Après la disparition des symptômes, combien de temps une personne reste
+        contagieuse?"
+    - text: "Combien de temps une personne est-elle contagieuse?"
+    - text: "Suis-je contagieux longtemps après que j'ai contracté le virus?"
+
+  utter_qa_sample_resistance:
+    - text: "Est-il vrai que la chaleur tue le coronavirus?"
+    - text: "Combien de temp le virus vit-il sur des surfaces?"
+    - text:
+        "Pour combien de temps COVID19 peut rester en vie sur des surfaces
+        différentes?"
+    - text:
+        "Est-il vrai que Covid-19 peut survivre jusqu'à quelques jours sur les
+        surfaces dures?"
+    - text:
+        "Combien de temps le virus survit-il sur une surface comme une poignée
+        de porte?"
+    - text:
+        "Combien de temps est-ce que la Covid 19 peut rester sur des surfaces?"
+
+  utter_qa_sample_cure:
+    - text: "Combien de temps faudra-t-il pour développer un vaccin?"
+    - text: "Y a-t-il un remède pour le virus corona?"
+    - text: "Y a-t-il un vaccin pour le virus corona?"
+    - text: "Y a-t-il un traitement pour le virus corona?"
+
+  utter_qa_sample_symptoms:
+    - text: "Quels sont les symptômes de Covid-19?"
+    - text: "Est-ce que vomir est un symptôme de la covid-19?"
+    - text: "Est-ce que la fièvre est un symptôme de la covid-19?"
+    - text: "Quels sont les principaux symptômes?"
+    - text: "Est-ce que la toux est un symptôme de la covid-19?"
+    - text: "Comment puis-je distinguer entre la grippe et le coronavirus?"
+    - text: "Quelle est la différence entre Covid-19 et la grippe?"
+    - text: "Comment différenciez-vous entre Covid et la grippe?"
+    - text:
+        "Quelle est la différence entre les symptômes de la grippe et Covid-19?"
+    - text: "Comment faire la différence entre Covid et une simple grippe?"
+    - text: "J'ai un mal de tête et une gorge qui démange. Suis-je à risque?"
+    - text: "Comment puis-je savoir si j'ai le coronavirus?"
+    - text: "Je tousse, pensez-vous que j'ai le coronavirus?"
+    - text: "Je fais de la température, que dois-je faire?"
+    - text: "Comment puis-je savoir si j'ai le coronavirus?"
+    - text: "Que dois-je faire si je suis à court de souffle?"
+    - text: "Comment savoir si j'ai la Covid-19 ou non?"
+    - text: "Que dois-je faire si je tousse?"
+    - text: "Que faire si je fais la fièvre?"
+    - text: "Comment puis-je savoir si ma toux est grave?"
+
+  utter_qa_sample_spread:
+    - text: "Comment se transmet-elle?"
+    - text: "Le virus est-il aéroporté?"
+    - text: "Comment le coronavirus se propage-t-il?"
+    - text: "Comment est-il transmis?"
+
+  utter_qa_sample_general:
+    - text: "Qu'est-ce coronavirus?"
+    - text: "Qu'est-ce Covid-19?"
+    - text: "Pouvez-vous me expliquer quel est le covid19?"
+    - text: "Qu'est-ce exactement Covid-19?"
+    - text: "Qu'est-ce Covid-19 veut dire?"
+    - text: "Où a-t-il commencé?"
+    - text: "Comment a-t-il commencé?"
+    - text: "Où est-ce que la Covid-19 a commencé?"
+    - text: "Comment la Covid 19 a-t-elle commencé?"
+
+  utter_qa_sample_prevention:
+    - text: "Comment puis-je m'empêcher de tomber malade?"
+    - text: "Comment prévenir la propagation de Covid-19?"
+    - text: "Comment puis-je me protéger contre la Covid-19?"
+    - text: "Précautions à prendre?"
+    - text:
+        "Est-ce que me laver les mains est vraiment la meilleure façon de
+        prévenir la transmission?"
+    - text: "Dois-je pratiquer la distanciation sociale?"
+    - text: "Qu'est-ce que la distanciation sociale?"
+    - text: "Pourquoi la distanciation sociale est-elle importante?"
+    - text: "Pourquoi dois-je rester à la maison?"
+    - text: "Pourquoi vous isoler?"
+
+  utter_qa_sample_tests:
+    - text: "Comment puis-je savoir quand me faire tester?"
+    - text: "Dois-je me faire tester?"
+
+  utter_qa_sample_walk:
+    - text: "Quand est-ce autorisé d'aller à l'extérieur?"
+    - text: "Est-ce OK si je sors pour une promenade seul?"
+    - text: "Puis-je aller marcher?"
+    - text: "Suis-je autorisé à aller pour une promenade?"
+    - text: "Suis-je autorisé à aller à l'extérieur?"
+
+  utter_qa_sample_stats:
+    - text:
+        "Où puis-je trouver les statistiques à jour sur les cas et les décès?"
+    - text: "Combien de cas à Montréal?"
+    - text: "Combien de personnes sont mortes à ce jour?"
+    - text: "Combien de cas au Québec?"
+    - text: "Combien de personnes sont infectées au Québec?"
+    - text: "Combien de cas sont aux États-Unis?"
+    - text:
+        "De la population infectée dans le monde entier quel sera le rapport des
+        personnes asymptomatiques?"
 
   utter_ask_active_question:
     - text: "Veuillez écrire votre question au sujet de la Covid-19:"

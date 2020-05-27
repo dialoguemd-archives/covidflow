@@ -2,9 +2,9 @@ import logging
 import os
 from typing import Any, Dict, Optional, Text
 
+import analytics
 import structlog
 
-import analytics
 from rasa.core.brokers.broker import EventBroker
 from rasa.utils.endpoints import EndpointConfig
 

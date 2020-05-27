@@ -489,7 +489,6 @@ responses:
     - text: "Y a-t-il un remède pour le virus corona?"
     - text: "Y a-t-il un vaccin pour le virus corona?"
     - text: "Y a-t-il un traitement pour le virus corona?"
-    - text: "Y a-t-il un vaccin pour le virus corona?"
 
   utter_qa_sample_symptoms:
     - text: "Quels sont les symptômes de Covid-19?"

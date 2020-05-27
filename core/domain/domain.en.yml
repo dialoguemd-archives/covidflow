@@ -481,7 +481,6 @@ responses:
     - text: "Is there a cure for corona virus?"
     - text: "Is there a vaccine for corona virus?"
     - text: "Is there a treatment for corona virus?"
-    - text: "Is there a vaccine for corona virus?"
 
   utter_qa_sample_symptoms:
     - text: "What are the symptoms of COVID-19?"

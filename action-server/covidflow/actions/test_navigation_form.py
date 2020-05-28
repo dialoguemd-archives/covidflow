@@ -85,8 +85,8 @@ class TestNavigationForm(FormAction):
 
             testing_locations = await get_testing_locations(coordinates)
 
-        except Exception as error:
-            logger.exception(error)
+        except Exception:
+            logger.exception("Failed to fetch testing locations")
             dispatcher.utter_message(
                 template="utter_test_navigation__could_not_fetch_1"
             )

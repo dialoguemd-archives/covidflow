@@ -1,5 +1,5 @@
 name: send-daily-reminders
-engine: ~0.6
+engine: ~1
 type: cron
 ttl: 270
 cron:

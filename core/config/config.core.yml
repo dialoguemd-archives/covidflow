@@ -10,3 +10,8 @@ policies:
     evaluate_on_number_of_examples: 0
     random_seed: 42
   - name: MappingPolicy
+  - name: "FallbackPolicy"
+    nlu_threshold: 0.3
+    ambiguity_threshold: 0.0
+    core_threshold: 0.0
+    fallback_action_name: "action_fallback"

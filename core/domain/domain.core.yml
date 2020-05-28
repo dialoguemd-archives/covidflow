@@ -36,6 +36,7 @@ intents:
       triggers: action_send_daily_checkin_reminder
   - navigate_test_locations
   - later
+  - fallback
 
 entities:
   - province
@@ -44,6 +45,7 @@ entities:
   - validation_code
 
 actions:
+  - action_fallback
   - action_visit_package
   - action_initialize_daily_checkin
   - action_daily_ci_early_opt_out

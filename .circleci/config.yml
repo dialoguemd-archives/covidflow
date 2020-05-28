@@ -1,11 +1,11 @@
 version: 2.1
 
 orbs:
-  app: dialogue/helm-app@1.1.3
-  base: dialogue/base@1.8.0
-  job: dialogue/helm-job@1.2.1
-  python: dialogue/python@2.7.0
-  release: dialogue/release@2.1.4
+  app: dialogue/helm-app@2
+  base: dialogue/base@1
+  job: dialogue/helm-job@2
+  python: dialogue/python@2
+  release: dialogue/release@2
 
 workflows:
   cicd:
@@ -333,7 +333,7 @@ commands:
       - python/setup
       - python/install_deps
   run-integration-tests:
-    parameters: 
+    parameters:
       <<: *param__language
     steps:
       - python/setup

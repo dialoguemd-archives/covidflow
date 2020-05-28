@@ -34,7 +34,8 @@ intents:
       triggers: action_send_validation_code
   - send_daily_checkin_reminder:
       triggers: action_send_daily_checkin_reminder
-  - navigate_test_locations
+  - navigate_test_locations:
+      use_entities: []
   - later
   - fallback
 
@@ -79,6 +80,7 @@ forms:
   - daily_ci_keep_or_cancel_form
   - question_answering_form
   - home_assistance_form
+  - test_navigation_form
 
 slots:
   metadata:
@@ -152,6 +154,8 @@ slots:
     values:
       - success
       - failure
+      - need_assessment
+      - out_of_distribution
 
   has_contact_risk:
     type: bool
@@ -187,6 +191,9 @@ slots:
     type: unfeaturized
 
   invalid_reminder_id:
+    type: bool
+
+  test_navigation_success:
     type: bool
 
   checkin_return__moderate_symptoms_worsened:
@@ -233,6 +240,22 @@ slots:
     type: unfeaturized
 
   daily_ci__feel_better__is_symptom_free:
+    type: unfeaturized
+
+  test_navigation__postal_code:
+    type: unfeaturized
+
+  test_navigation__invalid_postal_code_counter:
+    type: unfeaturized
+    initial_value: 0
+
+  test_navigation__try_different_address:
+    type: unfeaturized
+
+  test_navigation__locations:
+    type: unfeaturized
+
+  test_navigation__end_form:
     type: unfeaturized
 
 session_config:

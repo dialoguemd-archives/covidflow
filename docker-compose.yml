@@ -68,6 +68,9 @@ services:
       - SQL_TRACKER_STORE_DB=chloe
       - REMINDER_JOB_CORE_ENDPOINT_EN=http://core-en:8080
       - REMINDER_JOB_CORE_ENDPOINT_FR=http://core-fr:8080
+      - GOOGLE_GEOCODING_API_KEY
+      - GOOGLE_MAPS_API_KEY
+      - GOOGLE_MAPS_URL_SIGN_SECRET
     volumes:
       - ./action-server/covidflow:/app/covidflow
 

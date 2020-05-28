@@ -60,6 +60,9 @@ class ActionTestCase(TestCase):
         self.templates = [message["template"] for message in self.dispatcher.messages]
         self.json_messages = [message["custom"] for message in self.dispatcher.messages]
         self.texts = [message["text"] for message in self.dispatcher.messages]
+        self.attachments = [
+            message["attachment"] for message in self.dispatcher.messages
+        ]
 
     def assert_events(self, expected_events: List[Dict]) -> None:
         self.assertEqual(self.events, expected_events)
@@ -75,3 +78,7 @@ class ActionTestCase(TestCase):
     # If a message does not contain a text message, it appears as None in the list
     def assert_texts(self, expected_texts: List[Dict[str, Any]]) -> None:
         self.assertEqual(self.texts, expected_texts)
+
+    # If a message does not contain an attachment, it appears as None in the list
+    def assert_attachments(self, expected_attachments: List[Dict[str, Any]]) -> None:
+        self.assertEqual(self.attachments, expected_attachments)

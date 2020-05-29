@@ -1,0 +1,11 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "this is my answer"
+    },
+    {
+        "text": "Was this answer useful?",
+        {{ bot.confirmation_buttons() }}
+    }
+]

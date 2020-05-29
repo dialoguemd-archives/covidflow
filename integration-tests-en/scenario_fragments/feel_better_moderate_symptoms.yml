@@ -1,0 +1,14 @@
+- user: daily_ci/daily_checkin_profile_2
+  bot: daily_ci/greet_profile_2
+- user: daily_ci/continue
+  bot: daily_ci/ask_feel
+- user: daily_ci/better
+  bot: daily_ci/feel_better/ask_fever
+- user: affirm
+  bot: daily_ci/feel_better/ask_cough_fever
+- user: affirm
+  bot: daily_ci/feel_better/ask_diff_breathing_cough
+- user: affirm
+  bot: daily_ci/feel_better/ask_cancel_ci_diff_breathing
+- user: daily_ci/continue
+  bot: daily_ci/vulnerable_population_recommendations_has_211

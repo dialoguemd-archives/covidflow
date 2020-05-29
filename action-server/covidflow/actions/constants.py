@@ -60,4 +60,7 @@ INVALID_REMINDER_ID_SLOT = "invalid_reminder_id"
 TEST_NAVIGATION_SUCCESS_SLOT = "test_navigation_success"
 
 # Metadata/Test
-QA_TEST_PROFILE_ATTRIBUTE = "qa-test-profile"
+QA_TEST_PROFILE_ATTRIBUTE = "qa_test_profile"
+TEST_NAVIGATION_TEST_RESPONSES_LENGTH_ATTRIBUTE = (
+    "test_navigation_test_responses_length"
+)

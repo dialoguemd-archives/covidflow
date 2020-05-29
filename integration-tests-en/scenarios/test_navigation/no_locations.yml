@@ -1,0 +1,7 @@
+- user: test_navigation/greet_no_locations
+  bot: welcome
+- navigate_test_locations
+- user: test_navigation/postal_code/valid
+  bot: test_navigation/no_locations
+- user: deny
+  bot: test_navigation/no_locations_deny

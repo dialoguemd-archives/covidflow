@@ -1,0 +1,5 @@
+- user: test_navigation/greet_fetch_error
+  bot: welcome
+- navigate_test_locations
+- user: test_navigation/postal_code/valid
+  bot: test_navigation/fetch_error

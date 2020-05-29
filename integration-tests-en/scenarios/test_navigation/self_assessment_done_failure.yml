@@ -1,0 +1,9 @@
+- user: test_navigation/greet_fetch_error
+  bot: welcome
+- assessment_moderate
+- user: navigate_tests
+  bot: test_navigation/explanations_assessment_done
+- user: continue
+  bot: test_navigation/postal_code
+- user: test_navigation/postal_code/valid
+  bot: test_navigation/fetch_error_assessment_done

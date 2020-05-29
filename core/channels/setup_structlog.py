@@ -123,6 +123,7 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
                 ).isoformat(),
             },
         )
+        _add_record(log_record, "logger", record.name)
         _add_record(log_record, "level", record.levelname.lower())
         _add_record(log_record, "lineno", record.lineno)
         _add_record(log_record, "pathname", record.pathname)

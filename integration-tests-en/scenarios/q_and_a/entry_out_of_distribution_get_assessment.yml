@@ -1,0 +1,8 @@
+- user: q_and_a/greet_profile_out_of_distribution
+  bot: welcome
+- user: ask_question
+  bot: q_and_a/entry_first_time
+- user: q_and_a/submit_question
+  bot: q_and_a/out_of_distribution_self_assessment_not_done
+- user: get_assessment
+  bot: symptoms_severe

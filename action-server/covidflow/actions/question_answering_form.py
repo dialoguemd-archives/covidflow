@@ -13,7 +13,7 @@ from .answers import (
     QuestionAnsweringResponse,
     QuestionAnsweringStatus,
 )
-from .constants import LANGUAGE_SLOT
+from .constants import LANGUAGE_SLOT, QA_TEST_PROFILE_ATTRIBUTE
 from .lib.log_util import bind_logger
 
 FAQ_URL_ENV_KEY = "COVID_FAQ_SERVICE_URL"
@@ -32,6 +32,19 @@ QUESTION_KEY = "question"
 
 FORM_NAME = "question_answering_form"
 
+TEST_PROFILES_RESPONSE = {
+    "success": QuestionAnsweringResponse(
+        answers=["this is my answer"], status=QuestionAnsweringStatus.SUCCESS
+    ),
+    "failure": QuestionAnsweringResponse(status=QuestionAnsweringStatus.FAILURE),
+    "need_assessment": QuestionAnsweringResponse(
+        status=QuestionAnsweringStatus.NEED_ASSESSMENT
+    ),
+    "out_of_distribution": QuestionAnsweringResponse(
+        status=QuestionAnsweringStatus.OUT_OF_DISTRIBUTION
+    ),
+}
+
 
 class QuestionAnsweringForm(FormAction):
     def name(self) -> Text:
@@ -47,8 +60,8 @@ class QuestionAnsweringForm(FormAction):
     ## override to play initial messages
     async def _activate_if_required(
         self,
-        dispatcher: "CollectingDispatcher",
-        tracker: "Tracker",
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[EventType]:
         # Messages are only played for the first question
@@ -59,26 +72,17 @@ class QuestionAnsweringForm(FormAction):
             dispatcher.utter_message(template="utter_can_help_with_questions")
             dispatcher.utter_message(template="utter_qa_disclaimer")
 
-            responses = domain.get("responses", {})
-            qa_samples_categories = [
-                key for key in responses.keys() if key.startswith("utter_qa_sample_")
-            ]
-            random_qa_samples_categories = random.sample(
-                qa_samples_categories, k=min(len(qa_samples_categories), 3)
+            random_qa_samples = (
+                _get_fixed_questions_samples()
+                if _must_stub_result(tracker)
+                else _get_random_question_samples(domain)
             )
-
-            random_qa_samples = [
-                f"- {random.choice(value).get('text')}"
-                for key, value in responses.items()
-                if key in random_qa_samples_categories
-            ]
 
             if len(random_qa_samples) > 0:
                 dispatcher.utter_message(
                     template="utter_qa_sample",
                     sample_questions="\n".join(random_qa_samples),
                 )
-
         return await super()._activate_if_required(dispatcher, tracker, domain)
 
     @staticmethod
@@ -105,23 +109,19 @@ class QuestionAnsweringForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        protocol = QuestionAnsweringProtocol(
-            os.environ.get(FAQ_URL_ENV_KEY, DEFAULT_FAQ_URL)
+        result = (
+            _get_stub_qa_result(tracker)
+            if _must_stub_result(tracker)
+            else await _fetch_qa(value, tracker)
         )
 
-        language = tracker.get_slot(LANGUAGE_SLOT)
-        async with ClientSession() as session:
-            result: QuestionAnsweringResponse = await protocol.get_response(
-                session, value, language
-            )
+        if result.status == QuestionAnsweringStatus.OUT_OF_DISTRIBUTION:
+            dispatcher.utter_message(template="utter_cant_answer")
 
-            if result.status == QuestionAnsweringStatus.OUT_OF_DISTRIBUTION:
-                dispatcher.utter_message(template="utter_cant_answer")
+        if result.status == QuestionAnsweringStatus.SUCCESS and result.answers:
+            dispatcher.utter_message(result.answers[0])
 
-            if result.status == QuestionAnsweringStatus.SUCCESS and result.answers:
-                dispatcher.utter_message(result.answers[0])
-
-            return {STATUS_SLOT: result.status, ANSWERS_SLOT: result.answers}
+        return {STATUS_SLOT: result.status, ANSWERS_SLOT: result.answers}
 
     def validate_feedback(
         self,
@@ -154,3 +154,43 @@ class QuestionAnsweringForm(FormAction):
             SlotSet(FEEDBACK_SLOT),
             SlotSet(ASKED_QUESTION_SLOT, full_question_result),
         ]
+
+
+def _must_stub_result(tracker: Tracker):
+    metadata = tracker.get_slot("metadata") or {}
+    return QA_TEST_PROFILE_ATTRIBUTE in metadata
+
+
+def _get_random_question_samples(domain: Dict[Text, Any],) -> List[str]:
+    responses = domain.get("responses", {})
+    qa_samples_categories = [
+        key for key in responses.keys() if key.startswith("utter_qa_sample_")
+    ]
+    random_qa_samples_categories = random.sample(
+        qa_samples_categories, k=min(len(qa_samples_categories), 3)
+    )
+
+    return [
+        f"- {random.choice(value).get('text')}"
+        for key, value in responses.items()
+        if key in random_qa_samples_categories
+    ]
+
+
+def _get_fixed_questions_samples() -> List[str]:
+    return ["- sample question 1", "- sample question 2"]
+
+
+async def _fetch_qa(text: Text, tracker: Tracker) -> QuestionAnsweringResponse:
+    protocol = QuestionAnsweringProtocol(
+        os.environ.get(FAQ_URL_ENV_KEY, DEFAULT_FAQ_URL)
+    )
+
+    language = tracker.get_slot(LANGUAGE_SLOT)
+    async with ClientSession() as session:
+        return await protocol.get_response(session, text, language)
+
+
+def _get_stub_qa_result(tracker: Tracker):
+    profile = tracker.get_slot("metadata")[QA_TEST_PROFILE_ATTRIBUTE]
+    return TEST_PROFILES_RESPONSE[profile]

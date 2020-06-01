@@ -1,0 +1,16 @@
+- user: q_and_a/greet_profile_out_of_distribution
+  bot: welcome
+- user: get_assessment
+  bot: symptoms_severe
+- suspect_reach_moderate
+- suspect_reach_home_assistance
+- user: affirm
+  bot: home_assistance/has_help
+- user: deny
+  bot: stay_home_moderate
+- user: ask_question
+  bot: q_and_a/entry_first_time
+- user: q_and_a/submit_question
+  bot: q_and_a/out_of_distribution_self_assessment_done
+- user: done
+  bot: q_and_a/done

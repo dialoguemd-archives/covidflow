@@ -1096,13 +1096,46 @@ responses:
   utter_test_navigation__many_locations_2:
     - text: For each testing site, you can get detailed contact information, directions and opening hours
 
-  utter_test_navigation__many_location_3:
+  utter_test_navigation__many_locations_3:
     - text: You will need to contact the testing site directly for more information or to make an appointment to get tested
 
   utter_test_navigation__display_titles:
     - custom:
         call_button: "Call "
         directions_button: "Directions"
+
+  utter_test_navigation__descriptions:
+    - custom:
+        contact_before_visit: Please contact us before presenting yourself.
+        referral:
+          "true": Referral from a health professional needed.
+          "false": ""
+          "none": ""
+        appointment_clientele:
+          "false":
+            default: Walk-in clinic.
+            all: Walk-in clinic for all.
+            children: Children only walk-in clinic.
+            no_children: Adults only walk-in clinic.
+            no_children_under: Clinic for adults and children {age} years old or more.
+            no_children_under_months: Clinic for adults and children {age} months old or more.
+            healthcare_workers_and_first_responders: Healthcare workers and first responders only walk-in clinic.
+          "true":
+            default: By appointment only.
+            all: By appointment only.
+            children: Children only by appointment clinic.
+            no_children: Adults only by appointment clinic.
+            no_children_under: By appointment only. For adults and children {age} years old or more.
+            no_children_under_months: By appointment only. For adults and children {age} months old or more.
+            healthcare_workers_and_first_responders: Healthcare workers and first responders only walk-in clinic.
+          "none":
+            default: ""
+            all: Clinic for all.
+            children: Children only clinic.
+            no_children: Adults only clinic.
+            no_children_under: Clinic for adults and children {age} years old or more.
+            no_children_under_months: Clinic for adults and children {age} months old or more.
+            healthcare_workers_and_first_responders: Healthcare workers and first responders only clinic.
 
   utter_ask_test_navigation__try_different_address:
     - text: Would you like to try a different address?

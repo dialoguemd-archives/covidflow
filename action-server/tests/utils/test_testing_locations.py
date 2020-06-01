@@ -127,7 +127,7 @@ class TestTestingLocationsClasses(TestCase):
         location = Location(SAMPLE)
 
         self.assertEqual(location.name, SAMPLE["name"])
-        self.assertEqual(location.require_referal, SAMPLE["requireReferral"])
+        self.assertEqual(location.require_referral, SAMPLE["requireReferral"])
         self.assertEqual(location.require_appointment, SAMPLE["requireAppointment"])
         self.assertEqual(location.coordinates[0], SAMPLE["_geoPoint"]["lat"])
         self.assertEqual(location.coordinates.latitude, SAMPLE["_geoPoint"]["lat"])
@@ -149,7 +149,7 @@ class TestTestingLocationsClasses(TestCase):
         location = Location({"_geoPoint": {"lon": 1, "lat": 0}})
 
         self.assertEqual(location.name, None)
-        self.assertEqual(location.require_referal, None)
+        self.assertEqual(location.require_referral, None)
         self.assertEqual(location.require_appointment, None)
         self.assertEqual(location.coordinates, (0.0, 1.0))
         self.assertEqual(location.clientele, None)

@@ -32,6 +32,8 @@ TRY_DIFFERENT_ADDRESS_SLOT = "test_navigation__try_different_address"
 LOCATIONS_SLOT = "test_navigation__locations"
 END_FORM_SLOT = "test_navigation__end_form"
 
+CHILDREN_CLIENTELE_REGEXP = re.compile(r"no_children_under_(\d{1,2})(_months)?")
+
 
 class TestNavigationForm(FormAction):
     def __init__(self):
@@ -181,13 +183,20 @@ def _check_postal_code_error_counter(
 def _locations_carousel(
     language: str, domain: Dict[Text, Any], testing_locations: List[TestingLocation]
 ) -> Dict[Text, Any]:
-    titles_response = domain.get("responses", {}).get(
-        "utter_test_navigation__display_titles", []
-    )
+    responses = domain.get("responses", {})
+    titles_response = responses.get("utter_test_navigation__display_titles", [])
 
     titles = titles_response[0].get("custom", {}) if len(titles_response) >= 1 else {}
+
+    descriptions_response = responses.get("utter_test_navigation__descriptions", [])
+    description_parts = (
+        descriptions_response[0].get("custom", {})
+        if len(descriptions_response) >= 1
+        else {}
+    )
+
     cards = [
-        _generate_location_card(location, titles, language)
+        _generate_location_card(location, titles, description_parts, language)
         for location in testing_locations
     ]
     return {
@@ -197,7 +206,10 @@ def _locations_carousel(
 
 
 def _generate_location_card(
-    location: TestingLocation, titles: Dict[Text, Text], language: str
+    location: TestingLocation,
+    titles: Dict[Text, Text],
+    description_parts: Dict[Text, Any],
+    language: str,
 ) -> Dict[Text, Any]:
     phone_number = (
         _format_phone_number(location.phones[0]) if len(location.phones) >= 1 else None
@@ -221,7 +233,7 @@ def _generate_location_card(
 
     return {
         "title": location.name,
-        "subtitle": location.description.get(language, ""),
+        "subtitle": _generate_description(location, description_parts),
         "image_url": get_map_url(location.coordinates),
         "buttons": buttons,
     }
@@ -244,3 +256,52 @@ def _url_button(title: str, url: str) -> Dict[Text, Any]:
         "type": "web_url",
         "url": url,
     }
+
+
+def _generate_description(
+    location: TestingLocation, description_parts: Dict[Text, Any]
+) -> str:
+    require_referral = str(location.require_referral).lower()
+    referral_part = description_parts.get("referral", {}).get(require_referral, "")
+
+    require_appointment = str(location.require_appointment).lower()
+    clientele = str(location.clientele).lower().replace(" ", "_")
+
+    children_age_clientele = CHILDREN_CLIENTELE_REGEXP.fullmatch(clientele)
+    age = None
+    if children_age_clientele:
+        age = children_age_clientele.group(1)
+        if children_age_clientele.group(2):
+            clientele = "no_children_under_months"
+        else:
+            clientele = "no_children_under"
+
+    appointment_clientele_part = (
+        description_parts.get("appointment_clientele", {})
+        .get(require_appointment, {})
+        .get(clientele)
+    )
+
+    unknown_clientele = False
+    if appointment_clientele_part is None:
+        logger.warn(f"Unknown clientele received from Clinia API: {location.clientele}")
+        unknown_clientele = True
+        appointment_clientele_part = (
+            description_parts.get("appointment_clientele", {})
+            .get(require_appointment, {})
+            .get("default", "")
+        )
+
+    if age:
+        appointment_clientele_part = appointment_clientele_part.replace("{age}", age)
+
+    description = f"{appointment_clientele_part} {referral_part}"
+
+    if (
+        location.require_referral is None
+        or location.require_appointment is None
+        or unknown_clientele is True
+    ):
+        description += f" {description_parts.get('contact_before_visit', '')}"
+
+    return description

@@ -109,10 +109,11 @@ class QuestionAnsweringForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        if _must_stub_result(tracker):
-            result = _get_stub_qa_result(tracker)
-        else:
-            result = await _fetch_qa(value, tracker)
+        result = (
+            _get_stub_qa_result(tracker)
+            if _must_stub_result(tracker)
+            else await _fetch_qa(value, tracker)
+        )
 
         if result.status == QuestionAnsweringStatus.OUT_OF_DISTRIBUTION:
             dispatcher.utter_message(template="utter_cant_answer")

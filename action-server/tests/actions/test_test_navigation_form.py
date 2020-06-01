@@ -1,3 +1,4 @@
+from typing import Optional
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
@@ -14,11 +15,41 @@ from covidflow.actions.test_navigation_form import (
     POSTAL_CODE_SLOT,
     TRY_DIFFERENT_ADDRESS_SLOT,
     TestNavigationForm,
+    _generate_description,
     _locations_carousel,
 )
 from covidflow.utils.testing_locations import TestingLocation
 
 from .form_helper import FormTestCase
+
+DESCRIPTION_PARTS = {
+    "contact_before_visit": "Contact me!",
+    "referral": {
+        "true": "referral = true",
+        "false": "referral = false",
+        "none": "referral = none",
+    },
+    "appointment_clientele": {
+        "false": {
+            "default": "no appointment default",
+            "no_children_under": "no appointment no children {age}",
+            "no_children_under_months": "no appointment no children {age} months",
+            "known_clientele": "no appointment known clientele",
+        },
+        "true": {
+            "default": "appointment default",
+            "no_children_under": "appointment no children {age}",
+            "no_children_under_months": "appointment no children {age} months",
+            "known_clientele": "appointment known clientele",
+        },
+        "none": {
+            "default": "appointment = none default",
+            "no_children_under": "appointment = none no children {age}",
+            "no_children_under_months": "appointment = none no children {age} months",
+            "known_clientele": "appointment = none known clientele",
+        },
+    },
+}
 
 DOMAIN = {
     "responses": {
@@ -29,7 +60,8 @@ DOMAIN = {
                     "directions_button": "Click to go",
                 }
             }
-        ]
+        ],
+        "utter_test_navigation__descriptions": [{"custom": DESCRIPTION_PARTS}],
     }
 }
 
@@ -41,6 +73,9 @@ TESTING_LOCATION_RAW = {
     "id": "result",
     "name": "name",
     "_geoPoint": {"lon": -73.6662946, "lat": 45.4758369},
+    "clientele": "Known Clientele",
+    "requireReferral": True,
+    "requireAppointment": True,
 }
 TESTING_LOCATION = TestingLocation(TESTING_LOCATION_RAW)
 TESTING_LOCATION_CARD_CONTENT = {
@@ -52,7 +87,7 @@ TESTING_LOCATION_CARD_CONTENT = {
         }
     ],
     "image_url": "some_url",
-    "subtitle": "",
+    "subtitle": "appointment known clientele referral = true",
     "title": "name",
 }
 
@@ -471,18 +506,6 @@ class TestLocationsCarousel(TestCase):
         )
 
     def test_carousel_many_locations(self):
-        card_1_content = {
-            "buttons": [
-                {
-                    "title": "Click to go",
-                    "type": "web_url",
-                    "url": "http://maps.apple.com/?q=45.4758369,-73.6662946",
-                }
-            ],
-            "image_url": "some_url",
-            "subtitle": "",
-            "title": "name",
-        }
         location_2_raw = {
             "id": "result-2",
             "name": "name-2",
@@ -497,12 +520,13 @@ class TestLocationsCarousel(TestCase):
                 }
             ],
             "image_url": "some_url",
-            "subtitle": "",
+            "subtitle": "appointment = none default referral = none Contact me!",
             "title": "name-2",
         }
 
         self._test_locations_carousel(
-            [TESTING_LOCATION_RAW, location_2_raw], [card_1_content, card_2_content]
+            [TESTING_LOCATION_RAW, location_2_raw],
+            [TESTING_LOCATION_CARD_CONTENT, card_2_content],
         )
 
     def test_carousel_all_details(self):
@@ -515,6 +539,9 @@ class TestLocationsCarousel(TestCase):
             },
             "_geoPoint": {"lon": 33.3333, "lat": 34.5678},
             "phones": [{"number": "5141112222", "extension": None, "type": "MAIN"}],
+            "clientele": "Known Clientele",
+            "requireReferral": True,
+            "requireAppointment": True,
         }
         card_content = {
             "buttons": [
@@ -530,7 +557,7 @@ class TestLocationsCarousel(TestCase):
                 },
             ],
             "image_url": "some_url",
-            "subtitle": "Test location described",
+            "subtitle": "appointment known clientele referral = true",
             "title": "Test site name",
         }
 
@@ -542,6 +569,9 @@ class TestLocationsCarousel(TestCase):
             "name": "name",
             "_geoPoint": {"lon": 0.0, "lat": 0.0},
             "phones": [{"number": "5141112222", "extension": "3333", "type": "MAIN"}],
+            "clientele": "Known Clientele",
+            "requireReferral": True,
+            "requireAppointment": True,
         }
         card_content = {
             "buttons": [
@@ -557,8 +587,83 @@ class TestLocationsCarousel(TestCase):
                 },
             ],
             "image_url": "some_url",
-            "subtitle": "",
+            "subtitle": "appointment known clientele referral = true",
             "title": "name",
         }
 
         self._test_locations_carousel([raw_location], [card_content])
+
+    def _test_description(
+        self,
+        clientele: str,
+        requireReferral: Optional[bool],
+        requireAppointment: Optional[bool],
+        description: str,
+    ):
+        raw_location = {
+            "id": "result",
+            "name": "Test site name",
+            "description": {
+                "ph": "Test location described",
+                "en": "serious description",
+            },
+            "_geoPoint": {"lon": 0, "lat": 0},
+            "phones": [],
+            "clientele": clientele,
+            "requireReferral": requireReferral,
+            "requireAppointment": requireAppointment,
+        }
+        test_location = TestingLocation(raw_location)
+        self.assertEqual(
+            _generate_description(test_location, DESCRIPTION_PARTS), description
+        )
+
+    def test_description_no_referral_no_appointment_unknown_clientele(self):
+        data = {
+            "clientele": "Unknown",
+            "requireReferral": False,
+            "requireAppointment": False,
+        }
+        description = "no appointment default referral = false Contact me!"
+
+        self._test_description(description=description, **data)
+
+    def test_description_referral_appointment_clientele_under_years(self):
+        data = {
+            "clientele": "No children under 13",
+            "requireReferral": True,
+            "requireAppointment": True,
+        }
+        description = "appointment no children 13 referral = true"
+
+        self._test_description(description=description, **data)
+
+    def test_description_referral_no_appointment_clientele_under_months(self):
+        data = {
+            "clientele": "No children under 13 months",
+            "requireReferral": True,
+            "requireAppointment": False,
+        }
+        description = "no appointment no children 13 months referral = true"
+
+        self._test_description(description=description, **data)
+
+    def test_description_referral_none(self):
+        data = {
+            "clientele": "known clientele",
+            "requireReferral": None,
+            "requireAppointment": True,
+        }
+        description = "appointment known clientele referral = none Contact me!"
+
+        self._test_description(description=description, **data)
+
+    def test_description_appointment_none(self):
+        data = {
+            "clientele": "known clientele",
+            "requireReferral": True,
+            "requireAppointment": None,
+        }
+        description = "appointment = none known clientele referral = true Contact me!"
+
+        self._test_description(description=description, **data)

@@ -1102,13 +1102,46 @@ responses:
   utter_test_navigation__many_locations_2:
     - text: Pour chaque clinique, vous pouvez obtenir les coordonnées, l’itinéraire et les heures d’ouverture
 
-  utter_test_navigation__many_location_3:
+  utter_test_navigation__many_locations_3:
     - text: Vous devrez communiquer directement avec la clinique pour plus d’information ou pour prendre rendez-vous pour un test
 
   utter_test_navigation__display_titles:
     - custom:
         call_button: "Appeler le "
         directions_button: "Itinéraire"
+
+  utter_test_navigation__descriptions:
+    - custom:
+        contact_before_visit: Veuillez nous contacter avant de vous présenter.
+        referral:
+          "true": Référence d'un professionnel de la santé requise.
+          "false": ""
+          "none": ""
+        appointment_clientele:
+          "false":
+            default: Clinique sans rendez-vous pour tous.
+            all: Clinique sans rendez-vous pour tous.
+            children: Clinique sans rendez-vous pour enfants seulement.
+            no_children: Clinique sans rendez-vous pour adultes seulement.
+            no_children_under: Clinique sans rendez-vous. Nous ne traitons pas les enfants de moins de {age} ans.
+            no_children_under_months: Clinique sans rendez-vous. Nous ne traitons pas les bébés de moins de {age} mois.
+            healthcare_workers_and_first_responders: Clinique sans rendez-vous pour travailleurs de la santé et premiers répondants seulement.
+          "true":
+            default: Uniquement sur rendez-vous.
+            all: Uniquement sur rendez-vous.
+            children: Clinique pour enfants sur rendez-vous seulement.
+            no_children: Clinique pour adultes sur rendez-vous seulement.
+            no_children_under: Uniquement sur rendez-vous. Nous ne traitons pas les enfants de moins de {age} ans.
+            no_children_under_months: Uniquement sur rendez-vous. Nous ne traitons pas les bébés de moins de {age} mois.
+            healthcare_workers_and_first_responders: Clinique pour travailleurs de la santé et premiers répondants sur rendez-vous seulement.
+          "none":
+            default: ""
+            all: Clinique pour tous.
+            children: Clinique pour enfants seulement.
+            no_children: Clinique pour adultes seulement.
+            no_children_under: Nous ne traitons pas les enfants de moins de {age} ans.
+            no_children_under_months: Nous ne traitons pas les bébés de moins de {age} mois.
+            healthcare_workers_and_first_responders: Clinique pour travailleurs de la santé et premiers répondants seulement.
 
   utter_ask_test_navigation__try_different_address:
     - text: Voudriez-vous essayer une autre adresse?

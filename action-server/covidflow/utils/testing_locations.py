@@ -82,7 +82,7 @@ class TestingLocation:
         return self.raw_data.get("name")
 
     @property
-    def require_referal(self) -> Optional[bool]:
+    def require_referral(self) -> Optional[bool]:
         return self.raw_data.get("requireReferral")
 
     @property

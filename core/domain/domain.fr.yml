@@ -1144,6 +1144,8 @@ responses:
             healthcare_workers_and_first_responders: Clinique pour travailleurs de la santé et premiers répondants seulement.
         opening_hours:
           closed: "Fermé"
+          time_format_short: "%-Hh"
+          time_format_long: "%-Hh%M"
           days:
             sunday: Dim
             monday: Lun

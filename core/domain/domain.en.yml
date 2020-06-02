@@ -1138,6 +1138,8 @@ responses:
             healthcare_workers_and_first_responders: Healthcare workers and first responders only clinic.
         opening_hours:
           closed: "Closed"
+          time_format_short: "%-I%p"
+          time_format_long: "%-I:%M%p"
           days:
             sunday: Sun
             monday: Mon

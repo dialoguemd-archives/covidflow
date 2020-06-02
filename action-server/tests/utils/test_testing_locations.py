@@ -8,7 +8,7 @@ from aiohttp import ClientResponseError, web
 from aiohttp.test_utils import unused_port
 
 from covidflow.utils.geocoding import Coordinates
-from covidflow.utils.testing_locations import CLINIA_API_ROUTE, Day, OpeningHour
+from covidflow.utils.testing_locations import CLINIA_API_ROUTE, Day, OpeningPeriod
 from covidflow.utils.testing_locations import TestingLocation as Location
 from covidflow.utils.testing_locations import (
     _fetch_testing_locations,
@@ -153,11 +153,11 @@ class TestTestingLocationsClasses(TestCase):
         self.assertEqual(location.phones[0].extension, SAMPLE["phones"][0]["extension"])
 
         weekday_opening_hours = [
-            OpeningHour(time(hour=10, minute=30), time(hour=16, minute=00))
+            OpeningPeriod(time(hour=10, minute=30), time(hour=16, minute=00))
         ]
         weekend_opening_hours = [
-            OpeningHour(time(hour=10, minute=00), time(hour=12, minute=00)),
-            OpeningHour(time(hour=13, minute=00), time(hour=17, minute=00)),
+            OpeningPeriod(time(hour=10, minute=00), time(hour=12, minute=00)),
+            OpeningPeriod(time(hour=13, minute=00), time(hour=17, minute=00)),
         ]
         expected_openning_hours = {
             Day.monday: weekday_opening_hours,

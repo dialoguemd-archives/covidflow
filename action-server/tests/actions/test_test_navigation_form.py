@@ -1,4 +1,3 @@
-from datetime import time
 from typing import Optional
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
@@ -17,11 +16,10 @@ from covidflow.actions.test_navigation_form import (
     POSTAL_CODE_SLOT,
     TRY_DIFFERENT_ADDRESS_SLOT,
     TestNavigationForm,
-    _format_opening_hours,
     _generate_description,
     _locations_carousel,
 )
-from covidflow.utils.testing_locations import Day, OpeningHour, TestingLocation
+from covidflow.utils.testing_locations import TestingLocation
 
 from .form_helper import FormTestCase
 
@@ -54,6 +52,8 @@ DESCRIPTION_PARTS = {
     },
     "opening_hours": {
         "closed": "Closed",
+        "time_format_short": "%-I%p",
+        "time_format_long": "%-I:%M%p",
         "days": {
             "sunday": "Sun",
             "monday": "Mon",
@@ -699,35 +699,3 @@ class TestLocationsCarousel(TestCase):
         description = "appointment = none known clientele referral = true Contact me!"
 
         self._test_description(description=description, **data)
-
-    def test_format_opening_hours(self):
-        opening_hours = {
-            Day.monday: [OpeningHour(time(hour=8, minute=30), time(hour=17))],
-            Day.sunday: [
-                OpeningHour(time(hour=8), time(hour=12)),
-                OpeningHour(time(hour=12), time(hour=17, minute=30)),
-            ],
-        }
-        opening_hours_part = DESCRIPTION_PARTS["opening_hours"]
-
-        self.assertEqual(
-            _format_opening_hours(opening_hours, "fr", opening_hours_part),
-            "Mon: 8h30-17h\n"
-            + "Tue: Closed\n"
-            + "Wed: Closed\n"
-            + "Thu: Closed\n"
-            + "Fri: Closed\n"
-            + "Sat: Closed\n"
-            + "Sun: 8h-12h, 12h-17h30",
-        )
-
-        self.assertEqual(
-            _format_opening_hours(opening_hours, "en", opening_hours_part),
-            "Mon: 8:30am-5pm\n"
-            + "Tue: Closed\n"
-            + "Wed: Closed\n"
-            + "Thu: Closed\n"
-            + "Fri: Closed\n"
-            + "Sat: Closed\n"
-            + "Sun: 8am-12pm, 12pm-5:30pm",
-        )

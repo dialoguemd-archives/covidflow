@@ -12,7 +12,7 @@ from covidflow.utils.geocoding import Geocoding
 from covidflow.utils.maps import get_map_url
 from covidflow.utils.testing_locations import (
     Day,
-    OpeningHour,
+    OpeningPeriod,
     TestingLocation,
     TestingLocationPhone,
     get_testing_locations,
@@ -36,8 +36,6 @@ LOCATIONS_SLOT = "test_navigation__locations"
 END_FORM_SLOT = "test_navigation__end_form"
 
 CHILDREN_CLIENTELE_REGEXP = re.compile(r"no_children_under_(\d{1,2})(_months)?")
-LONG_TIME_FORMAT = {"en": "%-I:%M%p", "fr": "%-Hh%M"}
-SHORT_TIME_FORMAT = {"en": "%-I%p", "fr": "%-Hh"}
 
 
 class TestNavigationForm(FormAction):
@@ -311,42 +309,40 @@ def _generate_description(
 
     opening_hours_part: Dict[str, str] = description_parts["opening_hours"]
     if len(location.opening_hours) > 0:
-        description += f"\n\n{_format_opening_hours(location.opening_hours, language, opening_hours_part)}"
+        description += (
+            f"\n\n{_format_opening_hours(location.opening_hours, opening_hours_part)}"
+        )
 
     return description
 
 
-def _format_time(time: time, language: str):
+def _format_time(time: time, opening_hours_part: Dict[str, Any]):
     return (
-        time.strftime(SHORT_TIME_FORMAT[language])
+        time.strftime(opening_hours_part["time_format_short"])
         if time.minute == 0
-        else time.strftime(LONG_TIME_FORMAT[language])
+        else time.strftime(opening_hours_part["time_format_long"])
     ).lower()
 
 
-def _format_hours(
-    hours: List[OpeningHour], language: str, opening_hours_part: Dict[str, Any]
-):
+def _format_periods(hours: List[OpeningPeriod], opening_hours_part: Dict[str, Any]):
     if len(hours) == 0:
         return opening_hours_part["closed"]
 
     return ", ".join(
         [
-            f"{_format_time(start, language)}-{_format_time(end, language)}"
+            f"{_format_time(start, opening_hours_part)}-{_format_time(end, opening_hours_part)}"
             for (start, end) in hours
         ]
     )
 
 
 def _format_opening_hours(
-    opening_hours: Dict[Day, List[OpeningHour]],
-    language: str,
-    opening_hours_part: Dict[str, Any],
+    opening_hours: Dict[Day, List[OpeningPeriod]], opening_hours_part: Dict[str, Any],
 ):
     days_part: dict = opening_hours_part["days"]
     return "\n".join(
         [
-            f"{days_part[day.name]}: {_format_hours(opening_hours.get(day, []), language, opening_hours_part)}"
+            f"{days_part[day.name]}: {_format_periods(opening_hours.get(day, []), opening_hours_part)}"
             for (day) in Day
         ]
     )

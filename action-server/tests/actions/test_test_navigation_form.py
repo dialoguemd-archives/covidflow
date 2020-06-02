@@ -49,6 +49,15 @@ DESCRIPTION_PARTS = {
             "known_clientele": "appointment = none known clientele",
         },
     },
+    "days": {
+        "sunday": "Sun",
+        "monday": "Mon",
+        "tuesday": "Tue",
+        "wednesday": "Wed",
+        "thursday": "Thu",
+        "friday": "Fri",
+        "saturday": "Sat",
+    },
 }
 
 DOMAIN = {
@@ -76,6 +85,13 @@ TESTING_LOCATION_RAW = {
     "clientele": "Known Clientele",
     "requireReferral": True,
     "requireAppointment": True,
+    "openingHours": {
+        "monday": [
+            {"start": "10:30:00", "end": "12:00:00"},
+            {"start": "13:00:00", "end": "17:00:00"},
+        ],
+        "wednesday": [{"start": "10:00:00", "end": "16:00:00"}],
+    },
 }
 TESTING_LOCATION = TestingLocation(TESTING_LOCATION_RAW)
 TESTING_LOCATION_CARD_CONTENT = {
@@ -87,7 +103,14 @@ TESTING_LOCATION_CARD_CONTENT = {
         }
     ],
     "image_url": "some_url",
-    "subtitle": "appointment known clientele referral = true",
+    "subtitle": "appointment known clientele referral = true\n"
+    + "Sun: -\n"
+    + "Mon: 10:30-12, 13-17\n"
+    + "Tue: -\n"
+    + "Wed: 10-16\n"
+    + "Thu: -\n"
+    + "Fri: -\n"
+    + "Sat: -",
     "title": "name",
 }
 

@@ -1,4 +1,5 @@
 import re
+from datetime import time
 from typing import Any, Dict, List, Optional, Text, Union
 
 import structlog
@@ -10,6 +11,8 @@ from rasa_sdk.forms import FormAction
 from covidflow.utils.geocoding import Geocoding
 from covidflow.utils.maps import get_map_url
 from covidflow.utils.testing_locations import (
+    Day,
+    OpeningHour,
     TestingLocation,
     TestingLocationPhone,
     get_testing_locations,
@@ -304,4 +307,30 @@ def _generate_description(
     ):
         description += f" {description_parts.get('contact_before_visit', '')}"
 
+    days_part: Dict[str, str] = description_parts["days"]
+    if len(location.opening_hours) > 0:
+        description += f"\n{_format_opening_hours(location.opening_hours, days_part)}"
+
     return description
+
+
+def _format_hour(time: time):
+    return time.strftime("%H") if time.minute == 0 else time.strftime("%H:%M")
+
+
+def _format_hours(hours: List[OpeningHour]):
+    if len(hours) == 0:
+        return "-"
+    return ", ".join(
+        [f"{_format_hour(start)}-{_format_hour(end)}" for (start, end) in hours]
+    )
+
+
+def _format_opening_hours(
+    opening_hours: Dict[Day, List[OpeningHour]], days_part: Dict[str, str]
+):
+    rendered_opening_hours = [
+        f"{days_part[day.name]}: {_format_hours(opening_hours.get(day, []))}"
+        for (day) in Day
+    ]
+    return "\n".join(rendered_opening_hours)

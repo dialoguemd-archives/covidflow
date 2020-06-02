@@ -27,7 +27,7 @@
   - form{"name": null}
   - action_suspect_moderate_symptoms_final_recommendations
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -53,7 +53,7 @@
   - form{"name": null}
   - action_suspect_moderate_symptoms_final_recommendations
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
 * done
   - action_goodbye
 
@@ -73,7 +73,7 @@
   - form{"name": null}
   - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -100,7 +100,7 @@
   - form{"name": null}
   - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
 * done
   - action_goodbye
 
@@ -121,7 +121,7 @@
   - form{"name": null}
   - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
 * done
   - action_goodbye
 
@@ -134,7 +134,7 @@
   - slot{"symptoms": "none"}
   - action_suspect_no_symptoms_recommendations
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -171,7 +171,7 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -198,7 +198,7 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * done
   - action_goodbye
 
@@ -220,7 +220,7 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -255,7 +255,7 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * done
   - action_goodbye
 
@@ -276,7 +276,7 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -303,7 +303,7 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * done
   - action_goodbye
 
@@ -325,7 +325,7 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -353,7 +353,7 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * done
   - action_goodbye
 
@@ -368,7 +368,7 @@
   - utter_ask_when_tested
 * more
   - action_tested_positive_maybe_cured_final_recommendations
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -410,7 +410,7 @@
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -437,7 +437,7 @@
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
 * done
   - action_goodbye
 
@@ -456,10 +456,19 @@
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
+* navigate_test_locations
+  - action_test_navigation_explanations
+  - utter_ask_test_navigation__continue_assessment_done
+* continue
+  - utter_test_navigation__acknowledge_continue
+  - test_navigation_form
+  - form{"name": "test_navigation_form"}
+  - form{"name": null}
+  - slot{"test_navigation_success": true}
+  - utter_test_navigation__what_next_assessment_done
 * done
   - action_goodbye
-
 ## return for check-in - mild symptoms - no check-in
 * checkin_return
   - checkin_return_form
@@ -475,7 +484,7 @@
   - home_assistance_form
   - form{"name": "home_assistance_form"}
   - form{"name": null}
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -496,7 +505,7 @@
   - utter_ask_when_first_symptoms
 * more
   - utter_social_distancing_leave_home
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * done
   - action_goodbye
 
@@ -511,7 +520,7 @@
   - utter_ask_when_first_symptoms
 * less
   - utter_self_isolate_symptom_free
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -616,7 +625,7 @@
   - utter_ask_daily_ci__early_opt_out__cancel_ci
 * opt_out
   - action_daily_ci_early_opt_out
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * done
   - action_goodbye
 
@@ -627,7 +636,7 @@
   - utter_ask_daily_ci__early_opt_out__cancel_ci
 * opt_out
   - action_daily_ci_early_opt_out
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -670,7 +679,7 @@
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -697,7 +706,7 @@
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -725,7 +734,7 @@
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -753,7 +762,17 @@
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
+* navigate_test_locations
+  - action_test_navigation_explanations
+  - utter_ask_test_navigation__continue_assessment_done
+* continue
+  - utter_test_navigation__acknowledge_continue
+  - test_navigation_form
+  - form{"name": "test_navigation_form"}
+  - form{"name": null}
+  - slot{"test_navigation_success": false}
+  - utter_test_navigation__anything_else_assessment_done
 * done
   - action_goodbye
 
@@ -774,7 +793,7 @@
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -808,7 +827,7 @@
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -836,7 +855,7 @@
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -863,7 +882,7 @@
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
 * done
   - action_goodbye
 
@@ -884,7 +903,7 @@
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -938,7 +957,7 @@
   - form{"name": null}
   - action_suspect_moderate_symptoms_final_recommendations
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -969,7 +988,7 @@
   - form{"name": null}
   - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_with_test_navigation
 * done
   - action_goodbye
 
@@ -986,7 +1005,7 @@
   - slot{"symptoms": "none"}
   - action_suspect_no_symptoms_recommendations
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -1011,7 +1030,7 @@
   - slot{"symptoms": "none"}
   - action_suspect_no_symptoms_recommendations
   - action_visit_package
-  - utter_ask_anything_else
+  - utter_ask_anything_else_without_test_navigation
 * ask_question
   - question_answering_form
   - form{"name": "question_answering_form"}
@@ -1042,8 +1061,12 @@
   - form{"name": null}
   - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_visit_package
-  - utter_ask_anything_else
-* done
+  - utter_ask_anything_else_with_test_navigation
+* navigate_test_locations
+  - action_test_navigation_explanations
+  - utter_ask_test_navigation__continue_assessment_done
+* later
+  - utter_test_navigation__come_back
   - action_goodbye
 
 ## daily check-in - invalid ID - ask question - failure example
@@ -1104,6 +1127,8 @@
   - action_qa_goodbye
 
 ## Test navigation - do nothing
+* greet{"metadata":{}}
+  - action_greeting_messages
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue_no_assessment
@@ -1112,6 +1137,8 @@
   - action_goodbye
 
 ## Test navigation - early ask question - failure
+* greet{"metadata":{}}
+  - action_greeting_messages
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue_no_assessment
@@ -1127,6 +1154,8 @@
   - action_qa_goodbye
 
 ## Test navigation - early ask question - need assessment
+* greet{"metadata":{}}
+  - action_greeting_messages
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue_no_assessment
@@ -1142,6 +1171,8 @@
   - action_qa_goodbye
 
 ## Test navigation - early ask question - success
+* greet{"metadata":{}}
+  - action_greeting_messages
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue_no_assessment
@@ -1155,6 +1186,8 @@
   - action_qa_goodbye
 
 ## Test navigation - early ask question - two questions
+* greet{"metadata":{}}
+  - action_greeting_messages
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue_no_assessment
@@ -1176,6 +1209,8 @@
   - action_qa_goodbye
 
 ## Test navigation - navigate tests - failure
+* greet{"metadata":{}}
+  - action_greeting_messages
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue_no_assessment
@@ -1190,6 +1225,8 @@
   - action_goodbye
 
 ## Test navigation - navigate tests - success
+* greet{"metadata":{}}
+  - action_greeting_messages
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue_no_assessment
@@ -1204,6 +1241,8 @@
   - action_goodbye
 
 ## Test navigation - navigate tests - success - question
+* greet{"metadata":{}}
+  - action_greeting_messages
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue_no_assessment

@@ -16,6 +16,8 @@ responses:
           payload: "/tested_positive"
         - title: "J'ai des questions à propos de la Covid-19"
           payload: "/ask_question"
+        - title: "J’aimerais savoir où je peux me faire tester"
+          payload: "/navigate_test_locations"
 
   utter_ask_severe_symptoms:
     - text: "Premièrement, avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Beaucoup de mal à se réveiller\n- Confusion\n- Perte de conscience"
@@ -432,7 +434,17 @@ responses:
 
   # QA flow
 
-  utter_ask_anything_else:
+  utter_ask_anything_else_with_test_navigation:
+    - text: "Puis-je faire autre chose pour vous aider?"
+      buttons:
+        - title: J'ai d'autres questions
+          payload: "/ask_question"
+        - title: J’aimerais savoir où je peux me faire tester
+          payload: "/navigate_test_locations"
+        - title: Non merci
+          payload: "/done"
+
+  utter_ask_anything_else_without_test_navigation:
     - text: "Puis-je faire autre chose pour vous aider?"
       buttons:
         - title: J'ai d'autres questions

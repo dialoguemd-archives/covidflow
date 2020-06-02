@@ -36,6 +36,8 @@ LOCATIONS_SLOT = "test_navigation__locations"
 END_FORM_SLOT = "test_navigation__end_form"
 
 CHILDREN_CLIENTELE_REGEXP = re.compile(r"no_children_under_(\d{1,2})(_months)?")
+LONG_TIME_FORMAT = {"en": "%-I:%M%p", "fr": "%-Hh%M"}
+SHORT_TIME_FORMAT = {"en": "%-I%p", "fr": "%-Hh"}
 
 
 class TestNavigationForm(FormAction):
@@ -236,7 +238,7 @@ def _generate_location_card(
 
     return {
         "title": location.name,
-        "subtitle": _generate_description(location, description_parts),
+        "subtitle": _generate_description(location, language, description_parts),
         "image_url": get_map_url(location.coordinates),
         "buttons": buttons,
     }
@@ -262,7 +264,7 @@ def _url_button(title: str, url: str) -> Dict[Text, Any]:
 
 
 def _generate_description(
-    location: TestingLocation, description_parts: Dict[Text, Any]
+    location: TestingLocation, language: str, description_parts: Dict[Text, Any]
 ) -> str:
     require_referral = str(location.require_referral).lower()
     referral_part = description_parts.get("referral", {}).get(require_referral, "")
@@ -307,30 +309,44 @@ def _generate_description(
     ):
         description += f" {description_parts.get('contact_before_visit', '')}"
 
-    days_part: Dict[str, str] = description_parts["days"]
+    opening_hours_part: Dict[str, str] = description_parts["opening_hours"]
     if len(location.opening_hours) > 0:
-        description += f"\n{_format_opening_hours(location.opening_hours, days_part)}"
+        description += f"\n\n{_format_opening_hours(location.opening_hours, language, opening_hours_part)}"
 
     return description
 
 
-def _format_hour(time: time):
-    return time.strftime("%H") if time.minute == 0 else time.strftime("%H:%M")
+def _format_time(time: time, language: str):
+    return (
+        time.strftime(SHORT_TIME_FORMAT[language])
+        if time.minute == 0
+        else time.strftime(LONG_TIME_FORMAT[language])
+    ).lower()
 
 
-def _format_hours(hours: List[OpeningHour]):
+def _format_hours(
+    hours: List[OpeningHour], language: str, opening_hours_part: Dict[str, Any]
+):
     if len(hours) == 0:
-        return "-"
+        return opening_hours_part["closed"]
+
     return ", ".join(
-        [f"{_format_hour(start)}-{_format_hour(end)}" for (start, end) in hours]
+        [
+            f"{_format_time(start, language)}-{_format_time(end, language)}"
+            for (start, end) in hours
+        ]
     )
 
 
 def _format_opening_hours(
-    opening_hours: Dict[Day, List[OpeningHour]], days_part: Dict[str, str]
+    opening_hours: Dict[Day, List[OpeningHour]],
+    language: str,
+    opening_hours_part: Dict[str, Any],
 ):
-    rendered_opening_hours = [
-        f"{days_part[day.name]}: {_format_hours(opening_hours.get(day, []))}"
-        for (day) in Day
-    ]
-    return "\n".join(rendered_opening_hours)
+    days_part: dict = opening_hours_part["days"]
+    return "\n".join(
+        [
+            f"{days_part[day.name]}: {_format_hours(opening_hours.get(day, []), language, opening_hours_part)}"
+            for (day) in Day
+        ]
+    )

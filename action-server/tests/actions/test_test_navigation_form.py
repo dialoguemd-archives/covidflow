@@ -1,3 +1,4 @@
+from datetime import time
 from typing import Optional
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
@@ -11,14 +12,16 @@ from covidflow.actions.test_navigation_form import (
     END_FORM_SLOT,
     FORM_NAME,
     INVALID_POSTAL_CODE_COUNTER_SLOT,
+    LANGUAGE_SLOT,
     LOCATIONS_SLOT,
     POSTAL_CODE_SLOT,
     TRY_DIFFERENT_ADDRESS_SLOT,
     TestNavigationForm,
+    _format_opening_hours,
     _generate_description,
     _locations_carousel,
 )
-from covidflow.utils.testing_locations import TestingLocation
+from covidflow.utils.testing_locations import Day, OpeningHour, TestingLocation
 
 from .form_helper import FormTestCase
 
@@ -49,14 +52,17 @@ DESCRIPTION_PARTS = {
             "known_clientele": "appointment = none known clientele",
         },
     },
-    "days": {
-        "sunday": "Sun",
-        "monday": "Mon",
-        "tuesday": "Tue",
-        "wednesday": "Wed",
-        "thursday": "Thu",
-        "friday": "Fri",
-        "saturday": "Sat",
+    "opening_hours": {
+        "closed": "Closed",
+        "days": {
+            "sunday": "Sun",
+            "monday": "Mon",
+            "tuesday": "Tue",
+            "wednesday": "Wed",
+            "thursday": "Thu",
+            "friday": "Fri",
+            "saturday": "Sat",
+        },
     },
 }
 
@@ -87,10 +93,10 @@ TESTING_LOCATION_RAW = {
     "requireAppointment": True,
     "openingHours": {
         "monday": [
-            {"start": "10:30:00", "end": "12:00:00"},
+            {"start": "08:30:00", "end": "12:00:00"},
             {"start": "13:00:00", "end": "17:00:00"},
         ],
-        "wednesday": [{"start": "10:00:00", "end": "16:00:00"}],
+        "wednesday": [{"start": "08:00:00", "end": "16:00:00"}],
     },
 }
 TESTING_LOCATION = TestingLocation(TESTING_LOCATION_RAW)
@@ -103,14 +109,14 @@ TESTING_LOCATION_CARD_CONTENT = {
         }
     ],
     "image_url": "some_url",
-    "subtitle": "appointment known clientele referral = true\n"
-    + "Sun: -\n"
-    + "Mon: 10:30-12, 13-17\n"
-    + "Tue: -\n"
-    + "Wed: 10-16\n"
-    + "Thu: -\n"
-    + "Fri: -\n"
-    + "Sat: -",
+    "subtitle": "appointment known clientele referral = true\n\n"
+    + "Mon: 8:30am-12pm, 1pm-5pm\n"
+    + "Tue: Closed\n"
+    + "Wed: 8am-4pm\n"
+    + "Thu: Closed\n"
+    + "Fri: Closed\n"
+    + "Sat: Closed\n"
+    + "Sun: Closed",
     "title": "name",
 }
 
@@ -410,7 +416,8 @@ class TestTestNavigationForm(FormTestCase):
         self._set_geocode(GEOCODE)
 
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE
+            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT, LANGUAGE_SLOT: "en"},
+            text=POSTAL_CODE,
         )
 
         self.run_form(tracker)
@@ -441,7 +448,8 @@ class TestTestNavigationForm(FormTestCase):
         self._set_geocode(GEOCODE)
 
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE
+            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT, LANGUAGE_SLOT: "en"},
+            text=POSTAL_CODE,
         )
 
         self.run_form(tracker, DOMAIN)
@@ -471,7 +479,8 @@ class TestTestNavigationForm(FormTestCase):
         self._set_geocode(GEOCODE)
 
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE
+            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT, LANGUAGE_SLOT: "en"},
+            text=POSTAL_CODE,
         )
 
         self.run_form(tracker, DOMAIN)
@@ -515,7 +524,7 @@ class TestLocationsCarousel(TestCase):
     def _test_locations_carousel(self, raw_test_locations, cards_contents):
         test_locations = [TestingLocation(location) for location in raw_test_locations]
         self.assertEqual(
-            _locations_carousel("ph", DOMAIN, test_locations),
+            _locations_carousel("en", DOMAIN, test_locations),
             {
                 "type": "template",
                 "payload": {"template_type": "generic", "elements": cards_contents},
@@ -557,7 +566,7 @@ class TestLocationsCarousel(TestCase):
             "id": "result",
             "name": "Test site name",
             "description": {
-                "ph": "Test location described",
+                "fr": "Test location described",
                 "en": "serious description",
             },
             "_geoPoint": {"lon": 33.3333, "lat": 34.5678},
@@ -627,7 +636,7 @@ class TestLocationsCarousel(TestCase):
             "id": "result",
             "name": "Test site name",
             "description": {
-                "ph": "Test location described",
+                "fr": "Test location described",
                 "en": "serious description",
             },
             "_geoPoint": {"lon": 0, "lat": 0},
@@ -638,7 +647,7 @@ class TestLocationsCarousel(TestCase):
         }
         test_location = TestingLocation(raw_location)
         self.assertEqual(
-            _generate_description(test_location, DESCRIPTION_PARTS), description
+            _generate_description(test_location, "en", DESCRIPTION_PARTS), description
         )
 
     def test_description_no_referral_no_appointment_unknown_clientele(self):
@@ -690,3 +699,35 @@ class TestLocationsCarousel(TestCase):
         description = "appointment = none known clientele referral = true Contact me!"
 
         self._test_description(description=description, **data)
+
+    def test_format_opening_hours(self):
+        opening_hours = {
+            Day.monday: [OpeningHour(time(hour=8, minute=30), time(hour=17))],
+            Day.sunday: [
+                OpeningHour(time(hour=8), time(hour=12)),
+                OpeningHour(time(hour=12), time(hour=17, minute=30)),
+            ],
+        }
+        opening_hours_part = DESCRIPTION_PARTS["opening_hours"]
+
+        self.assertEqual(
+            _format_opening_hours(opening_hours, "fr", opening_hours_part),
+            "Mon: 8h30-17h\n"
+            + "Tue: Closed\n"
+            + "Wed: Closed\n"
+            + "Thu: Closed\n"
+            + "Fri: Closed\n"
+            + "Sat: Closed\n"
+            + "Sun: 8h-12h, 12h-17h30",
+        )
+
+        self.assertEqual(
+            _format_opening_hours(opening_hours, "en", opening_hours_part),
+            "Mon: 8:30am-5pm\n"
+            + "Tue: Closed\n"
+            + "Wed: Closed\n"
+            + "Thu: Closed\n"
+            + "Fri: Closed\n"
+            + "Sat: Closed\n"
+            + "Sun: 8am-12pm, 12pm-5:30pm",
+        )

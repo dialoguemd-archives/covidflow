@@ -11,7 +11,6 @@ from covidflow.actions.test_navigation_form import (
     END_FORM_SLOT,
     FORM_NAME,
     INVALID_POSTAL_CODE_COUNTER_SLOT,
-    LANGUAGE_SLOT,
     LOCATIONS_SLOT,
     POSTAL_CODE_SLOT,
     TRY_DIFFERENT_ADDRESS_SLOT,
@@ -416,8 +415,7 @@ class TestTestNavigationForm(FormTestCase):
         self._set_geocode(GEOCODE)
 
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT, LANGUAGE_SLOT: "en"},
-            text=POSTAL_CODE,
+            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE,
         )
 
         self.run_form(tracker)
@@ -448,8 +446,7 @@ class TestTestNavigationForm(FormTestCase):
         self._set_geocode(GEOCODE)
 
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT, LANGUAGE_SLOT: "en"},
-            text=POSTAL_CODE,
+            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE,
         )
 
         self.run_form(tracker, DOMAIN)
@@ -479,8 +476,7 @@ class TestTestNavigationForm(FormTestCase):
         self._set_geocode(GEOCODE)
 
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT, LANGUAGE_SLOT: "en"},
-            text=POSTAL_CODE,
+            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE,
         )
 
         self.run_form(tracker, DOMAIN)
@@ -524,7 +520,7 @@ class TestLocationsCarousel(TestCase):
     def _test_locations_carousel(self, raw_test_locations, cards_contents):
         test_locations = [TestingLocation(location) for location in raw_test_locations]
         self.assertEqual(
-            _locations_carousel("en", DOMAIN, test_locations),
+            _locations_carousel(DOMAIN, test_locations),
             {
                 "type": "template",
                 "payload": {"template_type": "generic", "elements": cards_contents},
@@ -647,7 +643,7 @@ class TestLocationsCarousel(TestCase):
         }
         test_location = TestingLocation(raw_location)
         self.assertEqual(
-            _generate_description(test_location, "en", DESCRIPTION_PARTS), description
+            _generate_description(test_location, DESCRIPTION_PARTS), description
         )
 
     def test_description_no_referral_no_appointment_unknown_clientele(self):

@@ -18,7 +18,7 @@ from covidflow.utils.testing_locations import (
     get_testing_locations,
 )
 
-from .constants import LANGUAGE_SLOT, TEST_NAVIGATION_SUCCESS_SLOT
+from .constants import TEST_NAVIGATION_SUCCESS_SLOT
 from .lib.log_util import bind_logger
 
 logger = structlog.get_logger()
@@ -106,9 +106,7 @@ class TestNavigationForm(FormAction):
         elif len(testing_locations) == 1:
             dispatcher.utter_message(template="utter_test_navigation__one_location")
             dispatcher.utter_message(
-                attachment=_locations_carousel(
-                    tracker.get_slot(LANGUAGE_SLOT), domain, testing_locations
-                )
+                attachment=_locations_carousel(domain, testing_locations)
             )
 
         else:
@@ -119,9 +117,7 @@ class TestNavigationForm(FormAction):
             dispatcher.utter_message(template="utter_test_navigation__many_locations_2")
             dispatcher.utter_message(template="utter_test_navigation__many_locations_3")
             dispatcher.utter_message(
-                attachment=_locations_carousel(
-                    tracker.get_slot(LANGUAGE_SLOT), domain, testing_locations
-                )
+                attachment=_locations_carousel(domain, testing_locations)
             )
 
         return {
@@ -184,7 +180,7 @@ def _check_postal_code_error_counter(
 
 
 def _locations_carousel(
-    language: str, domain: Dict[Text, Any], testing_locations: List[TestingLocation]
+    domain: Dict[Text, Any], testing_locations: List[TestingLocation]
 ) -> Dict[Text, Any]:
     responses = domain.get("responses", {})
     titles_response = responses.get("utter_test_navigation__display_titles", [])
@@ -199,7 +195,7 @@ def _locations_carousel(
     )
 
     cards = [
-        _generate_location_card(location, titles, description_parts, language)
+        _generate_location_card(location, titles, description_parts)
         for location in testing_locations
     ]
     return {
@@ -212,7 +208,6 @@ def _generate_location_card(
     location: TestingLocation,
     titles: Dict[Text, Text],
     description_parts: Dict[Text, Any],
-    language: str,
 ) -> Dict[Text, Any]:
     phone_number = (
         _format_phone_number(location.phones[0]) if len(location.phones) >= 1 else None
@@ -236,7 +231,7 @@ def _generate_location_card(
 
     return {
         "title": location.name,
-        "subtitle": _generate_description(location, language, description_parts),
+        "subtitle": _generate_description(location, description_parts),
         "image_url": get_map_url(location.coordinates),
         "buttons": buttons,
     }
@@ -262,7 +257,7 @@ def _url_button(title: str, url: str) -> Dict[Text, Any]:
 
 
 def _generate_description(
-    location: TestingLocation, language: str, description_parts: Dict[Text, Any]
+    location: TestingLocation, description_parts: Dict[Text, Any]
 ) -> str:
     require_referral = str(location.require_referral).lower()
     referral_part = description_parts.get("referral", {}).get(require_referral, "")

@@ -1,4 +1,5 @@
 import re
+from datetime import time
 from typing import Any, Dict, List, Optional, Text, Union
 
 import structlog
@@ -10,12 +11,14 @@ from rasa_sdk.forms import FormAction
 from covidflow.utils.geocoding import Geocoding
 from covidflow.utils.maps import get_map_url
 from covidflow.utils.testing_locations import (
+    Day,
+    OpeningPeriod,
     TestingLocation,
     TestingLocationPhone,
     get_testing_locations,
 )
 
-from .constants import LANGUAGE_SLOT, TEST_NAVIGATION_SUCCESS_SLOT
+from .constants import TEST_NAVIGATION_SUCCESS_SLOT
 from .lib.log_util import bind_logger
 
 logger = structlog.get_logger()
@@ -103,9 +106,7 @@ class TestNavigationForm(FormAction):
         elif len(testing_locations) == 1:
             dispatcher.utter_message(template="utter_test_navigation__one_location")
             dispatcher.utter_message(
-                attachment=_locations_carousel(
-                    tracker.get_slot(LANGUAGE_SLOT), domain, testing_locations
-                )
+                attachment=_locations_carousel(domain, testing_locations)
             )
 
         else:
@@ -116,9 +117,7 @@ class TestNavigationForm(FormAction):
             dispatcher.utter_message(template="utter_test_navigation__many_locations_2")
             dispatcher.utter_message(template="utter_test_navigation__many_locations_3")
             dispatcher.utter_message(
-                attachment=_locations_carousel(
-                    tracker.get_slot(LANGUAGE_SLOT), domain, testing_locations
-                )
+                attachment=_locations_carousel(domain, testing_locations)
             )
 
         return {
@@ -181,7 +180,7 @@ def _check_postal_code_error_counter(
 
 
 def _locations_carousel(
-    language: str, domain: Dict[Text, Any], testing_locations: List[TestingLocation]
+    domain: Dict[Text, Any], testing_locations: List[TestingLocation]
 ) -> Dict[Text, Any]:
     responses = domain.get("responses", {})
     titles_response = responses.get("utter_test_navigation__display_titles", [])
@@ -196,7 +195,7 @@ def _locations_carousel(
     )
 
     cards = [
-        _generate_location_card(location, titles, description_parts, language)
+        _generate_location_card(location, titles, description_parts)
         for location in testing_locations
     ]
     return {
@@ -209,7 +208,6 @@ def _generate_location_card(
     location: TestingLocation,
     titles: Dict[Text, Text],
     description_parts: Dict[Text, Any],
-    language: str,
 ) -> Dict[Text, Any]:
     phone_number = (
         _format_phone_number(location.phones[0]) if len(location.phones) >= 1 else None
@@ -304,4 +302,42 @@ def _generate_description(
     ):
         description += f" {description_parts.get('contact_before_visit', '')}"
 
+    opening_hours_part: Dict[str, str] = description_parts["opening_hours"]
+    if len(location.opening_hours) > 0:
+        description += (
+            f"\n\n{_format_opening_hours(location.opening_hours, opening_hours_part)}"
+        )
+
     return description
+
+
+def _format_time(time: time, opening_hours_part: Dict[str, Any]):
+    return (
+        time.strftime(opening_hours_part["time_format_short"])
+        if time.minute == 0
+        else time.strftime(opening_hours_part["time_format_long"])
+    ).lower()
+
+
+def _format_periods(hours: List[OpeningPeriod], opening_hours_part: Dict[str, Any]):
+    if len(hours) == 0:
+        return opening_hours_part["closed"]
+
+    return ", ".join(
+        [
+            f"{_format_time(start, opening_hours_part)}-{_format_time(end, opening_hours_part)}"
+            for (start, end) in hours
+        ]
+    )
+
+
+def _format_opening_hours(
+    opening_hours: Dict[Day, List[OpeningPeriod]], opening_hours_part: Dict[str, Any],
+):
+    days_part: dict = opening_hours_part["days"]
+    return "\n".join(
+        [
+            f"{days_part[day.name]}: {_format_periods(opening_hours.get(day, []), opening_hours_part)}"
+            for (day) in Day
+        ]
+    )

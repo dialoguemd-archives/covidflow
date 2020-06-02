@@ -49,6 +49,20 @@ DESCRIPTION_PARTS = {
             "known_clientele": "appointment = none known clientele",
         },
     },
+    "opening_hours": {
+        "closed": "Closed",
+        "time_format_short": "%-I%p",
+        "time_format_long": "%-I:%M%p",
+        "days": {
+            "sunday": "Sun",
+            "monday": "Mon",
+            "tuesday": "Tue",
+            "wednesday": "Wed",
+            "thursday": "Thu",
+            "friday": "Fri",
+            "saturday": "Sat",
+        },
+    },
 }
 
 DOMAIN = {
@@ -76,6 +90,13 @@ TESTING_LOCATION_RAW = {
     "clientele": "Known Clientele",
     "requireReferral": True,
     "requireAppointment": True,
+    "openingHours": {
+        "monday": [
+            {"start": "08:30:00", "end": "12:00:00"},
+            {"start": "13:00:00", "end": "17:00:00"},
+        ],
+        "wednesday": [{"start": "08:00:00", "end": "16:00:00"}],
+    },
 }
 TESTING_LOCATION = TestingLocation(TESTING_LOCATION_RAW)
 TESTING_LOCATION_CARD_CONTENT = {
@@ -87,7 +108,14 @@ TESTING_LOCATION_CARD_CONTENT = {
         }
     ],
     "image_url": "some_url",
-    "subtitle": "appointment known clientele referral = true",
+    "subtitle": "appointment known clientele referral = true\n\n"
+    + "Mon: 8:30am-12pm, 1pm-5pm\n"
+    + "Tue: Closed\n"
+    + "Wed: 8am-4pm\n"
+    + "Thu: Closed\n"
+    + "Fri: Closed\n"
+    + "Sat: Closed\n"
+    + "Sun: Closed",
     "title": "name",
 }
 
@@ -387,7 +415,7 @@ class TestTestNavigationForm(FormTestCase):
         self._set_geocode(GEOCODE)
 
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE
+            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE,
         )
 
         self.run_form(tracker)
@@ -418,7 +446,7 @@ class TestTestNavigationForm(FormTestCase):
         self._set_geocode(GEOCODE)
 
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE
+            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE,
         )
 
         self.run_form(tracker, DOMAIN)
@@ -448,7 +476,7 @@ class TestTestNavigationForm(FormTestCase):
         self._set_geocode(GEOCODE)
 
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE
+            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE,
         )
 
         self.run_form(tracker, DOMAIN)
@@ -492,7 +520,7 @@ class TestLocationsCarousel(TestCase):
     def _test_locations_carousel(self, raw_test_locations, cards_contents):
         test_locations = [TestingLocation(location) for location in raw_test_locations]
         self.assertEqual(
-            _locations_carousel("ph", DOMAIN, test_locations),
+            _locations_carousel(DOMAIN, test_locations),
             {
                 "type": "template",
                 "payload": {"template_type": "generic", "elements": cards_contents},
@@ -534,7 +562,7 @@ class TestLocationsCarousel(TestCase):
             "id": "result",
             "name": "Test site name",
             "description": {
-                "ph": "Test location described",
+                "fr": "Test location described",
                 "en": "serious description",
             },
             "_geoPoint": {"lon": 33.3333, "lat": 34.5678},
@@ -604,7 +632,7 @@ class TestLocationsCarousel(TestCase):
             "id": "result",
             "name": "Test site name",
             "description": {
-                "ph": "Test location described",
+                "fr": "Test location described",
                 "en": "serious description",
             },
             "_geoPoint": {"lon": 0, "lat": 0},

@@ -1154,6 +1154,18 @@ responses:
             no_children_under: Nous ne traitons pas les enfants de moins de {age} ans.
             no_children_under_months: Nous ne traitons pas les bébés de moins de {age} mois.
             healthcare_workers_and_first_responders: Clinique pour travailleurs de la santé et premiers répondants seulement.
+        opening_hours:
+          closed: "Fermé"
+          time_format_short: "%-Hh"
+          time_format_long: "%-Hh%M"
+          days:
+            sunday: Dim
+            monday: Lun
+            tuesday: Mar
+            wednesday: Mer
+            thursday: Jeu
+            friday: Ven
+            saturday: Sam
 
   utter_ask_test_navigation__try_different_address:
     - text: Voudriez-vous essayer une autre adresse?

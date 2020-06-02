@@ -1,5 +1,7 @@
 from copy import deepcopy
-from typing import List, Optional
+from datetime import datetime, time
+from enum import Enum
+from typing import Dict, List, NamedTuple, Optional
 
 import backoff
 import structlog
@@ -11,6 +13,7 @@ logger = structlog.get_logger()
 
 CLINIA_ENDPOINT = "https://covid.clinia.com"
 CLINIA_API_ROUTE = "/api/v1/indexes/covid/query"
+CLINIA_TIME_FORMAT = "%H:%M:%S"
 
 LOCATION_KEY = "aroundLatLng"
 PAGE_KEY = "page"
@@ -23,6 +26,32 @@ DEFAULT_SEARCH_PARAMETERS = {
         ["services.en:COVID-19 testing", "services.en:COVID-19 follow up testing",]
     ],
 }
+
+
+class Day(Enum):
+    monday = 1
+    tuesday = 2
+    wednesday = 3
+    thursday = 4
+    friday = 5
+    saturday = 6
+    sunday = 7
+
+
+class OpeningPeriod(NamedTuple):
+    start: time
+    end: time
+
+
+def _str_to_time(time: str) -> time:
+    return datetime.strptime(time, CLINIA_TIME_FORMAT).time()
+
+
+def _to_opening_hours(raw_opening_hours: List[Dict]) -> List[OpeningPeriod]:
+    return [
+        OpeningPeriod(_str_to_time(i["start"]), _str_to_time(i["end"]))
+        for i in raw_opening_hours
+    ]
 
 
 class TestingLocationAddress:
@@ -106,6 +135,14 @@ class TestingLocation:
     @property
     def description(self) -> dict:
         return self.raw_data.get("description", {})
+
+    @property
+    def opening_hours(self) -> Dict[Day, List[OpeningPeriod]]:
+        raw_opening_hours = self.raw_data.get("openingHours", {})
+        return {
+            Day[day]: _to_opening_hours(hours)
+            for (day, hours) in raw_opening_hours.items()
+        }
 
     def __repr__(self):
         return repr(self.raw_data)

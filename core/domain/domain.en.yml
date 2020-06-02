@@ -1136,6 +1136,18 @@ responses:
             no_children_under: Clinic for adults and children {age} years old or more.
             no_children_under_months: Clinic for adults and children {age} months old or more.
             healthcare_workers_and_first_responders: Healthcare workers and first responders only clinic.
+        opening_hours:
+          closed: "Closed"
+          time_format_short: "%-I%p"
+          time_format_long: "%-I:%M%p"
+          days:
+            sunday: Sun
+            monday: Mon
+            tuesday: Tue
+            wednesday: Wed
+            thursday: Thu
+            friday: Fri
+            saturday: Sat
 
   utter_ask_test_navigation__try_different_address:
     - text: Would you like to try a different address?

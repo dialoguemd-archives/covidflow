@@ -1,4 +1,5 @@
 import asyncio
+from datetime import time
 from typing import Any, Callable
 from unittest import TestCase
 from unittest.mock import patch
@@ -7,7 +8,7 @@ from aiohttp import ClientResponseError, web
 from aiohttp.test_utils import unused_port
 
 from covidflow.utils.geocoding import Coordinates
-from covidflow.utils.testing_locations import CLINIA_API_ROUTE
+from covidflow.utils.testing_locations import CLINIA_API_ROUTE, Day, OpeningPeriod
 from covidflow.utils.testing_locations import TestingLocation as Location
 from covidflow.utils.testing_locations import (
     _fetch_testing_locations,
@@ -109,13 +110,19 @@ SAMPLE = {
         "https://www.ciussswestcentral.ca/health-alerts/coronavirus-covid-19/covid-19-drive-through-screening-clinic/"
     ],
     "openingHours": {
-        "sunday": [{"start": "10:00:00", "end": "16:00:00"}],
-        "saturday": [{"start": "10:00:00", "end": "16:00:00"}],
-        "tuesday": [{"start": "10:00:00", "end": "16:00:00"}],
-        "wednesday": [{"start": "10:00:00", "end": "16:00:00"}],
-        "thursday": [{"start": "10:00:00", "end": "16:00:00"}],
-        "friday": [{"start": "10:00:00", "end": "16:00:00"}],
-        "monday": [{"start": "10:00:00", "end": "16:00:00"}],
+        "sunday": [
+            {"start": "10:00:00", "end": "12:00:00"},
+            {"start": "13:00:00", "end": "17:00:00"},
+        ],
+        "saturday": [
+            {"start": "10:00:00", "end": "12:00:00"},
+            {"start": "13:00:00", "end": "17:00:00"},
+        ],
+        "tuesday": [{"start": "10:30:00", "end": "16:00:00"}],
+        "wednesday": [{"start": "10:30:00", "end": "16:00:00"}],
+        "thursday": [{"start": "10:30:00", "end": "16:00:00"}],
+        "friday": [{"start": "10:30:00", "end": "16:00:00"}],
+        "monday": [{"start": "10:30:00", "end": "16:00:00"}],
     },
     "_highlight": {},
     "_ranking": {"score": 6.982521, "distance": 11031.42529248569},
@@ -145,6 +152,24 @@ class TestTestingLocationsClasses(TestCase):
         self.assertEqual(location.phones[0].number, SAMPLE["phones"][0]["number"])
         self.assertEqual(location.phones[0].extension, SAMPLE["phones"][0]["extension"])
 
+        weekday_opening_hours = [
+            OpeningPeriod(time(hour=10, minute=30), time(hour=16, minute=00))
+        ]
+        weekend_opening_hours = [
+            OpeningPeriod(time(hour=10, minute=00), time(hour=12, minute=00)),
+            OpeningPeriod(time(hour=13, minute=00), time(hour=17, minute=00)),
+        ]
+        expected_openning_hours = {
+            Day.monday: weekday_opening_hours,
+            Day.tuesday: weekday_opening_hours,
+            Day.wednesday: weekday_opening_hours,
+            Day.thursday: weekday_opening_hours,
+            Day.friday: weekday_opening_hours,
+            Day.saturday: weekend_opening_hours,
+            Day.sunday: weekend_opening_hours,
+        }
+        self.assertEqual(location.opening_hours, expected_openning_hours)
+
     def test_parse_empty_except_geopoint(self):
         location = Location({"_geoPoint": {"lon": 1, "lat": 0}})
 
@@ -156,3 +181,4 @@ class TestTestingLocationsClasses(TestCase):
         self.assertEqual(location.websites, [])
         self.assertEqual(location.address, None)
         self.assertEqual(location.phones, [])
+        self.assertEqual(location.opening_hours, {})

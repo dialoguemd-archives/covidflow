@@ -96,7 +96,7 @@ class TestCheckinReturnForm(FormTestCase):
             ]
         )
 
-        self.assert_templates(["utter_ask_province"])
+        self.assert_templates(["utter_pre_ask_province", "utter_ask_province"])
 
     def test_collect_province(self):
         tracker = self.create_tracker(
@@ -322,7 +322,7 @@ class TestCheckinReturnForm(FormTestCase):
             ]
         )
 
-        self.assert_templates(["utter_ask_has_cough"])
+        self.assert_templates(["utter_no_moderate_symptoms", "utter_ask_has_cough"])
 
     def test_fever_cough(self):
         self._test_cough(fever=True)

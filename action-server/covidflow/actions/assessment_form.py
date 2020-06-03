@@ -1,7 +1,7 @@
 from typing import Any, Dict, List, Text, Union
 
 from rasa_sdk import Tracker
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
@@ -12,7 +12,6 @@ from .constants import (
     HAS_COUGH_SLOT,
     HAS_FEVER_SLOT,
     LIVES_ALONE_SLOT,
-    MODERATE_SYMPTOMS_SLOT,
     SEVERE_SYMPTOMS_SLOT,
     TRAVEL_SLOT,
 )
@@ -31,6 +30,18 @@ class AssessmentForm(FormAction):
     ):
         bind_logger(tracker)
         return await super().run(dispatcher, tracker, domain)
+
+    ## override to play initial message
+    async def _activate_if_required(
+        self,
+        dispatcher: "CollectingDispatcher",
+        tracker: "Tracker",
+        domain: Dict[Text, Any],
+    ) -> List[EventType]:
+        if tracker.active_form.get("name") != FORM_NAME:
+            dispatcher.utter_message(template="utter_assessment_entry")
+
+        return await super()._activate_if_required(dispatcher, tracker, domain)
 
     @staticmethod
     def required_slots(tracker: Tracker) -> List[Text]:
@@ -68,6 +79,15 @@ class AssessmentForm(FormAction):
             ],
         }
 
+    def validate_severe_symptoms(
+        self,
+        value: bool,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        return AssessmentCommon.validate_severe_symptoms(value, dispatcher)
+
     def validate_province(
         self,
         value: Text,
@@ -79,15 +99,17 @@ class AssessmentForm(FormAction):
 
     def validate_moderate_symptoms(
         self,
-        value: Text,
+        value: bool,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
+        result = AssessmentCommon.validate_moderate_symptoms(value, dispatcher)
+
         if value is True:
             dispatcher.utter_message(template="utter_moderate_symptoms_self_isolate")
 
-        return {MODERATE_SYMPTOMS_SLOT: value}
+        return result
 
     def validate_has_cough(
         self,

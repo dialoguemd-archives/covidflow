@@ -17,7 +17,7 @@
 - user: deny
   bot: tested_positive/ask_when_tested
 - user: less
-  bot: tested_positive/ask_daily_ci_enrollment
+  bot: tested_positive/ask_daily_ci_enrollment_no_symptoms_less
 - user: deny
   bot: tested_positive/ask_anything_else
 - user: done

@@ -55,7 +55,11 @@ class TestTestedPositiveForm(FormTestCase):
         self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, LIVES_ALONE_SLOT)])
 
         self.assert_templates(
-            ["utter_tested_positive_self_isolate", "utter_ask_lives_alone"]
+            [
+                "utter_tested_positive_entry",
+                "utter_tested_positive_self_isolate",
+                "utter_ask_lives_alone",
+            ]
         )
 
     def test_lives_alone(self):
@@ -141,7 +145,7 @@ class TestTestedPositiveForm(FormTestCase):
             ]
         )
 
-        self.assert_templates(["utter_ask_province"])
+        self.assert_templates(["utter_pre_ask_province", "utter_ask_province"])
 
     def test_collect_province(self):
         tracker = self.create_tracker(
@@ -297,7 +301,7 @@ class TestTestedPositiveForm(FormTestCase):
             ]
         )
 
-        self.assert_templates(["utter_ask_has_cough"])
+        self.assert_templates(["utter_no_moderate_symptoms", "utter_ask_has_cough"])
 
     def test_fever_mild_symptoms_cough(self):
         self._test_mild_symptoms_cough(fever=True)

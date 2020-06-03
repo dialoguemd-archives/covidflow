@@ -317,6 +317,7 @@
   - action_tested_positive_no_symptoms_recommendations
   - utter_ask_when_tested
 * less
+  - utter_when_tested_less_14_recommendation
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
@@ -345,6 +346,7 @@
   - action_tested_positive_no_symptoms_recommendations
   - utter_ask_when_tested
 * less
+  - utter_when_tested_less_14_recommendation
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}

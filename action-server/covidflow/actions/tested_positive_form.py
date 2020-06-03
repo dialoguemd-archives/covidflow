@@ -31,6 +31,7 @@ class TestedPositiveForm(FormAction):
         domain: Dict[Text, Any],
     ) -> List[EventType]:
         if tracker.active_form.get("name") != FORM_NAME:
+            dispatcher.utter_message(template="utter_tested_positive_entry")
             dispatcher.utter_message(template="utter_tested_positive_self_isolate")
         return await super()._activate_if_required(dispatcher, tracker, domain)
 
@@ -52,6 +53,15 @@ class TestedPositiveForm(FormAction):
         dispatcher.utter_message(template="utter_assess_symptoms")
         return result
 
+    def validate_severe_symptoms(
+        self,
+        value: bool,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        return AssessmentCommon.validate_severe_symptoms(value, dispatcher)
+
     def validate_province(
         self,
         value: Text,
@@ -60,6 +70,15 @@ class TestedPositiveForm(FormAction):
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
         return AssessmentCommon.validate_province(value, domain)
+
+    def validate_moderate_symptoms(
+        self,
+        value: bool,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        return AssessmentCommon.validate_moderate_symptoms(value, dispatcher)
 
     def submit(
         self,

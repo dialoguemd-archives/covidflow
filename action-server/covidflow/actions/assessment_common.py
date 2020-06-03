@@ -68,6 +68,16 @@ class AssessmentCommon:
             ],
         }
 
+    # province is asked after severe symptoms so the message can be added here
+    @staticmethod
+    def validate_severe_symptoms(
+        value: bool, dispatcher: CollectingDispatcher
+    ) -> Dict[Text, Any]:
+        if value is False:
+            dispatcher.utter_message(template="utter_pre_ask_province")
+
+        return {SEVERE_SYMPTOMS_SLOT: value}
+
     @staticmethod
     def validate_province(value: Text, domain: Dict[Text, Any],) -> Dict[Text, Any]:
         provincial_811 = get_provincial_811(value, domain)
@@ -76,6 +86,15 @@ class AssessmentCommon:
             PROVINCE_SLOT: value,
             PROVINCIAL_811_SLOT: provincial_811,
         }
+
+    @staticmethod
+    def validate_moderate_symptoms(
+        value: bool, dispatcher: CollectingDispatcher
+    ) -> Dict[Text, Any]:
+        if value is False:
+            dispatcher.utter_message(template="utter_no_moderate_symptoms")
+
+        return {MODERATE_SYMPTOMS_SLOT: value}
 
     @staticmethod
     def validate_lives_alone(

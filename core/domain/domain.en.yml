@@ -19,6 +19,9 @@ responses:
         - title: "I’d like to know where to get tested"
           payload: "/navigate_test_locations"
 
+  utter_assessment_entry:
+    - text: OK, let’s assess your symptoms to see how you’re doing and which steps you should take. Let’s get started!
+
   utter_ask_severe_symptoms:
     - text: "First, are you experiencing any of the following symptoms:\n- Severe difficulty breathing\n- Severe chest pain\n- Having a hard time waking up\n- Feeling confused\n- Losing consciousness"
       buttons:
@@ -54,6 +57,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+
+  utter_no_moderate_symptoms:
+    - text: OK, it seems that you don’t have symptoms that require immediate medical assistance. Let’s continue your assessment
 
   utter_symptoms_worsen_emergency:
     - text: "If your symptoms worsen or if you have difficulty breathing, you will need to get to your nearest emergency or call 911"
@@ -118,6 +124,9 @@ responses:
     - text: If you feel anxious about Covid-19 or your own wellbeing, please visit [Wellness Together Canada](https://ca.portal.gs/)
 
   # province age form
+  utter_pre_ask_province:
+    - text: Next, I need to know where you live, so that I can give you information relevant for your area
+
   utter_ask_province:
     - text: In which province or territory do you currently reside?
       buttons:
@@ -215,6 +224,9 @@ responses:
 
   ## Tested positive
 
+  utter_tested_positive_entry:
+    - text: OK, let’s see how you’re doing. I’ll assess your symptoms and provide you with customized recommendations
+
   utter_assess_symptoms:
     - text: "Now, I’d like to assess your symptoms"
 
@@ -239,6 +251,9 @@ responses:
           payload: "/more"
         - title: "Less than 14 days ago"
           payload: "/less"
+
+  utter_when_tested_less_14_recommendation:
+    - text: In this case, I suggest you monitor your condition for any changes
 
   utter_maybe_recovered:
     - text: "You might have recovered. I invite you to stay home as much as possible and comply with social distancing rules. If you go outside, I recommend that you wear a mask"

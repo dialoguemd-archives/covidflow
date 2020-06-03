@@ -1,3 +1,4 @@
+import os
 from copy import deepcopy
 from datetime import datetime, time
 from enum import Enum
@@ -12,11 +13,13 @@ from .geocoding import Coordinates
 logger = structlog.get_logger()
 
 CLINIA_ENDPOINT = "https://covid.clinia.com"
+CLINIA_API_KEY = "CLINIA_API_KEY"
 CLINIA_API_ROUTE = "/api/v1/indexes/covid/query"
 CLINIA_TIME_FORMAT = "%H:%M:%S"
 
 LOCATION_KEY = "aroundLatLng"
 PAGE_KEY = "page"
+HEADER_CLINIA_API_KEY = "x-clinia-api-key"
 HITS_KEY = "hits"
 
 DEFAULT_SEARCH_PARAMETERS = {
@@ -151,6 +154,7 @@ class TestingLocation:
 async def _fetch_testing_locations(
     session: ClientSession, coordinates: Coordinates, page: int = 0
 ):
+    headers = {HEADER_CLINIA_API_KEY: os.environ[CLINIA_API_KEY]}
     body = {
         **DEFAULT_SEARCH_PARAMETERS,
         LOCATION_KEY: f"{coordinates[0]},{coordinates[1]}",
@@ -160,7 +164,7 @@ async def _fetch_testing_locations(
     url = f"{CLINIA_ENDPOINT}{CLINIA_API_ROUTE}"
     logger.debug(f"Fetching test sites", url=url, body=body)
 
-    result = await session.post(url, json=body)
+    result = await session.post(url, json=body, headers=headers)
     return await result.json()
 
 

@@ -73,6 +73,7 @@ services:
       - GOOGLE_GEOCODING_API_KEY
       - GOOGLE_MAPS_API_KEY
       - GOOGLE_MAPS_URL_SIGN_SECRET
+      - CLINIA_API_KEY
     volumes:
       - ./action-server/covidflow:/app/covidflow
 

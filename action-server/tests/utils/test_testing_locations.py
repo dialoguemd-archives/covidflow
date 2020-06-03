@@ -8,7 +8,12 @@ from aiohttp import ClientResponseError, web
 from aiohttp.test_utils import unused_port
 
 from covidflow.utils.geocoding import Coordinates
-from covidflow.utils.testing_locations import CLINIA_API_ROUTE, Day, OpeningPeriod
+from covidflow.utils.testing_locations import (
+    CLINIA_API_KEY,
+    CLINIA_API_ROUTE,
+    Day,
+    OpeningPeriod,
+)
 from covidflow.utils.testing_locations import TestingLocation as Location
 from covidflow.utils.testing_locations import (
     _fetch_testing_locations,
@@ -17,6 +22,7 @@ from covidflow.utils.testing_locations import (
 
 from .fake_server import FakeServer
 
+ENV = {CLINIA_API_KEY: "test"}
 ENPOINT_FQN = "covidflow.utils.testing_locations.CLINIA_ENDPOINT"
 FETCH_WITH_BACKOFF_FQN = (
     "covidflow.utils.testing_locations._fetch_testing_locations_with_backoff"
@@ -58,6 +64,7 @@ class TestGetTestingLocations(TestCase):
         except AttributeError:
             pass
 
+    @patch.dict("os.environ", ENV)
     def _get_testing_locations(self):
         loop = asyncio.get_event_loop()
         return loop.run_until_complete(get_testing_locations(Coordinates(45, -75)))

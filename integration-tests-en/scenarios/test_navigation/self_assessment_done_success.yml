@@ -1,0 +1,9 @@
+- user: test_navigation/greet_one_location
+  bot: welcome
+- assessment_moderate
+- user: navigate_tests
+  bot: test_navigation/explanations_assessment_done
+- user: continue
+  bot: test_navigation/postal_code
+- user: test_navigation/postal_code/valid
+  bot: test_navigation/one_location_assessment_done

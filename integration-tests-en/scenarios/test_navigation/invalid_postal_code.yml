@@ -1,0 +1,7 @@
+- navigate_test_locations
+- user: test_navigation/postal_code/invalid
+  bot: test_navigation/invalid_postal_code
+- user: test_navigation/postal_code/invalid
+  bot: test_navigation/invalid_postal_code
+- user: test_navigation/postal_code/invalid
+  bot: test_navigation/invalid_postal_code_max

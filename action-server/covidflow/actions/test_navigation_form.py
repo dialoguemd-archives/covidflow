@@ -18,7 +18,10 @@ from covidflow.utils.testing_locations import (
     get_testing_locations,
 )
 
-from .constants import TEST_NAVIGATION_SUCCESS_SLOT
+from .constants import (
+    TEST_NAVIGATION_SUCCESS_SLOT,
+    TEST_NAVIGATION_TEST_RESPONSES_LENGTH_ATTRIBUTE,
+)
 from .lib.log_util import bind_logger
 
 logger = structlog.get_logger()
@@ -36,6 +39,10 @@ LOCATIONS_SLOT = "test_navigation__locations"
 END_FORM_SLOT = "test_navigation__end_form"
 
 CHILDREN_CLIENTELE_REGEXP = re.compile(r"no_children_under_(\d{1,2})(_months)?")
+
+TEST_LOCATION_RESPONSE = TestingLocation(
+    {"name": "location name", "_geoPoint": {"lon": 0.9, "lat": 0.0},}
+)
 
 
 class TestNavigationForm(FormAction):
@@ -88,7 +95,11 @@ class TestNavigationForm(FormAction):
             if coordinates is None:
                 return _check_postal_code_error_counter(tracker, dispatcher)
 
-            testing_locations = await get_testing_locations(coordinates)
+            testing_locations = (
+                _get_stub_testing_locations(tracker)
+                if _must_stub_testing_locations(tracker)
+                else await get_testing_locations(coordinates)
+            )
 
         except Exception:
             logger.exception("Failed to fetch testing locations")
@@ -177,6 +188,20 @@ def _check_postal_code_error_counter(
         POSTAL_CODE_SLOT: None,
         INVALID_POSTAL_CODE_COUNTER_SLOT: try_counter + 1,
     }
+
+
+def _must_stub_testing_locations(tracker: Tracker) -> bool:
+    metadata = tracker.get_slot("metadata") or {}
+    return TEST_NAVIGATION_TEST_RESPONSES_LENGTH_ATTRIBUTE in metadata
+
+
+def _get_stub_testing_locations(tracker: Tracker) -> List[TestingLocation]:
+    responses_length = tracker.get_slot("metadata")[
+        TEST_NAVIGATION_TEST_RESPONSES_LENGTH_ATTRIBUTE
+    ]
+    if responses_length == "error":
+        raise
+    return [TEST_LOCATION_RESPONSE for i in range(responses_length)]
 
 
 def _locations_carousel(

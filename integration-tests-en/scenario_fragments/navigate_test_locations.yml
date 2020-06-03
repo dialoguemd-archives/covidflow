@@ -1,0 +1,4 @@
+- user: navigate_tests
+  bot: test_navigation/explanations
+- user: continue
+  bot: test_navigation/postal_code

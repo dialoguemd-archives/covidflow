@@ -1,0 +1,5 @@
+- user: test_navigation/greet_one_location
+  bot: welcome
+- navigate_test_locations
+- user: test_navigation/postal_code/valid
+  bot: test_navigation/one_location

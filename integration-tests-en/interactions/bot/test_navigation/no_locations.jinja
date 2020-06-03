@@ -1,0 +1,11 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "I’m sorry, I can’t find any sites near that address"
+    },
+    {
+        "text": "Would you like to try a different address?",
+        {{ bot.confirmation_buttons() }}
+    }
+]

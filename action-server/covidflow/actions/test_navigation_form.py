@@ -1,15 +1,19 @@
+import decimal
 import re
 from datetime import time
 from typing import Any, Dict, List, Optional, Text, Union
+from urllib.parse import urlencode
 
 import structlog
+from geopy.distance import distance
+from geopy.point import Point
 from rasa_sdk import Tracker
 from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
 from covidflow.utils.geocoding import Geocoding
-from covidflow.utils.maps import get_map_url
+from covidflow.utils.maps import get_static_map_url
 from covidflow.utils.testing_locations import (
     Day,
     OpeningPeriod,
@@ -117,7 +121,7 @@ class TestNavigationForm(FormAction):
         elif len(testing_locations) == 1:
             dispatcher.utter_message(template="utter_test_navigation__one_location")
             dispatcher.utter_message(
-                attachment=_locations_carousel(domain, testing_locations)
+                attachment=_locations_carousel(testing_locations, coordinates, domain)
             )
 
         else:
@@ -128,7 +132,7 @@ class TestNavigationForm(FormAction):
             dispatcher.utter_message(template="utter_test_navigation__many_locations_2")
             dispatcher.utter_message(template="utter_test_navigation__many_locations_3")
             dispatcher.utter_message(
-                attachment=_locations_carousel(domain, testing_locations)
+                attachment=_locations_carousel(testing_locations, coordinates, domain)
             )
 
         return {
@@ -205,7 +209,9 @@ def _get_stub_testing_locations(tracker: Tracker) -> List[TestingLocation]:
 
 
 def _locations_carousel(
-    domain: Dict[Text, Any], testing_locations: List[TestingLocation]
+    testing_locations: List[TestingLocation],
+    user_coordinates: Point,
+    domain: Dict[Text, Any],
 ) -> Dict[Text, Any]:
     responses = domain.get("responses", {})
     titles_response = responses.get("utter_test_navigation__display_titles", [])
@@ -220,7 +226,7 @@ def _locations_carousel(
     )
 
     cards = [
-        _generate_location_card(location, titles, description_parts)
+        _generate_location_card(location, user_coordinates, titles, description_parts)
         for location in testing_locations
     ]
     return {
@@ -231,14 +237,17 @@ def _locations_carousel(
 
 def _generate_location_card(
     location: TestingLocation,
+    user_coordinates: Point,
     titles: Dict[Text, Text],
     description_parts: Dict[Text, Any],
 ) -> Dict[Text, Any]:
 
     return {
         "title": location.name,
-        "subtitle": _generate_description(location, description_parts),
-        "image_url": get_map_url(location.coordinates),
+        "subtitle": _generate_description(
+            location, user_coordinates, description_parts
+        ),
+        "image_url": get_static_map_url(location.coordinates),
         "buttons": _generate_buttons(location, titles),
     }
 
@@ -263,10 +272,14 @@ def _generate_buttons(
     elif website:
         buttons.append(_url_button(f"{titles['website_button']}", website,))
 
+    map_parameters = (
+        urlencode({"q": location.address.to_formatted_address()})
+        if location.address and location.address.is_complete()
+        else f"q={location.coordinates[0]},{location.coordinates[1]}"
+    )
     buttons.append(
         _url_button(
-            titles["directions_button"],
-            f"http://maps.apple.com/?q={location.coordinates[0]},{location.coordinates[1]}",
+            titles["directions_button"], f"http://maps.apple.com/?{map_parameters}"
         )
     )
 
@@ -293,10 +306,13 @@ def _url_button(title: str, url: str) -> Dict[Text, Any]:
 
 
 def _generate_description(
-    location: TestingLocation, description_parts: Dict[Text, Any]
+    location: TestingLocation,
+    user_coordinates: Point,
+    description_parts: Dict[Text, Any],
 ) -> str:
+    distance_part = _get_distance(user_coordinates, location.coordinates)
     require_referral = str(location.require_referral).lower()
-    referral_part = description_parts.get("referral", {}).get(require_referral, "")
+    referral_part: str = description_parts.get("referral", {}).get(require_referral, "")
 
     require_appointment = str(location.require_appointment).lower()
     clientele = str(location.clientele).lower().replace(" ", "_")
@@ -310,14 +326,14 @@ def _generate_description(
         else:
             clientele = "no_children_under"
 
-    appointment_clientele_part = (
+    appointment_clientele_part: str = (
         description_parts.get("appointment_clientele", {})
         .get(require_appointment, {})
-        .get(clientele)
+        .get(clientele, "")
     )
 
     unknown_clientele = False
-    if appointment_clientele_part is None:
+    if appointment_clientele_part == "":
         logger.warn(f"Unknown clientele received from Clinia API: {location.clientele}")
         unknown_clientele = True
         appointment_clientele_part = (
@@ -329,22 +345,32 @@ def _generate_description(
     if age:
         appointment_clientele_part = appointment_clientele_part.replace("{age}", age)
 
-    description = f"{appointment_clientele_part} {referral_part}"
+    description = list(
+        filter(None, [distance_part, appointment_clientele_part, referral_part])
+    )
 
     if (
         location.require_referral is None
         or location.require_appointment is None
         or unknown_clientele is True
     ):
-        description += f" {description_parts.get('contact_before_visit', '')}"
+        description.append(description_parts.get("contact_before_visit", ""))
+
+    description_text = " ".join(description)
 
     opening_hours_part: Dict[str, str] = description_parts["opening_hours"]
     if len(location.opening_hours) > 0:
-        description += (
+        description_text += (
             f"\n\n{_format_opening_hours(location.opening_hours, opening_hours_part)}"
         )
 
-    return description
+    return description_text
+
+
+def _get_distance(coordinates_1: Point, coordinates_2: Point) -> str:
+    calculated_distance = distance(coordinates_1, coordinates_2).km
+    decimal_distance = decimal.Decimal(calculated_distance)
+    return f"{round(decimal_distance, 1)}km:"
 
 
 def _format_time(time: time, opening_hours_part: Dict[str, Any]):

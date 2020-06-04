@@ -1,8 +1,9 @@
 import os
-from typing import Any, Dict, NamedTuple, Optional
+from typing import Any, Dict, Optional
 
 import googlemaps
 import structlog
+from geopy.point import Point
 
 logger = structlog.get_logger()
 
@@ -16,27 +17,22 @@ LATITUDE = "lat"
 LONGITUDE = "lng"
 
 
-class Coordinates(NamedTuple):
-    latitude: float
-    longitude: float
-
-
 class Geocoding:
     def __init__(self):
         key = os.environ[GOOGLE_API_KEY_ENV]
         self.client = googlemaps.Client(key=key)
 
-    def get_from_address(self, address: str) -> Optional[Coordinates]:
+    def get_from_address(self, address: str) -> Optional[Point]:
         request = {"address": address}
         return self._get_geocode(request)
 
-    def get_from_postal_code(self, postal_code: str) -> Optional[Coordinates]:
+    def get_from_postal_code(self, postal_code: str) -> Optional[Point]:
         request = {
             "components": {"postal_code": postal_code, "country": DEFAULT_COUNTRY}
         }
         return self._get_geocode(request)
 
-    def _get_geocode(self, request: Dict[str, Any]) -> Optional[Coordinates]:
+    def _get_geocode(self, request: Dict[str, Any]) -> Optional[Point]:
         geocode_result = self.client.geocode(**request)
 
         if (len(geocode_result)) == 0:
@@ -47,4 +43,4 @@ class Geocoding:
         if LATITUDE not in location or LONGITUDE not in location:
             return None
 
-        return Coordinates(location[LATITUDE], location[LONGITUDE])
+        return Point([location[LATITUDE], location[LONGITUDE]])

@@ -6,8 +6,8 @@ from unittest.mock import patch
 
 from aiohttp import ClientResponseError, web
 from aiohttp.test_utils import unused_port
+from geopy.point import Point
 
-from covidflow.utils.geocoding import Coordinates
 from covidflow.utils.testing_locations import (
     CLINIA_API_KEY,
     CLINIA_API_ROUTE,
@@ -67,7 +67,7 @@ class TestGetTestingLocations(TestCase):
     @patch.dict("os.environ", ENV)
     def _get_testing_locations(self):
         loop = asyncio.get_event_loop()
-        return loop.run_until_complete(get_testing_locations(Coordinates(45, -75)))
+        return loop.run_until_complete(get_testing_locations(Point([45, -75])))
 
     def test_empty_result(self):
         self._setUp(create_api_success())
@@ -183,7 +183,7 @@ class TestTestingLocationsClasses(TestCase):
         self.assertEqual(location.name, None)
         self.assertEqual(location.require_referral, None)
         self.assertEqual(location.require_appointment, None)
-        self.assertEqual(location.coordinates, (0.0, 1.0))
+        self.assertEqual(location.coordinates, (0.0, 1.0, 0.0))
         self.assertEqual(location.clientele, None)
         self.assertEqual(location.websites, [])
         self.assertEqual(location.address, None)

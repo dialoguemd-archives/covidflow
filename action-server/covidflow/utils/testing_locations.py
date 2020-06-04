@@ -7,8 +7,7 @@ from typing import Dict, List, NamedTuple, Optional
 import backoff
 import structlog
 from aiohttp import ClientError, ClientSession
-
-from .geocoding import Coordinates
+from geopy.point import Point
 
 logger = structlog.get_logger()
 
@@ -81,6 +80,18 @@ class TestingLocationAddress:
         # ie: Lachine
         return self.raw_address.get("place")
 
+    def is_complete(self) -> bool:
+        return self.street_address != None
+
+    def to_formatted_address(self) -> str:
+        address_parts = [
+            self.street_address,
+            self.place,
+            self.region_code,
+            self.country,
+        ]
+        return ", ".join(list(filter(None, address_parts)))
+
 
 class TestingLocationPhone:
     def __init__(self, raw_phone_data: dict):
@@ -123,9 +134,9 @@ class TestingLocation:
 
     # Raises if there is no geopoint because we depend on it
     @property
-    def coordinates(self) -> Coordinates:
+    def coordinates(self) -> Point:
         geo_point = self.raw_data["_geoPoint"]
-        return Coordinates(geo_point.get("lat"), geo_point.get("lon"))
+        return Point([geo_point.get("lat"), geo_point.get("lon")])
 
     @property
     def clientele(self) -> Optional[str]:
@@ -152,7 +163,7 @@ class TestingLocation:
 
 
 async def _fetch_testing_locations(
-    session: ClientSession, coordinates: Coordinates, page: int = 0
+    session: ClientSession, coordinates: Point, page: int = 0
 ):
     headers = {HEADER_CLINIA_API_KEY: os.environ[CLINIA_API_KEY]}
     body = {
@@ -170,14 +181,14 @@ async def _fetch_testing_locations(
 
 @backoff.on_exception(backoff.expo, ClientError, max_time=3)
 async def _fetch_testing_locations_with_backoff(
-    session: ClientSession, coordinates: Coordinates, page: int = 0
+    session: ClientSession, coordinates: Point, page: int = 0
 ):
     return await _fetch_testing_locations(
         session=session, coordinates=coordinates, page=page
     )
 
 
-async def get_testing_locations(coordinates: Coordinates) -> List[TestingLocation]:
+async def get_testing_locations(coordinates: Point) -> List[TestingLocation]:
     async with ClientSession(raise_for_status=True) as session:
         result = await _fetch_testing_locations_with_backoff(
             session=session, coordinates=coordinates

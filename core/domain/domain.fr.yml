@@ -1135,6 +1135,7 @@ responses:
   utter_test_navigation__display_titles:
     - custom:
         call_button: "Appeler le "
+        website_button: "Site web"
         directions_button: "Itinéraire"
 
   utter_test_navigation__descriptions:

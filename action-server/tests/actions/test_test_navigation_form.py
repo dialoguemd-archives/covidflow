@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Dict, List, Optional
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
@@ -15,12 +15,19 @@ from covidflow.actions.test_navigation_form import (
     POSTAL_CODE_SLOT,
     TRY_DIFFERENT_ADDRESS_SLOT,
     TestNavigationForm,
+    _generate_buttons,
     _generate_description,
     _locations_carousel,
 )
 from covidflow.utils.testing_locations import TestingLocation
 
 from .form_helper import FormTestCase
+
+BUTTON_TITLES = {
+    "call_button": "Click to call: ",
+    "directions_button": "Click to go",
+    "website_button": "Click to visit",
+}
 
 DESCRIPTION_PARTS = {
     "contact_before_visit": "Contact me!",
@@ -67,14 +74,7 @@ DESCRIPTION_PARTS = {
 
 DOMAIN = {
     "responses": {
-        "utter_test_navigation__display_titles": [
-            {
-                "custom": {
-                    "call_button": "Click to call: ",
-                    "directions_button": "Click to go",
-                }
-            }
-        ],
+        "utter_test_navigation__display_titles": [{"custom": BUTTON_TITLES}],
         "utter_test_navigation__descriptions": [{"custom": DESCRIPTION_PARTS}],
     }
 }
@@ -591,35 +591,66 @@ class TestLocationsCarousel(TestCase):
 
         self._test_locations_carousel([raw_location], [card_content])
 
-    def test_carousel_phone_with_extension(self):
+    def _test_buttons(
+        self,
+        phones: List[Dict[str, str]],
+        websites: List[str],
+        buttons: List[Dict[str, Any]],
+    ):
         raw_location = {
             "id": "result",
-            "name": "name",
+            "name": "Test site name",
+            "description": {
+                "fr": "Test location described",
+                "en": "serious description",
+            },
             "_geoPoint": {"lon": 0.0, "lat": 0.0},
-            "phones": [{"number": "5141112222", "extension": "3333", "type": "MAIN"}],
-            "clientele": "Known Clientele",
-            "requireReferral": True,
-            "requireAppointment": True,
+            "phones": phones,
+            "websites": websites,
         }
-        card_content = {
-            "buttons": [
-                {
-                    "title": "Click to call: 514-111-2222 ext. 3333",
-                    "type": "web_url",
-                    "url": "tel:514-111-2222",
-                },
-                {
-                    "title": "Click to go",
-                    "type": "web_url",
-                    "url": "http://maps.apple.com/?q=0.0,0.0",
-                },
-            ],
-            "image_url": "some_url",
-            "subtitle": "appointment known clientele referral = true",
-            "title": "name",
-        }
+        test_location = TestingLocation(raw_location)
+        self.assertEqual(_generate_buttons(test_location, BUTTON_TITLES), buttons)
 
-        self._test_locations_carousel([raw_location], [card_content])
+    def test_generate_buttons_phone_with_extension(self):
+        phones = [{"number": "5141112222", "extension": "3333", "type": "MAIN"}]
+        expected_buttons = [
+            {
+                "title": "Click to call: 514-111-2222 ext. 3333",
+                "type": "web_url",
+                "url": "tel:514-111-2222",
+            },
+            {
+                "title": "Click to go",
+                "type": "web_url",
+                "url": "http://maps.apple.com/?q=0.0,0.0",
+            },
+        ]
+
+        self._test_buttons(phones, [], expected_buttons)
+
+    def test_generate_buttons_no_phone_website(self):
+        website = ("http://somewhereovertherainbow.com",)
+        expected_buttons = [
+            {"title": "Click to visit", "type": "web_url", "url": website,},
+            {
+                "title": "Click to go",
+                "type": "web_url",
+                "url": "http://maps.apple.com/?q=0.0,0.0",
+            },
+        ]
+
+        self._test_buttons([], [website], expected_buttons)
+
+    def test_generate_buttons_no_phone_no_website(self):
+        expected_buttons = [
+            {
+                "title": "Click to go",
+                "type": "web_url",
+                "url": "http://maps.apple.com/?q=0.0,0.0",
+            },
+        ]
+
+        self._test_buttons([], [], expected_buttons)
 
     def _test_description(
         self,

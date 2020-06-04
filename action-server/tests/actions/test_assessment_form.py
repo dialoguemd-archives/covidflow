@@ -59,7 +59,7 @@ class TestAssessmentForm(FormTestCase):
             [Form(FORM_NAME), SlotSet(REQUESTED_SLOT, SEVERE_SYMPTOMS_SLOT)]
         )
 
-        self.assert_templates(["utter_ask_severe_symptoms"])
+        self.assert_templates(["utter_assessment_entry", "utter_ask_severe_symptoms"])
 
     def test_severe_symptoms(self):
         tracker = self.create_tracker(
@@ -94,7 +94,7 @@ class TestAssessmentForm(FormTestCase):
             ]
         )
 
-        self.assert_templates(["utter_ask_province"])
+        self.assert_templates(["utter_pre_ask_province", "utter_ask_province"])
 
     def test_collect_province(self):
         tracker = self.create_tracker(
@@ -315,7 +315,7 @@ class TestAssessmentForm(FormTestCase):
             ]
         )
 
-        self.assert_templates(["utter_ask_has_cough"])
+        self.assert_templates(["utter_no_moderate_symptoms", "utter_ask_has_cough"])
 
     def test_fever_mild_symptoms_cough(self):
         self._test_mild_symptoms_cough(fever=True)

@@ -72,6 +72,15 @@ class CheckinReturnForm(FormAction):
             ],
         }
 
+    def validate_severe_symptoms(
+        self,
+        value: bool,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        return AssessmentCommon.validate_severe_symptoms(value, dispatcher)
+
     def validate_province(
         self,
         value: Text,
@@ -80,6 +89,15 @@ class CheckinReturnForm(FormAction):
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
         return AssessmentCommon.validate_province(value, domain)
+
+    def validate_moderate_symptoms(
+        self,
+        value: bool,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        return AssessmentCommon.validate_moderate_symptoms(value, dispatcher)
 
     def validate_checkin_return__moderate_symptoms_worsened(
         self,

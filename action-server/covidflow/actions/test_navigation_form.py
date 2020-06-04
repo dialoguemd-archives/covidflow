@@ -234,19 +234,35 @@ def _generate_location_card(
     titles: Dict[Text, Text],
     description_parts: Dict[Text, Any],
 ) -> Dict[Text, Any]:
+
+    return {
+        "title": location.name,
+        "subtitle": _generate_description(location, description_parts),
+        "image_url": get_map_url(location.coordinates),
+        "buttons": _generate_buttons(location, titles),
+    }
+
+
+def _generate_buttons(
+    location: TestingLocation, titles: Dict[Text, str]
+) -> List[Dict[Text, Any]]:
     phone_number = (
         _format_phone_number(location.phones[0]) if len(location.phones) >= 1 else None
     )
-    buttons = (
-        [
+    website = location.websites[0] if len(location.websites) >= 1 else None
+
+    buttons = []
+
+    if phone_number:
+        buttons.append(
             _url_button(
                 f"{titles.get('call_button')}{phone_number['full']}",
                 f"tel:{phone_number['link']}",
             )
-        ]
-        if phone_number
-        else []
-    )
+        )
+    elif website:
+        buttons.append(_url_button(f"{titles['website_button']}", website,))
+
     buttons.append(
         _url_button(
             titles["directions_button"],
@@ -254,12 +270,7 @@ def _generate_location_card(
         )
     )
 
-    return {
-        "title": location.name,
-        "subtitle": _generate_description(location, description_parts),
-        "image_url": get_map_url(location.coordinates),
-        "buttons": buttons,
-    }
+    return buttons
 
 
 def _format_phone_number(phone_number: TestingLocationPhone) -> Dict[Text, str]:

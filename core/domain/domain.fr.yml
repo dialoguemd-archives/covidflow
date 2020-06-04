@@ -10,14 +10,17 @@ responses:
       buttons:
         - title: "Je veux réévaluer mes symptômes"
           payload: "/checkin_return"
-        - title: "J'ai des symptômes et je crois avoir la Covid-19"
+        - title: "J’ai des symptômes et je crois avoir la Covid-19"
           payload: "/get_assessment"
-        - title: "J'ai eu un résultat positif au test de Covid-19"
+        - title: "J’ai eu un résultat positif au test de Covid-19"
           payload: "/tested_positive"
-        - title: "J'ai des questions à propos de la Covid-19"
+        - title: "J’ai des questions à propos de la Covid-19"
           payload: "/ask_question"
         - title: "J’aimerais savoir où je peux me faire tester"
           payload: "/navigate_test_locations"
+
+  utter_assessment_entry:
+    - text: Pour cela, j’aimerais évaluer vos symptômes afin de vous fournir des recommandations adaptées à votre situation. Allons-y!
 
   utter_ask_severe_symptoms:
     - text: "Premièrement, avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Beaucoup de mal à se réveiller\n- Confusion\n- Perte de conscience"
@@ -54,6 +57,9 @@ responses:
           payload: "/affirm"
         - title: Non
           payload: "/deny"
+
+  utter_no_moderate_symptoms:
+    - text: Très bien, il semble que vous n’avez pas de symptômes qui requièrent une assistance médicale immédiate. Continuons votre évaluation
 
   utter_symptoms_worsen_emergency:
     - text: "Si vos symptômes empirent, ou si vous avez de la difficulté à respirer, vous devrez vous rendre à l'urgence la plus près ou appeler le 911"
@@ -126,6 +132,9 @@ responses:
     - text: "Si vous êtes anxieux au sujet de la Covid-19 ou de votre propre bien-être, consultez [Espace mieux-être Canada](https://ca.portal.gs/?lang=fr-ca)"
 
   # province age form
+  utter_pre_ask_province:
+    - text: Ensuite, j’aimerais savoir où vous vivez, afin de vous fournir de l’information adaptée à votre région
+
   utter_ask_province:
     - text: Dans quelle province ou quel territoire résidez-vous présentement?
       buttons:
@@ -223,6 +232,9 @@ responses:
 
   ## Tested positive
 
+  utter_tested_positive_entry:
+    - text: D’accord, voyons voir comment vous vous portez. Je vais évaluer vos symptômes et vous donner des conseils adaptés à votre situation
+
   utter_assess_symptoms:
     - text: "J’aimerais maintenant évaluer vos symptômes"
 
@@ -247,6 +259,9 @@ responses:
           payload: "/more"
         - title: "Il y a 14 jours ou moins"
           payload: "/less"
+
+  utter_when_tested_less_14_recommendation:
+    - text: Dans ce cas, je vous recommande de surveiller vos symptômes pour tout changement
 
   utter_maybe_recovered:
     - text: "Il se peut que vous soyez guéri(e). Je vous invite à rester à la maison et à suivre les consignes de distanciation sociale. Si vous sortez, je vous recommande fortement de porter un masque"
@@ -1120,6 +1135,7 @@ responses:
   utter_test_navigation__display_titles:
     - custom:
         call_button: "Appeler le "
+        website_button: "Site web"
         directions_button: "Itinéraire"
 
   utter_test_navigation__descriptions:

@@ -263,5 +263,5 @@ slots:
     type: unfeaturized
 
 session_config:
-  session_expiration_time: 60 # value in minutes
-  carry_over_slots_to_new_session: true
+  session_expiration_time: 0 # value in minutes - 0 means session never expires
+  carry_over_slots_to_new_session: false

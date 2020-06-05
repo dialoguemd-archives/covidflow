@@ -19,7 +19,7 @@ from .constants import (
     PHONE_NUMBER_SLOT,
     PRECONDITIONS_SLOT,
 )
-from .form_helper import request_next_slot
+from .form_helper import request_next_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 
 FORM_NAME = "daily_ci_enroll_form"
@@ -89,10 +89,7 @@ class DailyCiEnrollForm(FormAction):
 
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {
-            DO_ENROLL_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
+            DO_ENROLL_SLOT: yes_no_nlu_mapping(self),
             FIRST_NAME_SLOT: self.from_text(),
             PHONE_NUMBER_SLOT: [
                 self.from_intent(intent="no_phone", value="no_phone"),
@@ -119,10 +116,7 @@ class DailyCiEnrollForm(FormAction):
                 self.from_intent(intent="deny", value=False),
                 self.from_intent(intent="dont_know", value="dont_know"),
             ],
-            HAS_DIALOGUE_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
+            HAS_DIALOGUE_SLOT: yes_no_nlu_mapping(self),
         }
 
     def request_next_slot(

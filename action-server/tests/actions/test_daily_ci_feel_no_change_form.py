@@ -19,7 +19,7 @@ from covidflow.actions.daily_ci_feel_no_change_form import (
     DailyCiFeelNoChangeForm,
 )
 
-from .form_helper import FormTestCase
+from .form_test_helper import FormTestCase
 
 
 class TestDailyCiFeelNoChangeForm(FormTestCase):
@@ -111,6 +111,22 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
             ]
         )
 
+    def test_fever_error(self):
+        tracker = self.create_tracker(
+            slots={LAST_SYMPTOMS_SLOT: Symptoms.MILD, REQUESTED_SLOT: HAS_FEVER_SLOT},
+            text="anything",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [SlotSet(HAS_FEVER_SLOT, None), SlotSet(REQUESTED_SLOT, HAS_FEVER_SLOT),],
+        )
+
+        self.assert_templates(
+            ["utter_ask_daily_ci__feel_no_change__has_fever_error",]
+        )
+
     def test_moderate_last_symptoms__fever_cough(self):
         self._test_moderate_last_symptoms__cough(fever=True)
 
@@ -174,6 +190,26 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
                 "utter_daily_ci__acknowledge_no_cough",
                 "utter_ask_daily_ci__feel_no_change__has_diff_breathing",
             ]
+        )
+
+    def test_cough_error(self):
+        tracker = self.create_tracker(
+            slots={
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
+                REQUESTED_SLOT: HAS_COUGH_SLOT,
+                HAS_FEVER_SLOT: True,
+            },
+            text="anything",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [SlotSet(HAS_COUGH_SLOT, None), SlotSet(REQUESTED_SLOT, HAS_COUGH_SLOT),],
+        )
+
+        self.assert_templates(
+            ["utter_ask_daily_ci__feel_no_change__has_cough_error",]
         )
 
     def test_moderate_last_symptoms__fever_cough__diff_breathing(self):
@@ -264,6 +300,30 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
                 "utter_daily_ci__feel_no_change__acknowledge_no_diff_breathing",
                 "utter_daily_ci__feel_no_change__no_diff_breathing_recommendation",
             ]
+        )
+
+    def test_diff_breathing_error(self):
+        tracker = self.create_tracker(
+            slots={
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
+                REQUESTED_SLOT: HAS_DIFF_BREATHING_SLOT,
+                HAS_FEVER_SLOT: True,
+                HAS_COUGH_SLOT: True,
+            },
+            text="anything",
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(HAS_DIFF_BREATHING_SLOT, None),
+                SlotSet(REQUESTED_SLOT, HAS_DIFF_BREATHING_SLOT),
+            ],
+        )
+
+        self.assert_templates(
+            ["utter_ask_daily_ci__feel_no_change__has_diff_breathing_error",]
         )
 
     def test_mild_last_symptoms__fever_cough(self):

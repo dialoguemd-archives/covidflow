@@ -1,6 +1,6 @@
 import os
 import random
-from typing import Any, Dict, List, Text, Union
+from typing import Any, Dict, List, Optional, Text, Union
 
 import structlog
 from aiohttp import ClientSession
@@ -15,6 +15,7 @@ from .answers import (
     QuestionAnsweringStatus,
 )
 from .constants import LANGUAGE_SLOT, QA_TEST_PROFILE_ATTRIBUTE
+from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 
 logger = structlog.get_logger()
@@ -122,11 +123,16 @@ class QuestionAnsweringForm(FormAction):
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {
             QUESTION_SLOT: self.from_text(),
-            FEEDBACK_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
+            FEEDBACK_SLOT: yes_no_nlu_mapping(self),
         }
+
+    def request_next_slot(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Optional[List[EventType]]:
+        return request_next_slot(self, dispatcher, tracker, domain)
 
     async def validate_active_question(
         self,
@@ -151,6 +157,7 @@ class QuestionAnsweringForm(FormAction):
 
         return {STATUS_SLOT: result.status, ANSWERS_SLOT: result.answers}
 
+    @validate_boolean_slot
     def validate_feedback(
         self,
         value: Text,
@@ -158,10 +165,10 @@ class QuestionAnsweringForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        if not value:
+        if value is False:
             dispatcher.utter_message(template="utter_post_feedback")
 
-        return {FEEDBACK_SLOT: value}
+        return {}
 
     def submit(
         self,

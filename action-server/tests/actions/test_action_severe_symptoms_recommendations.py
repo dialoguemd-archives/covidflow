@@ -5,7 +5,7 @@ from covidflow.actions.action_severe_symptoms_recommendations import (
 )
 from covidflow.actions.constants import END_CONVERSATION_MESSAGE
 
-from .action_helper import ActionTestCase
+from .action_test_helper import ActionTestCase
 
 
 class ActionSevereSymptomsRecommendationsTest(ActionTestCase):

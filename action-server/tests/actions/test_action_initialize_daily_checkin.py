@@ -29,7 +29,7 @@ from covidflow.actions.constants import (
     Symptoms,
 )
 
-from .action_helper import ActionTestCase
+from .action_test_helper import ActionTestCase
 
 HASHIDS_SALT = "abcd1234"
 HASHIDS_MIN_LENGTH = 4

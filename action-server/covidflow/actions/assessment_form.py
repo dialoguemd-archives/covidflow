@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Text, Union
+from typing import Any, Dict, List, Optional, Text, Union
 
 from rasa_sdk import Tracker
 from rasa_sdk.events import EventType, SlotSet
@@ -15,12 +15,13 @@ from .constants import (
     SEVERE_SYMPTOMS_SLOT,
     TRAVEL_SLOT,
 )
+from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 
 FORM_NAME = "assessment_form"
 
 
-class AssessmentForm(FormAction):
+class AssessmentForm(FormAction, AssessmentCommon):
     def name(self) -> Text:
 
         return FORM_NAME
@@ -42,6 +43,14 @@ class AssessmentForm(FormAction):
             dispatcher.utter_message(template="utter_assessment_entry")
 
         return await super()._activate_if_required(dispatcher, tracker, domain)
+
+    def request_next_slot(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Optional[List[EventType]]:
+        return request_next_slot(self, dispatcher, tracker, domain)
 
     @staticmethod
     def required_slots(tracker: Tracker) -> List[Text]:
@@ -68,43 +77,19 @@ class AssessmentForm(FormAction):
 
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {
-            **AssessmentCommon.slot_mappings(self),
-            CONTACT_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
-            TRAVEL_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
+            **AssessmentCommon.base_slot_mappings(self),
+            CONTACT_SLOT: yes_no_nlu_mapping(self),
+            TRAVEL_SLOT: yes_no_nlu_mapping(self),
         }
-
-    def validate_severe_symptoms(
-        self,
-        value: bool,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        return AssessmentCommon.validate_severe_symptoms(value, dispatcher)
-
-    def validate_province(
-        self,
-        value: Text,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        return AssessmentCommon.validate_province(value, domain)
 
     def validate_moderate_symptoms(
         self,
-        value: bool,
+        value: Union[Text, bool],
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        result = AssessmentCommon.validate_moderate_symptoms(value, dispatcher)
+        result = super().validate_moderate_symptoms(value, dispatcher, tracker, domain)
 
         if value is True:
             dispatcher.utter_message(template="utter_moderate_symptoms_self_isolate")
@@ -113,16 +98,19 @@ class AssessmentForm(FormAction):
 
     def validate_has_cough(
         self,
-        value: Text,
+        value: Union[Text, bool],
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        if value is True or tracker.get_slot(HAS_FEVER_SLOT) is True:
+        if value is True or (
+            value is False and tracker.get_slot(HAS_FEVER_SLOT) is True
+        ):
             dispatcher.utter_message(template="utter_mild_symptoms_self_isolate")
 
-        return {HAS_COUGH_SLOT: value}
+        return super().validate_has_cough(value, dispatcher, tracker, domain)
 
+    @validate_boolean_slot
     def validate_contact(
         self,
         value: Text,
@@ -135,6 +123,7 @@ class AssessmentForm(FormAction):
 
         return {CONTACT_SLOT: value}
 
+    @validate_boolean_slot
     def validate_travel(
         self,
         value: Text,
@@ -147,15 +136,6 @@ class AssessmentForm(FormAction):
 
         return {TRAVEL_SLOT: value}
 
-    def validate_lives_alone(
-        self,
-        value: bool,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        return AssessmentCommon.validate_lives_alone(value, dispatcher)
-
     def submit(
         self,
         dispatcher: CollectingDispatcher,
@@ -166,8 +146,8 @@ class AssessmentForm(FormAction):
             tracker.get_slot(CONTACT_SLOT) is True
             or tracker.get_slot(TRAVEL_SLOT) is True
         ):
-            return [SlotSet(HAS_CONTACT_RISK_SLOT, True)] + AssessmentCommon.submit(
-                self, dispatcher, tracker, domain
-            )
+            return [
+                SlotSet(HAS_CONTACT_RISK_SLOT, True)
+            ] + AssessmentCommon.base_submit(self, dispatcher, tracker, domain)
 
-        return AssessmentCommon.submit(self, dispatcher, tracker, domain)
+        return AssessmentCommon.base_submit(self, dispatcher, tracker, domain)

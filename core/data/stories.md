@@ -162,7 +162,6 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
-  - action_tested_positive_mild_moderate_symptoms_recommendations
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
@@ -189,7 +188,6 @@
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "moderate"}
-  - action_tested_positive_mild_moderate_symptoms_recommendations
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
@@ -202,16 +200,13 @@
 * done
   - action_goodbye
 
-## tested positive - mild symptoms worse no check-in
+## tested positive - mild symptoms two questions
 * tested_positive
   - tested_positive_form
   - form{"name": "tested_positive_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
-  - utter_ask_symptoms_worsened
-* affirm
-  - action_tested_positive_mild_moderate_symptoms_recommendations
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
@@ -237,16 +232,13 @@
 * done
   - action_qa_goodbye
 
-## tested positive - mild symptoms worse
+## tested positive - mild symptoms
 * tested_positive
   - tested_positive_form
   - form{"name": "tested_positive_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
-  - utter_ask_symptoms_worsened
-* affirm
-  - action_tested_positive_mild_moderate_symptoms_recommendations
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
@@ -259,15 +251,13 @@
 * done
   - action_goodbye
 
-## tested positive - mild symptoms not worse no check-in
+## tested positive - mild symptoms no check-in one question
 * tested_positive
   - tested_positive_form
   - form{"name": "tested_positive_form"}
   - form{"name": null}
   - slot{"self_assess_done": true}
   - slot{"symptoms": "mild"}
-  - utter_ask_symptoms_worsened
-* deny
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
   - form{"name": null}
@@ -286,28 +276,7 @@
   - utter_try_again_later
   - action_qa_goodbye
 
-## tested positive - mild symptoms not worse
-* tested_positive
-  - tested_positive_form
-  - form{"name": "tested_positive_form"}
-  - form{"name": null}
-  - slot{"self_assess_done": true}
-  - slot{"symptoms": "mild"}
-  - utter_ask_symptoms_worsened
-* deny
-  - daily_ci_enroll_form
-  - form{"name": "daily_ci_enroll_form"}
-  - form{"name": null}
-  - action_tested_positive_not_cured_final_recommendations
-  - home_assistance_form
-  - form{"name": "home_assistance_form"}
-  - form{"name": null}
-  - action_visit_package
-  - utter_ask_anything_else_without_test_navigation
-* done
-  - action_goodbye
-
-# tested positive - no symptoms tested less than 14 days no check-in
+## tested positive - no symptoms tested less than 14 days no check-in
 * tested_positive
   - tested_positive_form
   - form{"name": "tested_positive_form"}
@@ -336,7 +305,7 @@
   - utter_try_again_later
   - action_qa_goodbye
 
-# tested positive - no symptoms tested less than 14 days
+## tested positive - no symptoms tested less than 14 days
 * tested_positive
   - tested_positive_form
   - form{"name": "tested_positive_form"}
@@ -359,7 +328,7 @@
 * done
   - action_goodbye
 
-# tested positive - cured
+## tested positive - cured
 * tested_positive
   - tested_positive_form
   - form{"name": "tested_positive_form"}
@@ -558,7 +527,7 @@
 * done
   - action_qa_goodbye
 
-# QA - out of distribution
+## QA - out of distribution
 * greet{"metadata":{}}
   - action_greeting_messages
 * ask_question
@@ -588,7 +557,7 @@
 * done
   - action_qa_goodbye
 
-# QA - out of distribution - another question
+## QA - out of distribution - another question
 * greet{"metadata":{}}
   - action_greeting_messages
 * ask_question

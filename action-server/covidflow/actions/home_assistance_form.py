@@ -1,10 +1,12 @@
-from typing import Any, Dict, List, Text, Union
+from typing import Any, Dict, List, Optional, Text, Union
 
 from rasa_sdk import Tracker
+from rasa_sdk.events import EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
 from .constants import HAS_ASSISTANCE_SLOT, PROVINCE_SLOT, PROVINCES_WITH_211
+from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 
 FORM_NAME = "home_assistance_form"
@@ -35,11 +37,26 @@ class HomeAssistanceForm(FormAction):
 
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {
-            HAS_ASSISTANCE_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
+            HAS_ASSISTANCE_SLOT: yes_no_nlu_mapping(self),
         }
+
+    def request_next_slot(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Optional[List[EventType]]:
+        return request_next_slot(self, dispatcher, tracker, domain, None)
+
+    @validate_boolean_slot
+    def validate_has_assistance(
+        self,
+        value: Union[bool, Text],
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        return {}
 
     def submit(
         self,

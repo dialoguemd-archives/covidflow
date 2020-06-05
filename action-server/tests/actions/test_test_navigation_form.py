@@ -22,7 +22,7 @@ from covidflow.actions.test_navigation_form import (
 )
 from covidflow.utils.testing_locations import TestingLocation
 
-from .form_helper import FormTestCase
+from .form_test_helper import FormTestCase
 
 BUTTON_TITLES = {
     "call_button": "Click to call: ",
@@ -77,6 +77,7 @@ DOMAIN = {
     "responses": {
         "utter_test_navigation__display_titles": [{"custom": BUTTON_TITLES}],
         "utter_test_navigation__descriptions": [{"custom": DESCRIPTION_PARTS}],
+        "utter_ask_test_navigation__try_different_address_error": [{"text": ""}],
     }
 }
 
@@ -198,7 +199,7 @@ class TestTestNavigationForm(FormTestCase):
     def test_initialize(self):
         tracker = self.create_tracker(active_form=False)
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, POSTAL_CODE_SLOT)])
 
@@ -209,7 +210,7 @@ class TestTestNavigationForm(FormTestCase):
             slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=INVALID_POSTAL_CODE
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -235,7 +236,7 @@ class TestTestNavigationForm(FormTestCase):
             text=INVALID_POSTAL_CODE,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -261,7 +262,7 @@ class TestTestNavigationForm(FormTestCase):
             text=INVALID_POSTAL_CODE,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -282,7 +283,7 @@ class TestTestNavigationForm(FormTestCase):
             slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -308,7 +309,7 @@ class TestTestNavigationForm(FormTestCase):
             slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -336,7 +337,7 @@ class TestTestNavigationForm(FormTestCase):
             text=POSTAL_CODE,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -364,7 +365,7 @@ class TestTestNavigationForm(FormTestCase):
             text=POSTAL_CODE,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -389,7 +390,7 @@ class TestTestNavigationForm(FormTestCase):
             slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -419,7 +420,7 @@ class TestTestNavigationForm(FormTestCase):
             slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -434,6 +435,75 @@ class TestTestNavigationForm(FormTestCase):
                 "utter_test_navigation__no_locations",
                 "utter_ask_test_navigation__try_different_address",
             ]
+        )
+
+    def test_try_different_address_affirm(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: TRY_DIFFERENT_ADDRESS_SLOT,
+                POSTAL_CODE_SLOT: POSTAL_CODE,
+                LOCATIONS_SLOT: [],
+            },
+            intent="affirm",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, True),
+                SlotSet(POSTAL_CODE_SLOT, None),
+                SlotSet(LOCATIONS_SLOT, None),
+                SlotSet(REQUESTED_SLOT, POSTAL_CODE_SLOT),
+            ]
+        )
+
+        self.assert_templates(["utter_ask_test_navigation__postal_code"])
+
+    def test_try_different_address_deny(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: TRY_DIFFERENT_ADDRESS_SLOT,
+                POSTAL_CODE_SLOT: POSTAL_CODE,
+                LOCATIONS_SLOT: [],
+            },
+            intent="deny",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, False),
+                SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, False),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ]
+        )
+
+        self.assert_templates(["utter_test_navigation__acknowledge"])
+
+    def test_try_different_address_error(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: TRY_DIFFERENT_ADDRESS_SLOT,
+                POSTAL_CODE_SLOT: POSTAL_CODE,
+                LOCATIONS_SLOT: [],
+            },
+            text="anything",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, None),
+                SlotSet(REQUESTED_SLOT, TRY_DIFFERENT_ADDRESS_SLOT),
+            ]
+        )
+
+        self.assert_templates(
+            ["utter_ask_test_navigation__try_different_address_error"]
         )
 
     @patch(

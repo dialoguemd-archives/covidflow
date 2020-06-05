@@ -44,6 +44,7 @@ entities:
   - metadata
   - first_name
   - validation_code
+  - yes_no
 
 actions:
   - action_fallback
@@ -54,13 +55,11 @@ actions:
   - action_explain_preconditions
   - action_goodbye
   - action_greeting_messages
-  - action_returning_symptoms_not_worsened_recommendations
   - action_suspect_mild_symptoms_exposure_recommendations
   - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_suspect_moderate_symptoms_recommendations
   - action_suspect_moderate_symptoms_final_recommendations
   - action_suspect_no_symptoms_recommendations
-  - action_tested_positive_mild_moderate_symptoms_recommendations
   - action_tested_positive_no_symptoms_recommendations
   - action_tested_positive_maybe_cured_final_recommendations
   - action_tested_positive_not_cured_final_recommendations
@@ -90,6 +89,9 @@ slots:
   language:
     type: unfeaturized
     initial_value: *language
+
+  last_requested_slot:
+    type: unfeaturized
 
   severe_symptoms:
     type: unfeaturized

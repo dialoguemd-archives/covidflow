@@ -19,7 +19,7 @@ from covidflow.actions.question_answering_form import (
     QuestionAnsweringForm,
 )
 
-from .form_helper import FormTestCase
+from .form_test_helper import FormTestCase
 
 
 def QuestionAnsweringResponseMock(*args, **kwargs):
@@ -31,6 +31,8 @@ def QuestionAnsweringResponseMock(*args, **kwargs):
     mock_coroutine.mock = mock
     return mock_coroutine
 
+
+DOMAIN = {"responses": {"utter_ask_feedback_error": [{"text": ""}],}}
 
 QUESTION = "What is covid?"
 ANSWERS = [
@@ -66,7 +68,7 @@ class TestQuestionAnsweringForm(FormTestCase):
     def test_form_activation_first_time_without_qa_samples(self):
         tracker = self.create_tracker(active_form=False)
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -114,7 +116,7 @@ class TestQuestionAnsweringForm(FormTestCase):
             active_form=False,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, QUESTION_SLOT)])
 
@@ -130,7 +132,7 @@ class TestQuestionAnsweringForm(FormTestCase):
             slots={REQUESTED_SLOT: QUESTION_SLOT}, text=QUESTION
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -155,7 +157,7 @@ class TestQuestionAnsweringForm(FormTestCase):
             slots={REQUESTED_SLOT: QUESTION_SLOT}, text=QUESTION
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -190,7 +192,7 @@ class TestQuestionAnsweringForm(FormTestCase):
             slots={REQUESTED_SLOT: QUESTION_SLOT}, text=QUESTION
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -226,7 +228,7 @@ class TestQuestionAnsweringForm(FormTestCase):
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -252,7 +254,7 @@ class TestQuestionAnsweringForm(FormTestCase):
             intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -269,6 +271,25 @@ class TestQuestionAnsweringForm(FormTestCase):
 
         self.assert_templates(["utter_post_feedback"])
 
+    def test_provide_feedback_error(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: FEEDBACK_SLOT,
+                QUESTION_SLOT: QUESTION,
+                ANSWERS_SLOT: ANSWERS,
+                STATUS_SLOT: QuestionAnsweringStatus.SUCCESS,
+            },
+            text="anything",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [SlotSet(FEEDBACK_SLOT, None), SlotSet(REQUESTED_SLOT, FEEDBACK_SLOT),]
+        )
+
+        self.assert_templates(["utter_ask_feedback_error"])
+
     @patch("covidflow.actions.question_answering_form.QuestionAnsweringProtocol")
     def test_fallback_question_success(self, mock_protocol):
         mock_protocol.return_value.get_response = QuestionAnsweringResponseMock(
@@ -279,7 +300,7 @@ class TestQuestionAnsweringForm(FormTestCase):
             active_form=False, intent="fallback", text=QUESTION
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -305,7 +326,7 @@ class TestQuestionAnsweringForm(FormTestCase):
             active_form=False, intent="fallback", text=QUESTION
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -341,7 +362,7 @@ class TestQuestionAnsweringForm(FormTestCase):
             active_form=False, intent="fallback", text=QUESTION
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -377,7 +398,7 @@ class TestQuestionAnsweringForm(FormTestCase):
             active_form=False, intent="fallback", text=QUESTION
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [

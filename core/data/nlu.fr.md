@@ -10,24 +10,6 @@
 - c'est terminé
 - terminé
 
-## intent:affirm
-- oui
-- ouais
-- oui c'est ça
-- c'est ça
-- c'est bien ça
-- exact
-- exactement
-- oui svp
-- oui stp
-
-## intent:deny
-- non
-- non c'est pas ça
-- c'est pas ça
-- non merci
-- non ça m'intéresse pas
-
 ## intent:get_assessment
 - évaluer mes symptômes
 - j'aimerais évaluer mes symptômes
@@ -260,3 +242,21 @@
 - j'ai rien reçu
 - je n'ai rien eu
 - je n'ai rien reçu
+
+## intent: affirm
+- oui
+- ouais
+- oui c'est ça
+- c'est ça
+- c'est bien ça
+- exact
+- exactement
+- oui svp
+- oui stp
+
+## intent: deny
+- non
+- non c'est pas ça
+- c'est pas ça
+- non merci
+- non ça m'intéresse pas

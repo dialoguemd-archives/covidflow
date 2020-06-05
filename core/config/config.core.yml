@@ -15,3 +15,5 @@ policies:
     ambiguity_threshold: 0.0
     core_threshold: 0.0
     fallback_action_name: "action_fallback"
+  - name: policies.unsupported_intent_policy.UnsupportedIntentPolicy
+    fallback_action_name: 'action_unsupported_intent'

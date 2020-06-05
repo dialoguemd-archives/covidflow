@@ -19,6 +19,7 @@ SUPPORTED_INTENTS_BY_ACTION = {
         "checkin_return",
         "get_assessment",
         "tested_positive",
+        "navigate_test_locations",
         "fallback",
     ]
 }

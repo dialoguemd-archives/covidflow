@@ -47,6 +47,7 @@ entities:
 
 actions:
   - action_fallback
+  - action_unsupported_intent
   - action_visit_package
   - action_initialize_daily_checkin
   - action_daily_ci_early_opt_out
@@ -147,6 +148,9 @@ slots:
     type: unfeaturized
 
   asked_question:
+    type: unfeaturized
+
+  skip_qa_intro:
     type: unfeaturized
 
   question_answering_status:

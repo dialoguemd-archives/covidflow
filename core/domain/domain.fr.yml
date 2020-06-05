@@ -5,8 +5,14 @@ responses:
   utter_greet_warning:
     - text: Veuillez noter que les informations que vous recevrez ne constituent pas une évaluation médicale. Ce service ne remplace pas une consultation avec votre médecin. Si vous présentez des symptômes graves, consultez un médecin. Les informations que nous fournissons proviennent de sources officielles et sont sujettes à changement
 
+  utter_greet_options:
+    - text: Je peux vous aider si vous souhaitez évaluer vos symptômes, si vous croyez avoir la Covid-19, si vous avez reçu un résultat positif au test, si vous voulez ré-évaluer vos symptômes, si vous cherchez une clinique de dépistage ou de test, ou si vous avez des questions au sujet de la Covid-19
+
   utter_ask_how_may_i_help:
-    - text: Que puis-je faire pour vous aujourd'hui?
+    - text: Que puis-je faire pour vous?
+
+  utter_ask_how_may_i_help_fallback:
+    - text: Désolée, lequel des sujets suivants vous intéresse?
       buttons:
         - title: "Je veux réévaluer mes symptômes"
           payload: "/checkin_return"
@@ -20,7 +26,7 @@ responses:
           payload: "/navigate_test_locations"
 
   utter_assessment_entry:
-    - text: Pour cela, j’aimerais évaluer vos symptômes afin de vous fournir des recommandations adaptées à votre situation. Allons-y!
+    - text: Entendu, je vais évaluer vos symptômes afin de vous fournir des recommandations adaptées à votre situation. Allons-y!
 
   utter_ask_severe_symptoms:
     - text: "Premièrement, avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Beaucoup de mal à se réveiller\n- Confusion\n- Perte de conscience"
@@ -123,7 +129,7 @@ responses:
     - text: Dans ce cas, vous n'avez probablement pas la Covid-19
 
   utter_social_distancing:
-    - text: "Assurez-vous de suivre les consignes de distanciation sociale et ne sortez pas de chez vous à moins que ce soit vraiment nécessaire"
+    - text: "Je vous conseille de continuer à suivre les consignes de distanciation physique et de porter un masque lorsque ce n'est pas possible de le faire"
 
   utter_checkin_if_developments:
     - text: "Si vous développez des symptômes, ou si vous entrez en contact avec une personne atteinte de la Covid-19, veuillez communiquer avec moi pour obtenir une évaluation et des recommandations"
@@ -624,6 +630,16 @@ responses:
           payload: "/get_assessment"
         - title: Non j'ai terminé
           payload: "/done"
+
+  utter_ask_assess_to_answer_offer_question:
+    - text: "Voulez-vous que j’évalue vos symptômes?"
+      buttons:
+        - title: Oui
+          payload: "/get_assessment"
+        - title: Non j'ai terminé
+          payload: "/done"
+        - title: Non poser une autre question
+          payload: "/ask_question"
 
   utter_need_assessment_already_done:
     - text: "Il semble que pour répondre à votre question, j’aurais besoin d’évaluer vos symptômes. Or, c’est ce que nous venons de faire"

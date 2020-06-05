@@ -4,4 +4,4 @@
   bot: symptoms_severe
 - suspect_reach_moderate
 - suspect_reach_home_assistance
-- daily_ci_enrollment
+# - daily_ci_enrollment

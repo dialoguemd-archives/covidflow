@@ -2,6 +2,7 @@ import os
 import random
 from typing import Any, Dict, List, Text, Union
 
+import structlog
 from aiohttp import ClientSession
 from rasa_sdk import Tracker
 from rasa_sdk.events import EventType, SlotSet
@@ -16,6 +17,8 @@ from .answers import (
 from .constants import LANGUAGE_SLOT, QA_TEST_PROFILE_ATTRIBUTE
 from .lib.log_util import bind_logger
 
+logger = structlog.get_logger()
+
 FAQ_URL_ENV_KEY = "COVID_FAQ_SERVICE_URL"
 DEFAULT_FAQ_URL = "https://covidfaq.dialoguecorp.com"
 
@@ -24,6 +27,7 @@ FEEDBACK_SLOT = "feedback"
 STATUS_SLOT = "question_answering_status"
 ANSWERS_SLOT = "answers"
 ASKED_QUESTION_SLOT = "asked_question"
+SKIP_QA_INTRO_SLOT = "skip_qa_intro"
 
 ANSWERS_KEY = "answers"
 STATUS_KEY = "status"
@@ -57,33 +61,55 @@ class QuestionAnsweringForm(FormAction):
         bind_logger(tracker)
         return await super().run(dispatcher, tracker, domain)
 
-    ## override to play initial messages
+    ## override to play initial messages or prefill slots
     async def _activate_if_required(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[EventType]:
-        # Messages are only played for the first question
-        if (
-            tracker.active_form.get("name") != FORM_NAME
-            and tracker.get_slot(ASKED_QUESTION_SLOT) is None
-        ):
-            dispatcher.utter_message(template="utter_can_help_with_questions")
-            dispatcher.utter_message(template="utter_qa_disclaimer")
+        if tracker.active_form.get("name") == FORM_NAME:
+            return await super()._activate_if_required(dispatcher, tracker, domain)
 
-            random_qa_samples = (
-                _get_fixed_questions_samples()
-                if _must_stub_result(tracker)
-                else _get_random_question_samples(domain)
+        intent = _get_intent(tracker)
+
+        # Fallback QA
+        if intent == "fallback":
+            question = tracker.latest_message.get("text", "")
+
+            result = await self.validate_active_question(
+                question, dispatcher, tracker, domain
             )
 
-            if len(random_qa_samples) > 0:
-                dispatcher.utter_message(
-                    template="utter_qa_sample",
-                    sample_questions="\n".join(random_qa_samples),
-                )
-        return await super()._activate_if_required(dispatcher, tracker, domain)
+            return await super()._activate_if_required(dispatcher, tracker, domain) + [
+                SlotSet(QUESTION_SLOT, question),
+                SlotSet(STATUS_SLOT, result[STATUS_SLOT]),
+                SlotSet(ANSWERS_SLOT, result[ANSWERS_SLOT]),
+            ]
+
+        # Regular QA
+        # Messages are only played for the first question
+        if tracker.get_slot(SKIP_QA_INTRO_SLOT) == True:
+            return await super()._activate_if_required(dispatcher, tracker, domain)
+
+        dispatcher.utter_message(template="utter_can_help_with_questions")
+        dispatcher.utter_message(template="utter_qa_disclaimer")
+
+        random_qa_samples = (
+            _get_fixed_questions_samples()
+            if _must_stub_result(tracker)
+            else _get_random_question_samples(domain)
+        )
+
+        if len(random_qa_samples) > 0:
+            dispatcher.utter_message(
+                template="utter_qa_sample",
+                sample_questions="\n".join(random_qa_samples),
+            )
+
+        return await super()._activate_if_required(dispatcher, tracker, domain) + [
+            SlotSet(SKIP_QA_INTRO_SLOT, True)
+        ]
 
     @staticmethod
     def required_slots(tracker: Tracker) -> List[Text]:
@@ -116,7 +142,9 @@ class QuestionAnsweringForm(FormAction):
         )
 
         if result.status == QuestionAnsweringStatus.OUT_OF_DISTRIBUTION:
-            dispatcher.utter_message(template="utter_cant_answer")
+            # Only output the error message for the regular QA, not for fallback QA
+            if _get_intent(tracker) != "fallback":
+                dispatcher.utter_message(template="utter_cant_answer")
 
         if result.status == QuestionAnsweringStatus.SUCCESS and result.answers:
             dispatcher.utter_message(result.answers[0])
@@ -194,3 +222,7 @@ async def _fetch_qa(text: Text, tracker: Tracker) -> QuestionAnsweringResponse:
 def _get_stub_qa_result(tracker: Tracker):
     profile = tracker.get_slot("metadata")[QA_TEST_PROFILE_ATTRIBUTE]
     return TEST_PROFILES_RESPONSE[profile]
+
+
+def _get_intent(tracker: Tracker) -> str:
+    return tracker.latest_message.get("intent", {}).get("name", "")

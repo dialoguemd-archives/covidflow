@@ -19,6 +19,7 @@ class ActionGreetingMessages(Action):
         bind_logger(tracker)
         dispatcher.utter_message(template="utter_greet")
         dispatcher.utter_message(template="utter_greet_warning")
+        dispatcher.utter_message(template="utter_greet_options")
         dispatcher.utter_message(template="utter_ask_how_may_i_help")
 
         return []

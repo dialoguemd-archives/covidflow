@@ -620,6 +620,51 @@
   - utter_please_visit_again
   - action_qa_goodbye
 
+## fallback QA - failure
+* greet{"metadata":{}}
+  - action_greeting_messages
+* fallback
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "failure"}
+  - utter_ask_how_may_i_help_fallback
+
+## fallback QA - success
+* greet{"metadata":{}}
+  - action_greeting_messages
+* fallback
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "success"}
+  - utter_ask_what_next_after_answer
+* done
+  - action_qa_goodbye
+
+## fallback QA - out of distribution
+* greet{"metadata":{}}
+  - action_greeting_messages
+* fallback
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "out_of_distribution"}
+  - utter_ask_how_may_i_help_fallback
+
+## fallback QA - no assessment after
+* greet{"metadata":{}}
+  - action_greeting_messages
+* fallback
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "need_assessment"}
+  - utter_need_assessment
+  - utter_ask_assess_to_answer_offer_question
+* done
+  - action_qa_goodbye
+
 ## daily check-in - early opt out - done
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin

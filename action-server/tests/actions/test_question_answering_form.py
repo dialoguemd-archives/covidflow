@@ -13,6 +13,7 @@ from covidflow.actions.question_answering_form import (
     FORM_NAME,
     QUESTION_KEY,
     QUESTION_SLOT,
+    SKIP_QA_INTRO_SLOT,
     STATUS_KEY,
     STATUS_SLOT,
     QuestionAnsweringForm,
@@ -45,7 +46,9 @@ FAILURE_RESULT = QuestionAnsweringResponse(status=QuestionAnsweringStatus.FAILUR
 OUT_OF_DISTRIBUTION_RESULT = QuestionAnsweringResponse(
     status=QuestionAnsweringStatus.OUT_OF_DISTRIBUTION
 )
-
+NEED_ASSESSMENT_RESULT = QuestionAnsweringResponse(
+    status=QuestionAnsweringStatus.NEED_ASSESSMENT
+)
 
 FULL_RESULT_SUCCESS = {
     QUESTION_KEY: QUESTION,
@@ -65,7 +68,13 @@ class TestQuestionAnsweringForm(FormTestCase):
 
         self.run_form(tracker)
 
-        self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, QUESTION_SLOT)])
+        self.assert_events(
+            [
+                Form(FORM_NAME),
+                SlotSet(SKIP_QA_INTRO_SLOT, True),
+                SlotSet(REQUESTED_SLOT, QUESTION_SLOT),
+            ]
+        )
 
         self.assert_templates(
             [
@@ -82,7 +91,13 @@ class TestQuestionAnsweringForm(FormTestCase):
             tracker, domain={"responses": {"utter_qa_sample_foo": [{"text": "bar"}]}}
         )
 
-        self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, QUESTION_SLOT)])
+        self.assert_events(
+            [
+                Form(FORM_NAME),
+                SlotSet(SKIP_QA_INTRO_SLOT, True),
+                SlotSet(REQUESTED_SLOT, QUESTION_SLOT),
+            ]
+        )
 
         self.assert_templates(
             [
@@ -95,7 +110,8 @@ class TestQuestionAnsweringForm(FormTestCase):
 
     def test_form_activation_not_first_time(self):
         tracker = self.create_tracker(
-            slots={ASKED_QUESTION_SLOT: FULL_RESULT_SUCCESS}, active_form=False
+            slots={ASKED_QUESTION_SLOT: FULL_RESULT_SUCCESS, SKIP_QA_INTRO_SLOT: True},
+            active_form=False,
         )
 
         self.run_form(tracker)
@@ -252,3 +268,137 @@ class TestQuestionAnsweringForm(FormTestCase):
         )
 
         self.assert_templates(["utter_post_feedback"])
+
+    @patch("covidflow.actions.question_answering_form.QuestionAnsweringProtocol")
+    def test_fallback_question_success(self, mock_protocol):
+        mock_protocol.return_value.get_response = QuestionAnsweringResponseMock(
+            return_value=SUCCESS_RESULT
+        )
+
+        tracker = self.create_tracker(
+            active_form=False, intent="fallback", text=QUESTION
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                Form(FORM_NAME),
+                SlotSet(QUESTION_SLOT, QUESTION),
+                SlotSet(STATUS_SLOT, QuestionAnsweringStatus.SUCCESS),
+                SlotSet(ANSWERS_SLOT, ANSWERS),
+                SlotSet(REQUESTED_SLOT, FEEDBACK_SLOT),
+            ]
+        )
+
+        self.assert_templates([None, "utter_ask_feedback"])
+
+        self.assert_texts([ANSWERS[0], None])
+
+    @patch("covidflow.actions.question_answering_form.QuestionAnsweringProtocol")
+    def test_fallback_question_failure(self, mock_protocol):
+        mock_protocol.return_value.get_response = QuestionAnsweringResponseMock(
+            return_value=FAILURE_RESULT
+        )
+
+        tracker = self.create_tracker(
+            active_form=False, intent="fallback", text=QUESTION
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                Form(FORM_NAME),
+                SlotSet(QUESTION_SLOT, QUESTION),
+                SlotSet(STATUS_SLOT, QuestionAnsweringStatus.FAILURE),
+                SlotSet(ANSWERS_SLOT, None),
+                SlotSet(QUESTION_SLOT, None),
+                SlotSet(FEEDBACK_SLOT, None),
+                SlotSet(
+                    ASKED_QUESTION_SLOT,
+                    {
+                        QUESTION_KEY: QUESTION,
+                        STATUS_KEY: QuestionAnsweringStatus.FAILURE,
+                        ANSWERS_KEY: None,
+                        FEEDBACK_KEY: None,
+                    },
+                ),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ]
+        )
+
+        self.assert_templates([])
+
+    @patch("covidflow.actions.question_answering_form.QuestionAnsweringProtocol")
+    def test_fallback_question_out_of_distribution(self, mock_protocol):
+        mock_protocol.return_value.get_response = QuestionAnsweringResponseMock(
+            return_value=OUT_OF_DISTRIBUTION_RESULT
+        )
+
+        tracker = self.create_tracker(
+            active_form=False, intent="fallback", text=QUESTION
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                Form(FORM_NAME),
+                SlotSet(QUESTION_SLOT, QUESTION),
+                SlotSet(STATUS_SLOT, QuestionAnsweringStatus.OUT_OF_DISTRIBUTION),
+                SlotSet(ANSWERS_SLOT, None),
+                SlotSet(QUESTION_SLOT, None),
+                SlotSet(FEEDBACK_SLOT, None),
+                SlotSet(
+                    ASKED_QUESTION_SLOT,
+                    {
+                        QUESTION_KEY: QUESTION,
+                        STATUS_KEY: QuestionAnsweringStatus.OUT_OF_DISTRIBUTION,
+                        ANSWERS_KEY: None,
+                        FEEDBACK_KEY: None,
+                    },
+                ),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ]
+        )
+
+        self.assert_templates([])
+
+    @patch("covidflow.actions.question_answering_form.QuestionAnsweringProtocol")
+    def test_fallback_question_need_assessment(self, mock_protocol):
+        mock_protocol.return_value.get_response = QuestionAnsweringResponseMock(
+            return_value=NEED_ASSESSMENT_RESULT
+        )
+
+        tracker = self.create_tracker(
+            active_form=False, intent="fallback", text=QUESTION
+        )
+
+        self.run_form(tracker)
+
+        self.assert_events(
+            [
+                Form(FORM_NAME),
+                SlotSet(QUESTION_SLOT, QUESTION),
+                SlotSet(STATUS_SLOT, QuestionAnsweringStatus.NEED_ASSESSMENT),
+                SlotSet(ANSWERS_SLOT, None),
+                SlotSet(QUESTION_SLOT, None),
+                SlotSet(FEEDBACK_SLOT, None),
+                SlotSet(
+                    ASKED_QUESTION_SLOT,
+                    {
+                        QUESTION_KEY: QUESTION,
+                        STATUS_KEY: QuestionAnsweringStatus.NEED_ASSESSMENT,
+                        ANSWERS_KEY: None,
+                        FEEDBACK_KEY: None,
+                    },
+                ),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ]
+        )
+
+        self.assert_templates([])

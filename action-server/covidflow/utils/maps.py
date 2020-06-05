@@ -4,7 +4,7 @@ import hmac
 import os
 from urllib.parse import urlencode
 
-from .geocoding import Coordinates
+from geopy.point import Point
 
 GOOGLE_API_KEY_ENV = "GOOGLE_MAPS_API_KEY"
 GOOGLE_SIGN_SECRET_ENV = "GOOGLE_MAPS_URL_SIGN_SECRET"
@@ -13,7 +13,7 @@ MAPS_ENDPOINT = "https://maps.googleapis.com"
 MAPS_API_PATH = "/maps/api/staticmap"
 
 
-def get_map_url(coordinates: Coordinates, size: str = "220x150", zoom: int = 15):
+def get_static_map_url(coordinates: Point, size: str = "220x150", zoom: int = 15):
     key = os.environ[GOOGLE_API_KEY_ENV]
     secret = os.environ[GOOGLE_SIGN_SECRET_ENV]
     parameters = {

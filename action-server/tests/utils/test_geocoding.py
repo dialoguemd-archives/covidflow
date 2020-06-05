@@ -1,6 +1,8 @@
 from unittest import TestCase
 from unittest.mock import patch
 
+from geopy.point import Point
+
 from covidflow.utils.geocoding import Geocoding
 
 ENV = {"GOOGLE_GEOCODING_API_KEY": "123abc"}
@@ -57,7 +59,7 @@ class GeocodingTest(TestCase):
             {"geometry": {"location": {"lat": 45, "lng": -75}}}
         ]
         location = Geocoding().get_from_address(ADDRESS)
-        self.assertEqual(location, (45, -75))
+        self.assertEqual(location, Point(45.0, -75.0))
         client.geocode.assert_called_once_with(address=ADDRESS)
 
     @patch.dict("os.environ", ENV)
@@ -69,7 +71,7 @@ class GeocodingTest(TestCase):
             {"geometry": {"location": {"lat": 45, "lng": -75}}}
         ]
         location = Geocoding().get_from_postal_code(postal_code=POSTAL_CODE)
-        self.assertEqual(location, (45, -75))
+        self.assertEqual(location, Point(45.0, -75.0))
         client.geocode.assert_called_once_with(
             components={"postal_code": "H0H0H0", "country": "CA"}
         )

@@ -3,6 +3,7 @@ from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
 import pytest
+from geopy.point import Point
 from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
@@ -82,7 +83,7 @@ DOMAIN = {
 POSTAL_CODE = "H0H 0H0"
 INVALID_POSTAL_CODE = "0H0 H0H"
 
-GEOCODE = (0, 0)
+USER_COORDINATES = Point([0.0, 0.0])
 TESTING_LOCATION_RAW = {
     "id": "result",
     "name": "name",
@@ -108,7 +109,7 @@ TESTING_LOCATION_CARD_CONTENT = {
         }
     ],
     "image_url": "some_url",
-    "subtitle": "appointment known clientele referral = true\n\n"
+    "subtitle": "8741.7km: appointment known clientele referral = true\n\n"
     + "Mon: 8:30am-12pm, 1pm-5pm\n"
     + "Tue: Closed\n"
     + "Wed: 8am-4pm\n"
@@ -165,7 +166,7 @@ class TestTestNavigationForm(FormTestCase):
         self.geocoding_patcher.stop()
         self.testing_locations_patcher.stop()
 
-    def _set_geocode(self, geocode=GEOCODE, exception=False):
+    def _set_geocode(self, geocode=USER_COORDINATES, exception=False):
         if exception:
             self.mock_geocoding.return_value.get_from_posta_code.side_effect = Exception
         else:
@@ -412,7 +413,7 @@ class TestTestNavigationForm(FormTestCase):
         new=AsyncMock(return_value=[]),
     )
     def test_postal_code_no_results(self):
-        self._set_geocode(GEOCODE)
+        self._set_geocode(USER_COORDINATES)
 
         tracker = self.create_tracker(
             slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE,
@@ -436,14 +437,15 @@ class TestTestNavigationForm(FormTestCase):
         )
 
     @patch(
-        "covidflow.actions.test_navigation_form.get_map_url", return_value="some_url"
+        "covidflow.actions.test_navigation_form.get_static_map_url",
+        return_value="some_url",
     )
     @patch(
         "covidflow.actions.test_navigation_form.get_testing_locations",
         new=AsyncMock(return_value=[TESTING_LOCATION]),
     )
     def test_postal_code_one_result(self, mock_maps):
-        self._set_geocode(GEOCODE)
+        self._set_geocode(USER_COORDINATES)
 
         tracker = self.create_tracker(
             slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE,
@@ -466,14 +468,15 @@ class TestTestNavigationForm(FormTestCase):
         self.assert_attachments([None, SINGLE_CAROUSEL_CONTENT])
 
     @patch(
-        "covidflow.actions.test_navigation_form.get_map_url", return_value="some_url"
+        "covidflow.actions.test_navigation_form.get_static_map_url",
+        return_value="some_url",
     )
     @patch(
         "covidflow.actions.test_navigation_form.get_testing_locations",
         new=AsyncMock(return_value=[TESTING_LOCATION, TESTING_LOCATION]),
     )
     def test_postal_code_many_results(self, mock_maps):
-        self._set_geocode(GEOCODE)
+        self._set_geocode(USER_COORDINATES)
 
         tracker = self.create_tracker(
             slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE,
@@ -508,7 +511,7 @@ class TestLocationsCarousel(TestCase):
         super().setUp()
         self.maxDiff = None
         self.patcher = patch(
-            "covidflow.actions.test_navigation_form.get_map_url",
+            "covidflow.actions.test_navigation_form.get_static_map_url",
             return_value="some_url",
         )
         self.patcher.start()
@@ -520,7 +523,7 @@ class TestLocationsCarousel(TestCase):
     def _test_locations_carousel(self, raw_test_locations, cards_contents):
         test_locations = [TestingLocation(location) for location in raw_test_locations]
         self.assertEqual(
-            _locations_carousel(DOMAIN, test_locations),
+            _locations_carousel(test_locations, USER_COORDINATES, DOMAIN),
             {
                 "type": "template",
                 "payload": {"template_type": "generic", "elements": cards_contents},
@@ -548,7 +551,7 @@ class TestLocationsCarousel(TestCase):
                 }
             ],
             "image_url": "some_url",
-            "subtitle": "appointment = none default referral = none Contact me!",
+            "subtitle": "313.8km: appointment = none default referral = none Contact me!",
             "title": "name-2",
         }
 
@@ -564,6 +567,16 @@ class TestLocationsCarousel(TestCase):
             "description": {
                 "fr": "Test location described",
                 "en": "serious description",
+            },
+            "address": {
+                "country": "Canada",
+                "unit": "200",
+                "regionCode": "QC",
+                "streetAddress": "5800 Cavendish Blvd",
+                "countryCode": "CA",
+                "postalCode": "H4W 2T5",
+                "place": "Côte Saint-Luc",
+                "region": None,
             },
             "_geoPoint": {"lon": 33.3333, "lat": 34.5678},
             "phones": [{"number": "5141112222", "extension": None, "type": "MAIN"}],
@@ -581,22 +594,17 @@ class TestLocationsCarousel(TestCase):
                 {
                     "title": "Click to go",
                     "type": "web_url",
-                    "url": "http://maps.apple.com/?q=34.5678,33.3333",
+                    "url": "http://maps.apple.com/?q=5800+Cavendish+Blvd%2C+C%C3%B4te+Saint-Luc%2C+QC%2C+Canada",
                 },
             ],
             "image_url": "some_url",
-            "subtitle": "appointment known clientele referral = true",
+            "subtitle": "5164.5km: appointment known clientele referral = true",
             "title": "Test site name",
         }
 
         self._test_locations_carousel([raw_location], [card_content])
 
-    def _test_buttons(
-        self,
-        phones: List[Dict[str, str]],
-        websites: List[str],
-        buttons: List[Dict[str, Any]],
-    ):
+    def _test_buttons(self, buttons: List[Dict[str, Any]], **kwargs):
         raw_location = {
             "id": "result",
             "name": "Test site name",
@@ -605,9 +613,11 @@ class TestLocationsCarousel(TestCase):
                 "en": "serious description",
             },
             "_geoPoint": {"lon": 0.0, "lat": 0.0},
-            "phones": phones,
-            "websites": websites,
+            "phones": [],
+            "websites": [],
         }
+        raw_location.update(kwargs)
+
         test_location = TestingLocation(raw_location)
         self.assertEqual(_generate_buttons(test_location, BUTTON_TITLES), buttons)
 
@@ -626,7 +636,23 @@ class TestLocationsCarousel(TestCase):
             },
         ]
 
-        self._test_buttons(phones, [], expected_buttons)
+        self._test_buttons(expected_buttons, phones=phones)
+
+    def test_generate_buttons_incomplete_address(self):
+        address = {
+            "country": "Canada",
+            "regionCode": "QC",
+            "place": "Côte Saint-Luc",
+        }
+        expected_buttons = [
+            {
+                "title": "Click to go",
+                "type": "web_url",
+                "url": "http://maps.apple.com/?q=0.0,0.0",
+            },
+        ]
+
+        self._test_buttons(expected_buttons, address=address)
 
     def test_generate_buttons_no_phone_website(self):
         website = ("http://somewhereovertherainbow.com",)
@@ -639,7 +665,7 @@ class TestLocationsCarousel(TestCase):
             },
         ]
 
-        self._test_buttons([], [website], expected_buttons)
+        self._test_buttons(expected_buttons, websites=[website])
 
     def test_generate_buttons_no_phone_no_website(self):
         expected_buttons = [
@@ -650,7 +676,7 @@ class TestLocationsCarousel(TestCase):
             },
         ]
 
-        self._test_buttons([], [], expected_buttons)
+        self._test_buttons(expected_buttons)
 
     def _test_description(
         self,
@@ -674,7 +700,8 @@ class TestLocationsCarousel(TestCase):
         }
         test_location = TestingLocation(raw_location)
         self.assertEqual(
-            _generate_description(test_location, DESCRIPTION_PARTS), description
+            _generate_description(test_location, Point([0.0, 0.0]), DESCRIPTION_PARTS),
+            description,
         )
 
     def test_description_no_referral_no_appointment_unknown_clientele(self):
@@ -683,7 +710,7 @@ class TestLocationsCarousel(TestCase):
             "requireReferral": False,
             "requireAppointment": False,
         }
-        description = "no appointment default referral = false Contact me!"
+        description = "0.0km: no appointment default referral = false Contact me!"
 
         self._test_description(description=description, **data)
 
@@ -693,7 +720,7 @@ class TestLocationsCarousel(TestCase):
             "requireReferral": True,
             "requireAppointment": True,
         }
-        description = "appointment no children 13 referral = true"
+        description = "0.0km: appointment no children 13 referral = true"
 
         self._test_description(description=description, **data)
 
@@ -703,7 +730,7 @@ class TestLocationsCarousel(TestCase):
             "requireReferral": True,
             "requireAppointment": False,
         }
-        description = "no appointment no children 13 months referral = true"
+        description = "0.0km: no appointment no children 13 months referral = true"
 
         self._test_description(description=description, **data)
 
@@ -713,7 +740,7 @@ class TestLocationsCarousel(TestCase):
             "requireReferral": None,
             "requireAppointment": True,
         }
-        description = "appointment known clientele referral = none Contact me!"
+        description = "0.0km: appointment known clientele referral = none Contact me!"
 
         self._test_description(description=description, **data)
 
@@ -723,6 +750,8 @@ class TestLocationsCarousel(TestCase):
             "requireReferral": True,
             "requireAppointment": None,
         }
-        description = "appointment = none known clientele referral = true Contact me!"
+        description = (
+            "0.0km: appointment = none known clientele referral = true Contact me!"
+        )
 
         self._test_description(description=description, **data)

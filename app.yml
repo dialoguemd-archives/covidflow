@@ -50,6 +50,7 @@ environments:
   dev-ca2:
     environment:
       TWILIO_NUMBER: "+14382996778"
+      COVID_FAQ_SERVICE_URL: "https://covidfaq.apps.dev.ca-central-1.dialoguecorp.com"
   prod-ca:
     components:
       core-en:

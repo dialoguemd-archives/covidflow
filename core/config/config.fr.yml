@@ -2,6 +2,7 @@ language: "fr" # your two-letter language code
 
 pipeline:
   - name: WhitespaceTokenizer
+    case_sensitive: false
   - name: RegexFeaturizer
   - name: LexicalSyntacticFeaturizer
   - name: CountVectorsFeaturizer

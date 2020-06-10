@@ -21,8 +21,6 @@ USER 1001
 
 COPY credentials.yml endpoints.yml ./
 COPY models models
-COPY channels channels
 COPY core core
-COPY policies policies
 
 CMD [ "run", "--port", "8080", "--enable-api", "--cors", "*" ]

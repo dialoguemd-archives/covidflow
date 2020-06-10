@@ -315,8 +315,6 @@ jobs:
             cp Dockerfile ${COMPONENT_PATH}
             cp credentials.yml ${COMPONENT_PATH}
             cp endpoints.yml ${COMPONENT_PATH}
-            cp -r channels ${COMPONENT_PATH}
-            cp -r policies ${COMPONENT_PATH}
             cp -r core ${COMPONENT_PATH}
       - run:
           name: Train the NLU model

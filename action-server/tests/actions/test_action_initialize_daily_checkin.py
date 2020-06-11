@@ -7,6 +7,7 @@ from rasa_sdk.events import SlotSet
 
 from covidflow.actions.action_initialize_daily_checkin import (
     ActionInitializeDailyCheckin,
+    _fill_symptoms,
 )
 from covidflow.actions.constants import (
     AGE_OVER_65_SLOT,
@@ -56,14 +57,14 @@ NON_DEFAULT_REMINDER_VALUES = {
 }
 
 NON_DEFAULT_ASSESSMENT_VALUES = {
-    LAST_SYMPTOMS_SLOT: Symptoms.NONE,
+    LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
     LAST_HAS_COUGH_SLOT: False,
     LAST_HAS_FEVER_SLOT: False,
     LAST_HAS_DIFF_BREATHING_SLOT: False,
 }
 
 NON_DEFAULT_ASSESSMENT_VALUES_ENTRY = {
-    SYMPTOMS_SLOT: Symptoms.NONE,
+    SYMPTOMS_SLOT: Symptoms.MODERATE,
     HAS_COUGH_SLOT: False,
     HAS_DIFF_BREATHING_SLOT: False,
     HAS_FEVER_SLOT: False,
@@ -115,6 +116,13 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
         self.assertEqual(
             ActionInitializeDailyCheckin().name(), "action_initialize_daily_checkin",
         )
+
+    def test_fill_symptoms(self):
+        self.assertEqual(_fill_symptoms(Symptoms.MILD), Symptoms.MILD)
+        self.assertEqual(_fill_symptoms(Symptoms.NONE), Symptoms.MILD)
+        self.assertEqual(_fill_symptoms(Symptoms.MODERATE), Symptoms.MODERATE)
+        self.assertEqual(_fill_symptoms(Symptoms.SEVERE), Symptoms.MODERATE)
+        self.assertEqual(_fill_symptoms(None), Symptoms.MODERATE)
 
     @patch("covidflow.actions.action_initialize_daily_checkin.get_reminder")
     @patch("covidflow.actions.action_initialize_daily_checkin.get_last_assessment")

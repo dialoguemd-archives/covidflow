@@ -99,7 +99,7 @@ def _get_last_assessment_slots(current_slot_values: Dict[Text, Any]) -> dict:
         return DEFAULT_ASSESSMENT_VALUES
 
     return {
-        LAST_SYMPTOMS_SLOT: _fill(assessment.symptoms, DEFAULT_SYMPTOMS_VALUE),
+        LAST_SYMPTOMS_SLOT: _fill_symptoms(assessment.symptoms),
         LAST_HAS_COUGH_SLOT: _fill_false(assessment.has_cough),
         LAST_HAS_FEVER_SLOT: _fill_false(assessment.has_fever),
         LAST_HAS_DIFF_BREATHING_SLOT: _fill_false(assessment.has_diff_breathing),
@@ -112,3 +112,18 @@ def _fill(value, default_value):
 
 def _fill_false(value):
     return _fill(value, False)
+
+
+def _fill_symptoms(value):
+    if value is None:
+        return DEFAULT_SYMPTOMS_VALUE
+
+    # Safety net - dialogue only support MODERATE and MILD symptoms
+    if value not in [Symptoms.MODERATE, Symptoms.MILD]:
+        new_value = Symptoms.MILD if value == Symptoms.NONE else DEFAULT_SYMPTOMS_VALUE
+        logger.warning(
+            f"Invalid {LAST_SYMPTOMS_SLOT} value: '{value}' - will continue with '{new_value}'"
+        )
+        return new_value
+
+    return value

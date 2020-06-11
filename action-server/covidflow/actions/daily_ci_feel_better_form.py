@@ -61,9 +61,6 @@ class DailyCiFeelBetterForm(FormAction):
 
         last_symptoms = tracker.get_slot(LAST_SYMPTOMS_SLOT)
 
-        if last_symptoms not in [Symptoms.MODERATE, Symptoms.MILD]:
-            return slots  # TODO: handle exception
-
         if last_symptoms == Symptoms.MODERATE:
             slots.append(HAS_DIFF_BREATHING_SLOT)
 

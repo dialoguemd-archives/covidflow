@@ -20,8 +20,6 @@ services:
       - ./core/models/en:/app/models
       - ./core/credentials.yml:/app/credentials.yml
       - ./core/endpoints.yml:/app/endpoints.yml
-      - ./core/channels:/app/channels
-      - ./core/policies:/app/policies
       - ./core/core:/app/core
     depends_on:
       - action-server
@@ -46,8 +44,6 @@ services:
       - ./core/models/fr:/app/models
       - ./core/credentials.yml:/app/credentials.yml
       - ./core/endpoints.yml:/app/endpoints.yml
-      - ./core/channels:/app/channels
-      - ./core/policies:/app/policies
       - ./core/core:/app/core
     depends_on:
       - action-server

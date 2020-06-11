@@ -63,7 +63,7 @@ test:
 train-en:
 	sh scripts/prepare-training-data.sh en
 	docker run \
-	    --rm -v ${PWD}:/app \
+		--rm -v ${PWD}:/app \
 		--user ${UID}:${GID} \
 		rasa/rasa:${RASA_VERSION}-full train \
 		--out models/en \
@@ -72,7 +72,7 @@ train-en:
 train-fr:
 	sh scripts/prepare-training-data.sh fr
 	docker run \
-	    --rm -v ${PWD}:/app \
+		--rm -v ${PWD}:/app \
 		--user ${UID}:${GID} \
 		rasa/rasa:${RASA_VERSION}-full train \
 		--out models/fr \

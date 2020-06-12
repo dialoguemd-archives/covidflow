@@ -138,6 +138,14 @@ workflows:
           filters:
             branches:
               ignore: master
+      - app/clean_ephemeral_deploy:
+          name: clean-dev-ca2-ephemeral-deploy
+          stage: dev
+          place: ca2
+          filters:
+            branches:
+              only: master
+          context: org-global-v2
 
       - app/test_system:
           name: dev-integration-tests-en

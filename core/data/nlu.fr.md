@@ -328,6 +328,9 @@
 - ciao
 - c'est terminé
 - terminé
+- je vais revenir plus tard
+- c'est tout pour aujourd'hui
+- non je vais revenir
 
 ## intent:ask_question
 - j'ai une question
@@ -425,6 +428,11 @@
 - exactement
 - oui svp
 - oui stp
+- oui merci
+- yep
+- yup
+- ouaip
+- oui j'ai 80
 
 ## intent:deny
 - non
@@ -432,6 +440,12 @@
 - c'est pas ça
 - non merci
 - non ça m'intéresse pas
+- nope
+- non j'en fais pas
+- non j'ai pas ça
+- non j'ai 23
+- non ça va
+- pas besoin
 
 ## intent:new_code
 - nouveau code

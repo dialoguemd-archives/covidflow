@@ -1,22 +1,8 @@
+{% import 'bot/macros.jinja' as bot %}
+
 [
     {
         "text": "OK"
     },
-    {
-        "text": "May I help you with anything else?",
-        "buttons": [
-            {
-                "payload": "/get_assessment",
-                "title": "Yes assess my symptoms"
-            },
-            {
-                "payload": "/ask_question",
-                "title": "Yes I have other questions"
-            },
-            {
-                "payload": "/done",
-                "title": "No I’m done"
-            }
-        ]
-    }
+    {{ bot.anything_else(True,False) }}
 ]

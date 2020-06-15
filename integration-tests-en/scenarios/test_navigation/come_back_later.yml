@@ -2,5 +2,5 @@
   bot: welcome
 - user: navigate_tests
   bot: test_navigation/explanations
-- user: /later
+- user: /done
   bot: test_navigation/goodbye

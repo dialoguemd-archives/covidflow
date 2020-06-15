@@ -56,6 +56,9 @@ responses:
 
   utter_severe_symptoms_recommendations_4:
     - text: Most importantly, do not wait, as your symptoms need immediate medical attention
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_has_fever:
     - text: Do you have fever (higher than 38°C or 100.4°F)?
@@ -132,7 +135,7 @@ responses:
     - text: "Please monitor your symptoms for any changes or in case you get new symptoms, or if they worsen"
 
   utter_ask_contact:
-    - text: "I need to know if you've been in close contact with someone who has Covid-19. Here are some examples:\n- Providing care for infected patients, visiting, or staying with them in the same close environment\n- Working in close proximity with an infected person\n- Living in the same household as an infected person\nHave you recently been in close contact with someone who has Covid-19?"
+    - text: "I need to know if you've been in close contact with someone who has Covid-19. Here are some examples:\n- Providing care for infected patients, visiting, or staying with them in the same close environment\n- Working in close proximity with an infected person\n- Living in the same household as an infected person\n\nHave you recently been in close contact with someone who has Covid-19?"
 
   utter_ask_contact_error:
     - text: "Sorry, have you recently been in contact with someone who has Covid-19?"
@@ -551,26 +554,20 @@ responses:
   utter_ask_anything_else_with_test_navigation:
     - text: "Is there anything else I can help you with?"
       buttons:
+        - title: No thanks
+          payload: "/deny"
         - title: I have other questions
           payload: "/ask_question"
         - title: I’d like to know where to get tested
           payload: /navigate_test_locations
-        - title: No thanks
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
 
   utter_ask_anything_else_without_test_navigation:
     - text: "Is there anything else I can help you with?"
       buttons:
+        - title: No thanks
+          payload: "/deny"
         - title: I have other questions
           payload: "/ask_question"
-        - title: No thanks
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
 
   utter_can_help_with_questions:
     - text: "I can help answer your questions about Covid-19, on many different topics"
@@ -707,14 +704,6 @@ responses:
 
   utter_ask_assess_after_error:
     - text: "Do you want me to help you assess your symptoms?"
-      buttons:
-        - title: Yes
-          payload: "/get_assessment"
-        - title: No
-          payload: "/deny"
-      custom:
-        data:
-          disableTextField: "true"
 
   utter_try_again_later:
     - text: "Please try again later if you have questions"
@@ -722,32 +711,14 @@ responses:
   utter_cant_answer:
     - text: "I’m sorry, I can’t answer your question"
 
+  utter_ask_different_question:
+    - text: Would you like to ask a different question?
+
   utter_need_assessment:
     - text: "It seems like you need help with your symptoms"
 
   utter_ask_assess_to_answer:
     - text: "Do you want me to assess your symptoms?"
-      buttons:
-        - title: Yes
-          payload: "/get_assessment"
-        - title: No I'm done
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
-
-  utter_ask_assess_to_answer_offer_question:
-    - text: "Do you want me to assess your symptoms?"
-      buttons:
-        - title: Yes
-          payload: "/get_assessment"
-        - title: No I'm done
-          payload: "/done"
-        - title: No ask another question
-          payload: "/ask_question"
-      custom:
-        data:
-          disableTextField: "true"
 
   utter_need_assessment_already_done:
     - text: It seems that to answer your question, I would need to assess your symptoms. However, we have already done that
@@ -755,53 +726,8 @@ responses:
   utter_please_visit_again:
     - text: "Got it. Please visit us again if you need help or have additional questions"
 
-  utter_ask_what_next_after_answer:
-    - text: "What would you like to do next?"
-      buttons:
-        - title: "Ask another question"
-          payload: "/ask_question"
-        - title: "Get self-assessment"
-          payload: "/get_assessment"
-        - title: "I'm done"
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
-
-  utter_ask_other_questions_after_answer:
-    - text: "Do you have another question?"
-      buttons:
-        - title: Yes
-          payload: "/ask_question"
-        - title: "No I'm done"
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
-
-  utter_ask_another_question_assessment_done:
+  utter_ask_another_question:
     - text: "Would you like to ask another question?"
-      buttons:
-        - title: Yes
-          payload: "/ask_question"
-        - title: "No I'm done"
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
-
-  utter_ask_another_question_no_assessment:
-    - text: "Would you like to ask another question?"
-      buttons:
-        - title: Yes
-          payload: "/ask_question"
-        - title: No get self-assessment
-          payload: "/get_assessment"
-        - title: "No I'm done"
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
 
   utter_daily_ci__qa__will_contact_tomorrow:
     - text: I will get in touch with you tomorrow for your daily check-in
@@ -1273,6 +1199,9 @@ responses:
 
   utter_ask_daily_checkin__invalid_id__want_assessment:
     - text: If that doesn’t work, would you like to assess your symptoms?
+
+  utter_ask_daily_checkin__invalid_id__want_assessment_error:
+    - text: Sorry, if the link doesn't work, do you still want to assess your symptoms?
       buttons:
         - title: Yes
           payload: "/affirm"
@@ -1285,13 +1214,12 @@ responses:
   utter_ask_daily_checkin__invalid_id__anything_else:
     - text: "OK, is there anything else I can help you with?"
       buttons:
-        - title: I have questions
+        - title: No thanks
+          payload: "/deny"
+        - title: I have other questions
           payload: "/ask_question"
-        - title: No I'm done
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
+        - title: I’d like to know where to get tested
+          payload: /navigate_test_locations
 
   utter_daily_checkin__invalid_id__visit_dialogue:
     - text: At any time, you can visit [our website](https://covid19.dialogue.co/) for information, or to get a self-assessment
@@ -1310,33 +1238,30 @@ responses:
   utter_test_navigation__explanations_4:
     - text: I will provide information about referrals, as well as other details, such as appointment policy, for each available testing site in your area
 
-  utter_ask_test_navigation__continue_no_assessment:
+  utter_ask_test_navigation__continue:
     - text: Do you want to continue and search for a testing site?
-      buttons:
-        - title: Yes continue
-          payload: /continue
-        - title: No I will come back later
-          payload: /later
-        - title: No but I want to assess my symptoms
-          payload: /get_assessment
-        - title: No but I have other questions
-          payload: /ask_question
-      custom:
-        data:
-          disableTextField: "true"
 
-  utter_ask_test_navigation__continue_assessment_done:
-    - text: Do you want to continue and search for a testing site?
+  utter_ask_test_navigation__continue_error_offer_assessment:
+    - text: Sorry, do you want to continue and search for a testing site?
       buttons:
-        - title: Yes continue
-          payload: /continue
+        - title: Yes
+          payload: "/affirm"
         - title: No I will come back later
-          payload: /later
+          payload: /done
+        - title: No but I want to assess my symptoms
+          payload: "/get_assessment"
         - title: No but I have other questions
-          payload: /ask_question
-      custom:
-        data:
-          disableTextField: "true"
+          payload: "/ask_question"
+
+  utter_ask_test_navigation__continue_error_no_assessment:
+    - text: Sorry, do you want to continue and search for a testing site?
+      buttons:
+        - title: Yes
+          payload: "/affirm"
+        - title: No I will come back later
+          payload: /done
+        - title: No but I have other questions
+          payload: "/ask_question"
 
   utter_test_navigation__come_back:
     - text: OK, when you’re ready, come back here (https://covid19.dialogue.co/#/chat) and I’ll help you
@@ -1442,50 +1367,20 @@ responses:
   utter_test_navigation__acknowledge:
     - text: OK
 
-  utter_test_navigation__what_next_no_assessment:
-    - text: What else may I help you with?
+  utter_test_navigation__anything_else_offer_assessment:
+    - text: Is there anything else I can help you with?
       buttons:
-        - title: Assess my symptoms
-          payload: /get_assessment
+        - title: No thanks
+          payload: /deny
+        - title: I want to assess my symptoms
+          payload: "/get_assessment"
         - title: I have other questions
-          payload: /ask_question
-        - title: I’m done
-          payload: /done
-      custom:
-        data:
-          disableTextField: "true"
-
-  utter_test_navigation__what_next_assessment_done:
-    - text: What else may I help you with?
-      buttons:
-        - title: I have other questions
-          payload: /ask_question
-        - title: I’m done
-          payload: /done
-      custom:
-        data:
-          disableTextField: "true"
+          payload: "/ask_question"
 
   utter_test_navigation__anything_else_no_assessment:
-    - text: May I help you with anything else?
+    - text: Is there anything else I can help you with?
       buttons:
-        - title: Yes assess my symptoms
-          payload: /get_assessment
-        - title: Yes I have other questions
-          payload: /ask_question
-        - title: No I’m done
-          payload: /done
-      custom:
-        data:
-          disableTextField: "true"
-
-  utter_test_navigation__anything_else_assessment_done:
-    - text: May I help you with anything else?
-      buttons:
-        - title: Yes I have other questions
-          payload: /ask_question
-        - title: No I’m done
-          payload: /done
-      custom:
-        data:
-          disableTextField: "true"
+        - title: No thanks
+          payload: /deny
+        - title: I have other questions
+          payload: "/ask_question"

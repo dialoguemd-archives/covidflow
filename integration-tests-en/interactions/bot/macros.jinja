@@ -15,3 +15,15 @@
     {"title":"No", "payload":"/deny"}
   ])}}
 {%- endmacro %}
+
+{% macro anything_else(assessment,test_navigation) -%}
+{
+  "text": "Is there anything else I can help you with?",
+  "buttons": [
+    {"title":"No thanks", "payload":"/deny"},
+    {% if assessment %}{"title":"I want to assess my symptoms", "payload":"/get_assessment"},{% endif %}
+    {"title":"I have other questions", "payload":"/ask_question"}{% if test_navigation %},
+    {"title":"I’d like to know where to get tested", "payload":"/navigate_test_locations"}{% endif %}
+  ]
+}
+{%- endmacro %}

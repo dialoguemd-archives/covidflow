@@ -6,4 +6,4 @@
 - user: q_and_a/submit_question
   bot: q_and_a/need_assessment_self_assessment_done
 - user: done
-  bot: q_and_a/deny_need_self_assessment
+  bot: q_and_a/done

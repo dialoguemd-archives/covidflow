@@ -70,6 +70,9 @@ responses:
 
   utter_severe_symptoms_recommendations_4:
     - text: Le plus important est de ne pas attendre, car vos symptômes requièrent une attention médicale immédiate
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_moderate_symptoms:
     - text: "Avez-vous un ou plusieurs des symptômes suivants: de l'essoufflement léger à modéré, une incapacité à vous allonger en raison de difficultés respiratoires, des problèmes de santé chroniques que vous avez du mal à gérer en raison de difficultés respiratoires, ou encore une perte soudaine du goût ou de l'odorat?"
@@ -146,7 +149,7 @@ responses:
     - text: "Veuillez suivre l'évolution de vos symptômes et notez tout changement, en particulier si vous développez de nouveaux symptômes ou s'ils empirent"
 
   utter_ask_contact:
-    - text: "J'ai besoin de savoir si vous avez été récemment en contact étroit avec une personne atteinte de la Covid-19.\nVoici quelques exemples:\n- Fournir des soins à la personne malade sans équipement de protection adéquat\n- Vivre ou travailler avec la personne malade pendant qu'elle est contagieuse\n- Être en contact direct avec des fluides corporels infectieux de la personne malade (avoir été, par exemple, à proximité lorsque la personne malade a toussé ou éternué)\nAvez-vous été récemment en contact étroit avec une personne atteinte?"
+    - text: "J'ai besoin de savoir si vous avez été récemment en contact étroit avec une personne atteinte de la Covid-19.\nVoici quelques exemples:\n- Fournir des soins à la personne malade sans équipement de protection adéquat\n- Vivre ou travailler avec la personne malade pendant qu'elle est contagieuse\n- Être en contact direct avec des fluides corporels infectieux de la personne malade (avoir été, par exemple, à proximité lorsque la personne malade a toussé ou éternué)\n\nAvez-vous été récemment en contact étroit avec une personne atteinte?"
 
   utter_ask_contact_error:
     - text: "Désolée, avez-vous été récemment en contact étroit avec une personne atteinte de la Covid-19?"
@@ -551,26 +554,20 @@ responses:
   utter_ask_anything_else_with_test_navigation:
     - text: "Puis-je faire autre chose pour vous aider?"
       buttons:
+        - title: Non merci
+          payload: "/deny"
         - title: J'ai d'autres questions
           payload: "/ask_question"
         - title: J’aimerais savoir où je peux me faire tester
           payload: "/navigate_test_locations"
-        - title: Non merci
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
 
   utter_ask_anything_else_without_test_navigation:
     - text: "Puis-je faire autre chose pour vous aider?"
       buttons:
+        - title: Non merci
+          payload: "/deny"
         - title: J'ai d'autres questions
           payload: "/ask_question"
-        - title: Non merci
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
 
   utter_can_help_with_questions:
     - text: "Je peux répondre à vos questions sur une variété de sujets entourant la Covid-19"
@@ -706,21 +703,13 @@ responses:
           disableTextField: "true"
 
   utter_post_feedback:
-    - text: "Je suis désolée, c'est noté! J'apprends constamment, alors votre opinion me permettra de m'améliorer et de vous donner de meilleurs réponses"
+    - text: "Je suis désolée, c'est noté! J'apprends constamment, alors votre opinion me permettra de m'améliorer et de vous donner de meilleures réponses"
 
   utter_question_answering_error:
     - text: "Je suis désolée, il n’est pas possible d’obtenir de réponse à vos questions en ce moment"
 
   utter_ask_assess_after_error:
     - text: "Voudriez-vous que je vous aide à évaluer vos symptômes?"
-      buttons:
-        - title: Oui
-          payload: "/get_assessment"
-        - title: Non
-          payload: "/deny"
-      custom:
-        data:
-          disableTextField: "true"
 
   utter_try_again_later:
     - text: "Veuillez essayer de poser vos questions un peu plus tard"
@@ -728,32 +717,14 @@ responses:
   utter_cant_answer:
     - text: "Je suis désolée, je ne peux pas répondre à votre question"
 
+  utter_ask_different_question:
+    - text: "Aimeriez-vous poser une autre question?"
+
   utter_need_assessment:
     - text: "Il semble que vous ayez besoin d’aide pour évaluer vos symptômes"
 
   utter_ask_assess_to_answer:
     - text: "Voulez-vous que j’évalue vos symptômes?"
-      buttons:
-        - title: Oui
-          payload: "/get_assessment"
-        - title: Non j'ai terminé
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
-
-  utter_ask_assess_to_answer_offer_question:
-    - text: "Voulez-vous que j’évalue vos symptômes?"
-      buttons:
-        - title: Oui
-          payload: "/get_assessment"
-        - title: Non j'ai terminé
-          payload: "/done"
-        - title: Non poser une autre question
-          payload: "/ask_question"
-      custom:
-        data:
-          disableTextField: "true"
 
   utter_need_assessment_already_done:
     - text: "Il semble que pour répondre à votre question, j’aurais besoin d’évaluer vos symptômes. Or, c’est ce que nous venons de faire"
@@ -761,53 +732,8 @@ responses:
   utter_please_visit_again:
     - text: "Très bien. N’hésitez pas à revenir si vous avez besoin d’aide ou si vous avez d’autres questions"
 
-  utter_ask_what_next_after_answer:
-    - text: "Que voulez-vous faire maintenant?"
-      buttons:
-        - title: "Poser une autre question"
-          payload: "/ask_question"
-        - title: "Évaluation de mes symptômes"
-          payload: "/get_assessment"
-        - title: "J'ai terminé"
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
-
-  utter_ask_other_questions_after_answer:
-    - text: "Avez-vous d'autres questions?"
-      buttons:
-        - title: Oui
-          payload: "/ask_question"
-        - title: "Non j'ai terminé"
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
-
-  utter_ask_another_question_assessment_done:
+  utter_ask_another_question:
     - text: "Aimeriez-vous poser une autre question?"
-      buttons:
-        - title: Oui
-          payload: "/ask_question"
-        - title: "Non j'ai terminé"
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
-
-  utter_ask_another_question_no_assessment:
-    - text: "Aimeriez-vous poser une autre question?"
-      buttons:
-        - title: Oui
-          payload: "/ask_question"
-        - title: Non évaluer mes symptômes
-          payload: /get_assessment
-        - title: "Non j'ai terminé"
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
 
   utter_daily_ci__qa__will_contact_tomorrow:
     - text: Je vais communiquer avec vous demain pour votre suivi quotidien
@@ -1279,6 +1205,9 @@ responses:
 
   utter_ask_daily_checkin__invalid_id__want_assessment:
     - text: Si ça ne fonctionne pas, voudriez-vous évaluer vos symptômes?
+
+  utter_ask_daily_checkin__invalid_id__want_assessment_error:
+    - text: Désolée, si le lien ne fonctionne pas, voulez-vous quand même évaluer vos symptômes?
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -1291,13 +1220,12 @@ responses:
   utter_ask_daily_checkin__invalid_id__anything_else:
     - text: "D'accord, puis-je faire autre chose pour vous aider?"
       buttons:
-        - title: J'ai des questions
+        - title: Non merci
+          payload: "/deny"
+        - title: J'ai d'autres questions
           payload: "/ask_question"
-        - title: Non j'ai terminé
-          payload: "/done"
-      custom:
-        data:
-          disableTextField: "true"
+        - title: J’aimerais savoir où je peux me faire tester
+          payload: "/navigate_test_locations"
 
   utter_daily_checkin__invalid_id__visit_dialogue:
     - text: À tout moment, vous pouvez consultez [notre site](https://covid19.dialogue.co/) pour des informations, ou pour une auto-évaluation de vos symptômes
@@ -1316,33 +1244,30 @@ responses:
   utter_test_navigation__explanations_4:
     - text: Pour chaque clinique de dépistage disponible dans votre région, je vais vous donner diverses informations, dont la politique de rendez-vous et de référence
 
-  utter_ask_test_navigation__continue_no_assessment:
+  utter_ask_test_navigation__continue:
     - text: Voulez-vous que je cherche des cliniques de dépistage maintenant?
+
+  utter_ask_test_navigation__continue_error_offer_assessment:
+    - text: Désolée, voulez-vous que je cherche des cliniques de dépistage maintenant?
       buttons:
         - title: Oui
-          payload: /continue
+          payload: /affirm
         - title: Non je vais revenir plus tard
-          payload: /later
+          payload: /done
         - title: Non mais je veux évaluer mes symptômes
           payload: /get_assessment
         - title: Non mais j’ai d’autres questions
           payload: /ask_question
-      custom:
-        data:
-          disableTextField: "true"
 
-  utter_ask_test_navigation__continue_assessment_done:
-    - text: Voulez-vous que je cherche des cliniques de dépistage maintenant?
+  utter_ask_test_navigation__continue_error_no_assessment:
+    - text: Désolée, voulez-vous que je cherche des cliniques de dépistage maintenant?
       buttons:
         - title: Oui
-          payload: /continue
+          payload: /affirm
         - title: Non je vais revenir plus tard
-          payload: /later
+          payload: /done
         - title: Non mais j’ai d’autres questions
           payload: /ask_question
-      custom:
-        data:
-          disableTextField: "true"
 
   utter_test_navigation__come_back:
     - text: D’accord. Quand vous serez prêt(e), revenez me voir (https://covid19.dialogue.co/#/chat) et je pourrai vous aider
@@ -1448,50 +1373,20 @@ responses:
   utter_test_navigation__acknowledge:
     - text: D'accord
 
-  utter_test_navigation__what_next_no_assessment:
-    - text: Que puis-je faire d’autre pour vous aider?
+  utter_test_navigation__anything_else_offer_assessment:
+    - text: Puis-je faire autre chose pour vous aider?
       buttons:
-        - title: Évaluer mes symptômes
+        - title: Non merci
+          payload: /deny
+        - title: J'aimerais évaluer mes symptômes
           payload: /get_assessment
-        - title: J’ai d’autres questions
-          payload: /ask_question
-        - title: J’ai terminé
-          payload: /done
-      custom:
-        data:
-          disableTextField: "true"
-
-  utter_test_navigation__what_next_assessment_done:
-    - text: Que puis-je faire d’autre pour vous aider?
-      buttons:
-        - title: J’ai d’autres questions
-          payload: /ask_question
-        - title: J’ai terminé
-          payload: /done
-      custom:
-        data:
-          disableTextField: "true"
+        - title: J'ai d'autres questions
+          payload: "/ask_question"
 
   utter_test_navigation__anything_else_no_assessment:
     - text: Puis-je faire autre chose pour vous aider?
       buttons:
-        - title: Oui évaluer mes symptômes
-          payload: /get_assessment
-        - title: Oui j’ai des questions
-          payload: /ask_question
-        - title: Non j’ai terminé
-          payload: /done
-      custom:
-        data:
-          disableTextField: "true"
-
-  utter_test_navigation__anything_else_assessment_done:
-    - text: Puis-je faire autre chose pour vous aider?
-      buttons:
-        - title: Oui j’ai des questions
-          payload: /ask_question
-        - title: Non j’ai terminé
-          payload: /done
-      custom:
-        data:
-          disableTextField: "true"
+        - title: Non merci
+          payload: /deny
+        - title: J'ai d'autres questions
+          payload: "/ask_question"

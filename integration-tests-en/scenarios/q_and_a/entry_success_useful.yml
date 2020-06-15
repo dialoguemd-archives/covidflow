@@ -5,6 +5,6 @@
 - user: q_and_a/submit_question
   bot: q_and_a/success
 - user: affirm
-  bot: q_and_a/answer_useful_self_assessment_not_done
+  bot: q_and_a/answer_useful
 - user: done
   bot: q_and_a/done

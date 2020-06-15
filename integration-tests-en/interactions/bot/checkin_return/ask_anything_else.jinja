@@ -8,21 +8,5 @@
         "text": "At any time, you can check-in with me to monitor your symptoms"
     },
     {% include 'bot/common/home_assistance_not_has_211.jinja' %},
-    {
-        "text": "Is there anything else I can help you with?",
-        "buttons": [
-            {
-                "payload": "/ask_question",
-                "title": "I have other questions"
-            },
-            {
-                "payload": "/navigate_test_locations",
-                "title": "I’d like to know where to get tested"
-            },
-            {
-                "payload": "/done",
-                "title": "No thanks"
-            }
-        ]
-    }
+    {{ bot.anything_else(False,True) }}
 ]

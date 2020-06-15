@@ -1,3 +1,5 @@
+{% import 'bot/macros.jinja' as bot %}
+
 [
     {
         "text": "I’m sorry, I’m not able to find any testing sites at the moment"
@@ -5,17 +7,5 @@
     {
         "text": "Please try again later"
     },
-    {
-        "text": "May I help you with anything else?",
-        "buttons": [
-            {
-                "payload": "/ask_question",
-                "title": "Yes I have other questions"
-            },
-            {
-                "payload": "/done",
-                "title": "No I’m done"
-            }
-        ]
-    }
+    {{ bot.anything_else(False,False) }}
 ]

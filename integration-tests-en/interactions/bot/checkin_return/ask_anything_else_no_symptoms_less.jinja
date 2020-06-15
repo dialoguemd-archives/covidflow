@@ -4,17 +4,5 @@
     {
         "text": "In this case, you should keep self-isolating until you have been symptom-free for at least 7 days"
     },
-    {
-        "text": "Is there anything else I can help you with?",
-        "buttons": [
-            {
-                "payload": "/ask_question",
-                "title": "I have other questions"
-            },
-            {
-                "payload": "/done",
-                "title": "No thanks"
-            }
-        ]
-    }
-] 
+    {{ bot.anything_else(False,False) }}
+]

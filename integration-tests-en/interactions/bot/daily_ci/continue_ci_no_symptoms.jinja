@@ -1,18 +1,8 @@
+{% import 'bot/macros.jinja' as bot %}
+
 [
     {
         "text": "Sure, I'll continue checking in on you daily"
     },
-    {
-        "text": "Is there anything else I can help you with?",
-        "buttons": [
-            {
-                "payload": "/ask_question",
-                "title": "I have other questions"
-            },
-            {
-                "payload": "/done",
-                "title": "No thanks"
-            }
-        ]
-    }
+    {{ bot.anything_else(False,False) }}
 ]

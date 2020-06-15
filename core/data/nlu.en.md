@@ -371,6 +371,8 @@
 - i'm finished
 - that's all
 - no i'm done
+- i'll come back later
+- that's it for today
 
 ## intent:ask_question
 - i have a question
@@ -465,6 +467,9 @@
 - i am
 - i would
 - sure
+- yes thank you
+- yes thanks
+- yes i'm 78
 
 ## intent: deny
 - no
@@ -475,11 +480,13 @@
 - don't like that
 - not really
 - no thanks
+- no thank you
 - nope
 - nah
 - i’m not
 - i am not
 - not interested
+- no I'm 62
 
 ## intent:new_code
 - receive new code

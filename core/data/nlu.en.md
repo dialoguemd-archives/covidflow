@@ -9,29 +9,6 @@
 - that's all
 - no i'm done
 
-## intent:affirm
-- yes
-- i do
-- indeed
-- of course
-- that sounds good
-- correct
-- yes please
-- yeah
-- yep
-
-## intent:deny
-- no
-- i don't
-- i don't have that
-- never
-- I don't think so
-- don't like that
-- not really
-- no thanks
-- nope
-- nah
-
 ## intent:get_assessment
 - get assessment
 - assessment
@@ -261,3 +238,33 @@
 - didn't get it
 - received nothing
 - got nothing
+
+## intent: affirm
+- yes
+- i do
+- indeed
+- of course
+- that sounds good
+- correct
+- yes please
+- yeah
+- yep
+- yup
+- i am
+- i would
+- sure
+
+## intent: deny
+- no
+- i don't
+- i don't have that
+- never
+- I don't think so
+- don't like that
+- not really
+- no thanks
+- nope
+- nah
+- i’m not
+- i am not
+- not interested

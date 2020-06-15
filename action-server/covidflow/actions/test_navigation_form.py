@@ -8,7 +8,7 @@ import structlog
 from geopy.distance import distance
 from geopy.point import Point
 from rasa_sdk import Tracker
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
@@ -26,6 +26,7 @@ from .constants import (
     TEST_NAVIGATION_SUCCESS_SLOT,
     TEST_NAVIGATION_TEST_RESPONSES_LENGTH_ATTRIBUTE,
 )
+from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 
 logger = structlog.get_logger()
@@ -77,11 +78,16 @@ class TestNavigationForm(FormAction):
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {
             POSTAL_CODE_SLOT: self.from_text(),
-            TRY_DIFFERENT_ADDRESS_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
+            TRY_DIFFERENT_ADDRESS_SLOT: yes_no_nlu_mapping(self),
         }
+
+    def request_next_slot(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Optional[List[EventType]]:
+        return request_next_slot(self, dispatcher, tracker, domain)
 
     async def validate_test_navigation__postal_code(
         self,
@@ -140,15 +146,15 @@ class TestNavigationForm(FormAction):
             LOCATIONS_SLOT: [location.raw_data for location in testing_locations],
         }
 
+    @validate_boolean_slot
     def validate_test_navigation__try_different_address(
         self,
-        value: bool,
+        value: Union[bool, str],
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-
-        if value:
+        if value is True:
             return {POSTAL_CODE_SLOT: None, LOCATIONS_SLOT: None}
 
         dispatcher.utter_message(template="utter_test_navigation__acknowledge")

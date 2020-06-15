@@ -23,7 +23,15 @@ from covidflow.actions.daily_ci_feel_worse_form import (
     DailyCiFeelWorseForm,
 )
 
-from .form_helper import FormTestCase
+from .form_test_helper import FormTestCase
+
+DOMAIN = {
+    "responses": {
+        "utter_ask_daily_ci__feel_worse__has_diff_breathing_worsened_error": [
+            {"text": ""}
+        ],
+    }
+}
 
 
 class TestDailyCiFeelWorseForm(FormTestCase):
@@ -43,7 +51,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
     def test_form_activation(self):
         tracker = self.create_tracker(active_form=False)
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -68,7 +76,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -92,7 +100,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             slots={REQUESTED_SLOT: SEVERE_SYMPTOMS_SLOT}, intent="deny"
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -108,13 +116,36 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             ]
         )
 
+    def test_severe_symptoms_error(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: SEVERE_SYMPTOMS_SLOT,
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
+                LAST_HAS_FEVER_SLOT: True,
+                LAST_HAS_DIFF_BREATHING_SLOT: True,
+                LAST_HAS_COUGH_SLOT: True,
+            },
+            text="anything",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(SEVERE_SYMPTOMS_SLOT, None),
+                SlotSet(REQUESTED_SLOT, SEVERE_SYMPTOMS_SLOT),
+            ],
+        )
+
+        self.assert_templates(["utter_ask_daily_ci__feel_worse__severe_symptoms_error"])
+
     def test_fever(self):
         tracker = self.create_tracker(
             slots={REQUESTED_SLOT: HAS_FEVER_SLOT, SEVERE_SYMPTOMS_SLOT: False},
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -138,7 +169,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -152,6 +183,22 @@ class TestDailyCiFeelWorseForm(FormTestCase):
                 "utter_daily_ci__feel_worse__acknowledge_no_fever",
                 "utter_ask_daily_ci__feel_worse__has_diff_breathing",
             ]
+        )
+
+    def test_fever_error(self):
+        tracker = self.create_tracker(
+            slots={REQUESTED_SLOT: HAS_FEVER_SLOT, SEVERE_SYMPTOMS_SLOT: False},
+            text="anything",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [SlotSet(HAS_FEVER_SLOT, None), SlotSet(REQUESTED_SLOT, HAS_FEVER_SLOT),],
+        )
+
+        self.assert_templates(
+            ["utter_ask_daily_ci__feel_worse__has_fever_error",]
         )
 
     def test_fever_diff_breathing(self):
@@ -170,7 +217,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -202,7 +249,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -241,7 +288,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -261,6 +308,32 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             ]
         )
 
+    def test_diff_breathing_worsened_error(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: HAS_DIFF_BREATHING_WORSENED_SLOT,
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
+                LAST_HAS_COUGH_SLOT: False,
+                SEVERE_SYMPTOMS_SLOT: False,
+                HAS_FEVER_SLOT: True,
+                HAS_DIFF_BREATHING_SLOT: True,
+            },
+            text="anything",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(HAS_DIFF_BREATHING_WORSENED_SLOT, None),
+                SlotSet(REQUESTED_SLOT, HAS_DIFF_BREATHING_WORSENED_SLOT),
+            ],
+        )
+
+        self.assert_templates(
+            ["utter_ask_daily_ci__feel_worse__has_diff_breathing_worsened_error",]
+        )
+
     def test_fever_no_diff_breathing(self):
         self._test_no_diff_breathing(fever=True)
 
@@ -278,7 +351,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -292,6 +365,29 @@ class TestDailyCiFeelWorseForm(FormTestCase):
                 "utter_daily_ci__feel_worse__acknowledge_no_diff_breathing",
                 "utter_ask_daily_ci__feel_worse__has_cough",
             ]
+        )
+
+    def test_diff_breathing_error(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: HAS_DIFF_BREATHING_SLOT,
+                SEVERE_SYMPTOMS_SLOT: False,
+                HAS_FEVER_SLOT: True,
+            },
+            text="anything",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(HAS_DIFF_BREATHING_SLOT, None),
+                SlotSet(REQUESTED_SLOT, HAS_DIFF_BREATHING_SLOT),
+            ],
+        )
+
+        self.assert_templates(
+            ["utter_ask_daily_ci__feel_worse__has_diff_breathing_error"]
         )
 
     def test_fever_no_diff_breathing_cough(self):
@@ -312,7 +408,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -351,7 +447,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
             intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -371,3 +467,25 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         )
 
         self.mock_save_assessment.assert_called()
+
+    def test_cough_error(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: HAS_COUGH_SLOT,
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
+                SEVERE_SYMPTOMS_SLOT: False,
+                HAS_FEVER_SLOT: True,
+                HAS_DIFF_BREATHING_SLOT: False,
+            },
+            text="anything",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [SlotSet(HAS_COUGH_SLOT, None), SlotSet(REQUESTED_SLOT, HAS_COUGH_SLOT),],
+        )
+
+        self.assert_templates(
+            ["utter_ask_daily_ci__feel_worse__has_cough_error",]
+        )

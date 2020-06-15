@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Text, Union
+from typing import Any, Dict, List, Optional, Text, Union
 
 from rasa_sdk import Tracker
 from rasa_sdk.events import EventType
@@ -14,6 +14,7 @@ from .constants import (
     PROVINCE_SLOT,
     SEVERE_SYMPTOMS_SLOT,
 )
+from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 
 FORM_NAME = "checkin_return_form"
@@ -21,7 +22,7 @@ FORM_NAME = "checkin_return_form"
 MODERATE_SYMPTOMS_WORSENED_SLOT = "checkin_return__moderate_symptoms_worsened"
 
 
-class CheckinReturnForm(FormAction):
+class CheckinReturnForm(FormAction, AssessmentCommon):
     def name(self) -> Text:
 
         return FORM_NAME
@@ -65,43 +66,22 @@ class CheckinReturnForm(FormAction):
 
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {
-            **AssessmentCommon.slot_mappings(self),
-            MODERATE_SYMPTOMS_WORSENED_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
+            **AssessmentCommon.base_slot_mappings(self),
+            MODERATE_SYMPTOMS_WORSENED_SLOT: yes_no_nlu_mapping(self),
         }
 
-    def validate_severe_symptoms(
+    def request_next_slot(
         self,
-        value: bool,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        return AssessmentCommon.validate_severe_symptoms(value, dispatcher)
+    ) -> Optional[List[EventType]]:
+        return request_next_slot(self, dispatcher, tracker, domain, None)
 
-    def validate_province(
-        self,
-        value: Text,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        return AssessmentCommon.validate_province(value, domain)
-
-    def validate_moderate_symptoms(
-        self,
-        value: bool,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        return AssessmentCommon.validate_moderate_symptoms(value, dispatcher)
-
+    @validate_boolean_slot
     def validate_checkin_return__moderate_symptoms_worsened(
         self,
-        value: Text,
+        value: Union[bool, Text],
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
@@ -130,4 +110,4 @@ class CheckinReturnForm(FormAction):
             dispatcher.utter_message(template="utter_returning_self_isolate")
             dispatcher.utter_message(template="utter_self_isolation_link")
 
-        return AssessmentCommon.submit(self, dispatcher, tracker, domain)
+        return AssessmentCommon.base_submit(self, dispatcher, tracker, domain)

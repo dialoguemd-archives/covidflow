@@ -18,7 +18,7 @@ from covidflow.actions.daily_ci_keep_or_cancel_form import (
     DailyCiKeepOrCancelForm,
 )
 
-from .form_helper import FormTestCase
+from .form_test_helper import FormTestCase
 
 DOMAIN = {
     "responses": {

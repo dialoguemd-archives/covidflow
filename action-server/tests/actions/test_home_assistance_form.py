@@ -4,7 +4,9 @@ from rasa_sdk.forms import REQUESTED_SLOT
 from covidflow.actions.constants import HAS_ASSISTANCE_SLOT, PROVINCE_SLOT
 from covidflow.actions.home_assistance_form import FORM_NAME, HomeAssistanceForm
 
-from .form_helper import FormTestCase
+from .form_test_helper import FormTestCase
+
+DOMAIN = {"responses": {"utter_ask_has_assistance_error": [{"text": ""}],}}
 
 
 class TestHomeAssistanceForm(FormTestCase):
@@ -15,7 +17,7 @@ class TestHomeAssistanceForm(FormTestCase):
     def test_not_has_211(self):
         tracker = self.create_tracker(active_form=False, slots={PROVINCE_SLOT: "nu"})
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events([Form(FORM_NAME), Form(None), SlotSet(REQUESTED_SLOT, None)])
 
@@ -26,7 +28,7 @@ class TestHomeAssistanceForm(FormTestCase):
     def test_has_211(self):
         tracker = self.create_tracker(active_form=False, slots={PROVINCE_SLOT: "qc"})
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [Form(FORM_NAME), SlotSet(REQUESTED_SLOT, HAS_ASSISTANCE_SLOT)]
@@ -40,7 +42,7 @@ class TestHomeAssistanceForm(FormTestCase):
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -60,7 +62,7 @@ class TestHomeAssistanceForm(FormTestCase):
             intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -85,7 +87,7 @@ class TestHomeAssistanceForm(FormTestCase):
             intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -103,3 +105,20 @@ class TestHomeAssistanceForm(FormTestCase):
                 "utter_remind_pharmacist_services",
             ]
         )
+
+    def test_has_211_has_assistance_error(self):
+        tracker = self.create_tracker(
+            slots={REQUESTED_SLOT: HAS_ASSISTANCE_SLOT, PROVINCE_SLOT: "bc"},
+            text="anything",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(HAS_ASSISTANCE_SLOT, None),
+                SlotSet(REQUESTED_SLOT, HAS_ASSISTANCE_SLOT),
+            ]
+        )
+
+        self.assert_templates(["utter_ask_has_assistance_error"])

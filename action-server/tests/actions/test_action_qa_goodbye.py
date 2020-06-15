@@ -3,7 +3,7 @@ from rasa_sdk.events import ConversationPaused
 from covidflow.actions.action_qa_goodbye import ActionQaGoodbye
 from covidflow.actions.constants import CANCEL_CI_SLOT, END_CONVERSATION_MESSAGE
 
-from .action_helper import ActionTestCase
+from .action_test_helper import ActionTestCase
 
 
 class ActionQAGoodbyeTest(ActionTestCase):

@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional, Text, Union
 from rasa_sdk import Tracker
 from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.forms import FormAction
+from rasa_sdk.forms import REQUESTED_SLOT, FormAction
 
 from .constants import (
     FEEL_WORSE_SLOT,
@@ -15,7 +15,7 @@ from .constants import (
     Symptoms,
 )
 from .daily_ci_assessment_common import submit_daily_ci_assessment
-from .form_helper import request_next_slot
+from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 
 FORM_NAME = "daily_ci_feel_no_change_form"
@@ -61,18 +61,9 @@ class DailyCiFeelNoChangeForm(FormAction):
 
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {
-            HAS_FEVER_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
-            HAS_COUGH_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
-            HAS_DIFF_BREATHING_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
+            HAS_FEVER_SLOT: yes_no_nlu_mapping(self),
+            HAS_COUGH_SLOT: yes_no_nlu_mapping(self),
+            HAS_DIFF_BREATHING_SLOT: yes_no_nlu_mapping(self),
         }
 
     def request_next_slot(
@@ -91,13 +82,16 @@ class DailyCiFeelNoChangeForm(FormAction):
             HAS_DIFF_BREATHING_SLOT,
             HAS_COUGH_SLOT,
         ]:
+            if tracker.get_slot(REQUESTED_SLOT) == slot:
+                return f"utter_ask_daily_ci__feel_no_change__{slot}_error"
             return f"utter_ask_daily_ci__feel_no_change__{slot}"
 
         return None
 
+    @validate_boolean_slot
     def validate_has_fever(
         self,
-        value: Text,
+        value: Union[bool, Text],
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
@@ -113,6 +107,7 @@ class DailyCiFeelNoChangeForm(FormAction):
 
         return {HAS_FEVER_SLOT: value}
 
+    @validate_boolean_slot
     def validate_has_cough(
         self,
         value: Text,
@@ -128,6 +123,7 @@ class DailyCiFeelNoChangeForm(FormAction):
 
         return {HAS_COUGH_SLOT: value}
 
+    @validate_boolean_slot
     def validate_has_diff_breathing(
         self,
         value: Text,
@@ -146,8 +142,8 @@ class DailyCiFeelNoChangeForm(FormAction):
             )
         else:
             if (
-                tracker.get_slot(HAS_FEVER_SLOT) == False
-                and tracker.get_slot(HAS_COUGH_SLOT) == False
+                tracker.get_slot(HAS_FEVER_SLOT) is False
+                and tracker.get_slot(HAS_COUGH_SLOT) is False
             ):
                 slots[SYMPTOMS_SLOT] = Symptoms.MILD
 

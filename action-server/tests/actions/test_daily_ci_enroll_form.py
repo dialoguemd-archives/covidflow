@@ -25,7 +25,7 @@ from covidflow.actions.daily_ci_enroll_form import (
     DailyCiEnrollForm,
 )
 
-from .form_helper import FormTestCase
+from .form_test_helper import FormTestCase
 
 FIRST_NAME = "John"
 PHONE_NUMBER = "15141234567"

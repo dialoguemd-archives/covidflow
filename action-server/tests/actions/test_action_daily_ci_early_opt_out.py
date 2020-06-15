@@ -5,7 +5,7 @@ from rasa_sdk.events import SlotSet
 from covidflow.actions.action_daily_ci_early_opt_out import ActionDailyCiEarlyOptOut
 from covidflow.actions.constants import CANCEL_CI_SLOT
 
-from .action_helper import ActionTestCase
+from .action_test_helper import ActionTestCase
 
 
 class ActionDailyCiEarlyOptOutTest(ActionTestCase):

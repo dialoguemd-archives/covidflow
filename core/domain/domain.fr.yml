@@ -29,7 +29,10 @@ responses:
     - text: Entendu, je vais évaluer vos symptômes afin de vous fournir des recommandations adaptées à votre situation. Allons-y!
 
   utter_ask_severe_symptoms:
-    - text: "Premièrement, avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Beaucoup de mal à se réveiller\n- Confusion\n- Perte de conscience"
+    - text: "Premièrement, avez-vous un ou plusieurs des symptômes suivants:\ndes difficultés respiratoires graves, de fortes douleurs à la poitrine, beaucoup de mal à vous réveiller, de la confusion ou des pertes de conscience?"
+
+  utter_ask_severe_symptoms_error:
+    - text: "Désolée, avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Beaucoup de mal à se réveiller\n- Confusion\n- Perte de conscience"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -38,6 +41,9 @@ responses:
 
   utter_ask_has_fever:
     - text: Faites-vous de la fièvre (plus de 38°C ou 100,4°F)?
+
+  utter_ask_has_fever_error:
+    - text: Désolée, est-ce que votre température est plus élevée que 38°C ou 100,4°F? (prenez votre température si vous ne savez pas)
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -57,7 +63,10 @@ responses:
     - text: Le plus important est de ne pas attendre, car vos symptômes requièrent une attention médicale immédiate
 
   utter_ask_moderate_symptoms:
-    - text: "Avez-vous un ou plusieurs des symptômes suivants:\n- Essoufflement léger à modéré\n- Incapacité à vous allonger en raison de difficultés respiratoires\n- Problèmes de santé chroniques que vous avez du mal à gérer en raison de difficultés respiratoires\n- Perte soudaine du goût ou de l'odorat"
+    - text: "Avez-vous un ou plusieurs des symptômes suivants: de l'essoufflement léger à modéré, une incapacité à vous allonger en raison de difficultés respiratoires, des problèmes de santé chroniques que vous avez du mal à gérer en raison de difficultés respiratoires, ou encore une perte soudaine du goût ou de l'odorat?"
+
+  utter_ask_moderate_symptoms_error:
+    - text: "Désolée, avez-vous un ou plusieurs des symptômes suivants:\n- Essoufflement léger à modéré\n- Incapacité à vous allonger en raison de difficultés respiratoires\n- Problèmes de santé chroniques que vous avez du mal à gérer en raison de difficultés respiratoires\n- Perte soudaine du goût ou de l'odorat"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -75,6 +84,9 @@ responses:
 
   utter_ask_daily_ci_enroll__do_enroll:
     - text: "Aimeriez-vous que je fasse un suivi quotidien pour vous aider à évaluer vos symptômes?"
+
+  utter_ask_daily_ci_enroll__do_enroll_error:
+    - text: "Désolée, dites-moi si, oui ou non, vous aimeriez que je fasse un suivi quotidien pour vous aider à évaluer vos symptômes"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -100,6 +112,9 @@ responses:
 
   utter_ask_has_cough:
     - text: "Est-ce que vous toussez ou avez mal à la gorge?"
+
+  utter_ask_has_cough_error:
+    - text: "Désolée, avez-vous soit mal à la gorge, soit de la toux, ou les deux?"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -110,7 +125,10 @@ responses:
     - text: "Veuillez suivre l'évolution de vos symptômes et notez tout changement, en particulier si vous développez de nouveaux symptômes ou s'ils empirent"
 
   utter_ask_contact:
-    - text: "Avez-vous récemment été en contact étroit avec une personne atteinte de la Covid-19?\nUne personne ayant eu des contacts étroits est définie comme:\n- Une personne qui a fourni des soins à la personne malade sans équipement de protection adéquat\n- Une personne qui a vécu ou travaillé avec la personne malade pendant qu’elle était contagieuse\n- Une personne qui a eu un contact direct avec des fluides corporels infectieux de la personne malade (qui était, par exemple, à proximité lorsque la personne malade a toussé ou éternué)"
+    - text: "J'ai besoin de savoir si vous avez été récemment en contact étroit avec une personne atteinte de la Covid-19.\nVoici quelques exemples:\n- Fournir des soins à la personne malade sans équipement de protection adéquat\n- Vivre ou travailler avec la personne malade pendant qu'elle est contagieuse\n- Être en contact direct avec des fluides corporels infectieux de la personne malade (avoir été, par exemple, à proximité lorsque la personne malade a toussé ou éternué)\nAvez-vous été récemment en contact étroit avec une personne atteinte?"
+
+  utter_ask_contact_error:
+    - text: "Désolée, avez-vous été récemment en contact étroit avec une personne atteinte de la Covid-19?"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -119,6 +137,9 @@ responses:
 
   utter_ask_travel:
     - text: "Avez-vous voyagé à l'extérieur du Canada durant les 14 derniers jours (Ceci inclut le passage dans un aéroport étranger)?"
+
+  utter_ask_travel_error:
+    - text: "Désolée, avez-vous voyagé à l'extérieur du Canada durant les 14 derniers jours?"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -230,6 +251,9 @@ responses:
 
   utter_ask_age_over_65:
     - text: Avez-vous plus de 65 ans?
+
+  utter_ask_age_over_65_error:
+    - text: Désolée, veuillez me dire si vous avez 65 ans ou plus
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -247,8 +271,11 @@ responses:
   utter_symptoms_worsen_emergency_assistance:
     - text: "Si vos symptômes s’aggravent, vous pourriez devoir vous rendre à l’urgence la plus près ou appeler le 911. Si vous avez besoin d’aide, vous devriez:\n- Communiquer avec votre médecin de famille, si c′est possible, ou\n- Appeler le {provincial_811}"
 
-  utter_ask_symptoms_worsened:
+  utter_ask_tested_positive__mild_symptoms_worsened:
     - text: "Est-ce que vos symptômes ont empiré dans les 24 dernières heures?"
+
+  utter_ask_tested_positive__mild_symptoms_worsened_error:
+    - text: "Désolée, diriez-vous que vos symptômes ont empiré dans les 24 dernières heures ou non?"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -390,6 +417,9 @@ responses:
 
   utter_ask_has_dialogue:
     - text: Enfin, est-ce que vous avez le service de santé de Dialogue?
+
+  utter_ask_has_dialogue_error:
+    - text: Désolée, est-ce que vous avez le service de santé de Dialogue? Si vous ne savez pas, répondez "non"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -421,6 +451,9 @@ responses:
 
   utter_ask_checkin_return__moderate_symptoms_worsened:
     - text: "Est-ce que vos symptômes ont empiré dans les 24 dernières heures?"
+
+  utter_ask_checkin_return__moderate_symptoms_worsened_error:
+    - text: "Désolée, diriez-vous que vos symptômes ont empiré dans les 24 dernières heures ou non?"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -594,6 +627,9 @@ responses:
 
   utter_ask_feedback:
     - text: "Est-ce que cette réponse était utile?"
+
+  utter_ask_feedback_error:
+    - text: "Désolée, veuillez me dire si cette réponse était utile ou non"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -705,6 +741,9 @@ responses:
 
   utter_ask_lives_alone:
     - text: "Est-ce que vous habitez seul(e)?"
+
+  utter_ask_lives_alone_error:
+    - text: "Désolée, êtes-vous la seule personne vivant à votre domicile?"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -730,6 +769,9 @@ responses:
 
   utter_ask_has_assistance:
     - text: "Est-ce que quelqu’un peut faire des courses pour vous (un parent, un conjoint, un ami ou un voisin), comme aller à l’épicerie ou chercher vos médicaments?"
+
+  utter_ask_has_assistance_error:
+    - text: "Désolée, est-ce que quelqu'un peut faire des courses pour vous?"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -793,7 +835,10 @@ responses:
   ## Daily check-in - feel worse
 
   utter_ask_daily_ci__feel_worse__severe_symptoms:
-    - text: "Avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Beaucoup de mal à se réveiller\n- Confusion\n- Perte de conscience"
+    - text: "Avez-vous un ou plusieurs des symptômes suivants: des difficultés respiratoires graves, de fortes douleurs à la poitrine, beaucoup de mal à vous réveiller, de la confusion ou des pertes de conscience?"
+
+  utter_ask_daily_ci__feel_worse__severe_symptoms_error:
+    - text: "Désolée, avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Beaucoup de mal à se réveiller\n- Confusion\n- Perte de conscience"
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -805,6 +850,9 @@ responses:
 
   utter_ask_daily_ci__feel_worse__has_fever:
     - text: Est-ce que vous faites de la fièvre? (plus de 38°C or 100.4°F) (Prenez votre température si vous ne savez pas)
+
+  utter_ask_daily_ci__feel_worse__has_fever_error:
+    - text: Désolée, est-ce que votre température est plus élevée que 38C ou 100,4F?
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -816,6 +864,9 @@ responses:
 
   utter_ask_daily_ci__feel_worse__has_diff_breathing:
     - text: Avez-vous de l'essoufflement ou de la difficulté à respirer?
+
+  utter_ask_daily_ci__feel_worse__has_diff_breathing_error:
+    - text: Désolée, dites-moi si vous avez de l'essoufflement ou de la difficulté à respirer
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -827,6 +878,9 @@ responses:
 
   utter_ask_daily_ci__feel_worse__has_cough:
     - text: Est-ce que vous toussez?
+
+  utter_ask_daily_ci__feel_worse__has_cough_error:
+    - text: Désolée, dites-moi si vous toussez aujourd'hui
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -838,6 +892,9 @@ responses:
 
   utter_ask_daily_ci__feel_worse__has_diff_breathing_worsened:
     - text: Est-ce que ça a empiré depuis hier?
+
+  utter_ask_daily_ci__feel_worse__has_diff_breathing_worsened_error:
+    - text: Désolée, est-ce que ces symptômes ont empiré depuis hier?
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -860,6 +917,9 @@ responses:
 
   utter_ask_daily_ci__feel_no_change__has_fever:
     - text: Et est-ce que vous faites de la fièvre? (plus de 38°C ou 100,4°F) (Prenez votre température si vous ne le savez pas)
+
+  utter_ask_daily_ci__feel_no_change__has_fever_error:
+    - text: Désolée, est-ce que votre température est plus élevée que 38C ou 100,4F?
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -871,6 +931,9 @@ responses:
 
   utter_ask_daily_ci__feel_no_change__has_cough:
     - text: Est-ce que vous toussez?
+
+  utter_ask_daily_ci__feel_no_change__has_cough_error:
+    - text: Désolée, dites-moi si vous toussez aujourd'hui
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -879,6 +942,9 @@ responses:
 
   utter_ask_daily_ci__feel_no_change__has_diff_breathing:
     - text: Avez-vous encore de l'essoufflement ou de la difficulté à respirer?
+
+  utter_ask_daily_ci__feel_no_change__has_diff_breathing_error:
+    - text: Désolée, dites-moi si vous avez encore de l'essoufflement ou de la difficulté à respirer
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -907,6 +973,9 @@ responses:
 
   utter_ask_daily_ci__feel_better__has_fever:
     - text: Est-ce que vous faites de la fièvre? (plus de 38°C ou 100,4°F) (Prenez votre température si vous ne savez pas)
+
+  utter_ask_daily_ci__feel_better__has_fever_error:
+    - text: Désolée, est-ce que votre température est plus élevée que 38C ou 100,4F?
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -918,6 +987,9 @@ responses:
 
   utter_ask_daily_ci__feel_better__has_cough:
     - text: Est-ce que vous toussez?
+
+  utter_ask_daily_ci__feel_better__has_cough_error:
+    - text: Désolée, dites-moi si vous toussez aujourd'hui
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -926,14 +998,12 @@ responses:
 
   utter_ask_daily_ci__feel_better__has_diff_breathing:
     - text: Avez-vous encore d'autres symptômes, comme de l'essoufflement ou de la difficulté à respirer?
-      buttons:
-        - title: Oui
-          payload: "/affirm"
-        - title: Non
-          payload: "/deny"
 
   utter_ask_daily_ci__feel_better__has_other_mild_symptoms_with_acknowledge:
     - text: Très bien, et avez-vous encore d'autres symptômes, comme des maux de gorge ou de la fatigue inhabituelle?
+
+  utter_ask_daily_ci__feel_better__has_diff_breathing_error:
+    - text: Désolée, dites-moi si vous avez encore d'autres symptômes comme de l'essoufflement ou de la difficulté à respirer
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -942,6 +1012,9 @@ responses:
 
   utter_ask_daily_ci__feel_better__has_other_mild_symptoms:
     - text: Avez-vous encore d'autres symptômes, comme des maux de gorge ou de la fatigue inhabituelle?
+
+  utter_ask_daily_ci__feel_better__has_other_mild_symptoms_error:
+    - text: Désolée, dites-moi si vous avez encore d'autres symptômes comme des maux de gorge ou de la fatigue inhabituelle
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -1201,6 +1274,9 @@ responses:
 
   utter_ask_test_navigation__try_different_address:
     - text: Voudriez-vous essayer une autre adresse?
+
+  utter_ask_test_navigation__try_different_address_error:
+    - text: Désolée, voudriez-vous essayer une autre adresse ou non?
       buttons:
         - title: Oui
           payload: "/affirm"

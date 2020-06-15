@@ -18,7 +18,7 @@ from covidflow.actions.constants import (
     Symptoms,
 )
 
-from .form_helper import FormTestCase
+from .form_test_helper import FormTestCase
 
 DOMAIN = {
     "responses": {
@@ -28,7 +28,7 @@ DOMAIN = {
 }
 
 
-class TestAssessmentForm(FormAction):
+class TestAssessmentForm(FormAction, AssessmentCommon):
     def name(self) -> Text:
 
         return "test_assessment_form"
@@ -38,17 +38,7 @@ class TestAssessmentForm(FormAction):
         return AssessmentCommon.base_required_slots(tracker)
 
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
-        return AssessmentCommon.slot_mappings(self)
-
-    def validate_province(
-        self,
-        value: Text,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        # real domain should be passed in real form, overwritted here to insert test-specific keys
-        return AssessmentCommon.validate_province(value, DOMAIN)
+        return AssessmentCommon.base_slot_mappings(self)
 
     def submit(
         self,
@@ -57,7 +47,7 @@ class TestAssessmentForm(FormAction):
         domain: Dict[Text, Any],
     ) -> List[Dict]:
 
-        return AssessmentCommon.submit(self, dispatcher, tracker, domain)
+        return AssessmentCommon.base_submit(self, dispatcher, tracker, domain)
 
 
 class BaseTestAssessmentForm:
@@ -66,7 +56,7 @@ class BaseTestAssessmentForm:
             slots={REQUESTED_SLOT: SEVERE_SYMPTOMS_SLOT}, intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -85,7 +75,7 @@ class BaseTestAssessmentForm:
             slots={REQUESTED_SLOT: SEVERE_SYMPTOMS_SLOT,}, intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -94,7 +84,7 @@ class BaseTestAssessmentForm:
             ],
         )
 
-        self.assert_templates(["utter_ask_province"])
+        self.assert_templates(["utter_pre_ask_province", "utter_ask_province"])
 
     def test_provide_province_specific_provincial_811(self):
         tracker = self.create_tracker(
@@ -103,7 +93,7 @@ class BaseTestAssessmentForm:
             entities=[{"entity": "province", "value": "qc"}],
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -122,7 +112,7 @@ class BaseTestAssessmentForm:
             entities=[{"entity": "province", "value": "bc"}],
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -144,7 +134,7 @@ class BaseTestAssessmentForm:
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [SlotSet(AGE_OVER_65_SLOT, True), SlotSet(REQUESTED_SLOT, HAS_FEVER_SLOT),],
@@ -162,7 +152,7 @@ class BaseTestAssessmentForm:
             intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -184,7 +174,7 @@ class BaseTestAssessmentForm:
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -206,7 +196,7 @@ class BaseTestAssessmentForm:
             intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -229,7 +219,7 @@ class BaseTestAssessmentForm:
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -255,7 +245,7 @@ class BaseTestAssessmentForm:
             intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -264,7 +254,7 @@ class BaseTestAssessmentForm:
             ],
         )
 
-        self.assert_templates(["utter_ask_has_cough"])
+        self.assert_templates(["utter_no_moderate_symptoms", "utter_ask_has_cough"])
 
     def test_provide_has_cough_affirm_no_fever(self):
         tracker = self.create_tracker(
@@ -279,7 +269,7 @@ class BaseTestAssessmentForm:
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -306,7 +296,7 @@ class BaseTestAssessmentForm:
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -333,7 +323,7 @@ class BaseTestAssessmentForm:
             intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -360,7 +350,7 @@ class BaseTestAssessmentForm:
             intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [

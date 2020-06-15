@@ -18,10 +18,21 @@ from .constants import (
     SYMPTOMS_SLOT,
     Symptoms,
 )
+from .form_helper import validate_boolean_slot, yes_no_nlu_mapping
 from .lib.provincial_811 import get_provincial_811
 
 
 class AssessmentCommon:
+    """
+    Represents common elements in the 3 assessment forms:
+    - tested_positive_form
+    - checkin_return_form
+    - assessment_form
+
+    Methods are mostly static due to Rasa's constraints with forms and inheritance,
+    except for validators, that can be overwritten
+    """
+
     @staticmethod
     def base_required_slots(tracker: Tracker) -> List[Text]:
         slots: List[str] = [SEVERE_SYMPTOMS_SLOT]
@@ -40,46 +51,37 @@ class AssessmentCommon:
         return cast(List[str], slots)
 
     @staticmethod
-    def slot_mappings(form: FormAction) -> Dict[Text, Union[Dict, List[Dict]]]:
+    def base_slot_mappings(form: FormAction) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {
-            AGE_OVER_65_SLOT: [
-                form.from_intent(intent="affirm", value=True),
-                form.from_intent(intent="deny", value=False),
-            ],
-            SEVERE_SYMPTOMS_SLOT: [
-                form.from_intent(intent="affirm", value=True),
-                form.from_intent(intent="deny", value=False),
-            ],
-            HAS_FEVER_SLOT: [
-                form.from_intent(intent="affirm", value=True),
-                form.from_intent(intent="deny", value=False),
-            ],
-            MODERATE_SYMPTOMS_SLOT: [
-                form.from_intent(intent="affirm", value=True),
-                form.from_intent(intent="deny", value=False),
-            ],
-            HAS_COUGH_SLOT: [
-                form.from_intent(intent="affirm", value=True),
-                form.from_intent(intent="deny", value=False),
-            ],
-            LIVES_ALONE_SLOT: [
-                form.from_intent(intent="affirm", value=True),
-                form.from_intent(intent="deny", value=False),
-            ],
+            AGE_OVER_65_SLOT: yes_no_nlu_mapping(form),
+            SEVERE_SYMPTOMS_SLOT: yes_no_nlu_mapping(form),
+            HAS_FEVER_SLOT: yes_no_nlu_mapping(form),
+            MODERATE_SYMPTOMS_SLOT: yes_no_nlu_mapping(form),
+            HAS_COUGH_SLOT: yes_no_nlu_mapping(form),
+            LIVES_ALONE_SLOT: yes_no_nlu_mapping(form),
         }
 
     # province is asked after severe symptoms so the message can be added here
-    @staticmethod
+    @validate_boolean_slot
     def validate_severe_symptoms(
-        value: bool, dispatcher: CollectingDispatcher
+        self,
+        value: Union[bool, Text],
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
         if value is False:
             dispatcher.utter_message(template="utter_pre_ask_province")
 
         return {SEVERE_SYMPTOMS_SLOT: value}
 
-    @staticmethod
-    def validate_province(value: Text, domain: Dict[Text, Any],) -> Dict[Text, Any]:
+    def validate_province(
+        self,
+        value: Text,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
         provincial_811 = get_provincial_811(value, domain)
 
         return {
@@ -87,20 +89,57 @@ class AssessmentCommon:
             PROVINCIAL_811_SLOT: provincial_811,
         }
 
-    @staticmethod
+    @validate_boolean_slot
+    def validate_age_over_65(
+        self,
+        value: Union[bool, Text],
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        return {}
+
+    @validate_boolean_slot
+    def validate_has_fever(
+        self,
+        value: Union[bool, Text],
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        return {}
+
+    @validate_boolean_slot
     def validate_moderate_symptoms(
-        value: bool, dispatcher: CollectingDispatcher
+        self,
+        value: Union[bool, Text],
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
         if value is False:
             dispatcher.utter_message(template="utter_no_moderate_symptoms")
 
         return {MODERATE_SYMPTOMS_SLOT: value}
 
-    @staticmethod
-    def validate_lives_alone(
-        value: bool, dispatcher: CollectingDispatcher,
+    @validate_boolean_slot
+    def validate_has_cough(
+        self,
+        value: Union[bool, Text],
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
+        return {}
 
+    @validate_boolean_slot
+    def validate_lives_alone(
+        self,
+        value: Union[bool, Text],
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
         if value is True:
             dispatcher.utter_message(template="utter_dont_leave_home")
         else:
@@ -113,7 +152,7 @@ class AssessmentCommon:
         return {LIVES_ALONE_SLOT: value}
 
     @staticmethod
-    def submit(
+    def base_submit(
         form: FormAction,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,

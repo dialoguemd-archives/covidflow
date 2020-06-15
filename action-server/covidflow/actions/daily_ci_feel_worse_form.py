@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional, Text, Union
 from rasa_sdk import Tracker
 from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.forms import FormAction
+from rasa_sdk.forms import REQUESTED_SLOT, FormAction
 
 from .constants import (
     FEEL_WORSE_SLOT,
@@ -15,7 +15,7 @@ from .constants import (
     Symptoms,
 )
 from .daily_ci_assessment_common import submit_daily_ci_assessment
-from .form_helper import request_next_slot
+from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 
 FORM_NAME = "daily_ci_feel_worse_form"
@@ -68,26 +68,11 @@ class DailyCiFeelWorseForm(FormAction):
 
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {
-            SEVERE_SYMPTOMS_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
-            HAS_FEVER_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
-            HAS_DIFF_BREATHING_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
-            HAS_DIFF_BREATHING_WORSENED_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
-            HAS_COUGH_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
+            SEVERE_SYMPTOMS_SLOT: yes_no_nlu_mapping(self),
+            HAS_FEVER_SLOT: yes_no_nlu_mapping(self),
+            HAS_DIFF_BREATHING_SLOT: yes_no_nlu_mapping(self),
+            HAS_DIFF_BREATHING_WORSENED_SLOT: yes_no_nlu_mapping(self),
+            HAS_COUGH_SLOT: yes_no_nlu_mapping(self),
         }
 
     def request_next_slot(
@@ -107,13 +92,16 @@ class DailyCiFeelWorseForm(FormAction):
             HAS_DIFF_BREATHING_SLOT,
             HAS_COUGH_SLOT,
         ]:
+            if tracker.get_slot(REQUESTED_SLOT) == slot:
+                return f"utter_ask_daily_ci__feel_worse__{slot}_error"
             return f"utter_ask_daily_ci__feel_worse__{slot}"
 
         return None
 
+    @validate_boolean_slot
     def validate_severe_symptoms(
         self,
-        value: Text,
+        value: Union[bool, Text],
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
@@ -126,9 +114,10 @@ class DailyCiFeelWorseForm(FormAction):
         )
         return {SEVERE_SYMPTOMS_SLOT: value}
 
+    @validate_boolean_slot
     def validate_has_fever(
         self,
-        value: Text,
+        value: Union[bool, Text],
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
@@ -144,9 +133,10 @@ class DailyCiFeelWorseForm(FormAction):
 
         return {HAS_FEVER_SLOT: value}
 
+    @validate_boolean_slot
     def validate_has_diff_breathing(
         self,
-        value: Text,
+        value: Union[bool, Text],
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
@@ -158,9 +148,10 @@ class DailyCiFeelWorseForm(FormAction):
 
         return {HAS_DIFF_BREATHING_SLOT: value}
 
+    @validate_boolean_slot
     def validate_daily_ci__feel_worse__has_diff_breathing_worsened(
         self,
-        value: Text,
+        value: Union[bool, Text],
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
@@ -182,9 +173,10 @@ class DailyCiFeelWorseForm(FormAction):
 
         return {HAS_DIFF_BREATHING_WORSENED_SLOT: value}
 
+    @validate_boolean_slot
     def validate_has_cough(
         self,
-        value: Text,
+        value: Union[bool, Text],
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],

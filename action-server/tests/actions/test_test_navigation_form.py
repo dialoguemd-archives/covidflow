@@ -9,6 +9,7 @@ from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.constants import TEST_NAVIGATION_SUCCESS_SLOT
 from covidflow.actions.test_navigation_form import (
+    CLEARED_SLOTS,
     END_FORM_SLOT,
     FORM_NAME,
     INVALID_POSTAL_CODE_COUNTER_SLOT,
@@ -201,7 +202,9 @@ class TestTestNavigationForm(FormTestCase):
 
         self.run_form(tracker, DOMAIN)
 
-        self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, POSTAL_CODE_SLOT)])
+        self.assert_events(
+            [Form(FORM_NAME), SlotSet(REQUESTED_SLOT, POSTAL_CODE_SLOT),]
+        )
 
         self.assert_templates(["utter_ask_test_navigation__postal_code"])
 
@@ -265,9 +268,9 @@ class TestTestNavigationForm(FormTestCase):
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
-            [
-                SlotSet(POSTAL_CODE_SLOT, None),
-                SlotSet(END_FORM_SLOT, True),
+            [SlotSet(POSTAL_CODE_SLOT, None), SlotSet(END_FORM_SLOT, True),]
+            + CLEARED_SLOTS
+            + [
                 SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -286,9 +289,9 @@ class TestTestNavigationForm(FormTestCase):
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
-            [
-                SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE),
-                SlotSet(END_FORM_SLOT, True),
+            [SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE), SlotSet(END_FORM_SLOT, True),]
+            + CLEARED_SLOTS
+            + [
                 SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -368,9 +371,9 @@ class TestTestNavigationForm(FormTestCase):
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
-            [
-                SlotSet(POSTAL_CODE_SLOT, None),
-                SlotSet(END_FORM_SLOT, True),
+            [SlotSet(POSTAL_CODE_SLOT, None), SlotSet(END_FORM_SLOT, True),]
+            + CLEARED_SLOTS
+            + [
                 SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -393,9 +396,9 @@ class TestTestNavigationForm(FormTestCase):
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
-            [
-                SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE),
-                SlotSet(END_FORM_SLOT, True),
+            [SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE), SlotSet(END_FORM_SLOT, True),]
+            + CLEARED_SLOTS
+            + [
                 SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -473,8 +476,9 @@ class TestTestNavigationForm(FormTestCase):
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
-            [
-                SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, False),
+            [SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, False),]
+            + CLEARED_SLOTS
+            + [
                 SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -527,6 +531,9 @@ class TestTestNavigationForm(FormTestCase):
             [
                 SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE),
                 SlotSet(LOCATIONS_SLOT, [TESTING_LOCATION_RAW]),
+            ]
+            + CLEARED_SLOTS
+            + [
                 SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -558,6 +565,9 @@ class TestTestNavigationForm(FormTestCase):
             [
                 SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE),
                 SlotSet(LOCATIONS_SLOT, [TESTING_LOCATION_RAW, TESTING_LOCATION_RAW]),
+            ]
+            + CLEARED_SLOTS
+            + [
                 SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, True),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),

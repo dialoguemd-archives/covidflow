@@ -49,6 +49,14 @@ TEST_LOCATION_RESPONSE = TestingLocation(
     {"name": "location name", "_geoPoint": {"lon": 0.9, "lat": 0.0},}
 )
 
+CLEARED_SLOTS = [
+    SlotSet(POSTAL_CODE_SLOT),
+    SlotSet(INVALID_POSTAL_CODE_COUNTER_SLOT, 0),
+    SlotSet(TRY_DIFFERENT_ADDRESS_SLOT),
+    SlotSet(LOCATIONS_SLOT),
+    SlotSet(END_FORM_SLOT),
+]
+
 
 class TestNavigationForm(FormAction):
     def __init__(self):
@@ -171,7 +179,7 @@ class TestNavigationForm(FormAction):
         else:
             success = False
 
-        return [SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, success)]
+        return CLEARED_SLOTS + [SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, success)]
 
 
 def _get_postal_code(text: str) -> Optional[str]:

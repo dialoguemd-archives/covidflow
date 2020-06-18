@@ -627,7 +627,6 @@
   - utter_please_visit_again
   - action_qa_goodbye
 
-
 ## QA - success - assessment after
 * greet{"metadata":{}}
   - action_greeting_messages

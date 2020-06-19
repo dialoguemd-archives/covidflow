@@ -14,6 +14,10 @@ TEXT_KEY = "text"
 TITLE_KEY = "title"
 PAYLOAD_KEY = "payload"
 
+CUSTOM_KEY = "custom"
+DATA_KEY = "data"
+DISABLE_TEXT_FIELD_KEY = "disableTextField"
+
 log = structlog.get_logger()
 
 RESPONSE_VARIANTS_EXCLUSIONS = {
@@ -66,6 +70,22 @@ def get_buttons(responses: Dict[str, List[dict]], response_id: str) -> List[str]
         return [button[PAYLOAD_KEY] for button in first_variant[BUTTONS_KEY]]
 
     return []
+
+
+def disables_text(responses: Dict[str, List[dict]], response_id: str) -> str:
+    response = responses[response_id]
+    if len(response) != 1:
+        raise ResponseVariantsNotSupported(
+            f"Found response alternatives for response: {response_id}"
+        )
+
+    first_variant = response[0]
+
+    return (
+        first_variant.get(CUSTOM_KEY, {})
+        .get(DATA_KEY, {})
+        .get(DISABLE_TEXT_FIELD_KEY, "")
+    )
 
 
 def validate_response_ids(english_responses: dict, french_responses: dict) -> bool:
@@ -129,6 +149,30 @@ def validate_translations(english_responses: dict, french_responses: dict) -> bo
     return len(missing_translations) != 0
 
 
+def validate_text_field_disablions(
+    english_responses: dict, french_responses: dict
+) -> bool:
+    text_disabled_mismatches = set()
+
+    for response_id in english_responses.keys():
+        if response_id not in french_responses:
+            continue
+
+        english_text_disabled = disables_text(english_responses, response_id)
+        french_text_disabled = disables_text(french_responses, response_id)
+
+        if english_text_disabled != french_text_disabled:
+            text_disabled_mismatches.add(response_id)
+
+    if text_disabled_mismatches:
+        log.error(
+            "Text field disabled inequally in responses",
+            response_ids=sorted(text_disabled_mismatches),
+        )
+
+    return len(text_disabled_mismatches) != 0
+
+
 def validate_domain() -> int:
     has_errors = False
 
@@ -154,6 +198,10 @@ def validate_domain() -> int:
     }
 
     has_errors |= validate_button_payloads(
+        english_responses_without_alternatives, french_responses_without_alternatives
+    )
+
+    has_errors |= validate_text_field_disablions(
         english_responses_without_alternatives, french_responses_without_alternatives
     )
 

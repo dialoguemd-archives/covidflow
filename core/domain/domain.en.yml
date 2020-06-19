@@ -24,6 +24,9 @@ responses:
           payload: "/ask_question"
         - title: "I’d like to know where to get tested"
           payload: "/navigate_test_locations"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_assessment_entry:
     - text: OK, let’s assess your symptoms to see how you’re doing and which steps you should take. Let’s get started!
@@ -38,6 +41,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_severe_symptoms_recommendations_1:
     - text: These symptoms require immediate response, so please call 911 immediately, or go to your nearest emergency department
@@ -61,6 +67,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_moderate_symptoms:
     - text: "Now, do you have any, or a combination of, the following: mild to moderate shortness of breath, inability to lie down because of difficulty breathing, chronic health conditions that you are having difficulty managing because of difficulty breathing, or sudden loss of taste or smell?"
@@ -72,6 +81,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_no_moderate_symptoms:
     - text: OK, it seems that you don’t have symptoms that require immediate medical assistance. Let’s continue your assessment
@@ -96,6 +108,9 @@ responses:
 
   utter_goodbye:
     - text: "Thanks and take care of yourself!"
+      custom:
+        data:
+          disableTextField: "true"
 
   # Mild symptoms flow
 
@@ -109,6 +124,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_monitor_symptoms_changes:
     - text: "Please monitor your symptoms for any changes or in case you get new symptoms, or if they worsen"
@@ -123,6 +141,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_travel:
     - text: "Have you traveled in any country outside of Canada within the last 14 days (including passing through an airport)?"
@@ -134,6 +155,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_probably_not_covid:
     - text: In this case, you probably don’t have Covid-19
@@ -180,6 +204,9 @@ responses:
           payload: '/inform{"province": "nt"}'
         - title: NU
           payload: '/inform{"province": "nu"}'
+      custom:
+        data:
+          disableTextField: "true"
 
   provincial_811_mb:
     - text: "1-866-999-9698 option 4 or 1-888-315-9257 in the Winnipeg area"
@@ -248,6 +275,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   ## Tested positive
 
@@ -270,6 +300,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_tested_positive_no_symptoms:
     - text: "Although your test is positive, it looks like you’re not experiencing any significant symptoms at the moment"
@@ -281,6 +314,9 @@ responses:
           payload: "/more"
         - title: "Less than 14 days ago"
           payload: "/less"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_when_tested_less_14_recommendation:
     - text: In this case, I suggest you monitor your condition for any changes
@@ -312,6 +348,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci_enroll__start_enroll:
     - text: Great! So that I can follow up with you daily and provide personalized recommendations, I need to ask you a few questions
@@ -341,6 +380,9 @@ responses:
           payload: "/affirm"
         - title: No I want to enroll
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci_enroll__ok_continue:
     - text: "OK, let’s continue!"
@@ -385,6 +427,9 @@ responses:
           payload: "/resend_code"
         - title: Re-enter my number
           payload: "/reenter_phone_number"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_phone_number_new:
     - text: OK, please enter your mobile phone number, so that I can reach you
@@ -398,6 +443,9 @@ responses:
           payload: "/deny"
         - title: What are pre-existing conditions?
           payload: "/help_preconditions"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_explain_preconditions:
     - text: You may be more at risk if you have underlying medical conditions (e.g. heart disease, hypertension, diabetes, chronic respiratory disease, cancer) or if your immune system is compromised from a medical condition or treatment (e.g. chemotherapy)
@@ -411,6 +459,9 @@ responses:
           payload: "/deny"
         - title: I don't know
           payload: "/dont_know"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci_enroll__note_preconditions:
     - text: If you're not sure, I will put a note in your profile that you might be at risk
@@ -425,6 +476,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci_enroll__enroll_done_1:
     - text: Thanks. I have recorded all your answers in your personal profile
@@ -459,6 +513,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_contact_healthcare_professional:
     - text: In this case, you should speak to a healthcare professional to discuss your situation
@@ -479,6 +536,9 @@ responses:
           payload: "/more"
         - title: Less than 14 days ago
           payload: "/less"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_social_distancing_leave_home:
     - text: OK, you should keep complying with social distancing rules, and if you leave your home, I recommend that you wear a mask
@@ -497,6 +557,9 @@ responses:
           payload: /navigate_test_locations
         - title: No thanks
           payload: "/done"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_anything_else_without_test_navigation:
     - text: "Is there anything else I can help you with?"
@@ -505,6 +568,9 @@ responses:
           payload: "/ask_question"
         - title: No thanks
           payload: "/done"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_can_help_with_questions:
     - text: "I can help answer your questions about Covid-19, on many different topics"
@@ -629,6 +695,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_post_feedback:
     - text: "Got it, sorry about that! I’m still learning so your feedback helps me improve and provide better answers"
@@ -643,6 +712,9 @@ responses:
           payload: "/get_assessment"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_try_again_later:
     - text: "Please try again later if you have questions"
@@ -660,6 +732,9 @@ responses:
           payload: "/get_assessment"
         - title: No I'm done
           payload: "/done"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_assess_to_answer_offer_question:
     - text: "Do you want me to assess your symptoms?"
@@ -670,6 +745,9 @@ responses:
           payload: "/done"
         - title: No ask another question
           payload: "/ask_question"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_need_assessment_already_done:
     - text: It seems that to answer your question, I would need to assess your symptoms. However, we have already done that
@@ -686,6 +764,9 @@ responses:
           payload: "/get_assessment"
         - title: "I'm done"
           payload: "/done"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_other_questions_after_answer:
     - text: "Do you have another question?"
@@ -694,6 +775,9 @@ responses:
           payload: "/ask_question"
         - title: "No I'm done"
           payload: "/done"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_another_question_assessment_done:
     - text: "Would you like to ask another question?"
@@ -702,6 +786,9 @@ responses:
           payload: "/ask_question"
         - title: "No I'm done"
           payload: "/done"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_another_question_no_assessment:
     - text: "Would you like to ask another question?"
@@ -712,6 +799,9 @@ responses:
           payload: "/get_assessment"
         - title: "No I'm done"
           payload: "/done"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci__qa__will_contact_tomorrow:
     - text: I will get in touch with you tomorrow for your daily check-in
@@ -743,6 +833,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_dont_leave_home:
     - text: "In this case, I recommend that you don’t leave your home unless you have a doctor’s appointment, or if you need to go to the hospital"
@@ -771,6 +864,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_remind_delivery_services:
     - text: "Don’t forget that most pharmacies and many grocery stores offer delivery services. Check with your local pharmacy or grocery store if they deliver"
@@ -807,6 +903,9 @@ responses:
           payload: "/worse"
         - title: No change
           payload: "/no_change"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci__acknowledge_fever:
     - text: OK, I'm taking note that you have a fever today
@@ -838,6 +937,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci__feel_worse__acknowledge_no_severe_symptoms:
     - text: OK, now, let's check your symptoms
@@ -852,6 +954,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci__feel_worse__acknowledge_no_fever:
     - text: OK, I'm taking note that you don't have a fever today
@@ -866,6 +971,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci__feel_worse__acknowledge_no_diff_breathing:
     - text: That's good
@@ -880,6 +988,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci__feel_worse__no_cough_recommendation:
     - text: But since you're still feeling sick, you should keep staying isolated and continue to rest
@@ -894,6 +1005,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_1:
     - text: You may want to discuss your situation with your doctor, if that's possible, or call {provincial_811}
@@ -919,6 +1033,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci__feel_no_change__acknowledge_no_fever:
     - text: That's good, I'm taking note that you don't have a fever today
@@ -933,6 +1050,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_daily_ci__feel_no_change__has_diff_breathing:
     - text: Do you still have shortness of breath or difficulty breathing?
@@ -944,6 +1064,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci__feel_no_change__acknowledge_diff_breathing:
     - text: I'm sorry to see that
@@ -975,6 +1098,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci__feel_better__acknowledge_no_fever:
     - text: That's good, I'm taking note that you don't have a fever today
@@ -989,6 +1115,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_daily_ci__feel_better__has_diff_breathing:
     - text: Do you still have other symptoms, like shortness of breath or some difficulty breathing?
@@ -1000,6 +1129,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_daily_ci__feel_better__has_other_mild_symptoms_with_acknowledge:
     - text: Good, and do you still have symptoms like fatigue or sore throat?
@@ -1014,6 +1146,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_daily_ci__feel_better__is_symptom_free:
     - text: Great, would you say that you are symptom-free, or do you still feel a little sick?
@@ -1022,6 +1157,9 @@ responses:
           payload: "/symptom_free"
         - title: Still sick
           payload: "/still_sick"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci__feel_better__breathing_difficulty_recommendation_1:
     - text: Sorry about that. If this gets worse, I recommend that you contact your doctor or call {provincial_811} to discuss your symptoms
@@ -1050,6 +1188,9 @@ responses:
           payload: "/continue"
         - title: Cancel
           payload: "/cancel"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci__keep_or_cancel__acknowledge_continue_ci:
     - text: Sure, I'll continue checking in on you daily
@@ -1067,6 +1208,9 @@ responses:
           payload: "/continue"
         - title: No cancel daily check-in
           payload: "/cancel"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci__keep_or_cancel__feel_worse_keep_ci:
     - text: Since you're feeling worse, I will make sure to check-in on you tomorrow
@@ -1106,6 +1250,9 @@ responses:
           payload: "/opt_out"
         - title: Continue
           payload: "/continue"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_ci__early_opt_out__acknowledge_continue_ci:
     - text: OK, let's continue
@@ -1131,6 +1278,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_daily_checkin__invalid_id__anything_else:
     - text: "OK, is there anything else I can help you with?"
@@ -1139,6 +1289,9 @@ responses:
           payload: "/ask_question"
         - title: No I'm done
           payload: "/done"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_daily_checkin__invalid_id__visit_dialogue:
     - text: At any time, you can visit [our website](https://covid19.dialogue.co/) for information, or to get a self-assessment
@@ -1168,6 +1321,9 @@ responses:
           payload: /get_assessment
         - title: No but I have other questions
           payload: /ask_question
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_ask_test_navigation__continue_assessment_done:
     - text: Do you want to continue and search for a testing site?
@@ -1178,6 +1334,9 @@ responses:
           payload: /later
         - title: No but I have other questions
           payload: /ask_question
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_test_navigation__come_back:
     - text: OK, when you’re ready, come back here (https://covid19.dialogue.co/#/chat) and I’ll help you
@@ -1276,6 +1435,9 @@ responses:
           payload: "/affirm"
         - title: No
           payload: "/deny"
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_test_navigation__acknowledge:
     - text: OK
@@ -1289,6 +1451,9 @@ responses:
           payload: /ask_question
         - title: I’m done
           payload: /done
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_test_navigation__what_next_assessment_done:
     - text: What else may I help you with?
@@ -1297,6 +1462,9 @@ responses:
           payload: /ask_question
         - title: I’m done
           payload: /done
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_test_navigation__anything_else_no_assessment:
     - text: May I help you with anything else?
@@ -1307,6 +1475,9 @@ responses:
           payload: /ask_question
         - title: No I’m done
           payload: /done
+      custom:
+        data:
+          disableTextField: "true"
 
   utter_test_navigation__anything_else_assessment_done:
     - text: May I help you with anything else?
@@ -1315,3 +1486,6 @@ responses:
           payload: /ask_question
         - title: No I’m done
           payload: /done
+      custom:
+        data:
+          disableTextField: "true"

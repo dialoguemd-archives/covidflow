@@ -1,3 +1,322 @@
+## intent:get_assessment
+- évaluer mes symptômes
+- faire une auto-évaluation des symptômes
+- Symptômes
+- Mes symptomes
+- Checker symptômes
+- Évaluer
+- Évaluation des symptômes
+- Aider avec symptômes
+- J’ai attrapé la covid
+- Je pense que j’ai attrapé la covid
+- J’ai peur d’avoir la covid
+- J’aimerais savoir si j’ai attrapé la covid
+- Comment on fait pour savoir si on a la covid
+- Est-ce que j’ai la covid?
+- Je crois avoir attrapé la covid
+- Je veux vérifier si j’ai le covid
+- Je veux checker si j’ai la covid
+- Vérifier si j’ai la covid
+- J’aimerais vérifier si j’ai la covid
+- je pense que j'ai la covid-19
+- comment savoir si je dois me faire tester
+- je veux évaluer mes symptomes
+- c'est quoi les symptomes?
+- Mon mari a eu le covid je pense que je l'ai attrapé aussi
+- savoir si j'ai le covid
+- je pense que j'ai le virus
+- J'ai peur d'avoir la covid-19
+- J'ai du mal a respirer
+- Je pense que je l'ai attrapé.
+- Je fais de la fièvre et je tousse
+- Je pense avoir été en contact avec quelqu'un qui avait le virus.
+- J'éternue trop
+- J'étais à moins d'un mètre d'une personne qui toussait.
+- Je pense que j'ai la Covid
+- vérifier mes symptômes
+- je me sens malade et j'aimerais savoir si c'est la covid ou non
+- est-ce que j'ai le corona?
+- j'aimerais qu'on me dise si j'ai la covid
+- analyser mes symptômes
+- je crois que j'ai le covid-19
+- avoir un diagnostic de covid-19
+- Évaluer mes symptomes
+- Evaluer symptomes
+- Je veux évaluer mes sympômes
+- M’aider à évaluer mes symptomes
+- Évaluation
+- J’aimerais évaluer mes symptômes
+- J’ai peut-être la covid
+- J’ai l’impression d’avoir le covid
+- peux-tu me dire si je devrais me faire tester
+- je crois que j'ai attrapé la covid-19
+- passer le test
+- faire le test
+- faire l'évaluation de mes symptomes
+- Je fais de la fièvre je veux savoir si j'ai le covid
+- j'ai des symptômes
+- j'ai peut-être le coronavirus
+- me faire évaluer
+- faire une évaluation de mes symptômes
+- J'ai mal à la tête, est-ce que c'est un symptome du coronavirus?
+- Je sens ma gorge
+- Comment savoir si j'ai la covid-19
+- J'ai de la fièvre et je crains que cela soit le coronavirus
+- Je tousse beaucoup depuis quelques jours
+- Je suis constamment fatigué ces temps-ci. Est-ce que j'ai la covid-19?
+- J'aimerais évaluer mes symptômes.
+- J’aimerais évaluer ma condition
+- J’aimerais savoir si j’ai la Covid
+
+## intent:tested_positive
+- j'ai été testée positive
+- mon test est positif
+- j'ai reçu un résultat positif au test de covid
+- j'ai été testée pour la covid et je suis positive
+- mon résultat est positif
+- c'est positif mon test
+- J’ai eu un résultat positif au test de la covid
+- Diagnostique positif
+- J’ai été testé positif
+- Testé positif pour la covid
+- J’ai reçu un test positif
+- Positif à la covid
+- J’ai reçu un résultat positif au test
+- Test positif
+- j'ai reçu un résultat positif
+- j'ai déjà été testé mais je veux savoir si je dois aller à l'hôpital
+- je dois faire quoi si j'ai testé positif?
+- Je suis Covid+
+- J'ai été testé positif, mais je n'ai aucun symptôme. Que dois-je faire?
+- j'ai eu une confirmation que j'ai la covid
+- j'ai été testée pour le coronavirus
+- mon test de corona est revenu positif
+- j'ai eu un diagnostic positif à la covid
+- Résultat positif
+- J’ai reçu un diagnostique positif
+- J’ai eu un résultat de test positif à la covid
+- Positif au test
+- Résultat positif au test
+- que faire si j'ai attrapé la covid-19?
+- qu'est-ce que je dois savoir si j'ai la covid-19
+- aide pour les malades
+- j'ai la covid-19
+- je me suis fait tester la semaine passée mais j'ai pu de symptômes
+- déjà été testé mais je l'ai peut-être rattrapé
+- j'ai testé positif
+- mon test a viré positif mais je sais pas si je dois encore m'isoler
+- J'ai passé le test la semaine passée mais je pense que j'ai pu le covid
+- Déjà testé nouveaux symptômes
+- J'ai reçu un résultat positif et je voudrais savoir quoi faire
+
+## intent:checkin_return
+- refaire mon évaluation
+- je reviens pour réévaluer mes symptômes
+- je veux une nouvelle évaluation
+- revérifier mes symptômes
+- reprendre le diagnostic
+- faire une nouvelle évaluation
+- refaire l'analyse de mes symptômes
+- Réévaluer mes symptômes
+- Réévaluer
+- Je veux réévaluer
+- Réévaluation de mes symptomes
+- Réévaluation de symptômes
+- je reviens pour évaluer mes symptomes
+- mettre à jour mon évaluation
+- Mes symptômes ont empiré je veux refaire l'évaluation
+- recommencer
+- recommencer l'auto-évaluation
+- je voudrais réévaluer mes symptômes
+- mise à jour de mon évaluation
+- Faire une réévaluation
+- M’aider à réévaluer mes symptômes
+- Ré-évaluation
+- je veux ré-évaluer mes symptomes
+- Je veux faire une autre évaluation
+- évaluation je l'ai déjà fait
+- ré-évaluer mes symptômes
+- refaire l'évaluation
+- Je tousse maintenant je veux me refaire évaluer
+- je veux recommencer l'évaluation
+- refaire l'évaluation avec des nouveaux symptômes
+- j'ai déjà fait l'évaluation mais c'est pire
+- je veux réévaluer mes symptômes
+
+## intent:navigate_test_locations
+- où est-ce que je peux me faire tester?
+- trouver une clinique de dépistage
+- est-ce qu'il y a une clinique de dépistage dans mon quartier?
+- je veux me faire tester, où dois-je aller?
+- j'aimerais savoir où obtenir un test
+- je veux avoir un test pour la covid
+- Je cherche une clinique de dépistage
+- Directions pour une clinique de dépistage
+- Où aller pour se faire tester
+- J’aimerais aller me faire tester
+- C’est où qu’il faut aller pour se faire tester
+- Où sont les cliniques de dépistage dans mon coin
+- Je veux un test pour la covid
+- où est-ce que je peux recevoir le test?
+- où sont les centres de dépistage?
+- centre de dépistage à Montreal
+- je veux me faire tester
+- Est-ce qu'il y a des cliniques de dépistage dans le Pontiac?
+- cliniques de dépistage près de moi
+- où se faire tester
+- J'aimerais me faire tester pour la covid-19, ou aller?
+- Quels sont les sites de test a Montreal?
+- ou puis-je aller passer un test?
+- où puis-je aller me faire tester
+- trouver une clinique de test
+- chercher un site de test
+- test de dépistage
+- où je peux me faire tester pour le corona?
+- Dépistage près chez moi
+- Où on peut avoir un test
+- Où est-ce que je peux me faire tester
+- Clinique de dépistage
+- Test pour la covid
+- C’est où qu’on peut se faire tester
+- sites de test
+- lieux de test
+- centres de dépistages
+- centre de test/dépistage
+- je cherche une place pour me faire tester
+- savoir où sont les cliniques de test
+- c'est où les cliniques de dépistage?
+- Où est-ce qu'on peut se faire tester à Montréal?
+- Mon conjoint a testé positif où est-ce que je peux aller pour passer le test?
+- Tests drive-thru à Québec
+- Est-ce qu'il faut un rendez-vous pour se faire tester?
+- A quel endroit je peux aller me faire tester pour le coronavirus
+- Je recherche la clinique la plus proche pour me faire tester.
+- est-ce que je peux passer un test?
+
+## intent:q_a
+- Quand terminer ma quarantaine?
+- Je fais de la fièvre depuis hier, comment je fais pour savoir si je suis contagieux?
+- Je voudrais savoir combien de temps ça prend pour guérir de la covid.
+- Ma conjointe a des maux de tête depuis une semaine
+- Mes enfants ont joué avec des amis qui ont des parents qui ont eu du Coronavirus.
+- quelles sont les consignes à suivre?
+- quand dois-je aller à l'hôpital?
+- Quels sont les symptômes les plus courants
+- Les animaux peuvent-ils transmettre la Covid-19?
+- Si nous avons Covid-19, combien de temp sommes-nous contagieux?
+- Combien de temps sommes-nous contagieux quand nous avons Covid-19?
+- Après la disparition des symptômes, combien de temps une personne reste contagieuse?
+- Suis-je contagieux longtemps après que j'ai contracté le virus?
+- De la population infectée dans le monde entier quel sera le rapport des personnes asymptomatiques?
+- Combien de temp le virus vit-il sur des surfaces?
+- Pour combien de temps COVID19 peut rester en vie sur des surfaces différentes?
+- Est-il vrai que Covid-19 peut survivre jusqu'à quelques jours sur les surfaces dures?
+- Y a-t-il un vaccin pour le virus corona?
+- Y a-t-il un traitement pour le virus corona?
+- Est-ce que la toux est un symptôme de la covid-19?
+- Comment se transmet-elle?
+- Le virus est-il aéroporté?
+- Comment le coronavirus se propage-t-il?
+- Comment est-il transmis?
+- Comment puis-je distinguer entre la grippe et le coronavirus?
+- Quelle est la différence entre Covid-19 et la grippe?
+- Comment différenciez-vous entre Covid et la grippe?
+- Qu'est-ce coronavirus?
+- Pouvez-vous me expliquer quel est le covid19?
+- Qu'est-ce Covid-19 veut dire?
+- Comment puis-je m'empêcher de tomber malade?
+- Dois-je pratiquer la distanciation sociale?
+- Qu'est-ce que la distanciation sociale?
+- Pourquoi la distanciation sociale est-elle importante?
+- Je tousse, pensez-vous que j'ai le coronavirus?
+- Que dois-je faire si je suis à court de souffle?
+- Comment savoir si j'ai la Covid-19 ou non?
+- Que dois-je faire si je tousse?
+- Que faire si je fais la fièvre?
+- Comment puis-je savoir si ma toux est grave?
+- Quand est-ce autorisé d'aller à l'extérieur?
+- Est-ce OK si je sors pour une promenade seul?
+- Suis-je autorisé à aller à l'extérieur?
+- Comment la Covid 19 a-t-elle commencé?
+- Combien de cas au Québec?
+- Existe-t-'il un test afin de vérifier si j'ai déjà attrappé le virus?
+- J'ai un proche qui a de la fièvre
+- Quelqu'un avec qui je vis à tous les symptomes de la Covid, que dois je faire pour me protéger?
+- est-ce que je dois porter un masque?
+- quels sont les symptômes?
+- combien de temps suis-je contagieuse?
+- Quels sont les symptômes à surveiller?
+- Mon chat peut-il contracter le virus?
+- Les chiens peuvent-ils transférer le virus?
+- Le virus est-il transmissible des animaux aux humains?
+- Combien de temp une personne est-elle contagieuse?
+- Est-il vrai que la chaleur tue le coronavirus?
+- Combien de temps le virus survit-il sur une surface comme une poignée de porte?
+- Combien de temps est-ce que la Covid 19 peut rester sur des surfaces?
+- Combien de temps faudra-t-il pour développer un vaccin?
+- Y a-t-il un remède pour le virus corona?
+- Quels sont les symptômes de Covid-19?
+- Est-ce que vomir est un symptôme de la covid-19?
+- Est-ce que la fièvre est un symptôme de la covid-19?
+- Quels sont les principaux symptômes?
+- Quelle est la différence entre les symptômes de la grippe et Covid-19?
+- Comment faire la différence entre Covid et une simple grippe?
+- Qu'est-ce Covid-19?
+- Qu'est-ce exactement Covid-19?
+- Comment prévenir la propagation de Covid-19?
+- Comment puis-je me protéger contre la Covid-19?
+- Précautions à prendre?
+- Est-ce que me laver les mains est vraiment la meilleure façon de prévenir la transmission?
+- Pourquoi dois-je rester à la maison?
+- Pourquoi vous isoler?
+- J'ai un mal de tête et une gorge qui démange. Suis-je à risque?
+- Comment puis-je savoir si j'ai le coronavirus?
+- Je fais de la température, que dois-je faire?
+- Comment puis-je savoir quand me faire tester?
+- Dois-je me faire tester?
+- Puis-je aller marcher?
+- Suis-je autorisé à aller pour une promenade?
+- Où a-t-il commencé?
+- Comment a-t-il commencé?
+- Où est-ce que la Covid-19 a commencé?
+- Où puis-je trouver les statistiques à jour sur les cas et les décès?
+- Combien de cas à Montréal?
+- Combien de personnes sont mortes à ce jour?
+- Combien de personnes sont infectées au Québec?
+- Combien de cas sont aux États-Unis?
+
+## intent:reject
+- salut moi c'est serge comment ça va?
+- j'ai pris une bière avec mon voisin
+- je suis à la recherche de la parfaite petite robe noire
+- la rumeur veut qu'il y ait moins de personnes intéressées en région
+- mon divan est sale et je ne sais pas quoi faire pour nettoyer ces taches
+- j'aimerais trouver une recette pour utiliser tout ce basilic
+- céline est une grande vedette de la chanson, que ça te plaise ou non
+- je ne suis pas d'accord, l'automne est ma saison préférée
+- il pleut il mouille c'est la fête à la grenouille
+- je magasine un char, un gros char pour transporter toutes mes affaires
+- un deux trois tu m'entends?
+- si mon gazon est jaune avec des plaques blanches, est-ce que ça veut dire que j'ai des vers blancs?
+- comment faire pour garder ma piscine propre tout l'été?
+- je prends deux cartes, je les mets de côté et je brasse le paquet
+- je crois bien avoir entendu parler de ce nouveau modèle, il est trop cher pour moi
+- je cherche une maison de campagne avec un jardin et des arbres matures
+- le chien du voisin est un labrador noir, il est adorable
+- mes enfants n'aiment pas jouer au basketball
+- il faut appliquer une mince couche de peinture sur une surface sèche
+- qu'est-ce qu'on peut faire pour éviter d'être pris dans le trafic?
+- de quoi tu parles?
+- je pense que j'ai un problème avec mon ordinateur
+- j'aime jouer au golf et toi tu préfères les quilles, comment on va faire pour s'entendre?
+- je ne sais pas coudre, je dois faire réparer mes vêtements
+- denis
+- je m'appelle chantal et j'habite sur la rive sud
+- j'ai invité mon beau-frère à un picnic, il a trouvé ça bizarre
+- qu'est-ce que tu peux faire pour moi?
+- le ciel est bleu les oiseaux chantent
+- je dois sortir faire des courses à l'épicerie, peux-tu garder le bébé?
+
 ## intent:done
 - bye
 - goodbye
@@ -9,49 +328,6 @@
 - ciao
 - c'est terminé
 - terminé
-
-## intent:get_assessment
-- évaluer mes symptômes
-- j'aimerais évaluer mes symptômes
-- je veux évaluer mes symptômes
-- je voudrais évaluer mes symptômes
-- évaluation de mes symptômes
-- auto-évaluation
-- auto-évaluation de mes symptômes
-- diagnostic
-- diagnostiquer covid-19
-- diagnostiquer mes symptômes
-- analyse de mes symptômes
-- analyser mes symptômes
-- je crois avoir la covid-19
-- je pense avoir la covid-19
-- je pense que j'ai la covid-19
-- je crois que j'ai la covid-19
-- je crois avoir le corona virus
-- je pense avoir le corona virus
-- je pense que j'ai le corona virus
-- je crois que j'ai le corona virus
-- je pense que je suis malade
-- je crois que je suis malade
-- vérifier mes symptômes
-- checker mes symptômes
-- vérification de mes symptômes
-- je veux savoir si j'ai la covid-19
-- je voudrais savoir j'ai la covid-19
-
-## intent:tested_positive
-- test positif
-- j'ai été testé positif
-- j'ai été testée positive
-- test positif à la covid-19
-- test positif au corona virus
-- mon test est positif
-- résultat de test positif
-- j'ai reçu un résultat positif
-- j'ai reçu un test positif
-- j'ai eu un test positif
-- j'ai eu un résultat positif au test
-- j'ai été testé positif à la covid-19, qu'est-ce que je devrais savoir?
 
 ## intent:ask_question
 - j'ai une question
@@ -66,119 +342,7 @@
 - poser une question
 - demander une question
 
-## intent:checkin_return
-- ré-évaluation
-- réévaluation
-- ré-évaluer mes symptômes
-- réévaluer mes symptômes
-- je reviens pour évaluer mes symptômes
-- je veux ré-évaluer mes symptômes
-- refaire une évaluation
-- recommencer l'évaluation
-- refaire mon diagnostic
-- recommencer le diagnostic
-- reprendre une évaluation
-- reprendre le diagnostic
-- refaire l'analyse
-- recommencer l'analyse
-- reprendre l'analyse
-
-## intent:navigate_test_locations
-- où sont les cliniques de dépistage?
-- trouver une clinique de dépistage
-- trouver une clinique de test
-- où puis-je me faire tester?
-- je veux me faire tester
-- me faire dépister
-- j'aimerais trouver un site de dépistage
-- je cherche une clinique de dépistage
-- je cherche une clinique de test
-- comment je peux me faire tester?
-- où aller pour un test
-- clinique de test et dépistage
-- j'aimerais savoir où je peux me faire tester
-- je cherche une clinique de dépistage ou de test
-
-## intent:q_a
-- Mon chat peut-il contracter le virus?
-- Les chiens peuvent-ils transférer le virus?
-- Les animaux peuvent-ils transmettre la Covid-19?
-- Le virus est-il transmissible des animaux aux humains?
-- Si nous avons Covid-19, combien de temp sommes-nous contagieux?
-- Combien de temps sommes-nous contagieux quand nous avons Covid-19?
-- Après la disparition des symptômes, combien de temps une personne reste contagieuse?
-- Combien de temp une personne est-elle contagieuse?
-- Suis-je contagieux longtemps après que j'ai contracté le virus?
-- De la population infectée dans le monde entier quel sera le rapport des personnes asymptomatiques?
-- Est-il vrai que la chaleur tue le coronavirus?
-- Combien de temp le virus vit-il sur des surfaces?
-- Pour combien de temps COVID19 peut rester en vie sur des surfaces différentes?
-- Est-il vrai que Covid-19 peut survivre jusqu'à quelques jours sur les surfaces dures?
-- Combien de temps le virus survit-il sur une surface comme une poignée de porte?
-- Combien de temps est-ce que la Covid 19 peut rester sur des surfaces?
-- Combien de temps faudra-t-il pour développer un vaccin?
-- Y a-t-il un remède pour le virus corona?
-- Y a-t-il un vaccin pour le virus corona?
-- Y a-t-il un traitement pour le virus corona?
-- Y a-t-il un vaccin pour le virus corona?
-- Quels sont les symptômes de Covid-19?
-- Est-ce que vomir est un symptôme de la covid-19?
-- Est-ce que la fièvre est un symptôme de la covid-19?
-- Quels sont les principaux symptômes?
-- Est-ce que la toux est un symptôme de la covid-19?
-- Comment se transmet-elle?
-- Le virus est-il aéroporté?
-- Comment le coronavirus se propage-t-il?
-- Comment est-il transmis?
-- Comment puis-je distinguer entre la grippe et le coronavirus?
-- Quelle est la différence entre Covid-19 et la grippe?
-- Comment différenciez-vous entre Covid et la grippe?
-- Quelle est la différence entre les symptômes de la grippe et Covid-19?
-- Comment faire la différence entre Covid et une simple grippe?
-- Qu'est-ce coronavirus?
-- Qu'est-ce Covid-19?
-- Pouvez-vous me expliquer quel est le covid19?
-- Qu'est-ce exactement Covid-19?
-- Qu'est-ce Covid-19 veut dire?
-- Comment puis-je m'empêcher de tomber malade?
-- Comment prévenir la propagation de Covid-19?
-- Comment puis-je me protéger contre la Covid-19?
-- Précautions à prendre?
-- Est-ce que me laver les mains est vraiment la meilleure façon de prévenir la transmission?
-- Dois-je pratiquer la distanciation sociale?
-- Qu'est-ce que la distanciation sociale?
-- Pourquoi la distanciation sociale est-elle importante?
-- Pourquoi dois-je rester à la maison?
-- Pourquoi vous isoler?
-- J'ai un mal de tête et une gorge qui démange. Suis-je à risque?
-- Comment puis-je savoir si j'ai le coronavirus?
-- Je tousse, pensez-vous que j'ai le coronavirus?
-- Je fais de la température, que dois-je faire?
-- Comment puis-je savoir si j'ai le coronavirus?
-- Comment puis-je savoir quand me faire tester?
-- Que dois-je faire si je suis à court de souffle?
-- Comment savoir si j'ai la Covid-19 ou non?
-- Que dois-je faire si je tousse?
-- Que faire si je fais la fièvre?
-- Comment puis-je savoir si ma toux est grave?
-- Dois-je me faire tester?
-- Quand est-ce autorisé d'aller à l'extérieur?
-- Est-ce OK si je sors pour une promenade seul?
-- Puis-je aller marcher?
-- Suis-je autorisé à aller pour une promenade?
-- Suis-je autorisé à aller à l'extérieur?
-- Où a-t-il commencé?
-- Comment a-t-il commencé?
-- Où est-ce que la Covid-19 a commencé?
-- Comment la Covid 19 a-t-elle commencé?
-- Où puis-je trouver les statistiques à jour sur les cas et les décès?
-- Combien de cas à Montréal?
-- Combien de personnes sont mortes à ce jour?
-- Combien de cas au Québec?
-- Combien de personnes sont infectées au Québec?
-- Combien de cas sont aux États-Unis?
-
-## intent: cancel
+## intent:cancel
 - j'ai changé d'idée
 - je ne veux pas m'inscrire
 - annuler
@@ -187,8 +351,11 @@
 - canceller
 - annuler l'inscription
 - cancel
+- annuler suivi
+- annuler suivi quotidien
+- annuler évaluation
 
-## intent: no_phone
+## intent:no_phone
 - pas de téléphone mobile
 - j'en ai pas
 - j'ai pas de téléphone
@@ -199,7 +366,7 @@
 - je n'ai pas de cellulaire
 - je veux pas donner mon numéro
 
-## intent: inform
+## intent:inform
 - c'est le 514-555-1234
 - c'est le 1 (819) 555-1234
 - c'est 514-555-1234
@@ -210,7 +377,7 @@
 - le code est 1234
 - c'est 1234
 
-## intent: change_phone
+## intent:change_phone
 - pas le bon numéro
 - pas le bon numéro de téléphone
 - changer le numéro
@@ -226,8 +393,13 @@
 - autre numéro de téléphone
 - autre cellulaire
 - autre téléphone
+- nouveau numéro
+- entrer nouveau numéro
+- redonner mon numéro
+- redonner mon téléphone
+- redonner mon cell
 
-## intent: did_not_get_code
+## intent:did_not_get_code
 - pas de code
 - pas de code de validation
 - pas eu de code
@@ -243,7 +415,7 @@
 - je n'ai rien eu
 - je n'ai rien reçu
 
-## intent: affirm
+## intent:affirm
 - oui
 - ouais
 - oui c'est ça
@@ -254,9 +426,72 @@
 - oui svp
 - oui stp
 
-## intent: deny
+## intent:deny
 - non
 - non c'est pas ça
 - c'est pas ça
 - non merci
 - non ça m'intéresse pas
+
+## intent:new_code
+- nouveau code
+- nouveau code de validation
+- recevoir nouveau code
+- renvoyer code
+- renvoyer code de validation
+- recevoir nouveau code de validation
+
+## intent:dont_know
+- je ne sais pas
+- je sais pas
+- j'en sais rien
+- aucune idée
+- aucune espèce d'idée
+- je l'ignore
+- j'en ai aucune idée
+
+## intent:better
+- mieux
+- ça va mieux
+- je vais mieux
+- je me sens mieux
+- mieux que hier
+- mieux qu'hier
+- mieux par rapport à hier
+- je suis mieux
+- amélioré
+- améliorer
+- ça va bien
+- je vais bien
+- je me sens bien
+
+## intent:worse
+- pire
+- plus mal
+- je vais plus mal
+- je me sens plus mal
+- ça va mal
+- je me sens mal
+- pire que hier
+- pire qu'hier
+- plus mal qu'hier
+- plus mal que hier
+- plus mal par rapport à hier
+- empiré
+- empirer
+- je suis plus mal
+- je suis pire
+
+## intent:no_change
+- pareil
+- pareille
+- pas de changement
+- du pareil au même
+- aucun changement
+- ni mieux ni pire
+- ni mieux ni plus mal
+- le même
+- même affaire
+- même chose
+- je suis pareil
+- je suis pareille

@@ -3,14 +3,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
-from rasa_sdk.interfaces import ActionExecutionRejection
 
-from covidflow.actions.constants import (
-    FIRST_NAME_SLOT,
-    HAS_DIALOGUE_SLOT,
-    PHONE_NUMBER_SLOT,
-    PRECONDITIONS_SLOT,
-)
 from covidflow.actions.daily_ci_enroll_form import (
     CODE_TRY_COUNTER_SLOT,
     DO_ENROLL_SLOT,
@@ -19,10 +12,17 @@ from covidflow.actions.daily_ci_enroll_form import (
     NO_CODE_SOLUTION_SLOT,
     PHONE_TO_CHANGE_SLOT,
     PHONE_TRY_COUNTER_SLOT,
+    PRECONDITIONS_WITH_EXAMPLES_SLOT,
     VALIDATION_CODE_REFERENCE_SLOT,
     VALIDATION_CODE_SLOT,
     WANTS_CANCEL_SLOT,
     DailyCiEnrollForm,
+)
+from covidflow.constants import (
+    FIRST_NAME_SLOT,
+    HAS_DIALOGUE_SLOT,
+    PHONE_NUMBER_SLOT,
+    PRECONDITIONS_SLOT,
 )
 
 from .form_test_helper import FormTestCase
@@ -30,6 +30,15 @@ from .form_test_helper import FormTestCase
 FIRST_NAME = "John"
 PHONE_NUMBER = "15141234567"
 VALIDATION_CODE = "4567"
+
+DOMAIN = {
+    "responses": {
+        "utter_ask_daily_ci_enroll__wants_cancel_error": [{"text": ""}],
+        "utter_ask_daily_ci_enroll__no_code_solution_error": [{"text": ""}],
+        "utter_ask_preconditions_error": [{"text": ""}],
+        "utter_ask_daily_ci_enroll__preconditions_examples_error": [{"text": ""}],
+    }
+}
 
 
 def AsyncMock(*args, **kwargs):
@@ -118,9 +127,15 @@ class TestDailyCiEnrollForm(FormTestCase):
     def test_form_activation(self):
         tracker = self.create_tracker(active_form=False)
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
-        self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, DO_ENROLL_SLOT)])
+        self.assert_events(
+            [
+                SlotSet(PRECONDITIONS_WITH_EXAMPLES_SLOT, "N/A"),
+                Form(FORM_NAME),
+                SlotSet(REQUESTED_SLOT, DO_ENROLL_SLOT),
+            ]
+        )
 
         self.assert_templates(
             [
@@ -133,10 +148,14 @@ class TestDailyCiEnrollForm(FormTestCase):
 
     def test_provide_do_enroll_checkin_affirm(self):
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: DO_ENROLL_SLOT}, intent="affirm"
+            slots={
+                REQUESTED_SLOT: DO_ENROLL_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
+            },
+            intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [SlotSet(DO_ENROLL_SLOT, True), SlotSet(REQUESTED_SLOT, FIRST_NAME_SLOT),],
@@ -148,10 +167,14 @@ class TestDailyCiEnrollForm(FormTestCase):
 
     def test_provide_do_enroll_checkin_deny(self):
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: DO_ENROLL_SLOT}, intent="deny"
+            slots={
+                REQUESTED_SLOT: DO_ENROLL_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
+            },
+            intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -165,11 +188,15 @@ class TestDailyCiEnrollForm(FormTestCase):
 
     def test_provide_first_name(self):
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: FIRST_NAME_SLOT, DO_ENROLL_SLOT: True},
+            slots={
+                REQUESTED_SLOT: FIRST_NAME_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
+                DO_ENROLL_SLOT: True,
+            },
             text=FIRST_NAME,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -188,10 +215,15 @@ class TestDailyCiEnrollForm(FormTestCase):
 
     def test_provide_invalid_first_name(self):
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: FIRST_NAME_SLOT, DO_ENROLL_SLOT: True}, text=" "
+            slots={
+                REQUESTED_SLOT: FIRST_NAME_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
+                DO_ENROLL_SLOT: True,
+            },
+            text=" ",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [SlotSet(FIRST_NAME_SLOT, None), SlotSet(REQUESTED_SLOT, FIRST_NAME_SLOT),],
@@ -207,13 +239,14 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PHONE_NUMBER_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
             },
             text=PHONE_NUMBER,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -240,6 +273,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PHONE_NUMBER_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 JUST_SENT_CODE_SLOT: True,
                 CODE_TRY_COUNTER_SLOT: 1,
                 DO_ENROLL_SLOT: True,
@@ -248,7 +282,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             text=PHONE_NUMBER,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -275,13 +309,14 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PHONE_NUMBER_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
             },
             text=PHONE_NUMBER,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -306,13 +341,14 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PHONE_NUMBER_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
             },
             text=" ",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -334,6 +370,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PHONE_NUMBER_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_TRY_COUNTER_SLOT: 1,
@@ -341,7 +378,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             text=" ",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -363,6 +400,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PHONE_NUMBER_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_TRY_COUNTER_SLOT: 2,
@@ -370,7 +408,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             text=" ",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -388,13 +426,14 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PHONE_NUMBER_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
             },
             intent="no_phone",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -417,13 +456,14 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PHONE_NUMBER_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
             },
             intent="cancel",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -440,6 +480,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: WANTS_CANCEL_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 WANTS_CANCEL_SLOT: None,
@@ -447,7 +488,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -464,6 +505,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: WANTS_CANCEL_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 WANTS_CANCEL_SLOT: None,
@@ -471,7 +513,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -485,10 +527,34 @@ class TestDailyCiEnrollForm(FormTestCase):
             ["utter_daily_ci_enroll__ok_continue", "utter_ask_phone_number_error"]
         )
 
+    def test_provide_wants_cancel_error(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: WANTS_CANCEL_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                WANTS_CANCEL_SLOT: None,
+            },
+            intent="something_else",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(WANTS_CANCEL_SLOT, None),
+                SlotSet(REQUESTED_SLOT, WANTS_CANCEL_SLOT),
+            ],
+        )
+
+        self.assert_templates(["utter_ask_daily_ci_enroll__wants_cancel_error"])
+
     def test_provide_validation_code(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -497,7 +563,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             text=VALIDATION_CODE,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -515,6 +581,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -523,7 +590,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             text=" ",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -540,6 +607,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -549,7 +617,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             text=" ",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -566,6 +634,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -575,7 +644,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             text=" ",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -592,6 +661,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -600,7 +670,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             intent="change_phone",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -621,6 +691,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -629,7 +700,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             text=PHONE_NUMBER,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -657,6 +728,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -666,7 +738,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             text=PHONE_NUMBER,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -694,6 +766,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -702,7 +775,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             text=PHONE_NUMBER,
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -728,6 +801,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -736,7 +810,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             intent="did_not_get_code",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -756,6 +830,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 CODE_TRY_COUNTER_SLOT: 1,
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
@@ -765,7 +840,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             intent="did_not_get_code",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -785,6 +860,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: VALIDATION_CODE_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 CODE_TRY_COUNTER_SLOT: 2,
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
@@ -794,7 +870,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             intent="did_not_get_code",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -814,24 +890,25 @@ class TestDailyCiEnrollForm(FormTestCase):
         "covidflow.actions.daily_ci_enroll_form.send_validation_code",
         new=AsyncMock(return_value=VALIDATION_CODE),
     )
-    def test_provide_no_code_solution_resend_code(self):
+    def test_provide_no_code_solution_new_code(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: NO_CODE_SOLUTION_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 CODE_TRY_COUNTER_SLOT: 1,  # set when received did_not_get_code intent
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
                 VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE,
             },
-            intent="resend_code",
+            intent="new_code",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
-                SlotSet(NO_CODE_SOLUTION_SLOT, "resend_code"),
+                SlotSet(NO_CODE_SOLUTION_SLOT, "new_code"),
                 SlotSet(VALIDATION_CODE_REFERENCE_SLOT, VALIDATION_CODE),
                 SlotSet(JUST_SENT_CODE_SLOT, True),
                 SlotSet(REQUESTED_SLOT, VALIDATION_CODE_SLOT),
@@ -844,24 +921,25 @@ class TestDailyCiEnrollForm(FormTestCase):
         "covidflow.actions.daily_ci_enroll_form.send_validation_code",
         new=AsyncMock(return_value=None),
     )
-    def test_provide_no_code_solution_resend_code_sms_error(self):
+    def test_provide_no_code_solution_new_code_sms_error(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: NO_CODE_SOLUTION_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 CODE_TRY_COUNTER_SLOT: 1,
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
                 VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE,
             },
-            intent="resend_code",
+            intent="new_code",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
-                SlotSet(NO_CODE_SOLUTION_SLOT, "resend_code"),
+                SlotSet(NO_CODE_SOLUTION_SLOT, "new_code"),
                 SlotSet(DO_ENROLL_SLOT, False),
                 Form(None),
                 SlotSet(REQUESTED_SLOT, None),
@@ -876,23 +954,24 @@ class TestDailyCiEnrollForm(FormTestCase):
             ]
         )
 
-    def test_provide_no_code_solution_reenter_phone_number(self):
+    def test_provide_no_code_solution_change_phone(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: NO_CODE_SOLUTION_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
                 VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE,
             },
-            intent="reenter_phone_number",
+            intent="change_phone",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
-                SlotSet(NO_CODE_SOLUTION_SLOT, "reenter_phone_number"),
+                SlotSet(NO_CODE_SOLUTION_SLOT, "change_phone"),
                 SlotSet(PHONE_NUMBER_SLOT, None),
                 SlotSet(PHONE_TO_CHANGE_SLOT, True),
                 SlotSet(REQUESTED_SLOT, PHONE_NUMBER_SLOT),
@@ -901,10 +980,35 @@ class TestDailyCiEnrollForm(FormTestCase):
 
         self.assert_templates(["utter_ask_phone_number_new"])
 
+    def test_provide_no_code_solution_error(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: NO_CODE_SOLUTION_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_REFERENCE_SLOT: VALIDATION_CODE,
+            },
+            intent="anything",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(NO_CODE_SOLUTION_SLOT, None),
+                SlotSet(REQUESTED_SLOT, NO_CODE_SOLUTION_SLOT),
+            ],
+        )
+
+        self.assert_templates(["utter_ask_daily_ci_enroll__no_code_solution_error"])
+
     def test_provide_preconditions_affirm(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PRECONDITIONS_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -913,7 +1017,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -930,6 +1034,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PRECONDITIONS_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -938,7 +1043,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -951,10 +1056,35 @@ class TestDailyCiEnrollForm(FormTestCase):
             ["utter_daily_ci_enroll__acknowledge", "utter_ask_has_dialogue"],
         )
 
+    def test_provide_preconditions_error(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: PRECONDITIONS_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_SLOT: VALIDATION_CODE,
+            },
+            intent="other",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(PRECONDITIONS_SLOT, None),
+                SlotSet(REQUESTED_SLOT, PRECONDITIONS_SLOT),
+            ],
+        )
+
+        self.assert_templates(["utter_ask_preconditions_error"],)
+
     def test_provide_preconditions_dont_know(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PRECONDITIONS_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -963,23 +1093,28 @@ class TestDailyCiEnrollForm(FormTestCase):
             intent="dont_know",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
-                SlotSet(PRECONDITIONS_SLOT, True),
-                SlotSet(REQUESTED_SLOT, HAS_DIALOGUE_SLOT),
+                SlotSet(PRECONDITIONS_SLOT, None),
+                SlotSet(PRECONDITIONS_WITH_EXAMPLES_SLOT, None),
+                SlotSet(REQUESTED_SLOT, PRECONDITIONS_WITH_EXAMPLES_SLOT),
             ],
         )
 
         self.assert_templates(
-            ["utter_daily_ci_enroll__note_preconditions", "utter_ask_has_dialogue",],
+            [
+                "utter_daily_ci_enroll__explain_preconditions",
+                "utter_ask_daily_ci_enroll__preconditions_examples",
+            ],
         )
 
-    def test_provide_preconditions_explain(self):
+    def test_provide_preconditions_help_preconditions(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: PRECONDITIONS_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -988,14 +1123,132 @@ class TestDailyCiEnrollForm(FormTestCase):
             intent="help_preconditions",
         )
 
-        with self.assertRaises(ActionExecutionRejection):
-            self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(PRECONDITIONS_SLOT, None),
+                SlotSet(PRECONDITIONS_WITH_EXAMPLES_SLOT, None),
+                SlotSet(REQUESTED_SLOT, PRECONDITIONS_WITH_EXAMPLES_SLOT),
+            ],
+        )
+
+        self.assert_templates(
+            [
+                "utter_daily_ci_enroll__explain_preconditions",
+                "utter_ask_daily_ci_enroll__preconditions_examples",
+            ],
+        )
+
+    def test_provide_preconditions_with_examples_affirm(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: PRECONDITIONS_WITH_EXAMPLES_SLOT,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_SLOT: VALIDATION_CODE,
+            },
+            intent="affirm",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(PRECONDITIONS_WITH_EXAMPLES_SLOT, True),
+                SlotSet(PRECONDITIONS_SLOT, True),
+                SlotSet(REQUESTED_SLOT, HAS_DIALOGUE_SLOT),
+            ],
+        )
+
+        self.assert_templates(
+            ["utter_daily_ci_enroll__acknowledge", "utter_ask_has_dialogue"]
+        )
+
+    def test_provide_preconditions_with_examples_deny(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: PRECONDITIONS_WITH_EXAMPLES_SLOT,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_SLOT: VALIDATION_CODE,
+            },
+            intent="deny",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(PRECONDITIONS_WITH_EXAMPLES_SLOT, False),
+                SlotSet(PRECONDITIONS_SLOT, False),
+                SlotSet(REQUESTED_SLOT, HAS_DIALOGUE_SLOT),
+            ],
+        )
+
+        self.assert_templates(
+            ["utter_daily_ci_enroll__acknowledge", "utter_ask_has_dialogue"],
+        )
+
+    def test_provide_preconditions_with_examples_dont_know(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: PRECONDITIONS_WITH_EXAMPLES_SLOT,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_SLOT: VALIDATION_CODE,
+            },
+            intent="dont_know",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(PRECONDITIONS_WITH_EXAMPLES_SLOT, "dont_know"),
+                SlotSet(PRECONDITIONS_SLOT, True),
+                SlotSet(REQUESTED_SLOT, HAS_DIALOGUE_SLOT),
+            ],
+        )
+
+        self.assert_templates(
+            ["utter_daily_ci_enroll__note_preconditions", "utter_ask_has_dialogue"],
+        )
+
+    def test_provide_preconditions_with_examples_error(self):
+        tracker = self.create_tracker(
+            slots={
+                REQUESTED_SLOT: PRECONDITIONS_WITH_EXAMPLES_SLOT,
+                DO_ENROLL_SLOT: True,
+                FIRST_NAME_SLOT: FIRST_NAME,
+                PHONE_NUMBER_SLOT: PHONE_NUMBER,
+                VALIDATION_CODE_SLOT: VALIDATION_CODE,
+            },
+            intent="other",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(PRECONDITIONS_WITH_EXAMPLES_SLOT, None),
+                SlotSet(REQUESTED_SLOT, PRECONDITIONS_WITH_EXAMPLES_SLOT),
+            ],
+        )
+
+        self.assert_templates(
+            ["utter_ask_daily_ci_enroll__preconditions_examples_error"],
+        )
 
     @patch("covidflow.actions.daily_ci_enroll_form.ci_enroll")
     def test_provide_has_dialogue_affirm(self, mock_ci_enroll):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: HAS_DIALOGUE_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -1005,7 +1258,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -1028,6 +1281,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: HAS_DIALOGUE_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -1037,7 +1291,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             intent="deny",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
@@ -1060,6 +1314,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: HAS_DIALOGUE_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT: "N/A",
                 DO_ENROLL_SLOT: True,
                 FIRST_NAME_SLOT: FIRST_NAME,
                 PHONE_NUMBER_SLOT: PHONE_NUMBER,
@@ -1069,7 +1324,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             intent="affirm",
         )
 
-        self.run_form(tracker)
+        self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [

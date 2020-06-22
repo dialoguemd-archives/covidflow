@@ -1,13 +1,13 @@
 from unittest import TestCase
 
-from covidflow.db.assessment import (
+from covidflow.constants import (
     FEEL_WORSE_SLOT,
     HAS_COUGH_SLOT,
     HAS_DIFF_BREATHING_SLOT,
     HAS_FEVER_SLOT,
     SYMPTOMS_SLOT,
-    Assessment,
 )
+from covidflow.db.assessment import Assessment
 
 SYMPTOMS = "tickles"
 FEEL_WORSE = True

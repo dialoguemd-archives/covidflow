@@ -5,19 +5,21 @@ from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from .constants import (
+from covidflow.constants import (
     AGE_OVER_65_SLOT,
     HAS_COUGH_SLOT,
     HAS_FEVER_SLOT,
     LIVES_ALONE_SLOT,
     MODERATE_SYMPTOMS_SLOT,
     PROVINCE_SLOT,
+    PROVINCES,
     PROVINCIAL_811_SLOT,
     SELF_ASSESS_DONE_SLOT,
     SEVERE_SYMPTOMS_SLOT,
     SYMPTOMS_SLOT,
     Symptoms,
 )
+
 from .form_helper import validate_boolean_slot, yes_no_nlu_mapping
 from .lib.provincial_811 import get_provincial_811
 
@@ -53,6 +55,7 @@ class AssessmentCommon:
     @staticmethod
     def base_slot_mappings(form: FormAction) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {
+            PROVINCE_SLOT: [form.from_entity(entity="province"), form.from_text()],
             AGE_OVER_65_SLOT: yes_no_nlu_mapping(form),
             SEVERE_SYMPTOMS_SLOT: yes_no_nlu_mapping(form),
             HAS_FEVER_SLOT: yes_no_nlu_mapping(form),
@@ -71,17 +74,20 @@ class AssessmentCommon:
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
         if value is False:
-            dispatcher.utter_message(template="utter_pre_ask_province")
+            dispatcher.utter_message(template="utter_pre_ask_province_code")
 
         return {SEVERE_SYMPTOMS_SLOT: value}
 
-    def validate_province(
+    def validate_province_code(
         self,
         value: Text,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
+        if value not in PROVINCES:
+            return {PROVINCE_SLOT: None}
+
         provincial_811 = get_provincial_811(value, domain)
 
         return {

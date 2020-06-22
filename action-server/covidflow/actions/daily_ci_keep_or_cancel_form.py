@@ -3,13 +3,11 @@ from typing import Any, Dict, List, Optional, Text, Union
 from rasa_sdk import Tracker
 from rasa_sdk.events import EventType
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.forms import FormAction
+from rasa_sdk.forms import REQUESTED_SLOT, FormAction
 
-from covidflow.utils.persistence import cancel_reminder
-
-from .constants import (
+from covidflow.constants import (
     AGE_OVER_65_SLOT,
-    CANCEL_CI_SLOT,
+    CONTINUE_CI_SLOT,
     FEEL_WORSE_SLOT,
     PRECONDITIONS_SLOT,
     PROVINCE_SLOT,
@@ -17,7 +15,9 @@ from .constants import (
     SYMPTOMS_SLOT,
     Symptoms,
 )
-from .form_helper import request_next_slot
+from covidflow.utils.persistence import cancel_reminder
+
+from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 
 FORM_NAME = "daily_ci_keep_or_cancel_form"
@@ -57,14 +57,15 @@ class DailyCiKeepOrCancelForm(FormAction):
     def required_slots(tracker: Tracker) -> List[Text]:
         """A list of required slots that the form has to fill"""
 
-        return [] if _mandatory_ci(tracker) else [CANCEL_CI_SLOT]
+        return [] if _mandatory_ci(tracker) else [CONTINUE_CI_SLOT]
 
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {
-            CANCEL_CI_SLOT: [
-                self.from_intent(intent="cancel", value=True),
-                self.from_intent(intent="continue", value=False),
-            ],
+            CONTINUE_CI_SLOT: [
+                self.from_intent(intent="continue", value=True),
+                self.from_intent(intent="cancel", value=False),
+            ]
+            + yes_no_nlu_mapping(self),
         }
 
     def request_next_slot(
@@ -78,13 +79,26 @@ class DailyCiKeepOrCancelForm(FormAction):
         )
 
     def _utter_ask_slot_template(self, slot: str, tracker: Tracker) -> Optional[str]:
-        if slot == CANCEL_CI_SLOT:
+        error_suffix = "_error" if tracker.get_slot(REQUESTED_SLOT) == slot else ""
+        if slot == CONTINUE_CI_SLOT:
             if tracker.get_slot(SYMPTOMS_SLOT) == Symptoms.NONE:
-                return f"utter_ask_daily_ci__keep_or_cancel__{slot}_no_symptoms"
+                return f"utter_ask_daily_ci__keep_or_cancel__{slot}_no_symptoms{error_suffix}"
             else:
-                return f"utter_ask_daily_ci__keep_or_cancel__{slot}_symptoms"
+                return (
+                    f"utter_ask_daily_ci__keep_or_cancel__{slot}_symptoms{error_suffix}"
+                )
 
         return None
+
+    @validate_boolean_slot
+    def validate_continue_ci(
+        self,
+        value: Union[bool, Text],
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        return {}
 
     def submit(
         self,
@@ -103,7 +117,7 @@ class DailyCiKeepOrCancelForm(FormAction):
             _recommendations(dispatcher, tracker, domain)
 
         # Optional check-in cancel
-        elif tracker.get_slot(CANCEL_CI_SLOT) is True:
+        elif tracker.get_slot(CONTINUE_CI_SLOT) is False:
             dispatcher.utter_message(
                 template="utter_daily_ci__keep_or_cancel__acknowledge_cancel_ci"
             )

@@ -7,7 +7,7 @@ from rasa_integration_testing.runner import ScenarioRunner
 from rasa_integration_testing.scenario import Scenario, ScenarioFragmentLoader
 from socketio import Client
 
-from load_tests.constants import SESSION_ID_KEY
+from load_testscovidflow.constants import SESSION_ID_KEY
 
 EVENT_BOT_UTTERED = "bot_uttered"
 EVENT_USER_UTTERED = "user_uttered"

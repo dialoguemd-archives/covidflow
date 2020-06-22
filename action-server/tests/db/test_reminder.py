@@ -1,11 +1,9 @@
 from datetime import datetime
 from unittest import TestCase
 
+from covidflow.constants import FIRST_NAME_SLOT, METADATA_SLOT, PHONE_NUMBER_SLOT
 from covidflow.db.reminder import Reminder, _uniformize_timezone
 
-METADATA_SLOT = "metadata"
-PHONE_NUMBER_SLOT = "phone_number"
-FIRST_NAME_SLOT = "first_name"
 TIMEZONE_PROPERTY = "timezone"
 
 PHONE_NUMBER = "15141112222"

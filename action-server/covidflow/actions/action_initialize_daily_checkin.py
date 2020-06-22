@@ -5,9 +5,7 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 
-from covidflow.utils.persistence import get_last_assessment, get_reminder
-
-from .constants import (
+from covidflow.constants import (
     AGE_OVER_65_SLOT,
     FIRST_NAME_SLOT,
     HAS_DIALOGUE_SLOT,
@@ -21,6 +19,8 @@ from .constants import (
     PROVINCIAL_811_SLOT,
     Symptoms,
 )
+from covidflow.utils.persistence import get_last_assessment, get_reminder
+
 from .lib.log_util import bind_logger
 from .lib.provincial_811 import get_provincial_811
 

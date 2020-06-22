@@ -5,8 +5,7 @@ from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from .assessment_common import AssessmentCommon
-from .constants import (
+from covidflow.constants import (
     CONTACT_SLOT,
     HAS_CONTACT_RISK_SLOT,
     HAS_COUGH_SLOT,
@@ -15,6 +14,8 @@ from .constants import (
     SEVERE_SYMPTOMS_SLOT,
     TRAVEL_SLOT,
 )
+
+from .assessment_common import AssessmentCommon
 from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 

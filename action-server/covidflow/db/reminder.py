@@ -20,6 +20,17 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.hybrid import hybrid_property
 
+from covidflow.constants import (
+    AGE_OVER_65_SLOT,
+    FIRST_NAME_SLOT,
+    HAS_DIALOGUE_SLOT,
+    LANGUAGE_SLOT,
+    METADATA_SLOT,
+    PHONE_NUMBER_SLOT,
+    PRECONDITIONS_SLOT,
+    PROVINCE_SLOT,
+)
+
 from .base import Base
 
 logger = structlog.get_logger()
@@ -33,14 +44,6 @@ AGE_OVER_65_ATTRIBUTE = "age_over_65"
 PRECONDITIONS_ATTRIBUTE = "preconditions"
 HAS_DIALOGUE_ATTRIBUTE = "has_dialogue"
 
-FIRST_NAME_SLOT = "first_name"
-PHONE_NUMBER_SLOT = "phone_number"
-LANGUAGE_SLOT = "language"
-PROVINCE_SLOT = "province"
-AGE_OVER_65_SLOT = "age_over_65"
-PRECONDITIONS_SLOT = "preconditions"
-HAS_DIALOGUE_SLOT = "has_dialogue"
-METADATA_SLOT = "metadata"
 TIMEZONE_METADATA_PROPERTY = "timezone"
 
 SLOT_MAPPING = {

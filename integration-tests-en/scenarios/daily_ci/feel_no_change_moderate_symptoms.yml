@@ -9,7 +9,7 @@
 - user: affirm
   bot: daily_ci/feel_no_change/ask_diff_breathing_cough
 - user: affirm
-  bot: daily_ci/feel_no_change/ask_cancel_ci_diff_breathing
+  bot: daily_ci/feel_no_change/ask_continue_ci_diff_breathing
 - user: daily_ci/continue
   bot: daily_ci/vulnerable_population_recommendations_has_211
 - user: done

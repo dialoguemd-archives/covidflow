@@ -5,7 +5,7 @@ from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import REQUESTED_SLOT, FormAction
 
-from .constants import (
+from covidflow.constants import (
     FEEL_WORSE_SLOT,
     HAS_COUGH_SLOT,
     HAS_DIFF_BREATHING_SLOT,
@@ -14,6 +14,7 @@ from .constants import (
     SYMPTOMS_SLOT,
     Symptoms,
 )
+
 from .daily_ci_assessment_common import submit_daily_ci_assessment
 from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
@@ -84,10 +85,7 @@ class DailyCiFeelBetterForm(FormAction):
             HAS_COUGH_SLOT: yes_no_nlu_mapping(self),
             HAS_DIFF_BREATHING_SLOT: yes_no_nlu_mapping(self),
             HAS_OTHER_MILD_SYMPTOMS_SLOT: yes_no_nlu_mapping(self),
-            IS_SYMPTOM_FREE_SLOT: [
-                self.from_intent(intent="symptom_free", value=True),
-                self.from_intent(intent="still_sick", value=False),
-            ],
+            IS_SYMPTOM_FREE_SLOT: yes_no_nlu_mapping(self),
         }
 
     def request_next_slot(

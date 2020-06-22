@@ -3,7 +3,7 @@ from unittest.mock import patch
 from rasa_sdk.events import SlotSet
 
 from covidflow.actions.action_daily_ci_early_opt_out import ActionDailyCiEarlyOptOut
-from covidflow.actions.constants import CANCEL_CI_SLOT
+from covidflow.constants import CONTINUE_CI_SLOT
 
 from .action_test_helper import ActionTestCase
 
@@ -19,7 +19,7 @@ class ActionDailyCiEarlyOptOutTest(ActionTestCase):
 
         self.run_action(tracker)
 
-        self.assert_events([SlotSet(CANCEL_CI_SLOT, True)])
+        self.assert_events([SlotSet(CONTINUE_CI_SLOT, False)])
 
         self.assert_templates(
             [

@@ -9,9 +9,9 @@
 - user: deny
   bot: daily_ci/feel_better/ask_other_mild_symptoms_no_cough
 - user: deny
-  bot: daily_ci/feel_better/ask_symptom_free
-- user: daily_ci/symptom_free
-  bot: daily_ci/ask_cancel_ci_no_symptoms
+  bot: daily_ci/feel_better/ask_recovered
+- user: affirm
+  bot: daily_ci/ask_continue_ci_no_symptoms
 - user: daily_ci/continue
   bot: daily_ci/continue_ci_no_symptoms
 - user: done

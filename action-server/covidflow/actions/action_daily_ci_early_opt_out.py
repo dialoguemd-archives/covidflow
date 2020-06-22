@@ -4,9 +4,9 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 
+from covidflow.constants import CONTINUE_CI_SLOT
 from covidflow.utils.persistence import cancel_reminder
 
-from .constants import CANCEL_CI_SLOT
 from .lib.log_util import bind_logger
 
 ACTION_NAME = "action_daily_ci_early_opt_out"
@@ -33,4 +33,4 @@ class ActionDailyCiEarlyOptOut(Action):
 
         cancel_reminder(tracker.current_slot_values())
 
-        return [SlotSet(CANCEL_CI_SLOT, True)]
+        return [SlotSet(CONTINUE_CI_SLOT, False)]

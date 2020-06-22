@@ -408,6 +408,9 @@
 - no mobile
 - I don't want to give my number
 
+## lookup:province
+data/provinces.en.txt
+
 ## intent: inform
 - it's 514-555-1234
 - its 1 (819) 555-1234
@@ -417,6 +420,148 @@
 - 1234
 - the code is 1234
 - it's 1234
+- [qc](province)
+- [nb](province)
+- [mb](province)
+- [on](province)
+- [bc](province)
+- [nl](province)
+- [ns](province)
+- [ab](province)
+- [nt](province)
+- [pe](province)
+- [yu](province)
+- [nu](province)
+- [sk](province)
+- [bc](province)
+- [québec](province)
+- [quebec](province)
+- [new brunswick](province)
+- [manitoba](province)
+- [ontario](province)
+- [british columbia](province)
+- [terre-neuve](province)
+- [newfoundland](province)
+- [labrador](province)
+- [newfoundland and labrador] (province)
+- [nova scotia](province)
+- [alberta](province)
+- [northwest territories](province)
+- [prince edward island](province)
+- [yukon](province)
+- [nunavut](province)
+- [saskatchewan](province)
+- in [québec](province)
+- in [quebec](province)
+- in [new brunswick](province)
+- in [manitoba](province)
+- in [ontario](province)
+- in [british columbia](province)
+- in [terre-neuve](province)
+- in [newfoundland](province)
+- in [labrador](province)
+- in [newfoundland and labrador] (province)
+- in [nova scotia](province)
+- in [alberta](province)
+- in [northwest territories](province)
+- in [prince edward island](province)
+- in [yukon](province)
+- in [nunavut](province)
+- in [saskatchewan](province)
+- i reside in [québec](province)
+- i reside in [quebec](province)
+- i reside in [new brunswick](province)
+- i reside in [manitoba](province)
+- i reside in [ontario](province)
+- i reside in [british columbia](province)
+- i reside in [terre-neuve](province)
+- i reside in [newfoundland](province)
+- i reside in [labrador](province)
+- i reside in [newfoundland and labrador] (province)
+- i reside in [nova scotia](province)
+- i reside in [alberta](province)
+- i reside in [northwest territories](province)
+- i reside in [prince edward island](province)
+- i reside in [yukon](province)
+- i reside in [nunavut](province)
+- i reside in [saskatchewan](province)
+- i live in [québec](province)
+- i live in [quebec](province)
+- i live in [new brunswick](province)
+- i live in [manitoba](province)
+- i live in [ontario](province)
+- i live in [british columbia](province)
+- i live in [terre-neuve](province)
+- i live in [newfoundland](province)
+- i live in [labrador](province)
+- i live in [newfoundland and labrador] (province)
+- i live in [nova scotia](province)
+- i live in [alberta](province)
+- i live in [northwest territories](province)
+- i live in [prince edward island](province)
+- i live in [yukon](province)
+- i live in [nunavut](province)
+- i live in [saskatchewan](province)
+
+## synonym:bc
+- british columbia
+- b.c.
+
+## synonym:ab
+- alberta
+- alta
+
+## synonym:sk
+- saskatchewan
+- sask
+
+## synonym:mb
+- manitoba
+- man
+
+## synonym:on
+- ontario
+- ont
+
+## synonym:qc
+- quebec
+- que
+
+## synonym:nb
+- new brunswick
+- n.b.
+
+## synonym:ns
+- nova scotia
+- n.s.
+
+## synonym:pe
+- prince edward island
+- pei
+- p.e.
+- p.e.i.
+
+## synonym:nl
+- newfoundland and labrador
+- nf and labrador
+- newfoundland labrador
+- newfoundland
+- labrador
+
+## synonym:yu
+- yukon
+- y.t.
+
+## synonym:nt
+- northwest territories
+- nw territories
+- northwest t.
+- n.w.t.
+- nwt
+
+## synonym:nu
+- nunavut
+- nun
 
 ## intent:change_phone
 - reenter number

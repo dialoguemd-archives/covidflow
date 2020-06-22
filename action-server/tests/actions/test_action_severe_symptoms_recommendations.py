@@ -3,7 +3,7 @@ from rasa_sdk.events import ConversationPaused
 from covidflow.actions.action_severe_symptoms_recommendations import (
     ActionSevereSymptomsRecommendations,
 )
-from covidflow.actions.constants import END_CONVERSATION_MESSAGE
+from covidflow.constants import END_CONVERSATION_MESSAGE
 
 from .action_test_helper import ActionTestCase
 

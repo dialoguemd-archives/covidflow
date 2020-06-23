@@ -38,6 +38,7 @@ intents:
       use_entities: []
   - later
   - fallback
+  - q_a
 
 entities:
   - province

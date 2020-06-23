@@ -22,10 +22,7 @@ from covidflow.utils.testing_locations import (
     get_testing_locations,
 )
 
-from .constants import (
-    TEST_NAVIGATION_SUCCESS_SLOT,
-    TEST_NAVIGATION_TEST_RESPONSES_LENGTH_ATTRIBUTE,
-)
+from .constants import TEST_NAVIGATION_TEST_RESPONSES_LENGTH_ATTRIBUTE
 from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 
@@ -174,12 +171,7 @@ class TestNavigationForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict]:
-        if tracker.get_slot(LOCATIONS_SLOT):
-            success = True
-        else:
-            success = False
-
-        return CLEARED_SLOTS + [SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, success)]
+        return CLEARED_SLOTS
 
 
 def _get_postal_code(text: str) -> Optional[str]:

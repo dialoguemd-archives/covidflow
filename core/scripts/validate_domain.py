@@ -149,7 +149,7 @@ def validate_translations(english_responses: dict, french_responses: dict) -> bo
     return len(missing_translations) != 0
 
 
-def validate_text_field_disablions(
+def validate_text_field_disabled(
     english_responses: dict, french_responses: dict
 ) -> bool:
     text_disabled_mismatches = set()
@@ -201,7 +201,7 @@ def validate_domain() -> int:
         english_responses_without_alternatives, french_responses_without_alternatives
     )
 
-    has_errors |= validate_text_field_disablions(
+    has_errors |= validate_text_field_disabled(
         english_responses_without_alternatives, french_responses_without_alternatives
     )
 

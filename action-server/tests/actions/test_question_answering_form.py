@@ -66,7 +66,7 @@ class TestQuestionAnsweringForm(FormTestCase):
         self.form = QuestionAnsweringForm()
 
     def test_form_activation_first_time_without_qa_samples(self):
-        tracker = self.create_tracker(active_form=False)
+        tracker = self.create_tracker(active_form=False, intent="ask_question")
 
         self.run_form(tracker, DOMAIN)
 
@@ -87,7 +87,7 @@ class TestQuestionAnsweringForm(FormTestCase):
         )
 
     def test_form_activation_first_time_with_qa_samples(self):
-        tracker = self.create_tracker(active_form=False)
+        tracker = self.create_tracker(active_form=False, intent="ask_question")
 
         self.run_form(
             tracker, domain={"responses": {"utter_qa_sample_foo": [{"text": "bar"}]}}
@@ -114,6 +114,34 @@ class TestQuestionAnsweringForm(FormTestCase):
         tracker = self.create_tracker(
             slots={ASKED_QUESTION_SLOT: FULL_RESULT_SUCCESS, SKIP_QA_INTRO_SLOT: True},
             active_form=False,
+            intent="ask_question",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, QUESTION_SLOT)])
+
+        self.assert_templates(["utter_ask_active_question"])
+
+    def test_form_activation_affirm(self):
+        tracker = self.create_tracker(
+            slots={ASKED_QUESTION_SLOT: FULL_RESULT_SUCCESS},
+            active_form=False,
+            intent="affirm",
+            text="What is covid?",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, QUESTION_SLOT)])
+
+        self.assert_templates(["utter_ask_active_question"])
+
+    def test_form_activation_fallback(self):
+        tracker = self.create_tracker(
+            slots={ASKED_QUESTION_SLOT: FULL_RESULT_SUCCESS, SKIP_QA_INTRO_SLOT: True},
+            active_form=False,
+            intent="affirm",
         )
 
         self.run_form(tracker, DOMAIN)
@@ -215,7 +243,7 @@ class TestQuestionAnsweringForm(FormTestCase):
             ]
         )
 
-        self.assert_templates(["utter_cant_answer"])
+        self.assert_templates([])
 
     def test_provide_feedback_affirm(self):
         tracker = self.create_tracker(

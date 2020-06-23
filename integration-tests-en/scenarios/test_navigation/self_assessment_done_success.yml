@@ -3,8 +3,7 @@
 - assessment_moderate
 - user: navigate_tests
   bot: test_navigation/explanations_assessment_done
-- user: continue
+- user: affirm
   bot: test_navigation/postal_code
-# - user: test_navigation/postal_code/valid
-#   bot: test_navigation/one_location_assessment_done
-# ML lost insight of the "what next" question, but the question asked instead has the exact same meaning
+- user: test_navigation/postal_code/valid
+  bot: test_navigation/one_location_assessment_done

@@ -3,6 +3,6 @@
 - user: ask_question
   bot: q_and_a/entry_first_time
 - user: q_and_a/submit_question
-  bot: q_and_a/out_of_distribution_self_assessment_not_done
+  bot: q_and_a/out_of_distribution
 - user: done
   bot: q_and_a/done

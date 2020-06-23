@@ -1,4 +1,4 @@
 - user: navigate_tests
   bot: test_navigation/explanations
-- user: continue
+- user: affirm
   bot: test_navigation/postal_code

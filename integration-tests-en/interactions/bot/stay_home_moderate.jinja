@@ -1,3 +1,5 @@
+{% import 'bot/macros.jinja' as bot %}
+
 [
     {
         "text": "Please make sure that you stay home and self-isolate for at least 14 days"
@@ -11,22 +13,5 @@
     {
         "text": "You can consult [your personal information package](https://covid19.dialogue.co/#/info?id=ca-qc,elevated-medical-risk)"
     },
-    {
-        "text": "Is there anything else I can help you with?",
-        "buttons": [
-            {
-                "payload": "/ask_question",
-                "title": "I have other questions"
-            },
-            {
-                "payload": "/navigate_test_locations",
-                "title": "I’d like to know where to get tested"
-            },
-            {
-                "payload": "/done",
-                "title": "No thanks"
-            }
-        ]
-
-    }
+    {{ bot.anything_else(False,True) }}
 ]

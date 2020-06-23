@@ -1,19 +1,9 @@
+{% import 'bot/macros.jinja' as bot %}
+
 [
     {
         "text": "I found 1 testing site in your area"
     },
     {},
-    {
-        "text": "What else may I help you with?",
-        "buttons": [
-            {
-                "payload": "/ask_question",
-                "title": "I have other questions"
-            },
-            {
-                "payload": "/done",
-                "title": "I’m done"
-            }
-        ]
-    }
+    {{ bot.anything_else(False,False) }}
 ]

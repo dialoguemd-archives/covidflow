@@ -1,3 +1,5 @@
+{% import 'bot/macros.jinja' as bot %}
+
 [
     {
         "text": "You may want to discuss your situation with your doctor, if that's possible, or call 811"
@@ -26,21 +28,5 @@
     {
         "text": "You can always visit [covid19.dialogue.co](https://covid19.dialogue.co/#/info?id=common) for information, if you have questions, or if you want to assess your symptoms"
     },
-    {
-        "text": "Is there anything else I can help you with?",
-        "buttons": [
-            {
-                "payload": "/ask_question",
-                "title": "I have other questions"
-            },
-            {
-                "payload": "/navigate_test_locations",
-                "title": "I’d like to know where to get tested"
-            },
-            {
-                "payload": "/done",
-                "title": "No thanks"
-            }
-        ]
-    }
+    {{ bot.anything_else(False,True) }}
 ]

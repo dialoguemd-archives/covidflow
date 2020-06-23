@@ -90,7 +90,7 @@ class QuestionAnsweringForm(FormAction):
 
         # Regular QA
         # Messages are only played for the first question
-        if tracker.get_slot(SKIP_QA_INTRO_SLOT) == True:
+        if tracker.get_slot(SKIP_QA_INTRO_SLOT) == True or intent != "ask_question":
             return await super()._activate_if_required(dispatcher, tracker, domain)
 
         dispatcher.utter_message(template="utter_can_help_with_questions")
@@ -146,11 +146,6 @@ class QuestionAnsweringForm(FormAction):
             if _must_stub_result(tracker)
             else await _fetch_qa(value, tracker)
         )
-
-        if result.status == QuestionAnsweringStatus.OUT_OF_DISTRIBUTION:
-            # Only output the error message for the regular QA, not for fallback QA
-            if _get_intent(tracker) != "fallback":
-                dispatcher.utter_message(template="utter_cant_answer")
 
         if result.status == QuestionAnsweringStatus.SUCCESS and result.answers:
             dispatcher.utter_message(result.answers[0])

@@ -36,7 +36,6 @@ intents:
       triggers: action_send_daily_checkin_reminder
   - navigate_test_locations:
       use_entities: []
-  - later
   - fallback
   - q_a
 
@@ -61,6 +60,7 @@ actions:
   - action_suspect_moderate_symptoms_recommendations
   - action_suspect_moderate_symptoms_final_recommendations
   - action_suspect_no_symptoms_recommendations
+  - action_ask_test_navigation__continue_error
   - action_tested_positive_no_symptoms_recommendations
   - action_tested_positive_maybe_cured_final_recommendations
   - action_tested_positive_not_cured_final_recommendations
@@ -68,6 +68,7 @@ actions:
   - action_send_validation_code
   - action_send_daily_checkin_reminder
   - action_test_navigation_explanations
+  - action_test_navigation__anything_else
   - action_qa_goodbye
 
 forms:
@@ -198,9 +199,6 @@ slots:
     type: unfeaturized
 
   invalid_reminder_id:
-    type: bool
-
-  test_navigation_success:
     type: bool
 
   checkin_return__moderate_symptoms_worsened:

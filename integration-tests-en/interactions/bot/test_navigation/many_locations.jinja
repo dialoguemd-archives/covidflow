@@ -1,3 +1,5 @@
+{% import 'bot/macros.jinja' as bot %}
+
 [
     {
         "text": "I found 7 testing sites in your area"
@@ -9,21 +11,5 @@
         "text": "You will need to contact the testing site directly for more information or to make an appointment to get tested"
     },
     {},
-    {
-        "text": "What else may I help you with?",
-        "buttons": [
-            {
-                "payload": "/get_assessment",
-                "title": "Assess my symptoms"
-            },
-            {
-                "payload": "/ask_question",
-                "title": "I have other questions"
-            },
-            {
-                "payload": "/done",
-                "title": "I’m done"
-            }
-        ]
-    }
+    {{ bot.anything_else(True,False) }}
 ]

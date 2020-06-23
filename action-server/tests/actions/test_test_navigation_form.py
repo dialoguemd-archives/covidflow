@@ -7,7 +7,6 @@ from geopy.point import Point
 from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
-from covidflow.actions.constants import TEST_NAVIGATION_SUCCESS_SLOT
 from covidflow.actions.test_navigation_form import (
     CLEARED_SLOTS,
     END_FORM_SLOT,
@@ -270,11 +269,7 @@ class TestTestNavigationForm(FormTestCase):
         self.assert_events(
             [SlotSet(POSTAL_CODE_SLOT, None), SlotSet(END_FORM_SLOT, True),]
             + CLEARED_SLOTS
-            + [
-                SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, False),
-                Form(None),
-                SlotSet(REQUESTED_SLOT, None),
-            ]
+            + [Form(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(["utter_test_navigation__invalid_postal_code_max"])
@@ -291,11 +286,7 @@ class TestTestNavigationForm(FormTestCase):
         self.assert_events(
             [SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE), SlotSet(END_FORM_SLOT, True),]
             + CLEARED_SLOTS
-            + [
-                SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, False),
-                Form(None),
-                SlotSet(REQUESTED_SLOT, None),
-            ]
+            + [Form(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(
@@ -373,11 +364,7 @@ class TestTestNavigationForm(FormTestCase):
         self.assert_events(
             [SlotSet(POSTAL_CODE_SLOT, None), SlotSet(END_FORM_SLOT, True),]
             + CLEARED_SLOTS
-            + [
-                SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, False),
-                Form(None),
-                SlotSet(REQUESTED_SLOT, None),
-            ]
+            + [Form(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(["utter_test_navigation__invalid_postal_code_max"])
@@ -398,11 +385,7 @@ class TestTestNavigationForm(FormTestCase):
         self.assert_events(
             [SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE), SlotSet(END_FORM_SLOT, True),]
             + CLEARED_SLOTS
-            + [
-                SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, False),
-                Form(None),
-                SlotSet(REQUESTED_SLOT, None),
-            ]
+            + [Form(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(
@@ -478,11 +461,7 @@ class TestTestNavigationForm(FormTestCase):
         self.assert_events(
             [SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, False),]
             + CLEARED_SLOTS
-            + [
-                SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, False),
-                Form(None),
-                SlotSet(REQUESTED_SLOT, None),
-            ]
+            + [Form(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(["utter_test_navigation__acknowledge"])
@@ -533,11 +512,7 @@ class TestTestNavigationForm(FormTestCase):
                 SlotSet(LOCATIONS_SLOT, [TESTING_LOCATION_RAW]),
             ]
             + CLEARED_SLOTS
-            + [
-                SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, True),
-                Form(None),
-                SlotSet(REQUESTED_SLOT, None),
-            ]
+            + [Form(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(["utter_test_navigation__one_location", None])
@@ -567,11 +542,7 @@ class TestTestNavigationForm(FormTestCase):
                 SlotSet(LOCATIONS_SLOT, [TESTING_LOCATION_RAW, TESTING_LOCATION_RAW]),
             ]
             + CLEARED_SLOTS
-            + [
-                SlotSet(TEST_NAVIGATION_SUCCESS_SLOT, True),
-                Form(None),
-                SlotSet(REQUESTED_SLOT, None),
-            ]
+            + [Form(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(

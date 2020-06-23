@@ -1,22 +1,8 @@
+{% import 'bot/macros.jinja' as bot %}
+
 [
     {
         "text": "I’m sorry, this is still not a valid postal code. I will not be able to search for testing sites"
     },
-    {
-        "text": "May I help you with anything else?",
-        "buttons": [
-            {
-                "payload": "/get_assessment",
-                "title": "Yes assess my symptoms"
-            },
-            {
-                "payload": "/ask_question",
-                "title": "Yes I have other questions"
-            },
-            {
-                "payload": "/done",
-                "title": "No I’m done"
-            }
-        ]
-    }
+    {{ bot.anything_else(True,False) }}
 ]

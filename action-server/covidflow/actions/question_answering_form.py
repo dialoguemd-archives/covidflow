@@ -5,9 +5,9 @@ from typing import Any, Dict, List, Optional, Text, Union
 import structlog
 from aiohttp import ClientSession
 from rasa_sdk import Tracker
-from rasa_sdk.events import EventType, SlotSet
+from rasa_sdk.events import ActionExecuted, EventType, Form, SlotSet, UserUttered
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.forms import FormAction
+from rasa_sdk.forms import REQUESTED_SLOT, FormAction
 
 from .answers import (
     QuestionAnsweringProtocol,
@@ -15,7 +15,7 @@ from .answers import (
     QuestionAnsweringStatus,
 )
 from .constants import LANGUAGE_SLOT, QA_TEST_PROFILE_ATTRIBUTE
-from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
+from .form_helper import request_next_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 
 logger = structlog.get_logger()
@@ -34,6 +34,8 @@ ANSWERS_KEY = "answers"
 STATUS_KEY = "status"
 FEEDBACK_KEY = "feedback"
 QUESTION_KEY = "question"
+
+FEEDBACK_NOT_GIVEN = "not_given"
 
 FORM_NAME = "question_answering_form"
 
@@ -152,7 +154,6 @@ class QuestionAnsweringForm(FormAction):
 
         return {STATUS_SLOT: result.status, ANSWERS_SLOT: result.answers}
 
-    @validate_boolean_slot
     def validate_feedback(
         self,
         value: Text,
@@ -163,6 +164,9 @@ class QuestionAnsweringForm(FormAction):
         if value is False:
             dispatcher.utter_message(template="utter_post_feedback")
 
+        if not isinstance(value, bool):
+            return {FEEDBACK_SLOT: FEEDBACK_NOT_GIVEN}
+
         return {}
 
     def submit(
@@ -171,19 +175,25 @@ class QuestionAnsweringForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict]:
+        feedback = tracker.get_slot(FEEDBACK_SLOT)
         full_question_result = {
             QUESTION_KEY: tracker.get_slot(QUESTION_SLOT),
             ANSWERS_KEY: tracker.get_slot(ANSWERS_SLOT),
             STATUS_KEY: tracker.get_slot(STATUS_SLOT),
-            FEEDBACK_KEY: tracker.get_slot(FEEDBACK_SLOT),
+            FEEDBACK_KEY: feedback,
         }
 
         # Clearing and saving in case of re-rentry in the form.
-        return [
+        slot_sets = [
             SlotSet(QUESTION_SLOT),
             SlotSet(FEEDBACK_SLOT),
             SlotSet(ASKED_QUESTION_SLOT, full_question_result),
         ]
+
+        if feedback == FEEDBACK_NOT_GIVEN:
+            return slot_sets + _carry_user_utterance(tracker)
+
+        return slot_sets
 
 
 def _must_stub_result(tracker: Tracker):
@@ -228,3 +238,21 @@ def _get_stub_qa_result(tracker: Tracker):
 
 def _get_intent(tracker: Tracker) -> str:
     return tracker.latest_message.get("intent", {}).get("name", "")
+
+
+def _carry_user_utterance(tracker: Tracker) -> List[EventType]:
+    return [
+        Form(None),  # Ending it manually to have events in correct order to fit stories
+        SlotSet(REQUESTED_SLOT, None),
+        ActionExecuted("utter_ask_another_question"),
+        ActionExecuted("action_listen"),
+        UserUttered(
+            tracker.latest_message.get("text", ""),
+            parse_data={
+                "text": tracker.latest_message.get("text", ""),
+                "intent": tracker.latest_message.get("intent", {}),
+                "intent_ranking": tracker.latest_message.get("intent_ranking", []),
+                "entities": tracker.latest_message.get("entities", []),
+            },
+        ),
+    ]

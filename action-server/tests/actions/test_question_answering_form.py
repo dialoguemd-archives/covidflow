@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock, patch
 
-from rasa_sdk.events import Form, SlotSet
+from rasa_sdk.events import ActionExecuted, Form, SlotSet, UserUttered
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.answers import QuestionAnsweringResponse, QuestionAnsweringStatus
@@ -9,6 +9,7 @@ from covidflow.actions.question_answering_form import (
     ANSWERS_SLOT,
     ASKED_QUESTION_SLOT,
     FEEDBACK_KEY,
+    FEEDBACK_NOT_GIVEN,
     FEEDBACK_SLOT,
     FORM_NAME,
     QUESTION_KEY,
@@ -299,7 +300,7 @@ class TestQuestionAnsweringForm(FormTestCase):
 
         self.assert_templates(["utter_post_feedback"])
 
-    def test_provide_feedback_error(self):
+    def test_provide_feedback_not_given(self):
         tracker = self.create_tracker(
             slots={
                 REQUESTED_SLOT: FEEDBACK_SLOT,
@@ -307,16 +308,41 @@ class TestQuestionAnsweringForm(FormTestCase):
                 ANSWERS_SLOT: ANSWERS,
                 STATUS_SLOT: QuestionAnsweringStatus.SUCCESS,
             },
-            text="anything",
+            text="some text with",
+            intent="another_intent",
+            entities=[{"and": "entities"}],
         )
 
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
-            [SlotSet(FEEDBACK_SLOT, None), SlotSet(REQUESTED_SLOT, FEEDBACK_SLOT),]
+            [
+                SlotSet(FEEDBACK_SLOT, FEEDBACK_NOT_GIVEN),
+                SlotSet(QUESTION_SLOT, None),
+                SlotSet(FEEDBACK_SLOT, None),
+                SlotSet(
+                    ASKED_QUESTION_SLOT,
+                    {**FULL_RESULT_SUCCESS, FEEDBACK_KEY: FEEDBACK_NOT_GIVEN},
+                ),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+                ActionExecuted("utter_ask_another_question"),
+                ActionExecuted("action_listen"),
+                UserUttered(
+                    "some text with",
+                    parse_data={
+                        "text": "some text with",
+                        "intent": {"name": "another_intent"},
+                        "intent_ranking": [],
+                        "entities": [{"and": "entities"}],
+                    },
+                ),
+                Form(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ]
         )
 
-        self.assert_templates(["utter_ask_feedback_error"])
+        self.assert_templates([])
 
     @patch("covidflow.actions.question_answering_form.QuestionAnsweringProtocol")
     def test_fallback_question_success(self, mock_protocol):

@@ -6,7 +6,7 @@
         websocket: true
     scale:
       horizontal: 3-12
-      vertical: medium.mem
+      vertical: medium.mem2x
     healthcheck:
       path: /
       liveness:

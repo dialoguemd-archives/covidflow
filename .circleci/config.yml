@@ -7,6 +7,12 @@ orbs:
   python: dialogue/python@2
   release: dialogue/release@2
 
+executors:
+  large-python-executor:
+    docker:
+      - image: circleci/python:3.7
+    resource_class: large
+
 workflows:
   cicd:
     jobs:
@@ -305,6 +311,7 @@ jobs:
     description: Prepare core help-app component (rasa-core models and docker assets)
     parameters:
       <<: *param__language
+    executor: large-python-executor
     environment:
       COMPONENT_PATH: /app/core-<<parameters.language>>
     working_directory: /app/core

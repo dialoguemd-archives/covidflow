@@ -130,7 +130,6 @@ workflows:
             - (core-en) build
             - (core-fr) build
           context: org-global-v2
-          deploy_timeout: 600s
           filters:
             branches:
               ignore: master
@@ -205,7 +204,6 @@ workflows:
             - (core-en) build
             - (core-fr) build
           context: org-global-v2
-          deploy_timeout: 600s
           filters:
             branches:
               only: master
@@ -260,7 +258,6 @@ workflows:
             - master-integration-tests-en
             - master-integration-tests-fr
           context: org-global-v2
-          deploy_timeout: 600s
           filters:
             branches:
               only: master

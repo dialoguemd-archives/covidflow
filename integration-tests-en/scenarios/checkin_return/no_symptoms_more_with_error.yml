@@ -13,7 +13,9 @@
 - user: deny
   bot: checkin_return/ask_mild_symptoms
 - user: deny
-  bot: checkin_return/ask_when_last_symptoms
+  bot: checkin_return/ask_when_first_symptoms
+- user: navigate_tests
+  bot: checkin_return/ask_when_first_symptoms_error
 - user: more
   bot: checkin_return/ask_anything_else_no_symptoms_more
 - user: done

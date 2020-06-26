@@ -299,7 +299,7 @@
   - slot{"symptoms": "none"}
   - action_tested_positive_no_symptoms_recommendations
   - utter_ask_when_tested
-* less
+* deny
   - utter_when_tested_less_14_recommendation
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
@@ -319,7 +319,7 @@
   - utter_try_again_later
   - action_qa_goodbye
 
-## tested positive - no symptoms tested less than 14 days
+## tested positive - no symptoms tested less than 14 days error
 * tested_positive
   - tested_positive_form
   - form{"name": "tested_positive_form"}
@@ -328,7 +328,9 @@
   - slot{"symptoms": "none"}
   - action_tested_positive_no_symptoms_recommendations
   - utter_ask_when_tested
-* less
+* fallback
+  - utter_ask_when_tested_error
+* deny
   - utter_when_tested_less_14_recommendation
   - daily_ci_enroll_form
   - form{"name": "daily_ci_enroll_form"}
@@ -351,7 +353,24 @@
   - slot{"symptoms": "none"}
   - action_tested_positive_no_symptoms_recommendations
   - utter_ask_when_tested
-* more
+* affirm
+  - action_tested_positive_maybe_cured_final_recommendations
+  - utter_ask_anything_else_without_test_navigation
+* done OR deny
+  - action_goodbye
+
+## tested positive - cured - error
+* tested_positive
+  - tested_positive_form
+  - form{"name": "tested_positive_form"}
+  - form{"name": null}
+  - slot{"self_assess_done": true}
+  - slot{"symptoms": "none"}
+  - action_tested_positive_no_symptoms_recommendations
+  - utter_ask_when_tested
+* fallback
+  - utter_ask_when_tested_error
+* affirm
   - action_tested_positive_maybe_cured_final_recommendations
   - utter_ask_anything_else_without_test_navigation
 * ask_question OR affirm OR fallback
@@ -489,11 +508,36 @@
   - slot{"symptoms": "none"}
   - utter_returning_no_symptoms
   - utter_ask_when_first_symptoms
-* more
+* affirm
   - utter_social_distancing_leave_home
   - utter_ask_anything_else_without_test_navigation
 * done OR deny
   - action_goodbye
+
+## return for check-in - no symptoms - first symptoms >= 14 days ago error
+* checkin_return
+  - checkin_return_form
+  - form{"name": "checkin_return_form"}
+  - form{"name": null}
+  - slot{"self_assess_done": true}
+  - slot{"symptoms": "none"}
+  - utter_returning_no_symptoms
+  - utter_ask_when_first_symptoms
+* fallback
+  - utter_ask_when_first_symptoms_error
+* affirm
+  - utter_social_distancing_leave_home
+  - utter_ask_anything_else_without_test_navigation
+* ask_question OR affirm OR fallback
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "out_of_distribution"}
+  - utter_cant_answer
+  - utter_ask_different_question
+* done OR deny
+  - utter_please_visit_again
+  - action_qa_goodbye
 
 ## return for check-in - no symptoms - first symptoms < 14 days ago
 * checkin_return
@@ -504,7 +548,7 @@
   - slot{"symptoms": "none"}
   - utter_returning_no_symptoms
   - utter_ask_when_first_symptoms
-* less
+* deny
   - utter_self_isolate_symptom_free
   - utter_ask_anything_else_without_test_navigation
 * ask_question OR affirm OR fallback
@@ -515,6 +559,23 @@
   - utter_question_answering_error
   - utter_try_again_later
   - action_qa_goodbye
+
+## return for check-in - no symptoms - first symptoms < 14 days ago error
+* checkin_return
+  - checkin_return_form
+  - form{"name": "checkin_return_form"}
+  - form{"name": null}
+  - slot{"self_assess_done": true}
+  - slot{"symptoms": "none"}
+  - utter_returning_no_symptoms
+  - utter_ask_when_first_symptoms
+* fallback
+  - utter_ask_when_first_symptoms_error
+* deny
+  - utter_self_isolate_symptom_free
+  - utter_ask_anything_else_without_test_navigation
+* done OR deny
+  - action_goodbye
 
 ## QA - failure - no assessment after
 * greet{"metadata":{}}
@@ -804,9 +865,27 @@
   - action_initialize_daily_checkin
   - utter_daily_ci__greet
   - utter_ask_daily_ci__early_opt_out__continue_ci
-* continue OR affirm
+* continue
   - utter_daily_ci__early_opt_out__acknowledge_continue_ci
   - utter_ask_daily_ci__feel
+* worse
+  - daily_ci_feel_worse_form
+  - form{"name": "daily_ci_feel_worse_form"}
+  - form{"name": null}
+  - slot{"symptoms": "severe"}
+  - slot{"self_assess_done": true}
+  - action_severe_symptoms_recommendations
+
+## daily check-in - feel worse - error - severe symptoms
+* daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
+  - utter_daily_ci__greet
+  - utter_ask_daily_ci__early_opt_out__continue_ci
+* continue
+  - utter_daily_ci__early_opt_out__acknowledge_continue_ci
+  - utter_ask_daily_ci__feel
+* fallback
+  - utter_ask_daily_ci__feel_error
 * worse
   - daily_ci_feel_worse_form
   - form{"name": "daily_ci_feel_worse_form"}
@@ -967,6 +1046,29 @@
   - utter_please_visit_again
   - action_qa_goodbye
 
+## daily check-in - feel no change - error - mild symptoms
+* daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
+  - utter_daily_ci__greet
+  - utter_ask_daily_ci__early_opt_out__continue_ci
+* continue
+  - utter_daily_ci__early_opt_out__acknowledge_continue_ci
+  - utter_ask_daily_ci__feel
+* fallback
+  - utter_ask_daily_ci__feel_error
+* no_change
+  - daily_ci_feel_no_change_form
+  - form{"name": "daily_ci_feel_no_change_form"}
+  - form{"name": null}
+  - slot{"symptoms": "mild"}
+  - slot{"self_assess_done": true}
+  - daily_ci_keep_or_cancel_form
+  - form{"name": "daily_ci_keep_or_cancel_form"}
+  - form{"name": null}
+  - utter_ask_anything_else_with_test_navigation
+* done OR deny
+  - action_goodbye
+
 ## daily check-in - feel no change - no symptoms
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin
@@ -1069,6 +1171,37 @@
   - slot{"question_answering_status": "failure"}
   - utter_question_answering_error
   - utter_try_again_later
+  - action_qa_goodbye
+
+## daily check-in - feel better - error - no symptoms
+* daily_checkin{"metadata":{}}
+  - action_initialize_daily_checkin
+  - utter_daily_ci__greet
+  - utter_ask_daily_ci__early_opt_out__continue_ci
+* continue
+  - utter_daily_ci__early_opt_out__acknowledge_continue_ci
+  - utter_ask_daily_ci__feel
+* fallback
+  - utter_ask_daily_ci__feel_error
+* better
+  - daily_ci_feel_better_form
+  - form{"name": "daily_ci_feel_better_form"}
+  - form{"name": null}
+  - slot{"symptoms": "none"}
+  - slot{"self_assess_done": true}
+  - daily_ci_keep_or_cancel_form
+  - form{"name": "daily_ci_keep_or_cancel_form"}
+  - form{"name": null}
+  - utter_ask_anything_else_without_test_navigation
+* ask_question OR affirm OR fallback
+  - question_answering_form
+  - form{"name": "question_answering_form"}
+  - form{"name": null}
+  - slot{"question_answering_status": "out_of_distribution"}
+  - utter_cant_answer
+  - utter_ask_different_question
+* done OR deny
+  - utter_please_visit_again
   - action_qa_goodbye
 
 ## daily check-in - invalid ID - nothing else

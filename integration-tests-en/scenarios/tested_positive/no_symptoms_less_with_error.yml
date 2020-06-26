@@ -16,7 +16,9 @@
   bot: tested_positive/ask_mild_symptoms
 - user: deny
   bot: tested_positive/ask_when_tested
-- user: less
+- user: get_assessment
+  bot: tested_positive/ask_when_tested_error
+- user: deny
   bot: tested_positive/ask_daily_ci_enrollment_no_symptoms_less
 - user: deny
   bot: tested_positive/ask_anything_else

@@ -2,6 +2,8 @@
   bot: daily_ci/greet_profile_2
 - user: daily_ci/continue
   bot: daily_ci/ask_feel
+- user: invalid_input
+  bot: daily_ci/ask_feel_error
 - user: daily_ci/no_change
   bot: daily_ci/feel_no_change/ask_fever
 - user: affirm

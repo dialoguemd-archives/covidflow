@@ -2,6 +2,8 @@
   bot: daily_ci/greet_profile_2
 - user: daily_ci/continue
   bot: daily_ci/ask_feel
+- user: get_assessment
+  bot: daily_ci/ask_feel_error
 - user: daily_ci/worse
   bot: daily_ci/ask_symptoms_severe
 - user: deny

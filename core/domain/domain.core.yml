@@ -10,8 +10,6 @@ intents:
   - tested_positive
   - ask_question
   - inform
-  - less
-  - more
   - help_preconditions
   - done
   - better
@@ -199,6 +197,9 @@ slots:
     type: bool
 
   checkin_return__moderate_symptoms_worsened:
+    type: unfeaturized
+
+  tested_positive__mild_symptoms_worsened:
     type: unfeaturized
 
   daily_ci_enroll__do_enroll:

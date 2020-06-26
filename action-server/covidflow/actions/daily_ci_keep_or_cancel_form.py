@@ -79,14 +79,19 @@ class DailyCiKeepOrCancelForm(FormAction):
         )
 
     def _utter_ask_slot_template(self, slot: str, tracker: Tracker) -> Optional[str]:
-        error_suffix = "_error" if tracker.get_slot(REQUESTED_SLOT) == slot else ""
         if slot == CONTINUE_CI_SLOT:
+            if tracker.get_slot(REQUESTED_SLOT) == slot:
+                if tracker.get_slot(SYMPTOMS_SLOT) == Symptoms.NONE:
+                    return (
+                        f"utter_ask_daily_ci__keep_or_cancel__{slot}_no_symptoms_error"
+                    )
+                else:
+                    return f"utter_ask_daily_ci__keep_or_cancel__{slot}_symptoms_error"
+
             if tracker.get_slot(SYMPTOMS_SLOT) == Symptoms.NONE:
-                return f"utter_ask_daily_ci__keep_or_cancel__{slot}_no_symptoms{error_suffix}"
+                return f"utter_ask_daily_ci__keep_or_cancel__{slot}_no_symptoms"
             else:
-                return (
-                    f"utter_ask_daily_ci__keep_or_cancel__{slot}_symptoms{error_suffix}"
-                )
+                return f"utter_ask_daily_ci__keep_or_cancel__{slot}_symptoms"
 
         return None
 

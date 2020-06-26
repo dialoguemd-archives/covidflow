@@ -679,6 +679,3 @@ data/provinces.fr.txt
 - même chose
 - je suis pareil
 - je suis pareille
-
-
-

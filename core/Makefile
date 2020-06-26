@@ -79,7 +79,7 @@ train-fr:
 		--augmentation 0
 
 test-integration-en:
-	CORE_ENDPOINT_URL=http://localhost:5005 INTEGRATION_TESTS_REMINDER_ID_PROFILE_1=v9ZaeZyE INTEGRATION_TESTS_REMINDER_ID_PROFILE_2=JvmKA31V poetry run python -m rasa_integration_testing ../integration-tests-en t*/*.yml
+	CORE_ENDPOINT_URL=http://localhost:5005 INTEGRATION_TESTS_REMINDER_ID_PROFILE_1=v9ZaeZyE INTEGRATION_TESTS_REMINDER_ID_PROFILE_2=JvmKA31V poetry run python -m rasa_integration_testing ../integration-tests-en
 
 test-integration-fr:
 	CORE_ENDPOINT_URL=http://localhost:5006 INTEGRATION_TESTS_REMINDER_ID_PROFILE_1=v9ZaeZyE INTEGRATION_TESTS_REMINDER_ID_PROFILE_2=JvmKA31V poetry run python -m rasa_integration_testing ../integration-tests-fr

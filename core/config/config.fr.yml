@@ -1,10 +1,8 @@
 language: "fr" # your two-letter language code
 
 pipeline:
-  - name: SpacyNLP
-    case_sensitive: False
-  - name: SpacyTokenizer
-  - name: SpacyFeaturizer
+  - name: WhitespaceTokenizer
+    case_sensitive: false
   - name: RegexFeaturizer
   - name: LexicalSyntacticFeaturizer
   - name: CountVectorsFeaturizer
@@ -14,5 +12,6 @@ pipeline:
     max_ngram: 4
   - name: DIETClassifier
     epochs: 100
-    random_seed: 4321
   - name: EntitySynonymMapper
+  - name: ResponseSelector
+    epochs: 100

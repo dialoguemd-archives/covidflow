@@ -261,6 +261,8 @@ workflows:
           filters:
             branches:
               only: master
+          deploy_timeout: 600s
+          cci_wait_timeout: 615s
       - job/deploy:
           name: deploy-job-prod-ca
           stage: prod

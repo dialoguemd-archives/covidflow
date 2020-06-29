@@ -13,8 +13,8 @@
 - user: deny
   bot: checkin_return/ask_mild_symptoms
 - user: deny
-  bot: checkin_return/ask_when_last_symptoms
-- user: less
+  bot: checkin_return/ask_when_first_symptoms
+- user: deny
   bot: checkin_return/ask_anything_else_no_symptoms_less
 - user: done
   bot: thank_you_take_care

@@ -56,6 +56,9 @@ SUPPORTED_INTENTS_BY_ACTION = {
     "utter_ask_anything_else_with_test_navigation": MAIN_INTENTS + AFFIRM_DENY_INTENTS,
     "utter_ask_anything_else_without_test_navigation": MAIN_INTENTS
     + AFFIRM_DENY_INTENTS,
+    "utter_ask_daily_ci__feel": ["better", "worse", "no_change"],
+    "utter_ask_when_tested": AFFIRM_DENY_INTENTS,
+    "utter_ask_when_first_symptoms": AFFIRM_DENY_INTENTS,
 }
 
 FALLBACK_INTENT = "fallback"

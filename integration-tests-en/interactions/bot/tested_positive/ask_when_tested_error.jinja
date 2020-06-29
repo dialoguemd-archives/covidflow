@@ -1,0 +1,17 @@
+{% import 'bot/macros.jinja' as bot %}
+
+[
+    {
+        "text": "Sorry, when have you been diagnosed?",
+        "buttons": [
+            {
+                "payload": "/affirm",
+                "title": "More than 14 days ago"
+            },
+            {
+                "payload": "/deny",
+                "title": "Less than 14 days ago"
+            }
+        ]
+    }
+]

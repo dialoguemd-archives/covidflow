@@ -16,7 +16,7 @@
   bot: tested_positive/ask_mild_symptoms
 - user: deny
   bot: tested_positive/ask_when_tested
-- user: more
+- user: affirm
   bot: tested_positive/ask_anything_else_maybe_recovered
 - user: done
   bot: thank_you_take_care

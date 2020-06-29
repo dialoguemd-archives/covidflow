@@ -328,12 +328,15 @@ responses:
     - text: "Bien que votre test soit positif, il semble que vous ne présentiez pas de symptômes pour le moment"
 
   utter_ask_when_tested:
-    - text: "Quand avez-vous reçu votre diagnostic?"
+    - text: "Avez-vous reçu votre diagnostic il y a plus de 14 jours?"
+
+  utter_ask_when_tested_error:
+    - text: "Désolée, quand avez-vous reçu votre diagnostic?"
       buttons:
         - title: "Il y a plus de 14 jours"
-          payload: "/more"
+          payload: "/affirm"
         - title: "Il y a 14 jours ou moins"
-          payload: "/less"
+          payload: "/deny"
       custom:
         data:
           disableTextField: "true"
@@ -548,12 +551,15 @@ responses:
     - text: "Il semble que vous n’ayez pas de symptômes de la Covid-19"
 
   utter_ask_when_first_symptoms:
-    - text: Quand avez-vous commencé à avoir vos premiers symptômes?
+    - text: Avez-vous eu vos premiers symptômes il y a plus de 14 jours?
+
+  utter_ask_when_first_symptoms_error:
+    - text: Désolée, quand avez-vous commencé à avoir vos premiers symptômes?
       buttons:
         - title: Il y a 14 jours ou plus
-          payload: "/more"
+          payload: "/affirm"
         - title: Il y a moins de 14 jours
-          payload: "/less"
+          payload: "/deny"
       custom:
         data:
           disableTextField: "true"
@@ -842,7 +848,10 @@ responses:
     - text: Bonjour {first_name}, ici Chloé, pour votre suivi quotidien. Voyons voir comment ça va aujourd'hui
 
   utter_ask_daily_ci__feel:
-    - text: D'abord, comment vous sentez-vous par rapport à hier?
+    - text: D’abord, par rapport à hier, vous sentez-vous mieux, plus mal, ou du pareil au même?
+
+  utter_ask_daily_ci__feel_error:
+    - text: Désolée, dites-moi comment vous vous sentez par rapport à hier
       buttons:
         - title: Mieux
           payload: "/better"

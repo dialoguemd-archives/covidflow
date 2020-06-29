@@ -9,7 +9,7 @@ from covidflow.actions.action_visit_package import (
     RISK_LEVEL_MEDICAL,
     ActionVisitPackage,
 )
-from covidflow.actions.constants import (
+from covidflow.constants import (
     AGE_OVER_65_SLOT,
     CONTACT_SLOT,
     HAS_COUGH_SLOT,

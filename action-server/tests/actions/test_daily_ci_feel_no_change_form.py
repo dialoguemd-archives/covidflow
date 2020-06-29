@@ -3,7 +3,11 @@ from unittest.mock import patch
 from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
-from covidflow.actions.constants import (
+from covidflow.actions.daily_ci_feel_no_change_form import (
+    FORM_NAME,
+    DailyCiFeelNoChangeForm,
+)
+from covidflow.constants import (
     FEEL_WORSE_SLOT,
     HAS_COUGH_SLOT,
     HAS_DIFF_BREATHING_SLOT,
@@ -13,10 +17,6 @@ from covidflow.actions.constants import (
     SELF_ASSESS_DONE_SLOT,
     SYMPTOMS_SLOT,
     Symptoms,
-)
-from covidflow.actions.daily_ci_feel_no_change_form import (
-    FORM_NAME,
-    DailyCiFeelNoChangeForm,
 )
 
 from .form_test_helper import FormTestCase

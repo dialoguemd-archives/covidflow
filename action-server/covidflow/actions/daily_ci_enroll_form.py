@@ -2,24 +2,24 @@ import re
 from typing import Any, Dict, List, Optional, Text, Union
 
 from rasa_sdk import Tracker
-from rasa_sdk.events import EventType
+from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from covidflow.utils.persistence import ci_enroll
-from covidflow.utils.phone_number_validation import (
-    VALIDATION_CODE_LENGTH,
-    send_validation_code,
-)
-
-from .constants import (
+from covidflow.constants import (
     FIRST_NAME_SLOT,
     HAS_DIALOGUE_SLOT,
     LANGUAGE_SLOT,
     PHONE_NUMBER_SLOT,
     PRECONDITIONS_SLOT,
 )
-from .form_helper import request_next_slot, yes_no_nlu_mapping
+from covidflow.utils.persistence import ci_enroll
+from covidflow.utils.phone_number_validation import (
+    VALIDATION_CODE_LENGTH,
+    send_validation_code,
+)
+
+from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 
 FORM_NAME = "daily_ci_enroll_form"
@@ -33,6 +33,7 @@ CODE_TRY_COUNTER_SLOT = "daily_ci_enroll__validation_code_error_counter"
 NO_CODE_SOLUTION_SLOT = "daily_ci_enroll__no_code_solution"
 JUST_SENT_CODE_SLOT = "daily_ci_enroll__just_sent_code"
 WANTS_CANCEL_SLOT = "daily_ci_enroll__wants_cancel"
+PRECONDITIONS_WITH_EXAMPLES_SLOT = "daily_ci_enroll__preconditions_examples"
 
 PHONE_TRY_MAX = 2
 CODE_TRY_MAX = 2
@@ -66,6 +67,9 @@ class DailyCiEnrollForm(FormAction):
             dispatcher.utter_message(
                 template="utter_daily_ci_enroll__explain_checkin_2"
             )
+            return [
+                SlotSet(PRECONDITIONS_WITH_EXAMPLES_SLOT, "N/A")
+            ] + await super()._activate_if_required(dispatcher, tracker, domain)
 
         return await super()._activate_if_required(dispatcher, tracker, domain)
 
@@ -79,6 +83,7 @@ class DailyCiEnrollForm(FormAction):
                 PHONE_NUMBER_SLOT,
                 NO_CODE_SOLUTION_SLOT,
                 VALIDATION_CODE_SLOT,
+                PRECONDITIONS_WITH_EXAMPLES_SLOT,
                 PRECONDITIONS_SLOT,
                 HAS_DIALOGUE_SLOT,
             ]
@@ -96,25 +101,30 @@ class DailyCiEnrollForm(FormAction):
                 self.from_intent(intent="cancel", value="cancel"),
                 self.from_text(),
             ],
-            WANTS_CANCEL_SLOT: [
-                self.from_intent(intent="affirm", value=True),
-                self.from_intent(intent="deny", value=False),
-            ],
+            WANTS_CANCEL_SLOT: [self.from_intent(intent="cancel", value=True)]
+            + yes_no_nlu_mapping(self),
             VALIDATION_CODE_SLOT: [
                 self.from_intent(intent="did_not_get_code", value="did_not_get_code"),
                 self.from_intent(intent="change_phone", value="change_phone"),
                 self.from_text(),
             ],
             NO_CODE_SOLUTION_SLOT: [
-                self.from_intent(intent="resend_code", value="resend_code"),
-                self.from_intent(
-                    intent="reenter_phone_number", value="reenter_phone_number"
-                ),
+                self.from_intent(intent="new_code", value="new_code"),
+                self.from_intent(intent="change_phone", value="change_phone"),
+                self.from_text(),
             ],
             PRECONDITIONS_SLOT: [
                 self.from_intent(intent="affirm", value=True),
                 self.from_intent(intent="deny", value=False),
+                self.from_intent(intent="dont_know", value="need_examples"),
+                self.from_intent(intent="help_preconditions", value="need_examples"),
+                self.from_text(),
+            ],
+            PRECONDITIONS_WITH_EXAMPLES_SLOT: [
+                self.from_intent(intent="affirm", value=True),
+                self.from_intent(intent="deny", value=False),
                 self.from_intent(intent="dont_know", value="dont_know"),
+                self.from_text(),
             ],
             HAS_DIALOGUE_SLOT: yes_no_nlu_mapping(self),
         }
@@ -222,6 +232,7 @@ class DailyCiEnrollForm(FormAction):
             PHONE_TRY_COUNTER_SLOT: try_counter + 1,
         }
 
+    @validate_boolean_slot
     def validate_daily_ci_enroll__wants_cancel(
         self,
         value: bool,
@@ -299,10 +310,13 @@ class DailyCiEnrollForm(FormAction):
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
         slots = {NO_CODE_SOLUTION_SLOT: value}
-        if value == "reenter_phone_number":
+        if value == "change_phone":
             return {**slots, PHONE_NUMBER_SLOT: None, PHONE_TO_CHANGE_SLOT: True}
 
-        return {**slots, **await _send_validation_code(tracker, dispatcher)}
+        if value == "new_code":
+            return {**slots, **await _send_validation_code(tracker, dispatcher)}
+
+        return {NO_CODE_SOLUTION_SLOT: None}
 
     def validate_preconditions(
         self,
@@ -311,18 +325,38 @@ class DailyCiEnrollForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        slot_values = {PRECONDITIONS_SLOT: value}
+        if isinstance(value, bool):
+            dispatcher.utter_message(template="utter_daily_ci_enroll__acknowledge")
+            return {PRECONDITIONS_SLOT: value}
+
+        if value == "need_examples":
+            dispatcher.utter_message(
+                template="utter_daily_ci_enroll__explain_preconditions"
+            )
+
+            return {PRECONDITIONS_SLOT: None, PRECONDITIONS_WITH_EXAMPLES_SLOT: None}
+        else:
+            return {PRECONDITIONS_SLOT: None}
+
+    async def validate_daily_ci_enroll__preconditions_examples(
+        self,
+        value: Union[bool, Text],
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> Dict[Text, Any]:
+        if isinstance(value, bool):
+            dispatcher.utter_message(template="utter_daily_ci_enroll__acknowledge")
+            return {PRECONDITIONS_WITH_EXAMPLES_SLOT: value, PRECONDITIONS_SLOT: value}
 
         if value == "dont_know":
             dispatcher.utter_message(
                 template="utter_daily_ci_enroll__note_preconditions"
             )
 
-            slot_values[PRECONDITIONS_SLOT] = True
+            return {PRECONDITIONS_WITH_EXAMPLES_SLOT: value, PRECONDITIONS_SLOT: True}
         else:
-            dispatcher.utter_message(template="utter_daily_ci_enroll__acknowledge")
-
-        return slot_values
+            return {PRECONDITIONS_WITH_EXAMPLES_SLOT: None}
 
     def submit(
         self,

@@ -175,11 +175,14 @@ responses:
     - text: If you feel anxious about Covid-19 or your own wellbeing, please visit [Wellness Together Canada](https://ca.portal.gs/)
 
   # province age form
-  utter_pre_ask_province:
+  utter_pre_ask_province_code:
     - text: Next, I need to know where you live, so that I can give you information relevant for your area
 
-  utter_ask_province:
+  utter_ask_province_code:
     - text: In which province or territory do you currently reside?
+
+  utter_ask_province_code_error:
+    - text: Sorry, please select the province or territory where you currently reside
       buttons:
         - title: BC
           payload: '/inform{"province": "bc"}'
@@ -377,7 +380,10 @@ responses:
     - text: Let’s continue
 
   utter_ask_daily_ci_enroll__wants_cancel:
-    - text: Are you sure you don’t want to enroll in daily check-in?
+    - text: I understood that you want to cancel the enrollment in daily check-in, is that correct?
+
+  utter_ask_daily_ci_enroll__wants_cancel_error:
+    - text: Sorry, are you sure you don’t want to enroll in daily check-in?
       buttons:
         - title: Yes stop enrollment
           payload: "/affirm"
@@ -424,12 +430,15 @@ responses:
     - text: OK, I’ll use this phone number instead
 
   utter_ask_daily_ci_enroll__no_code_solution:
-    - text: Sorry about that. I can send a new code to the same number or you can re-enter your number. Which would you like?
+    - text: Sorry about that. I can send a new code to the same number or you can re-enter your number. Which would you like? Send a new code or re-enter your number?
+
+  utter_ask_daily_ci_enroll__no_code_solution_error:
+    - text: "Sorry, please tell me which you would like:"
       buttons:
         - title: Re-send code
-          payload: "/resend_code"
+          payload: "/new_code"
         - title: Re-enter my number
-          payload: "/reenter_phone_number"
+          payload: "/change_phone"
       custom:
         data:
           disableTextField: "true"
@@ -439,6 +448,9 @@ responses:
 
   utter_ask_preconditions:
     - text: Do you have any pre-existing conditions that may affect your immunity?
+
+  utter_ask_preconditions_error:
+    - text: Sorry, do you have any pre-existing conditions that may affect your immunity?
       buttons:
         - title: Yes
           payload: "/affirm"
@@ -450,11 +462,14 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_explain_preconditions:
+  utter_daily_ci_enroll__explain_preconditions:
     - text: You may be more at risk if you have underlying medical conditions (e.g. heart disease, hypertension, diabetes, chronic respiratory disease, cancer) or if your immune system is compromised from a medical condition or treatment (e.g. chemotherapy)
 
-  utter_ask_preconditions_again:
+  utter_ask_daily_ci_enroll__preconditions_examples:
     - text: Do you have such risk factors or pre-existing conditions?
+
+  utter_ask_daily_ci_enroll__preconditions_examples_error:
+    - text: Sorry, do you have such risk factors or pre-existing conditions?
       buttons:
         - title: Yes
           payload: "/affirm"
@@ -1077,12 +1092,15 @@ responses:
           disableTextField: "true"
 
   utter_ask_daily_ci__feel_better__is_symptom_free:
-    - text: Great, would you say that you are symptom-free, or do you still feel a little sick?
+    - text: Great, would you say that you have completely recovered from the virus?
+
+  utter_ask_daily_ci__feel_better__is_symptom_free_error:
+    - text: Sorry, have you completely recovered from the virus or are you still a little sick?
       buttons:
-        - title: Symptom free
-          payload: "/symptom_free"
-        - title: Still sick
-          payload: "/still_sick"
+        - title: Yes I have recovered
+          payload: "/affirm"
+        - title: No I still feel sick
+          payload: "/deny"
       custom:
         data:
           disableTextField: "true"
@@ -1097,7 +1115,7 @@ responses:
     - text: OK, since you still have some symptoms, I recommend that you stay isolated and that you continue to rest
 
   utter_daily_ci__feel_better__has_other_mild_symptoms_still_sick_recommendation:
-    - text: OK, since you still feel a little sick, I recommend that you stay isolated and that you continue to rest
+    - text: OK, since you still feel sick, I recommend that you stay isolated and that you continue to rest
 
   utter_daily_checkin_validation_code:
     - text: "Hi {first_name}, this is the validation code for your daily check-in enrollment: {validation_code}. If you did not request to enroll in the daily check-in, please ignore this text message"
@@ -1107,12 +1125,15 @@ responses:
   utter_daily_ci__keep_or_cancel__no_symptoms_recommendation:
     - text: It looks like you may have recovered from Covid-19. Make sure that you continue to take steps to protect yourself and others, like staying home and wearing a mask if you absolutely have to leave your house
 
-  utter_ask_daily_ci__keep_or_cancel__cancel_ci_no_symptoms:
-    - text: Would you like me to continue checking in on you everyday, or do you want to cancel the daily check-in?
+  utter_ask_daily_ci__keep_or_cancel__continue_ci_no_symptoms:
+    - text: Do you want me to continue checking in on you everyday?
+
+  utter_ask_daily_ci__keep_or_cancel__continue_ci_no_symptoms_error:
+    - text: Sorry, please tell me whether you wish to continue the daily check-in, or cancel it
       buttons:
-        - title: Continue
+        - title: Yes continue
           payload: "/continue"
-        - title: Cancel
+        - title: No cancel
           payload: "/cancel"
       custom:
         data:
@@ -1127,8 +1148,11 @@ responses:
   utter_daily_ci__keep_or_cancel__cancel_ci_recommendation:
     - text: If you notice any changes or get symptoms, feel free to check with me to reassess your symptoms
 
-  utter_ask_daily_ci__keep_or_cancel__cancel_ci_symptoms:
+  utter_ask_daily_ci__keep_or_cancel__continue_ci_symptoms:
     - text: I will check-in on you tomorrow unless you wish to stop the daily check-in. Is that ok?
+
+  utter_ask_daily_ci__keep_or_cancel__continue_ci_symptoms_error:
+    - text: Sorry, please let me know if you want me to check-in on you tomorrow or if you’d prefer to cancel the daily check-in
       buttons:
         - title: Yes continue check-in
           payload: "/continue"
@@ -1169,7 +1193,7 @@ responses:
 
   ## Daily check-in - early opt out
 
-  utter_ask_daily_ci__early_opt_out__cancel_ci:
+  utter_ask_daily_ci__early_opt_out__continue_ci:
     - text: Before we start, if you want to opt out and cancel the daily check-in, just let me know
       buttons:
         - title: Opt out

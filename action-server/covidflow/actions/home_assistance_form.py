@@ -5,7 +5,8 @@ from rasa_sdk.events import EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
-from .constants import HAS_ASSISTANCE_SLOT, PROVINCE_SLOT, PROVINCES_WITH_211
+from covidflow.constants import HAS_ASSISTANCE_SLOT, PROVINCE_SLOT, PROVINCES_WITH_211
+
 from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 

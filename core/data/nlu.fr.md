@@ -369,6 +369,9 @@
 - je n'ai pas de cellulaire
 - je veux pas donner mon numéro
 
+## lookup:province
+data/provinces.fr.txt
+
 ## intent:inform
 - c'est le 514-555-1234
 - c'est le 1 (819) 555-1234
@@ -379,6 +382,173 @@
 - 1234
 - le code est 1234
 - c'est 1234
+- [qc](province)
+- [nb](province)
+- [mb](province)
+- [on](province)
+- [bc](province)
+- [nl](province)
+- [ns](province)
+- [ab](province)
+- [nt](province)
+- [pe](province)
+- [yu](province)
+- [nu](province)
+- [sk](province)
+- [bc](province)
+- [québec](province)
+- [quebec](province)
+- [nouveau brunswick](province)
+- [manitoba](province)
+- [ontario](province)
+- [colombie-britannique](province)
+- [terre-neuve](province)
+- [labrador](province)
+- [nouvelle-écosse](province)
+- [nouvelle-ecosse](province)
+- [alberta](province)
+- [territoires du nord-ouest](province)
+- [ile du prince-édouard](province)
+- [ile du prince-edouard](province)
+- [yukon](province)
+- [nunavut](province)
+- [saskatchewan](province)
+- [colombie britannique](province)
+- au [québec](province)
+- au [quebec](province)
+- au [nouveau brunswick](province)
+- au [manitoba](province)
+- en [ontario](province)
+- en [colombie-britannique](province)
+- à [terre-neuve](province)
+- au [labrador](province)
+- en [nouvelle-écosse](province)
+- en [nouvelle-ecosse](province)
+- en [alberta](province)
+- dans les [territoires du nord-ouest](province)
+- à [l'ile du prince-édouard](province)
+- à [l'ile du prince-edouard](province)
+- au [yukon](province)
+- au [nunavut](province)
+- en [saskatchewan](province)
+- en [colombie britannique](province)
+- je réside au [québec](province)
+- je réside au [quebec](province)
+- je réside au [nouveau brunswick](province)
+- je réside au [manitoba](province)
+- je réside en [ontario](province)
+- je réside en [colombie-britannique](province)
+- je réside à [terre-neuve](province)
+- je réside au [labrador](province)
+- je réside en [nouvelle-écosse](province)
+- je réside en [nouvelle-ecosse](province)
+- je réside en [alberta](province)
+- je réside dans les [territoires du nord-ouest](province)
+- je réside à [l'ile du prince-édouard](province)
+- je réside à [l'ile du prince-edouard](province)
+- je réside au [yukon](province)
+- je réside au [nunavut](province)
+- je réside en [saskatchewan](province)
+- je réside en [colombie britannique](province)
+- j'habite au [québec](province)
+- j'habite au [quebec](province)
+- j'habite au [nouveau brunswick](province)
+- j'habite au [manitoba](province)
+- j'habite en [ontario](province)
+- j'habite en [colombie-britannique](province)
+- j'habite à [terre-neuve](province)
+- j'habite à [labrador](province)
+- j'habite en [nouvelle-écosse](province)
+- j'habite en [nouvelle-ecosse](province)
+- j'habite en [alberta](province)
+- j'habite dans les [territoires du nord-ouest](province)
+- j'habite à [l'ile du prince-édouard](province)
+- j'habite à [l'ile du prince-edouard](province)
+- j'habite au [yukon](province)
+- j'habite au [nunavut](province)
+- j'habite en [saskatchewan](province)
+- j'habite en [colombie britannique](province)
+
+## synonym:bc
+- colombie-britannique
+- colombie britannique
+- c.-b.
+- c.b.
+- cb
+- bc
+
+## synonym:ab
+- alberta
+- alb
+- ab
+
+## synonym:sk
+- saskatchewan
+- sask
+
+## synonym:mb
+- manitoba
+- man
+
+## synonym:on
+- ontario
+- ont
+- on
+
+## synonym:qc
+- québec
+- quebec
+- que
+- qc
+
+## synonym:nb
+- nouveau-brunswick
+- nouveau brunswick
+- n.b.
+- n-b
+- n.-b.
+
+## synonym:ns
+- nouvelle-Écosse
+- nouvelle ecosse
+- n.-é.
+- n-e
+- n.-e.
+
+## synonym:pe
+- île-du-prince-édouard
+- ile du prince edouard
+- i.p.e.
+- i-p-e
+- i.-p.-e.
+- ipe
+
+## synonym:nl
+- terre-neuve-et-labrador
+- terre neuve et labrador
+- terre neuve labrador
+- terre neuve
+- labrador
+- t.n.l.
+- t.-n.-l.
+- t-n-l
+- tnl
+
+## synonym:yu
+- yukon
+- yt
+- yn
+
+## synonym:nt
+- territoires du nord-ouest
+- territoires du n-o
+- t.n.o.
+- tno
+- terr. du nord-ouest
+
+## synonym:nu
+- nunavut
+- nun
 
 ## intent:change_phone
 - pas le bon numéro

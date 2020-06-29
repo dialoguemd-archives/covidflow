@@ -12,6 +12,7 @@ from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
+from covidflow.constants import TEST_NAVIGATION_TEST_RESPONSES_LENGTH_ATTRIBUTE
 from covidflow.utils.geocoding import Geocoding
 from covidflow.utils.maps import get_static_map_url
 from covidflow.utils.testing_locations import (
@@ -22,7 +23,6 @@ from covidflow.utils.testing_locations import (
     get_testing_locations,
 )
 
-from .constants import TEST_NAVIGATION_TEST_RESPONSES_LENGTH_ATTRIBUTE
 from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 

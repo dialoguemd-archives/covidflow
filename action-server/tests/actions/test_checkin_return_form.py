@@ -6,7 +6,7 @@ from covidflow.actions.checkin_return_form import (
     MODERATE_SYMPTOMS_WORSENED_SLOT,
     CheckinReturnForm,
 )
-from covidflow.actions.constants import (
+from covidflow.constants import (
     AGE_OVER_65_SLOT,
     HAS_COUGH_SLOT,
     HAS_FEVER_SLOT,
@@ -31,6 +31,7 @@ DOMAIN = {
         "utter_ask_moderate_symptoms_error": [{"text": ""}],
         "utter_ask_checkin_return__moderate_symptoms_worsened_error": [{"text": ""}],
         "utter_ask_has_cough_error": [{"text": ""}],
+        "utter_ask_province_code_error": [{"text": ""}],
     }
 }
 
@@ -86,7 +87,9 @@ class TestCheckinReturnForm(FormTestCase):
             ]
         )
 
-        self.assert_templates(["utter_pre_ask_province", "utter_ask_province"])
+        self.assert_templates(
+            ["utter_pre_ask_province_code", "utter_ask_province_code"]
+        )
 
     def test_severe_symptoms_error(self):
         tracker = self.create_tracker(
@@ -122,6 +125,21 @@ class TestCheckinReturnForm(FormTestCase):
         )
 
         self.assert_templates(["utter_ask_age_over_65"])
+
+    def test_collect_province_error(self):
+        tracker = self.create_tracker(
+            slots={SEVERE_SYMPTOMS_SLOT: False, REQUESTED_SLOT: PROVINCE_SLOT,},
+            intent="inform",
+            entities=[{"entity": "province", "value": "ae"}],
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [SlotSet(PROVINCE_SLOT, None), SlotSet(REQUESTED_SLOT, PROVINCE_SLOT),],
+        )
+
+        self.assert_templates(["utter_ask_province_code_error"])
 
     def test_collect_age_over_65(self):
         tracker = self.create_tracker(

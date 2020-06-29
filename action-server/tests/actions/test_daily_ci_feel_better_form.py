@@ -3,7 +3,13 @@ from unittest.mock import patch
 from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
-from covidflow.actions.constants import (
+from covidflow.actions.daily_ci_feel_better_form import (
+    FORM_NAME,
+    HAS_OTHER_MILD_SYMPTOMS_SLOT,
+    IS_SYMPTOM_FREE_SLOT,
+    DailyCiFeelBetterForm,
+)
+from covidflow.constants import (
     FEEL_WORSE_SLOT,
     HAS_COUGH_SLOT,
     HAS_DIFF_BREATHING_SLOT,
@@ -14,12 +20,6 @@ from covidflow.actions.constants import (
     SYMPTOMS_SLOT,
     Symptoms,
 )
-from covidflow.actions.daily_ci_feel_better_form import (
-    FORM_NAME,
-    HAS_OTHER_MILD_SYMPTOMS_SLOT,
-    IS_SYMPTOM_FREE_SLOT,
-    DailyCiFeelBetterForm,
-)
 
 from .form_test_helper import FormTestCase
 
@@ -28,6 +28,7 @@ DOMAIN = {
         "utter_ask_daily_ci__feel_better__has_other_mild_symptoms_error": [
             {"text": ""}
         ],
+        "utter_ask_daily_ci__feel_better__is_symptom_free_error": [{"text": ""}],
     }
 }
 
@@ -459,7 +460,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
             ["utter_ask_daily_ci__feel_better__has_other_mild_symptoms_error"]
         )
 
-    def test_moderate_last_symptoms__symptom_free(self):
+    def test_moderate_last_symptoms__is_symptom_free_afffirm(self):
         tracker = self.create_tracker(
             slots={
                 LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
@@ -470,7 +471,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
                 HAS_OTHER_MILD_SYMPTOMS_SLOT: False,
                 SYMPTOMS_SLOT: Symptoms.MILD,
             },
-            intent="symptom_free",
+            intent="affirm",
         )
 
         self.run_form(tracker, DOMAIN)
@@ -487,7 +488,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
 
         self.assert_templates([])
 
-    def test_moderate_last_symptoms__still_sick(self):
+    def test_moderate_last_symptoms__is_symptoms_free_deny(self):
         tracker = self.create_tracker(
             slots={
                 LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
@@ -498,7 +499,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
                 HAS_OTHER_MILD_SYMPTOMS_SLOT: False,
                 SYMPTOMS_SLOT: Symptoms.MILD,
             },
-            intent="still_sick",
+            intent="deny",
         )
 
         self.run_form(tracker, DOMAIN)
@@ -516,6 +517,34 @@ class TestDailyCiFeelBetterForm(FormTestCase):
             [
                 "utter_daily_ci__feel_better__has_other_mild_symptoms_still_sick_recommendation"
             ]
+        )
+
+    def test_moderate_last_symptoms__is_symptom_free_error(self):
+        tracker = self.create_tracker(
+            slots={
+                LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
+                LAST_HAS_DIFF_BREATHING_SLOT: False,
+                REQUESTED_SLOT: IS_SYMPTOM_FREE_SLOT,
+                HAS_FEVER_SLOT: False,
+                HAS_COUGH_SLOT: False,
+                HAS_DIFF_BREATHING_SLOT: False,
+                HAS_OTHER_MILD_SYMPTOMS_SLOT: False,
+                SYMPTOMS_SLOT: Symptoms.MILD,
+            },
+            intent="something_else",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(IS_SYMPTOM_FREE_SLOT, None),
+                SlotSet(REQUESTED_SLOT, IS_SYMPTOM_FREE_SLOT),
+            ]
+        )
+
+        self.assert_templates(
+            ["utter_ask_daily_ci__feel_better__is_symptom_free_error"]
         )
 
     def test_mild_last_symptoms__fever_cough(self):
@@ -666,7 +695,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
 
         self.mock_save_assessment.assert_called()
 
-    def test_mild_last_symptoms__symptom_free(self):
+    def test_mild_last_symptoms__is_symptom_free_affirm(self):
         tracker = self.create_tracker(
             slots={
                 LAST_SYMPTOMS_SLOT: Symptoms.MILD,
@@ -676,7 +705,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
                 HAS_COUGH_SLOT: False,
                 HAS_OTHER_MILD_SYMPTOMS_SLOT: False,
             },
-            intent="symptom_free",
+            intent="affirm",
         )
 
         self.run_form(tracker, DOMAIN)
@@ -696,7 +725,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
 
         self.mock_save_assessment.assert_called()
 
-    def test_mild_last_symptoms__still_sick(self):
+    def test_mild_last_symptoms__is_symptom_free_deny(self):
         tracker = self.create_tracker(
             slots={
                 LAST_SYMPTOMS_SLOT: Symptoms.MILD,
@@ -706,7 +735,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
                 HAS_COUGH_SLOT: False,
                 HAS_OTHER_MILD_SYMPTOMS_SLOT: False,
             },
-            intent="still_sick",
+            intent="deny",
         )
 
         self.run_form(tracker, DOMAIN)
@@ -729,3 +758,29 @@ class TestDailyCiFeelBetterForm(FormTestCase):
         )
 
         self.mock_save_assessment.assert_called()
+
+    def test_mild_last_symptoms__is_symptom_free_error(self):
+        tracker = self.create_tracker(
+            slots={
+                LAST_SYMPTOMS_SLOT: Symptoms.MILD,
+                LAST_HAS_DIFF_BREATHING_SLOT: False,
+                REQUESTED_SLOT: IS_SYMPTOM_FREE_SLOT,
+                HAS_FEVER_SLOT: False,
+                HAS_COUGH_SLOT: False,
+                HAS_OTHER_MILD_SYMPTOMS_SLOT: False,
+            },
+            intent="something_else",
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [
+                SlotSet(IS_SYMPTOM_FREE_SLOT, None),
+                SlotSet(REQUESTED_SLOT, IS_SYMPTOM_FREE_SLOT),
+            ]
+        )
+
+        self.assert_templates(
+            ["utter_ask_daily_ci__feel_better__is_symptom_free_error"]
+        )

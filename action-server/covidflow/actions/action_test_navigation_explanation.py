@@ -3,7 +3,8 @@ from typing import Any, Dict, List, Text
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
-from .constants import PROVINCIAL_811_SLOT
+from covidflow.constants import PROVINCIAL_811_SLOT
+
 from .lib.log_util import bind_logger
 from .lib.provincial_811 import get_provincial_811
 

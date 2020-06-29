@@ -3,7 +3,8 @@ from typing import Any, Dict, List, Text
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
-from .constants import SELF_ASSESS_DONE_SLOT
+from covidflow.constants import SELF_ASSESS_DONE_SLOT
+
 from .lib.log_util import bind_logger
 
 

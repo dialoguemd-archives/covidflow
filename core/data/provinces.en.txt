@@ -1,0 +1,48 @@
+ab
+alberta
+alta
+b.c.
+bc
+bc
+british columbia
+labrador
+man
+manitoba
+mb
+n.b.
+n.s.
+n.w.t.
+nb
+new brunswick
+newfoundland
+newfoundland and labrador
+newfoundland labrador
+nf and labrador
+nl
+northwest t.
+northwest territories
+nova scotia
+ns
+nt
+nu
+nun
+nunavut
+nw territories
+nwt
+on
+ont
+ontario
+p.e.
+p.e.i.
+pe
+pei
+prince edward island
+qc
+que
+quebec
+sask
+saskatchewan
+sk
+y.t.
+yu
+yukon

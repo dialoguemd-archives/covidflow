@@ -5,6 +5,21 @@ class Symptoms:  # Not using an enum to avoid persisting enum values
     SEVERE = "severe"
 
 
+PROVINCES = [
+    "bc",
+    "ab",
+    "sk",
+    "mb",
+    "on",
+    "qc",
+    "nb",
+    "ns",
+    "pe",
+    "nl",
+    "yu",
+    "nt",
+    "nu",
+]
 PROVINCES_WITH_211 = ["bc", "ab", "sk", "mb", "on", "qc", "ns"]
 
 END_CONVERSATION_MESSAGE = {"data": {"endOfConversation": True}}
@@ -40,11 +55,11 @@ FIRST_NAME_SLOT = "first_name"
 PHONE_NUMBER_SLOT = "phone_number"
 PRECONDITIONS_SLOT = "preconditions"
 HAS_DIALOGUE_SLOT = "has_dialogue"
-PROVINCE_SLOT = "province"
+PROVINCE_SLOT = "province_code"
 AGE_OVER_65_SLOT = "age_over_65"
 
 ## Slots used only in flows
-CANCEL_CI_SLOT = "cancel_ci"
+CONTINUE_CI_SLOT = "continue_ci"
 HAS_ASSISTANCE_SLOT = "has_assistance"
 LIVES_ALONE_SLOT = "lives_alone"
 PROVINCIAL_811_SLOT = "provincial_811"  # used for interpolation

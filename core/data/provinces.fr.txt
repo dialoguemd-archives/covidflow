@@ -1,0 +1,64 @@
+ab
+alb
+alberta
+bc
+c.b.
+c.-b.
+cb
+colombie britannique
+colombie-britannique
+i.p.e.
+i.-p.-e.
+ile du prince edouard
+île-du-prince-édouard
+ipe
+i-p-e
+labrador
+man
+manitoba
+mb
+n.b.
+n.-b.
+n.-e.
+n.-é.
+nb
+n-b
+n-e
+nl
+nouveau brunswick
+nouveau-brunswick
+nouvelle ecosse
+nouvelle-Écosse
+ns
+nt
+nu
+nun
+nunavut
+on
+ont
+ontario
+pe
+qc
+que
+quebec
+québec
+sask
+saskatchewan
+sk
+t.n.l.
+t.-n.-l.
+t.n.o.
+terr. du nord-ouest
+terre neuve et labrador
+terre neuve labrador
+terre neuve
+terre-neuve-et-labrador
+territoires du n-o
+territoires du nord-ouest
+tnl
+t-n-l
+tno
+yn
+yt
+yu
+yukon

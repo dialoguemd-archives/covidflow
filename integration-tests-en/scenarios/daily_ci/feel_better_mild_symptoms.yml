@@ -9,7 +9,7 @@
 - user: deny
   bot: daily_ci/feel_better/ask_other_mild_symptoms_no_cough
 - user: affirm
-  bot: daily_ci/feel_better/ask_cancel_ci_other_mild_symptoms
+  bot: daily_ci/feel_better/ask_continue_ci_other_mild_symptoms
 - user: daily_ci/continue
   bot: daily_ci/general_recommendations_has_211
 - user: done

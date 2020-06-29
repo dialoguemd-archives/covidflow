@@ -6,7 +6,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import REQUESTED_SLOT, FormAction
 
 from covidflow.actions.assessment_common import PROVINCIAL_811_SLOT, AssessmentCommon
-from covidflow.actions.constants import (
+from covidflow.constants import (
     AGE_OVER_65_SLOT,
     HAS_COUGH_SLOT,
     HAS_FEVER_SLOT,
@@ -84,7 +84,9 @@ class BaseTestAssessmentForm:
             ],
         )
 
-        self.assert_templates(["utter_pre_ask_province", "utter_ask_province"])
+        self.assert_templates(
+            ["utter_pre_ask_province_code", "utter_ask_province_code"]
+        )
 
     def test_provide_province_specific_provincial_811(self):
         tracker = self.create_tracker(

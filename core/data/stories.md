@@ -774,7 +774,7 @@
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin
   - utter_daily_ci__greet
-  - utter_ask_daily_ci__early_opt_out__cancel_ci
+  - utter_ask_daily_ci__early_opt_out__continue_ci
 * opt_out
   - action_daily_ci_early_opt_out
   - utter_ask_anything_else_without_test_navigation
@@ -785,7 +785,7 @@
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin
   - utter_daily_ci__greet
-  - utter_ask_daily_ci__early_opt_out__cancel_ci
+  - utter_ask_daily_ci__early_opt_out__continue_ci
 * opt_out
   - action_daily_ci_early_opt_out
   - utter_ask_anything_else_without_test_navigation
@@ -803,7 +803,7 @@
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin
   - utter_daily_ci__greet
-  - utter_ask_daily_ci__early_opt_out__cancel_ci
+  - utter_ask_daily_ci__early_opt_out__continue_ci
 * continue OR affirm
   - utter_daily_ci__early_opt_out__acknowledge_continue_ci
   - utter_ask_daily_ci__feel
@@ -819,7 +819,7 @@
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin
   - utter_daily_ci__greet
-  - utter_ask_daily_ci__early_opt_out__cancel_ci
+  - utter_ask_daily_ci__early_opt_out__continue_ci
 * continue
   - utter_daily_ci__early_opt_out__acknowledge_continue_ci
   - utter_ask_daily_ci__feel
@@ -847,7 +847,7 @@
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin
   - utter_daily_ci__greet
-  - utter_ask_daily_ci__early_opt_out__cancel_ci
+  - utter_ask_daily_ci__early_opt_out__continue_ci
 * continue
   - utter_daily_ci__early_opt_out__acknowledge_continue_ci
   - utter_ask_daily_ci__feel
@@ -876,7 +876,7 @@
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin
   - utter_daily_ci__greet
-  - utter_ask_daily_ci__early_opt_out__cancel_ci
+  - utter_ask_daily_ci__early_opt_out__continue_ci
 * continue
   - utter_daily_ci__early_opt_out__acknowledge_continue_ci
   - utter_ask_daily_ci__feel
@@ -905,7 +905,7 @@
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin
   - utter_daily_ci__greet
-  - utter_ask_daily_ci__early_opt_out__cancel_ci
+  - utter_ask_daily_ci__early_opt_out__continue_ci
 * continue
   - utter_daily_ci__early_opt_out__acknowledge_continue_ci
   - utter_ask_daily_ci__feel
@@ -935,7 +935,7 @@
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin
   - utter_daily_ci__greet
-  - utter_ask_daily_ci__early_opt_out__cancel_ci
+  - utter_ask_daily_ci__early_opt_out__continue_ci
 * continue
   - utter_daily_ci__early_opt_out__acknowledge_continue_ci
   - utter_ask_daily_ci__feel
@@ -971,7 +971,7 @@
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin
   - utter_daily_ci__greet
-  - utter_ask_daily_ci__early_opt_out__cancel_ci
+  - utter_ask_daily_ci__early_opt_out__continue_ci
 * continue
   - utter_daily_ci__early_opt_out__acknowledge_continue_ci
   - utter_ask_daily_ci__feel
@@ -1000,7 +1000,7 @@
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin
   - utter_daily_ci__greet
-  - utter_ask_daily_ci__early_opt_out__cancel_ci
+  - utter_ask_daily_ci__early_opt_out__continue_ci
 * continue
   - utter_daily_ci__early_opt_out__acknowledge_continue_ci
   - utter_ask_daily_ci__feel
@@ -1027,7 +1027,7 @@
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin
   - utter_daily_ci__greet
-  - utter_ask_daily_ci__early_opt_out__cancel_ci
+  - utter_ask_daily_ci__early_opt_out__continue_ci
 * continue
   - utter_daily_ci__early_opt_out__acknowledge_continue_ci
   - utter_ask_daily_ci__feel
@@ -1048,7 +1048,7 @@
 * daily_checkin{"metadata":{}}
   - action_initialize_daily_checkin
   - utter_daily_ci__greet
-  - utter_ask_daily_ci__early_opt_out__cancel_ci
+  - utter_ask_daily_ci__early_opt_out__continue_ci
 * continue
   - utter_daily_ci__early_opt_out__acknowledge_continue_ci
   - utter_ask_daily_ci__feel

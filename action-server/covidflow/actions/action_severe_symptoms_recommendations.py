@@ -4,7 +4,8 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.events import ConversationPaused
 from rasa_sdk.executor import CollectingDispatcher
 
-from .constants import END_CONVERSATION_MESSAGE
+from covidflow.constants import END_CONVERSATION_MESSAGE
+
 from .lib.log_util import bind_logger
 
 

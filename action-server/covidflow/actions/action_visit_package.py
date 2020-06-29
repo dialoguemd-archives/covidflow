@@ -3,8 +3,9 @@ from typing import Any, Dict, List, Text
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
+from covidflow.constants import AGE_OVER_65_SLOT, PROVINCE_SLOT, SYMPTOMS_SLOT, Symptoms
+
 from .assessment_form import CONTACT_SLOT, TRAVEL_SLOT
-from .constants import AGE_OVER_65_SLOT, PROVINCE_SLOT, SYMPTOMS_SLOT, Symptoms
 from .lib.log_util import bind_logger
 
 RISK_LEVEL_MEDICAL = "elevated-medical-risk"

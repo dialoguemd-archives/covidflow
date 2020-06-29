@@ -189,11 +189,14 @@ responses:
     - text: "Si vous êtes anxieux au sujet de la Covid-19 ou de votre propre bien-être, consultez [Espace mieux-être Canada](https://ca.portal.gs/?lang=fr-ca)"
 
   # province age form
-  utter_pre_ask_province:
+  utter_pre_ask_province_code:
     - text: Ensuite, j’aimerais savoir où vous vivez, afin de vous fournir de l’information adaptée à votre région
 
-  utter_ask_province:
+  utter_ask_province_code:
     - text: Dans quelle province ou quel territoire résidez-vous présentement?
+
+  utter_ask_province_code_error:
+    - text: Désolée, veuillez choisir la province ou le territoire où vous résidez actuellement
       buttons:
         - title: BC
           payload: '/inform{"province": "bc"}'
@@ -377,7 +380,10 @@ responses:
     - text: Continuons
 
   utter_ask_daily_ci_enroll__wants_cancel:
-    - text: Voulez-vous vraiment annuler l’inscription au suivi quotidien?
+    - text: J’ai compris que vous vouliez annuler votre inscription au suivi quotidien, est-ce exact?
+
+  utter_ask_daily_ci_enroll__wants_cancel_error:
+    - text: Désolée, voulez-vous vraiment annuler l’inscription au suivi quotidien?
       buttons:
         - title: Oui arrêter
           payload: "/affirm"
@@ -424,12 +430,15 @@ responses:
     - text: Très bien, j’utiliserai plutôt ce numéro
 
   utter_ask_daily_ci_enroll__no_code_solution:
-    - text: Je suis désolée. Je peux vous envoyer un nouveau code au même numéro ou vous pouvez me redonner votre numéro. Que voulez-vous faire?
+    - text: Je suis désolée. Je peux vous envoyer un nouveau code au même numéro ou vous pouvez me redonner votre numéro. Que voulez-vous faire? Recevoir un nouveau code ou me redonner votre numéro?
+
+  utter_ask_daily_ci_enroll__no_code_solution_error:
+    - text: "Désolée, que voulez-vous faire:"
       buttons:
         - title: Renvoyez-moi un code
-          payload: "/resend_code"
+          payload: "/new_code"
         - title: Redonner mon numéro
-          payload: "/reenter_phone_number"
+          payload: "/change_phone"
       custom:
         data:
           disableTextField: "true"
@@ -439,6 +448,9 @@ responses:
 
   utter_ask_preconditions:
     - text: Avez-vous des problèmes de santé qui pourraient affecter votre système immunitaire?
+
+  utter_ask_preconditions_error:
+    - text: Désolée, avez-vous des problèmes de santé qui pourraient affecter votre système immunitaire?
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -450,11 +462,14 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_explain_preconditions:
+  utter_daily_ci_enroll__explain_preconditions:
     - text: "Vous pourriez être plus à risque si vous avez certains problèmes médicaux (par ex.: problèmes cardiaques, hypertension, diabète, maladie respiratoire chronique, cancer) ou si votre système immunitaire est affaibli en raison d'une condition ou d'un traitement médical (par ex.: chimiothérapie)"
 
-  utter_ask_preconditions_again:
-    - text: Présentez-vous des facteurs de risque?
+  utter_ask_daily_ci_enroll__preconditions_examples:
+    - text: Présentez-vous des facteurs de risques comme ceux-ci?
+
+  utter_ask_daily_ci_enroll__preconditions_examples_error:
+    - text: Désolée, présentez-vous des facteurs de risques?
       buttons:
         - title: Oui
           payload: "/affirm"
@@ -1083,12 +1098,15 @@ responses:
           disableTextField: "true"
 
   utter_ask_daily_ci__feel_better__is_symptom_free:
-    - text: Bonne nouvelle! Vous sentez-vous encore un peu malade, ou est-ce que vous n'avez plus de symptômes du tout?
+    - text: Bonne nouvelle! Diriez-vous que vous êtes tout à fait guéri(e)?
+
+  utter_ask_daily_ci__feel_better__is_symptom_free_error:
+    - text: Désolée, vous sentez-vous tout à fait guéri(e) ou êtes-vous encore un peu malade?
       buttons:
-        - title: Plus de symptômes
-          payload: "/symptom_free"
-        - title: Encore malade
-          payload: "/still_sick"
+        - title: Oui tout à fait guéri(e)
+          payload: "/affirm"
+        - title: Non encore malade
+          payload: "/deny"
       custom:
         data:
           disableTextField: "true"
@@ -1113,12 +1131,15 @@ responses:
   utter_daily_ci__keep_or_cancel__no_symptoms_recommendation:
     - text: Il se peut que vous ayez récupéré de la Covid-19. Assurez-vous de continuer à prendre des mesures pour vous protéger et protéger les autres, comme rester à la maison et porter un masque si vous devez absolument sortir
 
-  utter_ask_daily_ci__keep_or_cancel__cancel_ci_no_symptoms:
+  utter_ask_daily_ci__keep_or_cancel__continue_ci_no_symptoms:
     - text: Voulez-vous que je continue à faire votre suivi à chaque jour, ou aimeriez-vous annuler le suivi quotidien?
+
+  utter_ask_daily_ci__keep_or_cancel__continue_ci_no_symptoms_error:
+    - text: Désolée, veuillez me dire si vous souhaitez continuer le suivi quotidien, ou l’annuler
       buttons:
-        - title: Continuer
+        - title: Oui continuer
           payload: "/continue"
-        - title: Annuler
+        - title: Non annuler
           payload: "/cancel"
       custom:
         data:
@@ -1133,8 +1154,11 @@ responses:
   utter_daily_ci__keep_or_cancel__cancel_ci_recommendation:
     - text: Si vous remarquez des changements, ou si vous avez à nouveau des symptômes, n'hésitez pas à communiquer avec moi pour une évaluation
 
-  utter_ask_daily_ci__keep_or_cancel__cancel_ci_symptoms:
+  utter_ask_daily_ci__keep_or_cancel__continue_ci_symptoms:
     - text: Je vais continuer à vous contacter à chaque jour, à moins que vous ne souhaitiez annuler le suivi quotidien. Ça vous va?
+
+  utter_ask_daily_ci__keep_or_cancel__continue_ci_symptoms_error:
+    - text: Désolée, veuillez me dire si vous souhaitez que je vous contacte demain pour votre suivi, ou si vous préférez l’annuler
       buttons:
         - title: Oui continuer le suivi
           payload: "/continue"
@@ -1175,7 +1199,7 @@ responses:
 
   ## Daily check-in - early opt out
 
-  utter_ask_daily_ci__early_opt_out__cancel_ci:
+  utter_ask_daily_ci__early_opt_out__continue_ci:
     - text: Avant de poursuivre, si vous voulez vous désinscrire et annuler le suivi quotidien, dites-le moi maintenant
       buttons:
         - title: Me désinscrire

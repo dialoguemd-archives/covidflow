@@ -6,14 +6,14 @@
         websocket: true
     scale:
       horizontal: 3-12
-      vertical: medium.mem
+      vertical: medium.mem2x
     healthcheck:
       path: /
       liveness:
-        initialDelaySeconds: 15
+        initialDelaySeconds: 60
         timeoutSeconds: 30
       readiness:
-        initialDelaySeconds: 15
+        initialDelaySeconds: 60
 
 engine: ~2
 name: covidflow

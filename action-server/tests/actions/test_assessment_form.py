@@ -2,7 +2,7 @@ from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.assessment_form import FORM_NAME, AssessmentForm
-from covidflow.actions.constants import (
+from covidflow.constants import (
     AGE_OVER_65_SLOT,
     CONTACT_SLOT,
     HAS_CONTACT_RISK_SLOT,
@@ -33,6 +33,7 @@ DOMAIN = {
         "utter_ask_contact_error": [{"text": ""}],
         "utter_ask_travel_error": [{"text": ""}],
         "utter_ask_has_cough_error": [{"text": ""}],
+        "utter_ask_province_code_error": [{"text": ""}],
     }
 }
 
@@ -86,7 +87,9 @@ class TestAssessmentForm(FormTestCase):
             ]
         )
 
-        self.assert_templates(["utter_pre_ask_province", "utter_ask_province"])
+        self.assert_templates(
+            ["utter_pre_ask_province_code", "utter_ask_province_code"]
+        )
 
     def test_severe_symptoms_error(self):
         tracker = self.create_tracker(
@@ -122,6 +125,21 @@ class TestAssessmentForm(FormTestCase):
         )
 
         self.assert_templates(["utter_ask_age_over_65"])
+
+    def test_collect_province_error(self):
+        tracker = self.create_tracker(
+            slots={SEVERE_SYMPTOMS_SLOT: False, REQUESTED_SLOT: PROVINCE_SLOT,},
+            intent="inform",
+            entities=[{"entity": "province", "value": "n"}],
+        )
+
+        self.run_form(tracker, DOMAIN)
+
+        self.assert_events(
+            [SlotSet(PROVINCE_SLOT, None), SlotSet(REQUESTED_SLOT, PROVINCE_SLOT),],
+        )
+
+        self.assert_templates(["utter_ask_province_code_error"])
 
     def test_collect_age_over_65(self):
         tracker = self.create_tracker(

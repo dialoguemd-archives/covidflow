@@ -11,7 +11,7 @@
 - user: deny
   bot: daily_ci/feel_worse/ask_cough
 - user: deny
-  bot: daily_ci/feel_worse/ask_cancel_ci
+  bot: daily_ci/feel_worse/ask_continue_ci
 - user: daily_ci/continue
   bot: daily_ci/general_recommendations_has_211
 - user: done

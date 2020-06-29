@@ -9,12 +9,13 @@ from rasa_sdk.events import ActionExecuted, EventType, Form, SlotSet, UserUttere
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import REQUESTED_SLOT, FormAction
 
+from covidflow.constants import LANGUAGE_SLOT, QA_TEST_PROFILE_ATTRIBUTE
+
 from .answers import (
     QuestionAnsweringProtocol,
     QuestionAnsweringResponse,
     QuestionAnsweringStatus,
 )
-from .constants import LANGUAGE_SLOT, QA_TEST_PROFILE_ATTRIBUTE
 from .form_helper import request_next_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 

@@ -4,13 +4,15 @@ from typing import Any, Dict, Text
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, func
 from sqlalchemy.dialects.postgresql import JSONB
 
-from .base import Base
+from covidflow.constants import (
+    FEEL_WORSE_SLOT,
+    HAS_COUGH_SLOT,
+    HAS_DIFF_BREATHING_SLOT,
+    HAS_FEVER_SLOT,
+    SYMPTOMS_SLOT,
+)
 
-SYMPTOMS_SLOT = "symptoms"
-HAS_FEVER_SLOT = "has_fever"
-HAS_COUGH_SLOT = "has_cough"
-HAS_DIFF_BREATHING_SLOT = "has_diff_breathing"
-FEEL_WORSE_SLOT = "feel_worse"
+from .base import Base
 
 SYMPTOMS_ATTRIBUTE = "symptoms"
 HAS_FEVER_ATTRIBUTE = "has_fever"

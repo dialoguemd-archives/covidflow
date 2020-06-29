@@ -7,7 +7,7 @@
 - user: deny
   bot: daily_ci/feel_no_change/ask_cough_no_fever
 - user: deny
-  bot: daily_ci/feel_no_change/ask_cancel_ci_mild_symptoms_no_cough
+  bot: daily_ci/feel_no_change/ask_continue_ci_mild_symptoms_no_cough
 - user: daily_ci/continue
   bot: daily_ci/general_recommendations_has_211
 - user: done

@@ -12,8 +12,7 @@ intents:
   - inform
   - less
   - more
-  - help_preconditions:
-      triggers: action_explain_preconditions
+  - help_preconditions
   - done
   - better
   - worse
@@ -25,8 +24,7 @@ intents:
   - no_phone
   - did_not_get_code
   - change_phone
-  - resend_code
-  - reenter_phone_number
+  - new_code
   - cancel
   - continue
   - opt_out
@@ -44,7 +42,6 @@ entities:
   - metadata
   - first_name
   - validation_code
-  - yes_no
 
 actions:
   - action_fallback
@@ -104,7 +101,7 @@ slots:
   has_fever:
     type: unfeaturized
 
-  province:
+  province_code:
     type: unfeaturized
 
   age_over_65:
@@ -180,7 +177,7 @@ slots:
   feel_worse:
     type: unfeaturized
 
-  cancel_ci:
+  continue_ci:
     type: unfeaturized
 
   provincial_811:
@@ -237,6 +234,9 @@ slots:
   daily_ci_enroll__wants_cancel:
     type: unfeaturized
     initial_value: false
+
+  daily_ci_enroll__preconditions_examples:
+    type: unfeaturized
 
   daily_ci__feel_worse__has_diff_breathing_worsened:
     type: unfeaturized

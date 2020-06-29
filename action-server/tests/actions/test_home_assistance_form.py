@@ -1,8 +1,8 @@
 from rasa_sdk.events import Form, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
-from covidflow.actions.constants import HAS_ASSISTANCE_SLOT, PROVINCE_SLOT
 from covidflow.actions.home_assistance_form import FORM_NAME, HomeAssistanceForm
+from covidflow.constants import HAS_ASSISTANCE_SLOT, PROVINCE_SLOT
 
 from .form_test_helper import FormTestCase
 

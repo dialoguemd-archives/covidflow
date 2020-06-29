@@ -4,14 +4,13 @@ from rasa_sdk import Tracker
 from rasa_sdk.events import SlotSet
 from structlog import get_logger
 
-from covidflow.utils.persistence import cancel_reminder, save_assessment
-
-from .constants import (
+from covidflow.constants import (
     LAST_ASSESSMENT_SLOTS,
     SELF_ASSESS_DONE_SLOT,
     SYMPTOMS_SLOT,
     Symptoms,
 )
+from covidflow.utils.persistence import cancel_reminder, save_assessment
 
 logger = get_logger(__name__)
 

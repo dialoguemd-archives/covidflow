@@ -9,13 +9,10 @@ from covidflow.actions.action_initialize_daily_checkin import (
     ActionInitializeDailyCheckin,
     _fill_symptoms,
 )
-from covidflow.actions.constants import (
+from covidflow.constants import (
     AGE_OVER_65_SLOT,
     FIRST_NAME_SLOT,
-    HAS_COUGH_SLOT,
     HAS_DIALOGUE_SLOT,
-    HAS_DIFF_BREATHING_SLOT,
-    HAS_FEVER_SLOT,
     INVALID_REMINDER_ID_SLOT,
     LAST_HAS_COUGH_SLOT,
     LAST_HAS_DIFF_BREATHING_SLOT,
@@ -25,8 +22,20 @@ from covidflow.actions.constants import (
     PRECONDITIONS_SLOT,
     PROVINCE_SLOT,
     PROVINCIAL_811_SLOT,
-    SYMPTOMS_SLOT,
     Symptoms,
+)
+from covidflow.db.assessment import (
+    HAS_COUGH_ATTRIBUTE,
+    HAS_DIFF_BREATHING_ATTRIBUTE,
+    HAS_FEVER_ATTRIBUTE,
+    SYMPTOMS_ATTRIBUTE,
+)
+from covidflow.db.reminder import (
+    AGE_OVER_65_ATTRIBUTE,
+    FIRST_NAME_ATTRIBUTE,
+    HAS_DIALOGUE_ATTRIBUTE,
+    PRECONDITIONS_ATTRIBUTE,
+    PROVINCE_ATTRIBUTE,
 )
 
 from .action_test_helper import ActionTestCase
@@ -48,7 +57,15 @@ DOMAIN = {
     }
 }
 
-NON_DEFAULT_REMINDER_VALUES = {
+NON_DEFAULT_REMINDER_ATTRIBUTES = {
+    FIRST_NAME_ATTRIBUTE: "Robin",
+    PROVINCE_ATTRIBUTE: NON_DEFAULT_PROVINCE,
+    AGE_OVER_65_ATTRIBUTE: True,
+    PRECONDITIONS_ATTRIBUTE: True,
+    HAS_DIALOGUE_ATTRIBUTE: True,
+}
+
+NON_DEFAULT_REMINDER_SLOTS = {
     FIRST_NAME_SLOT: "Robin",
     PROVINCE_SLOT: NON_DEFAULT_PROVINCE,
     AGE_OVER_65_SLOT: True,
@@ -56,21 +73,21 @@ NON_DEFAULT_REMINDER_VALUES = {
     HAS_DIALOGUE_SLOT: True,
 }
 
-NON_DEFAULT_ASSESSMENT_VALUES = {
+NON_DEFAULT_ASSESSMENT_ATTRIBUTES = {
+    SYMPTOMS_ATTRIBUTE: Symptoms.MODERATE,
+    HAS_COUGH_ATTRIBUTE: False,
+    HAS_FEVER_ATTRIBUTE: False,
+    HAS_DIFF_BREATHING_ATTRIBUTE: False,
+}
+
+NON_DEFAULT_ASSESSMENT_SLOTS = {
     LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
     LAST_HAS_COUGH_SLOT: False,
     LAST_HAS_FEVER_SLOT: False,
     LAST_HAS_DIFF_BREATHING_SLOT: False,
 }
 
-NON_DEFAULT_ASSESSMENT_VALUES_ENTRY = {
-    SYMPTOMS_SLOT: Symptoms.MODERATE,
-    HAS_COUGH_SLOT: False,
-    HAS_DIFF_BREATHING_SLOT: False,
-    HAS_FEVER_SLOT: False,
-}
-
-DEFAULT_ASSESSMENT_VALUES = {
+DEFAULT_ASSESSMENT_SLOTS = {
     LAST_SYMPTOMS_SLOT: Symptoms.MODERATE,
     LAST_HAS_COUGH_SLOT: False,
     LAST_HAS_FEVER_SLOT: False,
@@ -128,11 +145,11 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
     @patch("covidflow.actions.action_initialize_daily_checkin.get_last_assessment")
     def test_happy_path(self, mock_get_last_assessment, mock_get_reminder):
         mock_get_reminder.return_value = namedtuple(
-            "Reminder", NON_DEFAULT_REMINDER_VALUES.keys()
-        )(*NON_DEFAULT_REMINDER_VALUES.values())
+            "Reminder", NON_DEFAULT_REMINDER_ATTRIBUTES.keys()
+        )(*NON_DEFAULT_REMINDER_ATTRIBUTES.values())
         mock_get_last_assessment.return_value = namedtuple(
-            "Assessment", NON_DEFAULT_ASSESSMENT_VALUES_ENTRY.keys()
-        )(*NON_DEFAULT_ASSESSMENT_VALUES_ENTRY.values())
+            "Assessment", NON_DEFAULT_ASSESSMENT_ATTRIBUTES.keys()
+        )(*NON_DEFAULT_ASSESSMENT_ATTRIBUTES.values())
 
         tracker = _create_tracker()
 
@@ -141,9 +158,9 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
         self.assert_templates([])
 
         expected_slots = {
-            **NON_DEFAULT_REMINDER_VALUES,
+            **NON_DEFAULT_REMINDER_SLOTS,
             PROVINCIAL_811_SLOT: NON_DEFAULT_PROVINCIAL_811,
-            **NON_DEFAULT_ASSESSMENT_VALUES,
+            **NON_DEFAULT_ASSESSMENT_SLOTS,
         }
 
         self.assert_events(
@@ -157,8 +174,8 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
     @patch("covidflow.actions.action_initialize_daily_checkin.get_last_assessment")
     def test_reminder_not_found(self, mock_get_last_assessment, mock_get_reminder):
         mock_get_last_assessment.return_value = namedtuple(
-            "Assessment", NON_DEFAULT_ASSESSMENT_VALUES_ENTRY.keys()
-        )(*NON_DEFAULT_ASSESSMENT_VALUES_ENTRY.values())
+            "Assessment", NON_DEFAULT_ASSESSMENT_ATTRIBUTES.keys()
+        )(*NON_DEFAULT_ASSESSMENT_ATTRIBUTES.values())
 
         tracker = _create_tracker()
 
@@ -182,8 +199,8 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
         self, mock_get_last_assessment, mock_get_reminder
     ):
         mock_get_reminder.return_value = namedtuple(
-            "Reminder", NON_DEFAULT_REMINDER_VALUES.keys()
-        )(*NON_DEFAULT_REMINDER_VALUES.values())
+            "Reminder", NON_DEFAULT_REMINDER_ATTRIBUTES.keys()
+        )(*NON_DEFAULT_REMINDER_ATTRIBUTES.values())
 
         tracker = _create_tracker()
 
@@ -192,9 +209,9 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
         self.assert_templates([])
 
         expected_slots = {
-            **NON_DEFAULT_REMINDER_VALUES,
+            **NON_DEFAULT_REMINDER_SLOTS,
             PROVINCIAL_811_SLOT: NON_DEFAULT_PROVINCIAL_811,
-            **DEFAULT_ASSESSMENT_VALUES,
+            **DEFAULT_ASSESSMENT_SLOTS,
         }
 
         self.assert_events(

@@ -1,6 +1,6 @@
 intents:
-  - greet:
-      use_entities: []
+  - greet
+  - nlu_fallback
   - goodbye
   - affirm
   - deny
@@ -26,13 +26,10 @@ intents:
   - cancel
   - continue
   - opt_out
-  - send_validation_code:
-      triggers: action_send_validation_code
-  - send_daily_checkin_reminder:
-      triggers: action_send_daily_checkin_reminder
+  - send_validation_code
+  - send_daily_checkin_reminder
   - navigate_test_locations:
       use_entities: []
-  - fallback
   - q_a
 
 entities:
@@ -42,7 +39,6 @@ entities:
   - validation_code
 
 actions:
-  - action_fallback
   - action_unsupported_intent
   - action_visit_package
   - action_initialize_daily_checkin
@@ -67,6 +63,7 @@ actions:
   - action_qa_goodbye
 
 forms:
+  - home_assistance_form
   - assessment_form
   - tested_positive_form
   - checkin_return_form
@@ -76,7 +73,6 @@ forms:
   - daily_ci_feel_worse_form
   - daily_ci_keep_or_cancel_form
   - question_answering_form
-  - home_assistance_form
   - test_navigation_form
 
 slots:
@@ -111,7 +107,7 @@ slots:
       - severe
       - moderate
       - mild
-      - none
+      - neni
 
   has_cough:
     type: unfeaturized

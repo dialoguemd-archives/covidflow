@@ -16,7 +16,7 @@
   bot: checkin_return/ask_when_first_symptoms
 - user: navigate_tests
   bot: checkin_return/ask_when_first_symptoms_error
-- user: more
+- user: affirm
   bot: checkin_return/ask_anything_else_no_symptoms_more
 - user: done
   bot: thank_you_take_care

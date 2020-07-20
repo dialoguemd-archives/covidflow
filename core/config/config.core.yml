@@ -1,7 +1,7 @@
 # Configuration for Rasa Core.
 # https://rasa.com/docs/rasa/core/policies/
 policies:
-  - name: FormPolicy
+  - name: RulePolicy
   - name: AugmentedMemoizationPolicy
     max_history: 10
   - name: TEDPolicy
@@ -9,11 +9,5 @@ policies:
     epochs: 100
     evaluate_on_number_of_examples: 0
     random_seed: 42
-  - name: MappingPolicy
-  - name: "FallbackPolicy"
-    nlu_threshold: 0.3
-    ambiguity_threshold: 0.0
-    core_threshold: 0.0
-    fallback_action_name: "action_fallback"
   - name: core.policies.unsupported_intent_policy.UnsupportedIntentPolicy
-    fallback_action_name: 'action_unsupported_intent'
+    fallback_action_name: "action_unsupported_intent"

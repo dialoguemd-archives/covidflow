@@ -318,7 +318,7 @@ jobs:
       COMPONENT_PATH: /app/core-<<parameters.language>>
     working_directory: /app/core
     docker:
-      - image: rasa/rasa:1.9.4-full
+      - image: rasa/rasa:2.0.0a1-full
         entrypoint: ["/bin/bash"]
     steps:
       - checkout:

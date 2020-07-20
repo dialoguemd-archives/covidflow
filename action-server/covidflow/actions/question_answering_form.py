@@ -78,7 +78,7 @@ class QuestionAnsweringForm(FormAction):
         intent = _get_intent(tracker)
 
         # Fallback QA
-        if intent == "fallback":
+        if intent == "nlu_fallback":
             question = tracker.latest_message.get("text", "")
 
             result = await self.validate_active_question(

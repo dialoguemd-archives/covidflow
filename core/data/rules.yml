@@ -1,0 +1,406 @@
+rules:
+  # Replace mapping policy
+  - rule: Send Validation Code
+    steps:
+      - intent: send_validation_code
+      - action: action_send_validation_code
+
+  - rule: Send Daily checkin reminder
+    steps:
+      - intent: send_daily_checkin_reminder
+      - action: action_send_daily_checkin_reminder
+
+  - rule: Greet
+    steps:
+      - intent: greet
+      - action: action_greeting_messages
+
+  - rule: Severe symptoms
+    steps:
+      - form: assessment_form
+      - ...
+      - action: assessment_form
+      - form: null
+      - slot: symptoms
+        value: severe
+      - action: action_severe_symptoms_recommendations
+
+  - rule: moderate symptoms
+    steps:
+      - form: assessment_form
+      - ...
+      - action: assessment_form
+      - form: null
+      - slot: symptoms
+        value: moderate
+      - action: home_assistance_form
+      - action: action_suspect_moderate_symptoms_recommendations
+      - action: daily_ci_enroll_form
+      - action: action_suspect_moderate_symptoms_final_recommendations
+      - action: action_visit_package
+      - action: utter_ask_anything_else_with_test_navigation
+
+  - rule: mild symptoms
+    steps:
+      - form: assessment_form
+      - ...
+      - action: assessment_form
+      - form: null
+      - slot: symptoms
+        value: mild
+      - action: home_assistance_form
+      - action: action_suspect_mild_symptoms_exposure_recommendations
+      - action: daily_ci_enroll_form
+      - action: action_suspect_mild_symptoms_exposure_final_recommendations
+      - action: action_visit_package
+      - action: utter_ask_anything_else_with_test_navigation
+
+  - rule: contact risk
+    steps:
+      - form: assessment_form
+      - ...
+      - action: assessment_form
+      - form: null
+      - slot: has_contact_risk
+        value: true
+      - action: home_assistance_form
+      - action: action_suspect_mild_symptoms_exposure_recommendations
+      - action: daily_ci_enroll_form
+      - action: action_suspect_mild_symptoms_exposure_final_recommendations
+      - action: action_visit_package
+      - action: utter_ask_anything_else_with_test_navigation
+
+  - rule: no symptoms
+    steps:
+      - form: assessment_form
+      - ...
+      - action: assessment_form
+      - form: null
+      - action: action_suspect_no_symptoms_recommendations
+      - action: action_visit_package
+      - action: utter_ask_anything_else_without_test_navigation
+
+  # QA rules
+  - rule: QA success
+    steps:
+      - form: question_answering_form
+      - ...
+      - action: question_answering_form
+      - form: null
+      - slot: question_answering_status
+        value: success
+      - action: utter_ask_another_question
+
+  - rule: greet QA out_of_distribution
+    steps:
+      - intent: greet
+      - action: action_greeting_messages
+      - intent: nlu_fallback
+      - action: question_answering_form
+      - slot: question_answering_status
+        value: out_of_distribution
+      - action: utter_ask_how_may_i_help_fallback
+
+  - rule: QA out_of_distribution
+    steps:
+      - form: question_answering_form
+      - ...
+      - action: question_answering_form
+      - form: null
+      - slot: question_answering_status
+        value: out_of_distribution
+      - action: utter_cant_answer
+      - action: utter_ask_different_question
+
+  - rule: greet QA failure
+    steps:
+      - intent: greet
+      - action: action_greeting_messages
+      - intent: nlu_fallback
+      - action: question_answering_form
+      - slot: question_answering_status
+        value: failure
+      - action: utter_ask_how_may_i_help_fallback
+
+  - rule: assessment QA failure
+    steps:
+      - slot: self_assess_done
+        value: true
+      - ...
+      - form: question_answering_form
+      - ...
+      - action: question_answering_form
+      - form: null
+      - slot: question_answering_status
+        value: failure
+      - action: utter_question_answering_error
+      - action: utter_try_again_later
+      - action: action_qa_goodbye
+
+  - rule: no assessment QA failure
+    steps:
+      - form: question_answering_form
+      - ...
+      - action: question_answering_form
+      - form: null
+      - slot: question_answering_status
+        value: failure
+      - action: utter_question_answering_error
+      - action: utter_ask_assess_after_error
+
+  - rule: assessment QA need_assessment
+    steps:
+      - slot: self_assess_done
+        value: true
+      - ...
+      - form: question_answering_form
+      - ...
+      - action: question_answering_form
+      - form: null
+      - slot: question_answering_status
+        value: need_assessment
+      - action: utter_need_assessment_already_done
+      - action: utter_ask_another_question
+
+  - rule: no assessment QA need_assessment
+    steps:
+      - form: question_answering_form
+      - ...
+      - action: question_answering_form
+      - form: null
+      - slot: question_answering_status
+        value: need_assessment
+      - action: utter_need_assessment
+      - action: utter_ask_assess_to_answer
+
+  ## Questions rules
+  # utter_ask_anything_else_with(out)_test_navigation
+  - rule: utter_ask_anything_else_with_test_navigation affirm
+    steps:
+      - ...
+      - action: utter_ask_anything_else_with_test_navigation
+      - intent: affirm
+      - action: question_answering_form
+      - form: question_answering_form
+      - ...
+
+  - rule: utter_ask_anything_else_without_test_navigation affirm
+    steps:
+      - ...
+      - action: utter_ask_anything_else_without_test_navigation
+      - intent: affirm
+      - action: question_answering_form
+      - form: question_answering_form
+      - ...
+
+  - rule: utter_ask_anything_else_with_test_navigation done
+    steps:
+      - ...
+      - action: utter_ask_anything_else_with_test_navigation
+      - intent: done
+      - action: action_goodbye
+
+  - rule: utter_ask_anything_else_without_test_navigation done
+    steps:
+      - ...
+      - action: utter_ask_anything_else_without_test_navigation
+      - intent: done
+      - action: action_goodbye
+
+  - rule: utter_ask_anything_else_with_test_navigation deny
+    steps:
+      - ...
+      - action: utter_ask_anything_else_with_test_navigation
+      - intent: deny
+      - action: action_goodbye
+
+  - rule: utter_ask_anything_else_without_test_navigation deny
+    steps:
+      - ...
+      - action: utter_ask_anything_else_without_test_navigation
+      - intent: deny
+      - action: action_goodbye
+
+  # utter_ask_assess_to_answer
+  - rule: utter_ask_assess_to_answer deny
+    steps:
+      - ...
+      - action: utter_ask_assess_to_answer
+      - intent: deny
+      - action: utter_please_visit_again
+      - action: action_qa_goodbye
+
+  - rule: utter_ask_assess_to_answer done
+    steps:
+      - ...
+      - action: utter_ask_assess_to_answer
+      - intent: done
+      - action: utter_please_visit_again
+      - action: action_qa_goodbye
+
+  - rule: utter_ask_assess_to_answer affirm
+    steps:
+      - ...
+      - action: utter_ask_assess_to_answer
+      - intent: affirm
+      - action: assessment_form
+      - form: assessment_form
+      - ...
+
+  # utter_ask_assess_after_error
+  - rule: utter_ask_assess_after_error deny
+    steps:
+      - ...
+      - action: utter_ask_assess_after_error
+      - intent: deny
+      - action: utter_try_again_later
+      - action: action_qa_goodbye
+
+  - rule: utter_ask_assess_after_error done
+    steps:
+      - ...
+      - action: utter_ask_assess_after_error
+      - intent: done
+      - action: utter_try_again_later
+      - action: action_qa_goodbye
+
+  - rule: utter_ask_assess_after_error fallback
+    steps:
+      - ...
+      - action: utter_ask_assess_after_error
+      - intent: nlu_fallback
+      - action: utter_try_again_later
+      - action: action_qa_goodbye
+
+  - rule: utter_ask_assess_after_error affirm
+    steps:
+      - ...
+      - action: utter_ask_assess_after_error
+      - intent: affirm
+      - action: assessment_form
+      - form: assessment_form
+      - ...
+
+  # utter_ask_another_question
+  - rule: utter_ask_another_question deny
+    steps:
+      - ...
+      - action: utter_ask_another_question
+      - intent: deny
+      - action: utter_please_visit_again
+      - action: action_qa_goodbye
+
+  - rule: utter_ask_another_question done
+    steps:
+      - ...
+      - action: utter_ask_another_question
+      - intent: done
+      - action: utter_please_visit_again
+      - action: action_qa_goodbye
+
+  - rule: utter_ask_another_question affirm
+    steps:
+      - ...
+      - action: utter_ask_another_question
+      - intent: affirm
+      - action: question_answering_form
+      - form: question_answering_form
+      - ...
+
+  # utter_ask_different_question
+  - rule: utter_ask_different_question deny
+    steps:
+      - ...
+      - action: utter_ask_different_question
+      - intent: deny
+      - action: utter_please_visit_again
+      - action: action_qa_goodbye
+
+  - rule: utter_ask_different_question done
+    steps:
+      - ...
+      - action: utter_ask_different_question
+      - intent: done
+      - action: utter_please_visit_again
+      - action: action_qa_goodbye
+
+  - rule: utter_ask_different_question affirm
+    steps:
+      - ...
+      - action: utter_ask_different_question
+      - intent: affirm
+      - action: question_answering_form
+      - form: question_answering_form
+      - ...
+
+  # utter_ask_daily_checkin__invalid_id__want_assessment
+  - rule: utter_ask_daily_checkin__invalid_id__want_assessment affirm
+    steps:
+      - ...
+      - action: utter_ask_daily_checkin__invalid_id__want_assessment
+      - intent: affirm
+      - action: assessment_form
+      - form: assessment_form
+      - ...
+
+  ## Fallback with error messages
+  - rule: utter_ask_test_navigation__continue error
+    steps:
+      - ...
+      - action: utter_ask_test_navigation__continue
+      - intent: nlu_fallback
+      - action: action_ask_test_navigation__continue_error
+
+  - rule: utter_ask_daily_checkin__invalid_id__want_assessment error
+    steps:
+      - ...
+      - action: utter_ask_daily_checkin__invalid_id__want_assessment
+      - intent: nlu_fallback
+      - action: utter_ask_daily_checkin__invalid_id__want_assessment_error
+
+  - rule: utter_ask_daily_ci__feel error
+    steps:
+      - ...
+      - action: utter_ask_daily_ci__feel
+      - intent: nlu_fallback
+      - action: utter_ask_daily_ci__feel_error
+
+  - rule: utter_ask_when_first_symptoms error
+    steps:
+      - ...
+      - action: utter_ask_when_first_symptoms
+      - intent: nlu_fallback
+      - action: utter_ask_when_first_symptoms_error
+
+  - rule: utter_ask_when_tested error
+    steps:
+      - ...
+      - action: utter_ask_when_tested
+      - intent: nlu_fallback
+      - action: utter_ask_when_tested_error
+
+  ## Generic intent rules
+
+  - rule: Get assessment
+    steps:
+      - ...
+      - intent: get_assessment
+      - action: assessment_form
+      - form: assessment_form
+      - ...
+
+  - rule: Ask question
+    steps:
+      - ...
+      - intent: ask_question
+      - action: question_answering_form
+      - form: question_answering_form
+      - ...
+
+  - rule: Fallback
+    steps:
+      - ...
+      - intent: nlu_fallback
+      - action: question_answering_form
+      - form: question_answering_form
+      - ...

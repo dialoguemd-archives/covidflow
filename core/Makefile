@@ -3,7 +3,7 @@
 # include source code in any python subprocess
 export PYTHONPATH = .
 
-RASA_VERSION=1.9.4
+RASA_VERSION=2.0.0a1
 
 UID:=$(shell id -u)
 GID:=$(shell id -g)
@@ -62,7 +62,7 @@ test:
 
 train-en:
 	sh scripts/prepare-training-data.sh en
-	docker run \
+	docker run -it \
 		--rm -v ${PWD}:/app \
 		--user ${UID}:${GID} \
 		rasa/rasa:${RASA_VERSION}-full train \

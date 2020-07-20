@@ -1,5 +1,5 @@
 class Symptoms:  # Not using an enum to avoid persisting enum values
-    NONE = "none"
+    NONE = "neni"
     MILD = "mild"
     MODERATE = "moderate"
     SEVERE = "severe"

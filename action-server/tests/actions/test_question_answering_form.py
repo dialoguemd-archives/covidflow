@@ -351,7 +351,7 @@ class TestQuestionAnsweringForm(FormTestCase):
         )
 
         tracker = self.create_tracker(
-            active_form=False, intent="fallback", text=QUESTION
+            active_form=False, intent="nlu_fallback", text=QUESTION
         )
 
         self.run_form(tracker, DOMAIN)
@@ -377,7 +377,7 @@ class TestQuestionAnsweringForm(FormTestCase):
         )
 
         tracker = self.create_tracker(
-            active_form=False, intent="fallback", text=QUESTION
+            active_form=False, intent="nlu_fallback", text=QUESTION
         )
 
         self.run_form(tracker, DOMAIN)
@@ -413,7 +413,7 @@ class TestQuestionAnsweringForm(FormTestCase):
         )
 
         tracker = self.create_tracker(
-            active_form=False, intent="fallback", text=QUESTION
+            active_form=False, intent="nlu_fallback", text=QUESTION
         )
 
         self.run_form(tracker, DOMAIN)
@@ -449,7 +449,7 @@ class TestQuestionAnsweringForm(FormTestCase):
         )
 
         tracker = self.create_tracker(
-            active_form=False, intent="fallback", text=QUESTION
+            active_form=False, intent="nlu_fallback", text=QUESTION
         )
 
         self.run_form(tracker, DOMAIN)

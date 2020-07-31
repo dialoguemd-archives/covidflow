@@ -30,8 +30,8 @@ class ActionUnsupportedIntent(Action):
             text,
             parse_data={
                 "text": text,
-                "intent": {"name": "fallback", "confidence": 1.0},
-                "intent_ranking": [{"name": "fallback", "confidence": 1.0}],
+                "intent": {"name": "nlu_fallback", "confidence": 1.0},
+                "intent_ranking": [{"name": "nlu_fallback", "confidence": 1.0}],
                 "entities": [],
             },
         )

@@ -5,10 +5,14 @@ language: en
 pipeline:
   - name: ConveRTTokenizer
   - name: ConveRTFeaturizer
+    case_sensitive: false
   - name: RegexFeaturizer
   - name: LexicalSyntacticFeaturizer
+    case_sensitive: false
   - name: CountVectorsFeaturizer
+    case_sensitive: false
   - name: CountVectorsFeaturizer
+    case_sensitive: false
     analyzer: "char_wb"
     min_ngram: 1
     max_ngram: 4

@@ -1,6 +1,7 @@
 # covidflow
 
-Rasa backend for the covid-19 assessment, navigation and follow-ups available at https://covid19.dialogue.co.
+Copy of the Rasa backend for Dialogue's covid-19 assessment, navigation and follow-ups available at https://covid19.dialogue.co.
+This version is not deployed, used for development purposes only.
 
 ## Development
 

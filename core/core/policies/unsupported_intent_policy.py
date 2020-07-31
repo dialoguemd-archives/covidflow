@@ -17,7 +17,7 @@ MAIN_INTENTS = [
     "get_assessment",
     "ask_question",
     "navigate_test_locations",
-    "fallback",
+    "nlu_fallback",
 ]
 
 AFFIRM_DENY_INTENTS = [
@@ -25,7 +25,7 @@ AFFIRM_DENY_INTENTS = [
     "affirm",
 ]
 
-FALLBACK_INTENT = "fallback"
+FALLBACK_INTENT = "nlu_fallback"
 
 SUPPORTED_INTENTS_BY_ACTION = {
     "action_greeting_messages": [
@@ -61,7 +61,6 @@ SUPPORTED_INTENTS_BY_ACTION = {
     "utter_ask_when_first_symptoms": AFFIRM_DENY_INTENTS,
 }
 
-FALLBACK_INTENT = "fallback"
 GET_ASSESSMENT_INTENT = "get_assessment"
 SELF_ASSESS_DONE_SLOT = "self_assess_done"
 

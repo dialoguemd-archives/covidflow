@@ -61,13 +61,7 @@
   - form{"name": null}
   - action_visit_package
   - utter_ask_anything_else_without_test_navigation
-* navigate_test_locations
-  - action_test_navigation_explanations
-  - utter_ask_test_navigation__continue
-* deny
-  - action_test_navigation__anything_else
-* done
-  - utter_test_navigation__come_back
+* deny OR done
   - action_goodbye
 
 ## tested positive - mild symptoms
@@ -232,11 +226,7 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - utter_ask_anything_else_with_test_navigation
-* navigate_test_locations
-  - action_test_navigation_explanations
-  - utter_ask_test_navigation__continue
-* done
-  - utter_test_navigation__come_back
+* done OR deny
   - action_goodbye
 
 ## return for check-in - mild symptoms - with check-in
@@ -255,15 +245,6 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - utter_ask_anything_else_with_test_navigation
-* navigate_test_locations
-  - action_test_navigation_explanations
-  - utter_ask_test_navigation__continue
-* continue OR affirm
-  - utter_test_navigation__acknowledge_continue
-  - test_navigation_form
-  - form{"name": "test_navigation_form"}
-  - form{"name": null}
-  - action_test_navigation__anything_else
 * done OR deny
   - action_goodbye
 
@@ -487,15 +468,6 @@
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
   - utter_ask_anything_else_with_test_navigation
-* navigate_test_locations
-  - action_test_navigation_explanations
-  - utter_ask_test_navigation__continue
-* continue OR affirm
-  - utter_test_navigation__acknowledge_continue
-  - test_navigation_form
-  - form{"name": "test_navigation_form"}
-  - form{"name": null}
-  - action_test_navigation__anything_else
 * done OR deny
   - action_goodbye
 
@@ -672,41 +644,4 @@
   - utter_ask_daily_checkin__invalid_id__anything_else
 * done
   - utter_daily_checkin__invalid_id__visit_dialogue
-  - action_goodbye
-
-## Test navigation - done
-* greet{"metadata":{}}
-  - action_greeting_messages
-* navigate_test_locations
-  - action_test_navigation_explanations
-  - utter_ask_test_navigation__continue
-* done
-  - utter_test_navigation__come_back
-  - action_goodbye
-
-## Test navigation - no nothing else
-* greet{"metadata":{}}
-  - action_greeting_messages
-* navigate_test_locations
-  - action_test_navigation_explanations
-  - utter_ask_test_navigation__continue
-* deny
-  - action_test_navigation__anything_else
-* done OR deny
-  - utter_test_navigation__come_back
-  - action_goodbye
-
-## Test navigation - navigate tests - nothing else
-* greet{"metadata":{}}
-  - action_greeting_messages
-* navigate_test_locations
-  - action_test_navigation_explanations
-  - utter_ask_test_navigation__continue
-* continue OR affirm
-  - utter_test_navigation__acknowledge_continue
-  - test_navigation_form
-  - form{"name": "test_navigation_form"}
-  - form{"name": null}
-  - action_test_navigation__anything_else
-* done OR deny
   - action_goodbye

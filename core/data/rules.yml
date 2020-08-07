@@ -174,6 +174,51 @@ rules:
       - action: utter_need_assessment
       - action: utter_ask_assess_to_answer
 
+  ## Test navigation rules
+
+  - rule: Request test navigation
+    steps:
+      - ...
+      - intent: navigate_test_locations
+      - action: action_test_navigation_explanations
+      - action: utter_ask_test_navigation__continue
+
+  - rule: Do test navigation
+    steps:
+      - ...
+      - action: utter_ask_test_navigation__continue
+      - or:
+          - intent: affirm
+          - intent: continue
+      - action: utter_test_navigation__acknowledge_continue
+      - action: test_navigation_form
+      - action: action_test_navigation__anything_else
+
+  - rule: Drop test navigation
+    steps:
+      - ...
+      - action: utter_ask_test_navigation__continue
+      - intent: done
+      - action: utter_test_navigation__come_back
+      - action: action_goodbye
+
+  - rule: Drop test navigation with deny
+    steps:
+      - ...
+      - action: utter_ask_test_navigation__continue
+      - intent: deny
+      - action: action_test_navigation__anything_else
+
+  - rule: Dropped test navigation nothing else
+    steps:
+      - ...
+      - action: action_test_navigation__anything_else
+      - or:
+          - intent: done
+          - intent: deny
+      - action: utter_test_navigation__come_back
+      - action: action_goodbye
+
   ## Questions rules
   # utter_ask_anything_else_with(out)_test_navigation
   - rule: utter_ask_anything_else_with_test_navigation affirm

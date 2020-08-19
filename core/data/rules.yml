@@ -15,18 +15,15 @@ rules:
       - intent: greet
       - action: action_greeting_messages
 
-  ## Assessment rules
+  ## Generic assessment rules
   - rule: Severe symptoms
     steps:
-      - form: assessment_form
-      - ...
-      - action: assessment_form
-      - form: null
       - slot: symptoms
         value: severe
       - action: action_severe_symptoms_recommendations
 
-  - rule: moderate symptoms
+  ## Assessment rules
+  - rule: Assessment moderate symptoms
     steps:
       - form: assessment_form
       - ...
@@ -41,7 +38,7 @@ rules:
       - action: action_visit_package
       - action: utter_ask_anything_else_with_test_navigation
 
-  - rule: mild symptoms
+  - rule: Assessment mild symptoms
     steps:
       - form: assessment_form
       - ...
@@ -56,12 +53,14 @@ rules:
       - action: action_visit_package
       - action: utter_ask_anything_else_with_test_navigation
 
-  - rule: contact risk
+  - rule: Assessment contact risk
     steps:
       - form: assessment_form
       - ...
       - action: assessment_form
       - form: null
+      - slot: symptoms
+        value: nothing
       - slot: has_contact_risk
         value: true
       - action: home_assistance_form
@@ -71,14 +70,168 @@ rules:
       - action: action_visit_package
       - action: utter_ask_anything_else_with_test_navigation
 
-  - rule: no symptoms
+  - rule: Assessment no symptoms
     steps:
       - form: assessment_form
       - ...
       - action: assessment_form
       - form: null
+      - slot: symptoms
+        value: nothing
       - action: action_suspect_no_symptoms_recommendations
       - action: action_visit_package
+      - action: utter_ask_anything_else_without_test_navigation
+
+  ## Tested positive rules
+  - rule: Tested positive moderate symptoms
+    steps:
+      - form: tested_positive_form
+      - ...
+      - action: tested_positive_form
+      - form: null
+      - slot: symptoms
+        value: moderate
+      - action: daily_ci_enroll_form
+      - action: action_tested_positive_not_cured_final_recommendations
+      - action: home_assistance_form
+      - action: action_visit_package
+      - action: utter_ask_anything_else_without_test_navigation
+
+  - rule: Tested positive mild symptoms
+    steps:
+      - form: tested_positive_form
+      - ...
+      - action: tested_positive_form
+      - form: null
+      - slot: symptoms
+        value: mild
+      - action: daily_ci_enroll_form
+      - action: action_tested_positive_not_cured_final_recommendations
+      - action: home_assistance_form
+      - action: action_visit_package
+      - action: utter_ask_anything_else_without_test_navigation
+
+  - rule: Tested positive no symptoms
+    steps:
+      - form: tested_positive_form
+      - ...
+      - action: tested_positive_form
+      - form: null
+      - slot: symptoms
+        value: nothing
+      - action: action_tested_positive_no_symptoms_recommendations
+      - action: utter_ask_when_tested
+
+  - rule: Tested positive utter_ask_when_tested deny
+    steps:
+      - ...
+      - action: utter_ask_when_tested
+      - intent: deny
+      - action: utter_when_tested_less_14_recommendation
+      - action: daily_ci_enroll_form
+      - action: action_tested_positive_not_cured_final_recommendations
+      - action: home_assistance_form
+      - action: action_visit_package
+      - action: utter_ask_anything_else_without_test_navigation
+
+  - rule: Tested positive utter_ask_when_tested_error deny
+    steps:
+      - ...
+      - action: utter_ask_when_tested_error
+      - intent: deny
+      - action: utter_when_tested_less_14_recommendation
+      - action: daily_ci_enroll_form
+      - action: action_tested_positive_not_cured_final_recommendations
+      - action: home_assistance_form
+      - action: action_visit_package
+      - action: utter_ask_anything_else_without_test_navigation
+
+  - rule: Tested positive utter_ask_when_tested affirm
+    steps:
+      - ...
+      - action: utter_ask_when_tested
+      - intent: affirm
+      - action: action_tested_positive_maybe_cured_final_recommendations
+      - action: utter_ask_anything_else_without_test_navigation
+
+  - rule: Tested positive utter_ask_when_tested_error affirm
+    steps:
+      - ...
+      - action: utter_ask_when_tested_error
+      - intent: affirm
+      - action: action_tested_positive_maybe_cured_final_recommendations
+      - action: utter_ask_anything_else_without_test_navigation
+
+  ## Return for check-in rules
+  - rule: Check-in return moderate symptoms
+    steps:
+      - form: checkin_return_form
+      - ...
+      - action: checkin_return_form
+      - form: null
+      - slot: symptoms
+        value: moderate
+      - action: daily_ci_enroll_form
+      - action: utter_remind_monitor_symptoms_temperature
+      - action: utter_remind_possible_checkin
+      - action: home_assistance_form
+      - action: utter_ask_anything_else_with_test_navigation
+
+  - rule: Check-in return mild symptoms
+    steps:
+      - form: checkin_return_form
+      - ...
+      - action: checkin_return_form
+      - form: null
+      - slot: symptoms
+        value: mild
+      - action: daily_ci_enroll_form
+      - action: utter_remind_monitor_symptoms_temperature
+      - action: utter_remind_possible_checkin
+      - action: home_assistance_form
+      - action: utter_ask_anything_else_with_test_navigation
+
+  - rule: Check-in return no symptoms
+    steps:
+      - form: checkin_return_form
+      - ...
+      - action: checkin_return_form
+      - form: null
+      - slot: symptoms
+        value: nothing
+      - action: utter_returning_no_symptoms
+      - action: utter_ask_when_first_symptoms
+
+  - rule: Check-in return utter_ask_when_first_symptoms deny
+    steps:
+      - ...
+      - action: utter_ask_when_first_symptoms
+      - intent: deny
+      - action: utter_self_isolate_symptom_free
+      - action: utter_ask_anything_else_without_test_navigation
+
+  - rule: Check-in return utter_ask_when_first_symptoms_error deny
+    steps:
+      - ...
+      - action: utter_ask_when_first_symptoms_error
+      - intent: deny
+      - action: utter_self_isolate_symptom_free
+      - action: utter_ask_anything_else_without_test_navigation
+
+  - rule: Check-in return utter_ask_when_first_symptoms affirm
+    steps:
+      - ...
+      - action: utter_ask_when_first_symptoms
+      - intent: affirm
+      - action: utter_social_distancing_leave_home
+      - action: utter_ask_anything_else_without_test_navigation
+
+  - rule: Check-in return utter_ask_when_first_symptoms_error affirm
+    steps:
+      - ...
+      - action: utter_ask_when_first_symptoms_error
+      - intent: affirm
+      - action: utter_social_distancing_leave_home
       - action: utter_ask_anything_else_without_test_navigation
 
   # QA rules
@@ -392,6 +545,22 @@ rules:
       - intent: get_assessment
       - action: assessment_form
       - form: assessment_form
+      - ...
+
+  - rule: Returning for check-in
+    steps:
+      - ...
+      - intent: checkin_return
+      - action: checkin_return_form
+      - form: checkin_return_form
+      - ...
+
+  - rule: Tested positive
+    steps:
+      - ...
+      - intent: tested_positive
+      - action: tested_positive_form
+      - form: tested_positive_form
       - ...
 
   - rule: Ask question

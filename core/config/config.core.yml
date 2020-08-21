@@ -2,12 +2,5 @@
 # https://rasa.com/docs/rasa/core/policies/
 policies:
   - name: RulePolicy
-  - name: AugmentedMemoizationPolicy
-    max_history: 10
-  - name: TEDPolicy
-    max_history: 10
-    epochs: 100
-    evaluate_on_number_of_examples: 0
-    random_seed: 42
   - name: core.policies.unsupported_intent_policy.UnsupportedIntentPolicy
     fallback_action_name: "action_unsupported_intent"

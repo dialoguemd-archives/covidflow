@@ -15,14 +15,17 @@ rules:
       - intent: greet
       - action: action_greeting_messages
 
-  ## Generic assessment rules
-  - rule: Severe symptoms
+  ## Assessment rules
+  - rule: Assessment severe symptoms
     steps:
+      - form: assessment_form
+      - ...
+      - action: assessment_form
+      - form: null
       - slot: symptoms
         value: severe
       - action: action_severe_symptoms_recommendations
 
-  ## Assessment rules
   - rule: Assessment moderate symptoms
     steps:
       - form: assessment_form
@@ -83,6 +86,16 @@ rules:
       - action: utter_ask_anything_else_without_test_navigation
 
   ## Tested positive rules
+  - rule: Tested positive severe symptoms
+    steps:
+      - form: tested_positive_form
+      - ...
+      - action: tested_positive_form
+      - form: null
+      - slot: symptoms
+        value: severe
+      - action: action_severe_symptoms_recommendations
+
   - rule: Tested positive moderate symptoms
     steps:
       - form: tested_positive_form
@@ -163,6 +176,16 @@ rules:
       - action: utter_ask_anything_else_without_test_navigation
 
   ## Return for check-in rules
+  - rule: Check-in return severe symptoms
+    steps:
+      - form: checkin_return_form
+      - ...
+      - action: checkin_return_form
+      - form: null
+      - slot: symptoms
+        value: severe
+      - action: action_severe_symptoms_recommendations
+
   - rule: Check-in return moderate symptoms
     steps:
       - form: checkin_return_form
@@ -372,6 +395,183 @@ rules:
       - action: utter_test_navigation__come_back
       - action: action_goodbye
 
+  ## Daily check-in general rules
+  - rule: Daily check_in start
+    steps:
+      - intent: daily_checkin
+      - action: action_initialize_daily_checkin
+      - ...
+
+  - rule: Daily check_in invalid ID
+    steps:
+      - ...
+      - action: action_initialize_daily_checkin
+      - slot: invalid_reminder_id
+        value: true
+      - action: utter_ask_daily_checkin__invalid_id__want_assessment
+
+  - rule: Daily check_in valid ID
+    steps:
+      - ...
+      - action: action_initialize_daily_checkin
+      - action: utter_daily_ci__greet
+      - action: utter_ask_daily_ci__early_opt_out__continue_ci
+
+  - rule: Daily check-in early opt-out
+    steps:
+      - ...
+      - action: utter_ask_daily_ci__early_opt_out__continue_ci
+      - intent: opt_out
+      - action: action_daily_ci_early_opt_out
+      - action: utter_ask_anything_else_without_test_navigation
+
+  - rule: Daily check-in continue
+    steps:
+      - ...
+      - action: utter_ask_daily_ci__early_opt_out__continue_ci
+      - intent: continue
+      - action: utter_daily_ci__early_opt_out__acknowledge_continue_ci
+      - action: utter_ask_daily_ci__feel
+
+  ## Daily check-in invalid ID
+  - rule: utter_ask_daily_checkin__invalid_id__want_assessment deny
+    steps:
+      - ...
+      - action: utter_ask_daily_checkin__invalid_id__want_assessment
+      - intent: deny
+      - action: utter_ask_daily_checkin__invalid_id__anything_else
+
+  - rule: utter_ask_daily_checkin__invalid_id__want_assessment_error deny
+    steps:
+      - ...
+      - action: utter_ask_daily_checkin__invalid_id__want_assessment_error
+      - intent: deny
+      - action: utter_ask_daily_checkin__invalid_id__anything_else
+
+  - rule: utter_ask_daily_checkin__invalid_id__anything_else done
+    steps:
+      - ...
+      - action: utter_ask_daily_checkin__invalid_id__anything_else
+      - or:
+          - intent: done
+          - intent: deny
+      - action: utter_daily_checkin__invalid_id__visit_dialogue
+      - action: action_goodbye
+
+  ## Daily check-in directing to appropriate form
+  - rule: Daily check-in worse
+    steps:
+      - ...
+      - action: utter_ask_daily_ci__feel
+      - intent: worse
+      - action: daily_ci_feel_worse_form
+      - form: daily_ci_feel_worse_form
+      - ...
+
+  - rule: Daily check-in worse with error before
+    steps:
+      - ...
+      - action: utter_ask_daily_ci__feel_error
+      - intent: worse
+      - action: daily_ci_feel_worse_form
+      - form: daily_ci_feel_worse_form
+      - ...
+
+  - rule: Daily check-in no_change
+    steps:
+      - ...
+      - action: utter_ask_daily_ci__feel
+      - intent: no_change
+      - action: daily_ci_feel_no_change_form
+      - form: daily_ci_feel_no_change_form
+      - ...
+
+  - rule: Daily check-in no_change with error before
+    steps:
+      - ...
+      - action: utter_ask_daily_ci__feel_error
+      - intent: no_change
+      - action: daily_ci_feel_no_change_form
+      - form: daily_ci_feel_no_change_form
+      - ...
+
+  - rule: Daily check-in better
+    steps:
+      - ...
+      - action: utter_ask_daily_ci__feel
+      - intent: better
+      - action: daily_ci_feel_better_form
+      - form: daily_ci_feel_better_form
+      - ...
+
+  - rule: Daily check-in better with error before
+    steps:
+      - ...
+      - action: utter_ask_daily_ci__feel_error
+      - intent: better
+      - action: daily_ci_feel_better_form
+      - form: daily_ci_feel_better_form
+      - ...
+
+  ## Daily check-in post-assessment rules
+  - rule: Daily check-in worse severe symptoms
+    steps:
+      - form: daily_ci_feel_worse_form
+      - ...
+      - action: daily_ci_feel_worse_form
+      - form: null
+      - slot: symptoms
+        value: severe
+      - action: action_severe_symptoms_recommendations
+
+  - rule: Daily check-in worse to keep_or_cancel
+    steps:
+      - form: daily_ci_feel_worse_form
+      - ...
+      - action: daily_ci_feel_worse_form
+      - form: null
+      - action: daily_ci_keep_or_cancel_form
+      - form: daily_ci_keep_or_cancel_form
+      - ...
+
+  - rule: Daily check-in no_change to keep_or_cancel
+    steps:
+      - form: daily_ci_feel_no_change_form
+      - ...
+      - action: daily_ci_feel_no_change_form
+      - form: null
+      - action: daily_ci_keep_or_cancel_form
+      - form: daily_ci_keep_or_cancel_form
+      - ...
+
+  - rule: Daily check-in better to keep_or_cancel
+    steps:
+      - form: daily_ci_feel_better_form
+      - ...
+      - action: daily_ci_feel_better_form
+      - form: null
+      - action: daily_ci_keep_or_cancel_form
+      - form: daily_ci_keep_or_cancel_form
+      - ...
+
+  - rule: Daily check-in final question no symptoms
+    steps:
+      - form: daily_ci_keep_or_cancel_form
+      - ...
+      - action: daily_ci_keep_or_cancel_form
+      - form: null
+      - slot: symptoms
+        value: nothing
+      - action: utter_ask_anything_else_without_test_navigation
+
+  - rule: Daily check-in final question with symptoms
+    steps:
+      - form: daily_ci_keep_or_cancel_form
+      - ...
+      - action: daily_ci_keep_or_cancel_form
+      - form: null
+      - action: utter_ask_anything_else_with_test_navigation
+
   ## Questions rules
   # utter_ask_anything_else_with(out)_test_navigation
   - rule: utter_ask_anything_else_with_test_navigation affirm
@@ -496,6 +696,15 @@ rules:
     steps:
       - ...
       - action: utter_ask_daily_checkin__invalid_id__want_assessment
+      - intent: affirm
+      - action: assessment_form
+      - form: assessment_form
+      - ...
+
+  - rule: utter_ask_daily_checkin__invalid_id__want_assessment_error affirm
+    steps:
+      - ...
+      - action: utter_ask_daily_checkin__invalid_id__want_assessment_error
       - intent: affirm
       - action: assessment_form
       - form: assessment_form

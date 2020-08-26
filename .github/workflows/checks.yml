@@ -1,0 +1,48 @@
+# This workflow will install Python dependencies, run tests and lint both for the action server and core
+
+name: Python Checks
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  check-core:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./core
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.6.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6.8
+      - uses: ./.github/actions/setup-poetry
+      - name: Installing dependencies
+        run: make install
+      - name: Linting
+        run: make lint
+      - name: Unit testing
+        run: make test
+
+  check-action-server:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./action-server
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.6.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6.8
+      - uses: ./.github/actions/setup-poetry
+      - name: Installing dependencies
+        run: make install
+      - name: Linting
+        run: make lint
+      - name: Unit testing
+        run: make test

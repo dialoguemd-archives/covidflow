@@ -1,3 +1,7 @@
+inputs:
+  poetry-version:
+    description: poetry version
+    required: true
 runs:
   using: "composite"
   steps:
@@ -10,5 +14,5 @@ runs:
             PIP_NO_CACHE_DIR=off \
         )
         pip install --upgrade pip \
-        && pip install "poetry==1.0.5"
+        && pip install "poetry==${{ inputs.poetry-version }}"
       shell: bash

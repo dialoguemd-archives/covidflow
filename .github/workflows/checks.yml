@@ -9,7 +9,7 @@ on:
   pull_request:
 
 jobs:
-  check-core:
+  core:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -21,6 +21,8 @@ jobs:
         with:
           python-version: 3.6.8
       - uses: ./.github/actions/setup-poetry
+        with:
+          poetry-version: "1.0.0"
       - name: Installing dependencies
         run: make install
       - name: Linting
@@ -28,7 +30,7 @@ jobs:
       - name: Unit testing
         run: make test
 
-  check-action-server:
+  action-server:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -40,6 +42,8 @@ jobs:
         with:
           python-version: 3.6.8
       - uses: ./.github/actions/setup-poetry
+        with:
+          poetry-version: "1.0.0"
       - name: Installing dependencies
         run: make install
       - name: Linting

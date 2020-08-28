@@ -1,0 +1,8 @@
+- user: greet
+  bot: welcome
+- user: navigate_tests
+  bot: test_navigation/explanations
+- user: phone_number
+  bot: test_navigation/continue_error_offer_assessment
+- user: /done
+  bot: test_navigation/goodbye

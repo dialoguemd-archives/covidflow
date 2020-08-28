@@ -1,4 +1,4 @@
-FROM rasa/rasa:2.0.0a1-full
+FROM rasa/rasa:2.0.0a2-full
 EXPOSE 8080
 
 COPY poetry.lock poetry.lock

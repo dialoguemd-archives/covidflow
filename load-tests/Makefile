@@ -1,6 +1,6 @@
 .PHONY: init install lint format test locust-rasa
 
-RASA_VERSION=2.0.0a1
+RASA_VERSION=2.0.0a2
 
 UID:=$(shell id -u)
 GID:=$(shell id -g)

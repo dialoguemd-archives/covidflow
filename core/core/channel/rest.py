@@ -1,4 +1,4 @@
-from rasa.core.channels.channel import RestInput
+from rasa.core.channels import RestInput
 
 
 # This is a temporary solution about logging. Here is some context.

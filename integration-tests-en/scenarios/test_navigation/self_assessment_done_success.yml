@@ -3,6 +3,8 @@
 - assessment_moderate
 - user: navigate_tests
   bot: test_navigation/explanations_assessment_done
+- user: invalid_input
+  bot: test_navigation/continue_error_no_assessment
 - user: affirm
   bot: test_navigation/postal_code
 - user: test_navigation/postal_code/valid

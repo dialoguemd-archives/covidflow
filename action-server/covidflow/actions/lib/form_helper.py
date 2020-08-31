@@ -80,3 +80,26 @@ def validate_boolean_slot(validator):
 
 def _has_template(domain: Dict[Text, Any], template: str) -> bool:
     return template in domain.get("responses", {})
+
+
+def get_extracted_slots(tracker: Tracker, form_name: str) -> Dict[Text, Any]:
+    def find_form_event() -> Union[int, None]:
+        for index in reversed(range(len(tracker.events))):
+            if (
+                tracker.events[index]["event"] == "action"
+                and tracker.events[index]["name"] == form_name
+            ):
+                return index
+        return None
+
+    last_form_event_index = find_form_event()
+
+    if last_form_event_index is None:
+        raise Exception(
+            f"Could not find action event for form {form_name} in events to fetch extracted slots"
+        )
+    else:
+        return {
+            slot_set["name"]: slot_set["value"]
+            for slot_set in tracker.events[last_form_event_index + 1 :]
+        }

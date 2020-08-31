@@ -15,7 +15,11 @@ from covidflow.constants import (
 )
 
 from .assessment_common import AssessmentCommon
-from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
+from .lib.form_helper import (
+    request_next_slot,
+    validate_boolean_slot,
+    yes_no_nlu_mapping,
+)
 from .lib.log_util import bind_logger
 
 FORM_NAME = "checkin_return_form"

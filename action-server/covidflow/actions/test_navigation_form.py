@@ -23,7 +23,11 @@ from covidflow.utils.testing_locations import (
     get_testing_locations,
 )
 
-from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
+from .lib.form_helper import (
+    request_next_slot,
+    validate_boolean_slot,
+    yes_no_nlu_mapping,
+)
 from .lib.log_util import bind_logger
 
 logger = structlog.get_logger()

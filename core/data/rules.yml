@@ -822,3 +822,10 @@ rules:
       - action: question_answering_form
       - active_loop: question_answering_form
     wait_for_user_input: false
+
+  # Temporary, for testing purposes
+  - rule: Province age test
+    steps:
+      - intent: test_province_age
+      - action: province_age_form
+      - active_loop: province_age_form

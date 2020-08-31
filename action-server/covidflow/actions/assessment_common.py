@@ -20,7 +20,7 @@ from covidflow.constants import (
     Symptoms,
 )
 
-from .form_helper import validate_boolean_slot, yes_no_nlu_mapping
+from .lib.form_helper import validate_boolean_slot, yes_no_nlu_mapping
 from .lib.provincial_811 import get_provincial_811
 
 

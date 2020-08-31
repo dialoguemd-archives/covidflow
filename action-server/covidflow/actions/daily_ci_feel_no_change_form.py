@@ -16,7 +16,11 @@ from covidflow.constants import (
 )
 
 from .daily_ci_assessment_common import submit_daily_ci_assessment
-from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
+from .lib.form_helper import (
+    request_next_slot,
+    validate_boolean_slot,
+    yes_no_nlu_mapping,
+)
 from .lib.log_util import bind_logger
 
 FORM_NAME = "daily_ci_feel_no_change_form"

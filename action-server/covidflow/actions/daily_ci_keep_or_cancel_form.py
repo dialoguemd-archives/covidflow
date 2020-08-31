@@ -17,7 +17,11 @@ from covidflow.constants import (
 )
 from covidflow.utils.persistence import cancel_reminder
 
-from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
+from .lib.form_helper import (
+    request_next_slot,
+    validate_boolean_slot,
+    yes_no_nlu_mapping,
+)
 from .lib.log_util import bind_logger
 
 FORM_NAME = "daily_ci_keep_or_cancel_form"

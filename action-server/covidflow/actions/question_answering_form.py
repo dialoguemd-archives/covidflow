@@ -16,7 +16,7 @@ from .answers import (
     QuestionAnsweringResponse,
     QuestionAnsweringStatus,
 )
-from .form_helper import request_next_slot, yes_no_nlu_mapping
+from .lib.form_helper import request_next_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 
 logger = structlog.get_logger()

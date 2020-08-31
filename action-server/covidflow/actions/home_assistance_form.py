@@ -7,7 +7,11 @@ from rasa_sdk.forms import FormAction
 
 from covidflow.constants import HAS_ASSISTANCE_SLOT, PROVINCE_SLOT, PROVINCES_WITH_211
 
-from .form_helper import request_next_slot, validate_boolean_slot, yes_no_nlu_mapping
+from .lib.form_helper import (
+    request_next_slot,
+    validate_boolean_slot,
+    yes_no_nlu_mapping,
+)
 from .lib.log_util import bind_logger
 
 FORM_NAME = "home_assistance_form"

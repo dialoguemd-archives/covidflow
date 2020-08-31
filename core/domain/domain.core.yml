@@ -33,6 +33,7 @@ intents:
   - navigate_test_locations:
       use_entities: []
   - q_a
+  - test_province_age # Temporary, for testing purposes
 
 entities:
   - province
@@ -63,19 +64,32 @@ actions:
   - action_test_navigation_explanations
   - action_test_navigation__anything_else
   - action_qa_goodbye
+  - action_ask_province_code
+  - validate_province_age_form
 
 forms:
-  - home_assistance_form
-  - assessment_form
-  - tested_positive_form
-  - checkin_return_form
-  - daily_ci_enroll_form
-  - daily_ci_feel_no_change_form
-  - daily_ci_feel_better_form
-  - daily_ci_feel_worse_form
-  - daily_ci_keep_or_cancel_form
-  - question_answering_form
-  - test_navigation_form
+  - home_assistance_form:
+  - assessment_form:
+  - tested_positive_form:
+  - checkin_return_form:
+  - daily_ci_enroll_form:
+  - daily_ci_feel_no_change_form:
+  - daily_ci_feel_better_form:
+  - daily_ci_feel_worse_form:
+  - daily_ci_keep_or_cancel_form:
+  - question_answering_form:
+  - test_navigation_form:
+  - province_age_form:
+      province_code:
+        - type: from_entity
+          entity: province
+      age_over_65:
+        - type: from_intent
+          intent: affirm
+          value: true
+        - type: from_intent
+          intent: deny
+          value: true
 
 slots:
   metadata:

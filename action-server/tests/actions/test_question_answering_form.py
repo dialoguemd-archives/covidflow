@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock, patch
 
-from rasa_sdk.events import ActionExecuted, Form, SlotSet, UserUttered
+from rasa_sdk.events import ActionExecuted, ActiveLoop, SlotSet, UserUttered
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.answers import QuestionAnsweringResponse, QuestionAnsweringStatus
@@ -67,13 +67,13 @@ class TestQuestionAnsweringForm(FormTestCase):
         self.form = QuestionAnsweringForm()
 
     def test_form_activation_first_time_without_qa_samples(self):
-        tracker = self.create_tracker(active_form=False, intent="ask_question")
+        tracker = self.create_tracker(active_loop=False, intent="ask_question")
 
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
-                Form(FORM_NAME),
+                ActiveLoop(FORM_NAME),
                 SlotSet(SKIP_QA_INTRO_SLOT, True),
                 SlotSet(REQUESTED_SLOT, QUESTION_SLOT),
             ]
@@ -88,7 +88,7 @@ class TestQuestionAnsweringForm(FormTestCase):
         )
 
     def test_form_activation_first_time_with_qa_samples(self):
-        tracker = self.create_tracker(active_form=False, intent="ask_question")
+        tracker = self.create_tracker(active_loop=False, intent="ask_question")
 
         self.run_form(
             tracker, domain={"responses": {"utter_qa_sample_foo": [{"text": "bar"}]}}
@@ -96,7 +96,7 @@ class TestQuestionAnsweringForm(FormTestCase):
 
         self.assert_events(
             [
-                Form(FORM_NAME),
+                ActiveLoop(FORM_NAME),
                 SlotSet(SKIP_QA_INTRO_SLOT, True),
                 SlotSet(REQUESTED_SLOT, QUESTION_SLOT),
             ]
@@ -114,40 +114,46 @@ class TestQuestionAnsweringForm(FormTestCase):
     def test_form_activation_not_first_time(self):
         tracker = self.create_tracker(
             slots={ASKED_QUESTION_SLOT: FULL_RESULT_SUCCESS, SKIP_QA_INTRO_SLOT: True},
-            active_form=False,
+            active_loop=False,
             intent="ask_question",
         )
 
         self.run_form(tracker, DOMAIN)
 
-        self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, QUESTION_SLOT)])
+        self.assert_events(
+            [ActiveLoop(FORM_NAME), SlotSet(REQUESTED_SLOT, QUESTION_SLOT)]
+        )
 
         self.assert_templates(["utter_ask_active_question"])
 
     def test_form_activation_affirm(self):
         tracker = self.create_tracker(
             slots={ASKED_QUESTION_SLOT: FULL_RESULT_SUCCESS},
-            active_form=False,
+            active_loop=False,
             intent="affirm",
             text="What is covid?",
         )
 
         self.run_form(tracker, DOMAIN)
 
-        self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, QUESTION_SLOT)])
+        self.assert_events(
+            [ActiveLoop(FORM_NAME), SlotSet(REQUESTED_SLOT, QUESTION_SLOT)]
+        )
 
         self.assert_templates(["utter_ask_active_question"])
 
     def test_form_activation_fallback(self):
         tracker = self.create_tracker(
             slots={ASKED_QUESTION_SLOT: FULL_RESULT_SUCCESS, SKIP_QA_INTRO_SLOT: True},
-            active_form=False,
+            active_loop=False,
             intent="affirm",
         )
 
         self.run_form(tracker, DOMAIN)
 
-        self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, QUESTION_SLOT)])
+        self.assert_events(
+            [ActiveLoop(FORM_NAME), SlotSet(REQUESTED_SLOT, QUESTION_SLOT)]
+        )
 
         self.assert_templates(["utter_ask_active_question"])
 
@@ -204,7 +210,7 @@ class TestQuestionAnsweringForm(FormTestCase):
                         FEEDBACK_KEY: None,
                     },
                 ),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -239,7 +245,7 @@ class TestQuestionAnsweringForm(FormTestCase):
                         FEEDBACK_KEY: None,
                     },
                 ),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -265,7 +271,7 @@ class TestQuestionAnsweringForm(FormTestCase):
                 SlotSet(QUESTION_SLOT, None),
                 SlotSet(FEEDBACK_SLOT, None),
                 SlotSet(ASKED_QUESTION_SLOT, FULL_RESULT_SUCCESS),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -293,7 +299,7 @@ class TestQuestionAnsweringForm(FormTestCase):
                 SlotSet(
                     ASKED_QUESTION_SLOT, {**FULL_RESULT_SUCCESS, FEEDBACK_KEY: False}
                 ),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -324,7 +330,7 @@ class TestQuestionAnsweringForm(FormTestCase):
                     ASKED_QUESTION_SLOT,
                     {**FULL_RESULT_SUCCESS, FEEDBACK_KEY: FEEDBACK_NOT_GIVEN},
                 ),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
                 ActionExecuted("utter_ask_another_question"),
                 ActionExecuted("action_listen"),
@@ -337,7 +343,7 @@ class TestQuestionAnsweringForm(FormTestCase):
                         "entities": [{"and": "entities"}],
                     },
                 ),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -351,14 +357,14 @@ class TestQuestionAnsweringForm(FormTestCase):
         )
 
         tracker = self.create_tracker(
-            active_form=False, intent="nlu_fallback", text=QUESTION
+            active_loop=False, intent="nlu_fallback", text=QUESTION
         )
 
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
-                Form(FORM_NAME),
+                ActiveLoop(FORM_NAME),
                 SlotSet(QUESTION_SLOT, QUESTION),
                 SlotSet(STATUS_SLOT, QuestionAnsweringStatus.SUCCESS),
                 SlotSet(ANSWERS_SLOT, ANSWERS),
@@ -377,14 +383,14 @@ class TestQuestionAnsweringForm(FormTestCase):
         )
 
         tracker = self.create_tracker(
-            active_form=False, intent="nlu_fallback", text=QUESTION
+            active_loop=False, intent="nlu_fallback", text=QUESTION
         )
 
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
-                Form(FORM_NAME),
+                ActiveLoop(FORM_NAME),
                 SlotSet(QUESTION_SLOT, QUESTION),
                 SlotSet(STATUS_SLOT, QuestionAnsweringStatus.FAILURE),
                 SlotSet(ANSWERS_SLOT, None),
@@ -399,7 +405,7 @@ class TestQuestionAnsweringForm(FormTestCase):
                         FEEDBACK_KEY: None,
                     },
                 ),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -413,14 +419,14 @@ class TestQuestionAnsweringForm(FormTestCase):
         )
 
         tracker = self.create_tracker(
-            active_form=False, intent="nlu_fallback", text=QUESTION
+            active_loop=False, intent="nlu_fallback", text=QUESTION
         )
 
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
-                Form(FORM_NAME),
+                ActiveLoop(FORM_NAME),
                 SlotSet(QUESTION_SLOT, QUESTION),
                 SlotSet(STATUS_SLOT, QuestionAnsweringStatus.OUT_OF_DISTRIBUTION),
                 SlotSet(ANSWERS_SLOT, None),
@@ -435,7 +441,7 @@ class TestQuestionAnsweringForm(FormTestCase):
                         FEEDBACK_KEY: None,
                     },
                 ),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -449,14 +455,14 @@ class TestQuestionAnsweringForm(FormTestCase):
         )
 
         tracker = self.create_tracker(
-            active_form=False, intent="nlu_fallback", text=QUESTION
+            active_loop=False, intent="nlu_fallback", text=QUESTION
         )
 
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
-                Form(FORM_NAME),
+                ActiveLoop(FORM_NAME),
                 SlotSet(QUESTION_SLOT, QUESTION),
                 SlotSet(STATUS_SLOT, QuestionAnsweringStatus.NEED_ASSESSMENT),
                 SlotSet(ANSWERS_SLOT, None),
@@ -471,7 +477,7 @@ class TestQuestionAnsweringForm(FormTestCase):
                         FEEDBACK_KEY: None,
                     },
                 ),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )

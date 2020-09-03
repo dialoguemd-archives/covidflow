@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from rasa_sdk.events import Form, SlotSet
+from rasa_sdk.events import ActiveLoop, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.daily_ci_feel_better_form import (
@@ -55,14 +55,14 @@ class TestDailyCiFeelBetterForm(FormTestCase):
 
     def _test_form_activation(self, last_symptoms: str):
         tracker = self.create_tracker(
-            slots={LAST_SYMPTOMS_SLOT: last_symptoms}, active_form=False
+            slots={LAST_SYMPTOMS_SLOT: last_symptoms}, active_loop=False
         )
 
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
-                Form(FORM_NAME),
+                ActiveLoop(FORM_NAME),
                 SlotSet(FEEL_WORSE_SLOT, False),
                 SlotSet(REQUESTED_SLOT, HAS_FEVER_SLOT),
             ]
@@ -258,7 +258,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
                 SlotSet(HAS_DIFF_BREATHING_SLOT, True),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -364,7 +364,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
             [
                 SlotSet(HAS_OTHER_MILD_SYMPTOMS_SLOT, True),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -401,7 +401,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
             [
                 SlotSet(HAS_OTHER_MILD_SYMPTOMS_SLOT, False),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -481,7 +481,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
                 SlotSet(IS_SYMPTOM_FREE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.NONE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -508,7 +508,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
             [
                 SlotSet(IS_SYMPTOM_FREE_SLOT, False),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -644,7 +644,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(HAS_DIFF_BREATHING_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -684,7 +684,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(HAS_DIFF_BREATHING_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -716,7 +716,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
                 SlotSet(SYMPTOMS_SLOT, Symptoms.NONE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 SlotSet(HAS_DIFF_BREATHING_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -746,7 +746,7 @@ class TestDailyCiFeelBetterForm(FormTestCase):
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(HAS_DIFF_BREATHING_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )

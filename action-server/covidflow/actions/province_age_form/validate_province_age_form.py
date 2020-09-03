@@ -4,7 +4,6 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 
-from covidflow.actions.lib.form_helper import get_extracted_slots
 from covidflow.actions.lib.log_util import bind_logger
 from covidflow.constants import PROVINCE_SLOT, PROVINCES
 
@@ -20,9 +19,7 @@ class ValidateProvinceAgeForm(Action):
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[EventType]:
         bind_logger(tracker)
-        extracted_slots: Dict[Text, Any] = get_extracted_slots(
-            tracker, FORM_NAME
-        )  # TODO: change for tracker.get_extracted_slots when available: https://github.com/RasaHQ/rasa-sdk/issues/238
+        extracted_slots: Dict[Text, Any] = tracker.form_slots_to_validate()
 
         validation_events = []
 

@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from rasa_sdk.events import Form, SlotSet
+from rasa_sdk.events import ActiveLoop, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.daily_ci_feel_worse_form import (
@@ -49,13 +49,13 @@ class TestDailyCiFeelWorseForm(FormTestCase):
         self.patcher.stop()
 
     def test_form_activation(self):
-        tracker = self.create_tracker(active_form=False)
+        tracker = self.create_tracker(active_loop=False)
 
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
-                Form(FORM_NAME),
+                ActiveLoop(FORM_NAME),
                 SlotSet(FEEL_WORSE_SLOT, True),
                 SlotSet(REQUESTED_SLOT, SEVERE_SYMPTOMS_SLOT),
             ],
@@ -86,7 +86,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
                 SlotSet(HAS_FEVER_SLOT, True),
                 SlotSet(HAS_COUGH_SLOT, True),
                 SlotSet(HAS_DIFF_BREATHING_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -257,7 +257,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
                 SlotSet(HAS_COUGH_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -296,7 +296,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
                 SlotSet(HAS_COUGH_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -415,7 +415,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
                 SlotSet(HAS_COUGH_SLOT, True),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -454,7 +454,7 @@ class TestDailyCiFeelWorseForm(FormTestCase):
                 SlotSet(HAS_COUGH_SLOT, False),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )

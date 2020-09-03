@@ -49,7 +49,7 @@ class DailyCiFeelBetterForm(FormAction):
     ) -> List[EventType]:
         events = []
 
-        if tracker.active_form.get("name") != FORM_NAME:
+        if tracker.active_loop.get("name") != FORM_NAME:
             dispatcher.utter_message(
                 template="utter_daily_ci__feel_better__acknowledge"
             )

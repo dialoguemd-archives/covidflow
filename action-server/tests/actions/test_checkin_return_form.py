@@ -1,4 +1,4 @@
-from rasa_sdk.events import Form, SlotSet
+from rasa_sdk.events import ActiveLoop, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.checkin_return_form import (
@@ -42,12 +42,12 @@ class TestCheckinReturnForm(FormTestCase):
         self.form = CheckinReturnForm()
 
     def test_form_activation(self):
-        tracker = self.create_tracker(active_form=False)
+        tracker = self.create_tracker(active_loop=False)
 
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
-            [Form(FORM_NAME), SlotSet(REQUESTED_SLOT, SEVERE_SYMPTOMS_SLOT)]
+            [ActiveLoop(FORM_NAME), SlotSet(REQUESTED_SLOT, SEVERE_SYMPTOMS_SLOT)]
         )
 
         self.assert_templates(
@@ -66,7 +66,7 @@ class TestCheckinReturnForm(FormTestCase):
                 SlotSet(SEVERE_SYMPTOMS_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.SEVERE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -329,7 +329,7 @@ class TestCheckinReturnForm(FormTestCase):
                 SlotSet(MODERATE_SYMPTOMS_WORSENED_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -371,7 +371,7 @@ class TestCheckinReturnForm(FormTestCase):
                 SlotSet(MODERATE_SYMPTOMS_WORSENED_SLOT, False),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -468,7 +468,7 @@ class TestCheckinReturnForm(FormTestCase):
                 SlotSet(HAS_COUGH_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -498,7 +498,7 @@ class TestCheckinReturnForm(FormTestCase):
                 SlotSet(HAS_COUGH_SLOT, False),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -550,7 +550,7 @@ class TestCheckinReturnForm(FormTestCase):
                 SlotSet(HAS_COUGH_SLOT, False),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.NONE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )

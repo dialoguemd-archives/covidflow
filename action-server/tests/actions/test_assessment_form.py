@@ -1,4 +1,4 @@
-from rasa_sdk.events import Form, SlotSet
+from rasa_sdk.events import ActiveLoop, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.assessment_form import FORM_NAME, AssessmentForm
@@ -44,12 +44,12 @@ class TestAssessmentForm(FormTestCase):
         self.form = AssessmentForm()
 
     def test_form_activation(self):
-        tracker = self.create_tracker(active_form=False)
+        tracker = self.create_tracker(active_loop=False)
 
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
-            [Form(FORM_NAME), SlotSet(REQUESTED_SLOT, SEVERE_SYMPTOMS_SLOT)]
+            [ActiveLoop(FORM_NAME), SlotSet(REQUESTED_SLOT, SEVERE_SYMPTOMS_SLOT)]
         )
 
         self.assert_templates(["utter_assessment_entry", "utter_ask_severe_symptoms"])
@@ -66,7 +66,7 @@ class TestAssessmentForm(FormTestCase):
                 SlotSet(SEVERE_SYMPTOMS_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.SEVERE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -331,7 +331,7 @@ class TestAssessmentForm(FormTestCase):
                 SlotSet(LIVES_ALONE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -365,7 +365,7 @@ class TestAssessmentForm(FormTestCase):
                 SlotSet(LIVES_ALONE_SLOT, False),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -542,7 +542,7 @@ class TestAssessmentForm(FormTestCase):
                 SlotSet(LIVES_ALONE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -580,7 +580,7 @@ class TestAssessmentForm(FormTestCase):
                 SlotSet(LIVES_ALONE_SLOT, False),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -665,7 +665,7 @@ class TestAssessmentForm(FormTestCase):
                 SlotSet(HAS_CONTACT_RISK_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.NONE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -696,7 +696,7 @@ class TestAssessmentForm(FormTestCase):
                 SlotSet(HAS_CONTACT_RISK_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.NONE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -831,7 +831,7 @@ class TestAssessmentForm(FormTestCase):
                 SlotSet(HAS_CONTACT_RISK_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.NONE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -863,7 +863,7 @@ class TestAssessmentForm(FormTestCase):
                 SlotSet(HAS_CONTACT_RISK_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.NONE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -900,7 +900,7 @@ class TestAssessmentForm(FormTestCase):
                 SlotSet(TRAVEL_SLOT, False),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.NONE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )

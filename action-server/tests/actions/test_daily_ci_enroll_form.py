@@ -1,7 +1,7 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
-from rasa_sdk.events import Form, SlotSet
+from rasa_sdk.events import ActiveLoop, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.daily_ci_enroll_form import (
@@ -125,14 +125,14 @@ class TestDailyCiEnrollForm(FormTestCase):
         )
 
     def test_form_activation(self):
-        tracker = self.create_tracker(active_form=False)
+        tracker = self.create_tracker(active_loop=False)
 
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
             [
                 SlotSet(PRECONDITIONS_WITH_EXAMPLES_SLOT, "N/A"),
-                Form(FORM_NAME),
+                ActiveLoop(FORM_NAME),
                 SlotSet(REQUESTED_SLOT, DO_ENROLL_SLOT),
             ]
         )
@@ -179,7 +179,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(DO_ENROLL_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -323,7 +323,7 @@ class TestDailyCiEnrollForm(FormTestCase):
                 SlotSet(PHONE_NUMBER_SLOT, PHONE_NUMBER),
                 SlotSet(PHONE_TO_CHANGE_SLOT, False),
                 SlotSet(DO_ENROLL_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -415,7 +415,7 @@ class TestDailyCiEnrollForm(FormTestCase):
                 SlotSet(PHONE_NUMBER_SLOT, None),
                 SlotSet(PHONE_TO_CHANGE_SLOT, False),
                 SlotSet(DO_ENROLL_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -440,7 +440,7 @@ class TestDailyCiEnrollForm(FormTestCase):
                 SlotSet(PHONE_NUMBER_SLOT, None),
                 SlotSet(PHONE_TO_CHANGE_SLOT, False),
                 SlotSet(DO_ENROLL_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -494,7 +494,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             [
                 SlotSet(WANTS_CANCEL_SLOT, True),
                 SlotSet(DO_ENROLL_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -650,7 +650,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             [
                 SlotSet(VALIDATION_CODE_SLOT, None),
                 SlotSet(DO_ENROLL_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -783,7 +783,7 @@ class TestDailyCiEnrollForm(FormTestCase):
                 SlotSet(PHONE_NUMBER_SLOT, PHONE_NUMBER),
                 SlotSet(PHONE_TO_CHANGE_SLOT, False),
                 SlotSet(DO_ENROLL_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -877,7 +877,7 @@ class TestDailyCiEnrollForm(FormTestCase):
                 SlotSet(VALIDATION_CODE_SLOT, None),
                 SlotSet(DO_ENROLL_SLOT, False),
                 SlotSet(NO_CODE_SOLUTION_SLOT, None),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -941,7 +941,7 @@ class TestDailyCiEnrollForm(FormTestCase):
             [
                 SlotSet(NO_CODE_SOLUTION_SLOT, "new_code"),
                 SlotSet(DO_ENROLL_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -1263,7 +1263,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(HAS_DIALOGUE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -1296,7 +1296,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(HAS_DIALOGUE_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -1329,7 +1329,7 @@ class TestDailyCiEnrollForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(HAS_DIALOGUE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )

@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Optional, Text, Union
 import structlog
 from aiohttp import ClientSession
 from rasa_sdk import Tracker
-from rasa_sdk.events import ActionExecuted, EventType, Form, SlotSet, UserUttered
+from rasa_sdk.events import ActionExecuted, ActiveLoop, EventType, SlotSet, UserUttered
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import REQUESTED_SLOT, FormAction
 
@@ -72,7 +72,7 @@ class QuestionAnsweringForm(FormAction):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[EventType]:
-        if tracker.active_form.get("name") == FORM_NAME:
+        if tracker.active_loop.get("name") == FORM_NAME:
             return await super()._activate_if_required(dispatcher, tracker, domain)
 
         intent = _get_intent(tracker)
@@ -243,7 +243,9 @@ def _get_intent(tracker: Tracker) -> str:
 
 def _carry_user_utterance(tracker: Tracker) -> List[EventType]:
     return [
-        Form(None),  # Ending it manually to have events in correct order to fit stories
+        ActiveLoop(
+            None
+        ),  # Ending it manually to have events in correct order to fit stories
         SlotSet(REQUESTED_SLOT, None),
         ActionExecuted("utter_ask_another_question"),
         ActionExecuted("action_listen"),

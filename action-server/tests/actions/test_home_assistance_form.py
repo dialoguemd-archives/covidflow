@@ -1,4 +1,4 @@
-from rasa_sdk.events import Form, SlotSet
+from rasa_sdk.events import ActiveLoop, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.home_assistance_form import FORM_NAME, HomeAssistanceForm
@@ -15,23 +15,25 @@ class TestHomeAssistanceForm(FormTestCase):
         self.form = HomeAssistanceForm()
 
     def test_not_has_211(self):
-        tracker = self.create_tracker(active_form=False, slots={PROVINCE_SLOT: "nu"})
+        tracker = self.create_tracker(active_loop=False, slots={PROVINCE_SLOT: "nu"})
 
         self.run_form(tracker, DOMAIN)
 
-        self.assert_events([Form(FORM_NAME), Form(None), SlotSet(REQUESTED_SLOT, None)])
+        self.assert_events(
+            [ActiveLoop(FORM_NAME), ActiveLoop(None), SlotSet(REQUESTED_SLOT, None)]
+        )
 
         self.assert_templates(
             ["utter_remind_delivery_services", "utter_remind_pharmacist_services"]
         )
 
     def test_has_211(self):
-        tracker = self.create_tracker(active_form=False, slots={PROVINCE_SLOT: "qc"})
+        tracker = self.create_tracker(active_loop=False, slots={PROVINCE_SLOT: "qc"})
 
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
-            [Form(FORM_NAME), SlotSet(REQUESTED_SLOT, HAS_ASSISTANCE_SLOT)]
+            [ActiveLoop(FORM_NAME), SlotSet(REQUESTED_SLOT, HAS_ASSISTANCE_SLOT)]
         )
 
         self.assert_templates(["utter_ask_has_assistance"])
@@ -47,7 +49,7 @@ class TestHomeAssistanceForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(HAS_ASSISTANCE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -67,7 +69,7 @@ class TestHomeAssistanceForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(HAS_ASSISTANCE_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -92,7 +94,7 @@ class TestHomeAssistanceForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(HAS_ASSISTANCE_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )

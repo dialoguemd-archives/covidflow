@@ -30,7 +30,7 @@ class ActionTestCase(TestCase):
         intent: str = None,
         entities: list = None,
         text: str = None,
-        active_form: bool = True,
+        active_loop: bool = True,
         last_action: str = "action_listen",
     ) -> Tracker:
         all_slots = {}

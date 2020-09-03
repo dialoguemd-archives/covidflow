@@ -63,7 +63,7 @@ class DailyCiEnrollForm(FormAction):
         tracker: "Tracker",
         domain: Dict[Text, Any],
     ) -> List[EventType]:
-        if tracker.active_form.get("name") != FORM_NAME:
+        if tracker.active_loop.get("name") != FORM_NAME:
             dispatcher.utter_message(template="utter_daily_ci_enroll__offer_checkin")
             dispatcher.utter_message(
                 template="utter_daily_ci_enroll__explain_checkin_1"

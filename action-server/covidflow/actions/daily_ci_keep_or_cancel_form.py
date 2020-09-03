@@ -48,7 +48,7 @@ class DailyCiKeepOrCancelForm(FormAction):
         domain: Dict[Text, Any],
     ) -> List[EventType]:
         if (
-            tracker.active_form.get("name") != FORM_NAME
+            tracker.active_loop.get("name") != FORM_NAME
             and tracker.get_slot(SYMPTOMS_SLOT) == Symptoms.NONE
         ):
             dispatcher.utter_message(

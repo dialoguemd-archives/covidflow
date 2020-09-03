@@ -48,7 +48,7 @@ class DailyCiFeelWorseForm(FormAction):
     ) -> List[EventType]:
         events = []
 
-        if tracker.active_form.get("name") != FORM_NAME:
+        if tracker.active_loop.get("name") != FORM_NAME:
             events.append(SlotSet(FEEL_WORSE_SLOT, True))
 
         return await super()._activate_if_required(dispatcher, tracker, domain) + events

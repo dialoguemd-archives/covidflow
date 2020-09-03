@@ -1,7 +1,4 @@
-# Until a fix for https://github.com/RasaHQ/rasa/issues/6494 is merged we need to use a local image containing the fix.
-# This local image can be a clone from our fork pointing on the fix branch: https://github.com/nuecho/rasa/tree/fix-custom-ask-slot
-FROM rasa-local
-# FROM rasa/rasa:2.0.0a2-full
+FROM rasa/rasa:2.0.0a4-full
 EXPOSE 8080
 
 COPY poetry.lock poetry.lock

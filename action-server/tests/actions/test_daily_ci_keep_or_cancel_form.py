@@ -1,7 +1,7 @@
 from typing import List
 from unittest.mock import patch
 
-from rasa_sdk.events import Form, SlotSet
+from rasa_sdk.events import ActiveLoop, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.daily_ci_keep_or_cancel_form import (
@@ -111,12 +111,14 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
                 PRECONDITIONS_SLOT: preconditions,
                 AGE_OVER_65_SLOT: age_over_65,
             },
-            active_form=False,
+            active_loop=False,
         )
 
         self.run_form(tracker, DOMAIN)
 
-        self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, CONTINUE_CI_SLOT)])
+        self.assert_events(
+            [ActiveLoop(FORM_NAME), SlotSet(REQUESTED_SLOT, CONTINUE_CI_SLOT)]
+        )
 
         self.assert_templates(
             [
@@ -297,12 +299,14 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
                 PRECONDITIONS_SLOT: preconditions,
                 SYMPTOMS_SLOT: symptoms,
             },
-            active_form=False,
+            active_loop=False,
         )
 
         self.run_form(tracker, DOMAIN)
 
-        self.assert_events([Form(FORM_NAME), SlotSet(REQUESTED_SLOT, CONTINUE_CI_SLOT)])
+        self.assert_events(
+            [ActiveLoop(FORM_NAME), SlotSet(REQUESTED_SLOT, CONTINUE_CI_SLOT)]
+        )
 
         self.assert_templates(
             ["utter_ask_daily_ci__keep_or_cancel__continue_ci_symptoms"]
@@ -325,13 +329,13 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
                 SYMPTOMS_SLOT: symptoms,
                 PROVINCE_SLOT: province,
             },
-            active_form=False,
+            active_loop=False,
         )
 
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
-            [Form(FORM_NAME), Form(None), SlotSet(REQUESTED_SLOT, None),]
+            [ActiveLoop(FORM_NAME), ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(
@@ -357,7 +361,11 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
-            [SlotSet(CONTINUE_CI_SLOT, True), Form(None), SlotSet(REQUESTED_SLOT, None)]
+            [
+                SlotSet(CONTINUE_CI_SLOT, True),
+                ActiveLoop(None),
+                SlotSet(REQUESTED_SLOT, None),
+            ]
         )
 
         self.assert_templates(
@@ -399,7 +407,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(CONTINUE_CI_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -434,7 +442,7 @@ class TestDailyCiKeepOrCancelForm(FormTestCase):
         self.assert_events(
             [
                 SlotSet(CONTINUE_CI_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )

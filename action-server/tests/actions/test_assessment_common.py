@@ -1,7 +1,7 @@
 from typing import Any, Dict, List, Text, Union
 
 from rasa_sdk import Tracker
-from rasa_sdk.events import Form, SlotSet
+from rasa_sdk.events import ActiveLoop, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import REQUESTED_SLOT, FormAction
 
@@ -63,7 +63,7 @@ class BaseTestAssessmentForm:
                 SlotSet(SEVERE_SYMPTOMS_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.SEVERE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -228,7 +228,7 @@ class BaseTestAssessmentForm:
                 SlotSet(MODERATE_SYMPTOMS_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -278,7 +278,7 @@ class BaseTestAssessmentForm:
                 SlotSet(HAS_COUGH_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -305,7 +305,7 @@ class BaseTestAssessmentForm:
                 SlotSet(HAS_COUGH_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -332,7 +332,7 @@ class BaseTestAssessmentForm:
                 SlotSet(HAS_COUGH_SLOT, False),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.NONE),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -359,7 +359,7 @@ class BaseTestAssessmentForm:
                 SlotSet(HAS_COUGH_SLOT, False),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )

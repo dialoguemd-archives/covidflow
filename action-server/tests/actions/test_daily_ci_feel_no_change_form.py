@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from rasa_sdk.events import Form, SlotSet
+from rasa_sdk.events import ActiveLoop, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.daily_ci_feel_no_change_form import (
@@ -44,14 +44,14 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
 
     def _test_form_activation(self, last_symptoms: str):
         tracker = self.create_tracker(
-            slots={LAST_SYMPTOMS_SLOT: last_symptoms}, active_form=False
+            slots={LAST_SYMPTOMS_SLOT: last_symptoms}, active_loop=False
         )
 
         self.run_form(tracker)
 
         self.assert_events(
             [
-                Form(FORM_NAME),
+                ActiveLoop(FORM_NAME),
                 SlotSet(FEEL_WORSE_SLOT, False),
                 SlotSet(REQUESTED_SLOT, HAS_FEVER_SLOT),
             ]
@@ -242,7 +242,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
                 SlotSet(HAS_DIFF_BREATHING_SLOT, True),
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ],
         )
@@ -292,7 +292,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
             ]
 
         self.assert_events(
-            slot_set_events + [Form(None), SlotSet(REQUESTED_SLOT, None),],
+            slot_set_events + [ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),],
         )
 
         self.assert_templates(
@@ -351,7 +351,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(HAS_DIFF_BREATHING_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )
@@ -391,7 +391,7 @@ class TestDailyCiFeelNoChangeForm(FormTestCase):
                 SlotSet(SELF_ASSESS_DONE_SLOT, True),
                 SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
                 SlotSet(HAS_DIFF_BREATHING_SLOT, False),
-                Form(None),
+                ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
             ]
         )

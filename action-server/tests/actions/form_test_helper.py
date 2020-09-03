@@ -36,7 +36,7 @@ class FormTestCase(TestCase):
         intent: str = None,
         entities: list = None,
         text: str = None,
-        active_form: bool = True,
+        active_loop: bool = True,
         last_action: str = "action_listen",
     ) -> Tracker:
         all_slots = {}
@@ -54,7 +54,7 @@ class FormTestCase(TestCase):
             paused,
             followup_action,
             {"name": self.form.name(), "validate": True, "rejected": False}
-            if active_form
+            if active_loop
             else {},
             last_action,
         )

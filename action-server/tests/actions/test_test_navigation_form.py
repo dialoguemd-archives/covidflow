@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from geopy.point import Point
-from rasa_sdk.events import Form, SlotSet
+from rasa_sdk.events import ActiveLoop, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.test_navigation_form import (
@@ -197,12 +197,12 @@ class TestTestNavigationForm(FormTestCase):
         self.assertEqual(expected_postal_code, slot_values.get(POSTAL_CODE_SLOT, None))
 
     def test_initialize(self):
-        tracker = self.create_tracker(active_form=False)
+        tracker = self.create_tracker(active_loop=False)
 
         self.run_form(tracker, DOMAIN)
 
         self.assert_events(
-            [Form(FORM_NAME), SlotSet(REQUESTED_SLOT, POSTAL_CODE_SLOT),]
+            [ActiveLoop(FORM_NAME), SlotSet(REQUESTED_SLOT, POSTAL_CODE_SLOT),]
         )
 
         self.assert_templates(["utter_ask_test_navigation__postal_code"])
@@ -269,7 +269,7 @@ class TestTestNavigationForm(FormTestCase):
         self.assert_events(
             [SlotSet(POSTAL_CODE_SLOT, None), SlotSet(END_FORM_SLOT, True),]
             + CLEARED_SLOTS
-            + [Form(None), SlotSet(REQUESTED_SLOT, None),]
+            + [ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(["utter_test_navigation__invalid_postal_code_max"])
@@ -286,7 +286,7 @@ class TestTestNavigationForm(FormTestCase):
         self.assert_events(
             [SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE), SlotSet(END_FORM_SLOT, True),]
             + CLEARED_SLOTS
-            + [Form(None), SlotSet(REQUESTED_SLOT, None),]
+            + [ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(
@@ -364,7 +364,7 @@ class TestTestNavigationForm(FormTestCase):
         self.assert_events(
             [SlotSet(POSTAL_CODE_SLOT, None), SlotSet(END_FORM_SLOT, True),]
             + CLEARED_SLOTS
-            + [Form(None), SlotSet(REQUESTED_SLOT, None),]
+            + [ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(["utter_test_navigation__invalid_postal_code_max"])
@@ -385,7 +385,7 @@ class TestTestNavigationForm(FormTestCase):
         self.assert_events(
             [SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE), SlotSet(END_FORM_SLOT, True),]
             + CLEARED_SLOTS
-            + [Form(None), SlotSet(REQUESTED_SLOT, None),]
+            + [ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(
@@ -461,7 +461,7 @@ class TestTestNavigationForm(FormTestCase):
         self.assert_events(
             [SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, False),]
             + CLEARED_SLOTS
-            + [Form(None), SlotSet(REQUESTED_SLOT, None),]
+            + [ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(["utter_test_navigation__acknowledge"])
@@ -512,7 +512,7 @@ class TestTestNavigationForm(FormTestCase):
                 SlotSet(LOCATIONS_SLOT, [TESTING_LOCATION_RAW]),
             ]
             + CLEARED_SLOTS
-            + [Form(None), SlotSet(REQUESTED_SLOT, None),]
+            + [ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(["utter_test_navigation__one_location", None])
@@ -542,7 +542,7 @@ class TestTestNavigationForm(FormTestCase):
                 SlotSet(LOCATIONS_SLOT, [TESTING_LOCATION_RAW, TESTING_LOCATION_RAW]),
             ]
             + CLEARED_SLOTS
-            + [Form(None), SlotSet(REQUESTED_SLOT, None),]
+            + [ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(

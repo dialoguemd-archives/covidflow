@@ -439,7 +439,7 @@ class TestCheckinReturnForm(FormTestCase):
             ]
         )
 
-        self.assert_templates(["utter_no_moderate_symptoms", "utter_ask_has_cough"])
+        self.assert_templates(["utter_moderate_symptoms_false", "utter_ask_has_cough"])
 
     def test_fever_cough(self):
         self._test_cough(fever=True)

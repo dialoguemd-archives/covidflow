@@ -88,7 +88,7 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_no_moderate_symptoms:
+  utter_moderate_symptoms_false:
     - text: OK, it seems that you don’t have symptoms that require immediate medical assistance. Let’s continue your assessment
 
   utter_symptoms_worsen_emergency:

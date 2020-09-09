@@ -1,4 +1,4 @@
-from covidflow.actions.province_age_form.action_ask_province_code import (
+from covidflow.actions.new_assessment_form.action_ask_province_code import (
     ActionAskProvinceCode,
 )
 from tests.actions.action_test_helper import ActionTestCase

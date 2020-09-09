@@ -124,7 +124,7 @@ class AssessmentCommon:
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
         if value is False:
-            dispatcher.utter_message(template="utter_no_moderate_symptoms")
+            dispatcher.utter_message(template="utter_moderate_symptoms_false")
 
         return {MODERATE_SYMPTOMS_SLOT: value}
 

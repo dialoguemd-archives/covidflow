@@ -70,8 +70,10 @@ CONTACT_SLOT = "contact"
 TRAVEL_SLOT = "travel"
 HAS_CONTACT_RISK_SLOT = "has_contact_risk"
 
-# Shared with stories
+# Shared with core elements
 INVALID_REMINDER_ID_SLOT = "invalid_reminder_id"
+FALLBACK_INTENT = "nlu_fallback"
+ACTION_LISTEN_NAME = "action_listen"
 
 # Metadata/Test
 QA_TEST_PROFILE_ATTRIBUTE = "qa_test_profile"

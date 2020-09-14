@@ -3,6 +3,8 @@ from typing import Any, Dict, List
 from rasa_sdk import Tracker
 from rasa_sdk.events import ActionExecuted, EventType, SlotSet
 
+from covidflow.constants import ACTION_LISTEN_NAME
+
 from .action_test_helper import ActionTestCase
 
 
@@ -23,7 +25,7 @@ class ValidateActionTestCase(ActionTestCase):
         entities: list = None,
         text: str = None,
         active_loop: bool = True,
-        last_action: str = "action_listen",
+        last_action: str = ACTION_LISTEN_NAME,
     ) -> Tracker:
         return Tracker(
             sender_id,

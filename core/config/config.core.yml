@@ -2,5 +2,7 @@
 # https://rasa.com/docs/rasa/core/policies/
 policies:
   - name: RulePolicy
-  - name: core.policies.unsupported_intent_policy.UnsupportedIntentPolicy
-    fallback_action_name: "action_unsupported_intent"
+    # We could rename the action and change the threshold to a more significant one
+    # when https://github.com/RasaHQ/rasa/issues/6516 will be solved, these are default parameters
+    core_fallback_threshold: 0.3
+    core_fallback_action_name: "action_default_fallback"

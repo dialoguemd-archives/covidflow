@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock, patch
 
-from rasa_sdk.events import ActionExecuted, ActiveLoop, SlotSet, UserUttered
+from rasa_sdk.events import ActionExecuted, ActiveLoop, BotUttered, SlotSet, UserUttered
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.answers import QuestionAnsweringResponse, QuestionAnsweringStatus
@@ -8,6 +8,7 @@ from covidflow.actions.question_answering_form import (
     ANSWERS_KEY,
     ANSWERS_SLOT,
     ASKED_QUESTION_SLOT,
+    FALLBACK_INTENT,
     FEEDBACK_KEY,
     FEEDBACK_NOT_GIVEN,
     FEEDBACK_SLOT,
@@ -19,6 +20,7 @@ from covidflow.actions.question_answering_form import (
     STATUS_SLOT,
     QuestionAnsweringForm,
 )
+from covidflow.constants import ACTION_LISTEN_NAME
 
 from .form_test_helper import FormTestCase
 
@@ -333,7 +335,8 @@ class TestQuestionAnsweringForm(FormTestCase):
                 ActiveLoop(None),
                 SlotSet(REQUESTED_SLOT, None),
                 ActionExecuted("utter_ask_another_question"),
-                ActionExecuted("action_listen"),
+                BotUttered(metadata={"template_name": "utter_ask_another_question"}),
+                ActionExecuted(ACTION_LISTEN_NAME),
                 UserUttered(
                     "some text with",
                     parse_data={
@@ -357,7 +360,7 @@ class TestQuestionAnsweringForm(FormTestCase):
         )
 
         tracker = self.create_tracker(
-            active_loop=False, intent="nlu_fallback", text=QUESTION
+            active_loop=False, intent=FALLBACK_INTENT, text=QUESTION
         )
 
         self.run_form(tracker, DOMAIN)
@@ -383,7 +386,7 @@ class TestQuestionAnsweringForm(FormTestCase):
         )
 
         tracker = self.create_tracker(
-            active_loop=False, intent="nlu_fallback", text=QUESTION
+            active_loop=False, intent=FALLBACK_INTENT, text=QUESTION
         )
 
         self.run_form(tracker, DOMAIN)
@@ -419,7 +422,7 @@ class TestQuestionAnsweringForm(FormTestCase):
         )
 
         tracker = self.create_tracker(
-            active_loop=False, intent="nlu_fallback", text=QUESTION
+            active_loop=False, intent=FALLBACK_INTENT, text=QUESTION
         )
 
         self.run_form(tracker, DOMAIN)
@@ -455,7 +458,7 @@ class TestQuestionAnsweringForm(FormTestCase):
         )
 
         tracker = self.create_tracker(
-            active_loop=False, intent="nlu_fallback", text=QUESTION
+            active_loop=False, intent=FALLBACK_INTENT, text=QUESTION
         )
 
         self.run_form(tracker, DOMAIN)

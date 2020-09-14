@@ -10,6 +10,7 @@ from covidflow.actions.action_visit_package import (
     ActionVisitPackage,
 )
 from covidflow.constants import (
+    ACTION_LISTEN_NAME,
     AGE_OVER_65_SLOT,
     CONTACT_SLOT,
     HAS_COUGH_SLOT,
@@ -22,7 +23,7 @@ from covidflow.constants import (
 
 
 def _create_tracker(slots={}) -> Tracker:
-    return Tracker("default", {}, {}, [], False, None, {}, "action_listen",)
+    return Tracker("default", {}, {}, [], False, None, {}, ACTION_LISTEN_NAME,)
 
 
 class TestActionVisitPackage(TestCase):

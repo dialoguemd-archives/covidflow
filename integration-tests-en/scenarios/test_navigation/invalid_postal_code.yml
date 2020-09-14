@@ -1,3 +1,5 @@
+- user: test_navigation/greet_no_locations
+  bot: welcome
 - navigate_test_locations
 - user: test_navigation/postal_code/invalid
   bot: test_navigation/invalid_postal_code

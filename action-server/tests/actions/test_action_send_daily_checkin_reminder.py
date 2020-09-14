@@ -9,6 +9,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from covidflow.actions.action_send_daily_checkin_reminder import (
     ActionSendDailyCheckInReminder,
 )
+from covidflow.constants import ACTION_LISTEN_NAME
 from covidflow.exceptions import (
     InvalidExternalEventException,
     ReminderNotFoundException,
@@ -50,7 +51,7 @@ def _create_tracker(
         False,
         None,
         {},
-        "action_listen",
+        ACTION_LISTEN_NAME,
     )
 
 

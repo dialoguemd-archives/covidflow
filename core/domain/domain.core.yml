@@ -43,6 +43,7 @@ intents:
   - navigate_test_locations:
       use_entities: []
   - q_a
+  - test_form
 
 entities:
   - province
@@ -51,7 +52,8 @@ entities:
   - validation_code
 
 actions:
-  - action_unsupported_intent
+  - action_default_fallback
+  - action_check_task_allowed
   - action_visit_package
   - action_initialize_daily_checkin
   - action_daily_ci_early_opt_out

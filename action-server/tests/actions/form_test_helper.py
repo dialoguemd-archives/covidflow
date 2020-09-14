@@ -6,6 +6,8 @@ from rasa_sdk import Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import FormAction
 
+from covidflow.constants import ACTION_LISTEN_NAME
+
 PHONE_TRY_COUNTER_SLOT = "daily_ci_enroll__phone_number_error_counter"
 CODE_TRY_COUNTER_SLOT = "daily_ci_enroll__validation_code_error_counter"
 WANTS_CANCEL_SLOT = "daily_ci_enroll__wants_cancel"
@@ -37,7 +39,7 @@ class FormTestCase(TestCase):
         entities: list = None,
         text: str = None,
         active_loop: bool = True,
-        last_action: str = "action_listen",
+        last_action: str = ACTION_LISTEN_NAME,
     ) -> Tracker:
         all_slots = {}
         all_slots.update(INITIAL_SLOT_VALUES)

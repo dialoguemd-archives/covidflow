@@ -20,6 +20,23 @@ rules:
       - intent: greet
       - action: action_greeting_messages
 
+  ## Main menu rules
+  - rule: Returning for check-in
+    steps:
+      - action: action_greeting_messages
+      - intent: checkin_return
+      - action: checkin_return_form
+      - active_loop: checkin_return_form
+    wait_for_user_input: false
+
+  - rule: Tested positive
+    steps:
+      - action: action_greeting_messages
+      - intent: tested_positive
+      - action: tested_positive_form
+      - active_loop: tested_positive_form
+    wait_for_user_input: false
+
   ## Assessment rules
   - rule: Assessment severe symptoms
     condition:
@@ -151,27 +168,9 @@ rules:
       - action: action_visit_package
       - action: utter_ask_anything_else_without_test_navigation
 
-  - rule: Tested positive utter_ask_when_tested_error deny
-    steps:
-      - action: utter_ask_when_tested_error
-      - intent: deny
-      - action: utter_when_tested_less_14_recommendation
-      - action: daily_ci_enroll_form
-      - action: action_tested_positive_not_cured_final_recommendations
-      - action: home_assistance_form
-      - action: action_visit_package
-      - action: utter_ask_anything_else_without_test_navigation
-
   - rule: Tested positive utter_ask_when_tested affirm
     steps:
       - action: utter_ask_when_tested
-      - intent: affirm
-      - action: action_tested_positive_maybe_cured_final_recommendations
-      - action: utter_ask_anything_else_without_test_navigation
-
-  - rule: Tested positive utter_ask_when_tested_error affirm
-    steps:
-      - action: utter_ask_when_tested_error
       - intent: affirm
       - action: action_tested_positive_maybe_cured_final_recommendations
       - action: utter_ask_anything_else_without_test_navigation
@@ -233,23 +232,9 @@ rules:
       - action: utter_self_isolate_symptom_free
       - action: utter_ask_anything_else_without_test_navigation
 
-  - rule: Check-in return utter_ask_when_first_symptoms_error deny
-    steps:
-      - action: utter_ask_when_first_symptoms_error
-      - intent: deny
-      - action: utter_self_isolate_symptom_free
-      - action: utter_ask_anything_else_without_test_navigation
-
   - rule: Check-in return utter_ask_when_first_symptoms affirm
     steps:
       - action: utter_ask_when_first_symptoms
-      - intent: affirm
-      - action: utter_social_distancing_leave_home
-      - action: utter_ask_anything_else_without_test_navigation
-
-  - rule: Check-in return utter_ask_when_first_symptoms_error affirm
-    steps:
-      - action: utter_ask_when_first_symptoms_error
       - intent: affirm
       - action: utter_social_distancing_leave_home
       - action: utter_ask_anything_else_without_test_navigation
@@ -348,13 +333,6 @@ rules:
       - action: utter_ask_assess_to_answer
 
   ## Test navigation rules
-
-  - rule: Request test navigation
-    steps:
-      - intent: navigate_test_locations
-      - action: action_test_navigation_explanations
-      - action: utter_ask_test_navigation__continue
-
   - rule: Do test navigation affirm
     steps:
       - action: utter_ask_test_navigation__continue
@@ -381,35 +359,6 @@ rules:
   - rule: Drop test navigation with deny
     steps:
       - action: utter_ask_test_navigation__continue
-      - intent: deny
-      - action: action_test_navigation__anything_else
-
-  - rule: Do test navigation affirm after error
-    steps:
-      - action: action_ask_test_navigation__continue_error
-      - intent: affirm
-      - action: utter_test_navigation__acknowledge_continue
-      - action: test_navigation_form
-      - action: action_test_navigation__anything_else
-
-  - rule: Do test navigation continue after error
-    steps:
-      - action: action_ask_test_navigation__continue_error
-      - intent: continue
-      - action: utter_test_navigation__acknowledge_continue
-      - action: test_navigation_form
-      - action: action_test_navigation__anything_else
-
-  - rule: Drop test navigation after error
-    steps:
-      - action: action_ask_test_navigation__continue_error
-      - intent: done
-      - action: utter_test_navigation__come_back
-      - action: action_goodbye
-
-  - rule: Drop test navigation with deny after error
-    steps:
-      - action: action_ask_test_navigation__continue_error
       - intent: deny
       - action: action_test_navigation__anything_else
 
@@ -469,12 +418,6 @@ rules:
       - intent: deny
       - action: utter_ask_daily_checkin__invalid_id__anything_else
 
-  - rule: utter_ask_daily_checkin__invalid_id__want_assessment_error deny
-    steps:
-      - action: utter_ask_daily_checkin__invalid_id__want_assessment_error
-      - intent: deny
-      - action: utter_ask_daily_checkin__invalid_id__anything_else
-
   - rule: utter_ask_daily_checkin__invalid_id__anything_else done
     steps:
       - action: utter_ask_daily_checkin__invalid_id__anything_else
@@ -498,14 +441,6 @@ rules:
       - active_loop: daily_ci_feel_worse_form
     wait_for_user_input: false
 
-  - rule: Daily check-in worse with error before
-    steps:
-      - action: utter_ask_daily_ci__feel_error
-      - intent: worse
-      - action: daily_ci_feel_worse_form
-      - active_loop: daily_ci_feel_worse_form
-    wait_for_user_input: false
-
   - rule: Daily check-in no_change
     steps:
       - action: utter_ask_daily_ci__feel
@@ -514,25 +449,9 @@ rules:
       - active_loop: daily_ci_feel_no_change_form
     wait_for_user_input: false
 
-  - rule: Daily check-in no_change with error before
-    steps:
-      - action: utter_ask_daily_ci__feel_error
-      - intent: no_change
-      - action: daily_ci_feel_no_change_form
-      - active_loop: daily_ci_feel_no_change_form
-    wait_for_user_input: false
-
   - rule: Daily check-in better
     steps:
       - action: utter_ask_daily_ci__feel
-      - intent: better
-      - action: daily_ci_feel_better_form
-      - active_loop: daily_ci_feel_better_form
-    wait_for_user_input: false
-
-  - rule: Daily check-in better with error before
-    steps:
-      - action: utter_ask_daily_ci__feel_error
       - intent: better
       - action: daily_ci_feel_better_form
       - active_loop: daily_ci_feel_better_form
@@ -607,14 +526,6 @@ rules:
       - active_loop: question_answering_form
     wait_for_user_input: false
 
-  - rule: utter_ask_anything_else_without_test_navigation affirm
-    steps:
-      - action: utter_ask_anything_else_without_test_navigation
-      - intent: affirm
-      - action: question_answering_form
-      - active_loop: question_answering_form
-    wait_for_user_input: false
-
   - rule: utter_ask_anything_else_with_test_navigation done
     steps:
       - action: utter_ask_anything_else_with_test_navigation
@@ -626,6 +537,14 @@ rules:
       - action: utter_ask_anything_else_with_test_navigation
       - intent: deny
       - action: action_goodbye
+
+  - rule: utter_ask_anything_else_without_test_navigation affirm
+    steps:
+      - action: utter_ask_anything_else_without_test_navigation
+      - intent: affirm
+      - action: question_answering_form
+      - active_loop: question_answering_form
+    wait_for_user_input: false
 
   - rule: utter_ask_anything_else_without_test_navigation done
     steps:
@@ -747,14 +666,6 @@ rules:
       - active_loop: assessment_form
     wait_for_user_input: false
 
-  - rule: utter_ask_daily_checkin__invalid_id__want_assessment_error affirm
-    steps:
-      - action: utter_ask_daily_checkin__invalid_id__want_assessment_error
-      - intent: affirm
-      - action: assessment_form
-      - active_loop: assessment_form
-    wait_for_user_input: false
-
   ## Fallback with error messages
   - rule: utter_ask_test_navigation__continue error
     steps:
@@ -762,56 +673,36 @@ rules:
       - intent: nlu_fallback
       - action: action_ask_test_navigation__continue_error
 
-  - rule: utter_ask_daily_checkin__invalid_id__want_assessment error
+  - rule: test
     steps:
-      - action: utter_ask_daily_checkin__invalid_id__want_assessment
-      - intent: nlu_fallback
-      - action: utter_ask_daily_checkin__invalid_id__want_assessment_error
+      - intent: test_form
+      - action: new_assessment_form
+      - active_loop: new_assessment_form
+    wait_for_user_input: false
 
-  - rule: utter_ask_daily_ci__feel error
-    steps:
-      - action: utter_ask_daily_ci__feel
-      - intent: nlu_fallback
-      - action: utter_ask_daily_ci__feel_error
-
-  - rule: utter_ask_when_first_symptoms error
-    steps:
-      - action: utter_ask_when_first_symptoms
-      - intent: nlu_fallback
-      - action: utter_ask_when_first_symptoms_error
-
-  - rule: utter_ask_when_tested error
-    steps:
-      - action: utter_ask_when_tested
-      - intent: nlu_fallback
-      - action: utter_ask_when_tested_error
-
-  ## Generic intent rules
-
+  ## "Main menu" generic rules
   - rule: Get assessment
+    condition:
+      - slot_was_set:
+          - self_assess_done: null
     steps:
       - intent: get_assessment
+      - action: action_check_task_allowed
       - action: assessment_form
       - active_loop: assessment_form
     wait_for_user_input: false
 
-  - rule: Returning for check-in
+  - rule: test navigation
     steps:
-      - intent: checkin_return
-      - action: checkin_return_form
-      - active_loop: checkin_return_form
-    wait_for_user_input: false
-
-  - rule: Tested positive
-    steps:
-      - intent: tested_positive
-      - action: tested_positive_form
-      - active_loop: tested_positive_form
-    wait_for_user_input: false
+      - intent: navigate_test_locations
+      - action: action_check_task_allowed
+      - action: action_test_navigation_explanations
+      - action: utter_ask_test_navigation__continue
 
   - rule: Ask question
     steps:
       - intent: ask_question
+      - action: action_check_task_allowed
       - action: question_answering_form
       - active_loop: question_answering_form
     wait_for_user_input: false
@@ -819,6 +710,7 @@ rules:
   - rule: Fallback
     steps:
       - intent: nlu_fallback
+      - action: action_check_task_allowed
       - action: question_answering_form
       - active_loop: question_answering_form
     wait_for_user_input: false

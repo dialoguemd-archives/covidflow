@@ -10,6 +10,7 @@ from covidflow.actions.action_initialize_daily_checkin import (
     _fill_symptoms,
 )
 from covidflow.constants import (
+    ACTION_LISTEN_NAME,
     AGE_OVER_65_SLOT,
     FIRST_NAME_SLOT,
     HAS_DIALOGUE_SLOT,
@@ -112,7 +113,7 @@ def _create_tracker(reminder_id=DEFAULT_REMINDER_ID_HASH) -> Tracker:
         False,
         None,
         {},
-        "action_listen",
+        ACTION_LISTEN_NAME,
     )
 
 

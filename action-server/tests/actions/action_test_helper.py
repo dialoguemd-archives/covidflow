@@ -4,6 +4,8 @@ from unittest import TestCase
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
+from covidflow.constants import ACTION_LISTEN_NAME
+
 PHONE_TRY_COUNTER_SLOT = "daily_ci_enroll__phone_number_error_counter"
 CODE_TRY_COUNTER_SLOT = "daily_ci_enroll__validation_code_error_counter"
 WANTS_CANCEL_SLOT = "daily_ci_enroll__wants_cancel"
@@ -30,8 +32,8 @@ class ActionTestCase(TestCase):
         intent: str = None,
         entities: list = None,
         text: str = None,
-        active_loop: bool = True,
-        last_action: str = "action_listen",
+        active_loop: bool = False,
+        last_action: str = ACTION_LISTEN_NAME,
     ) -> Tracker:
         all_slots = {}
         all_slots.update(INITIAL_SLOT_VALUES)
@@ -47,7 +49,9 @@ class ActionTestCase(TestCase):
             events or [],
             paused,
             followup_action,
-            {},
+            {"name": "some_form", "validate": True, "rejected": False}
+            if active_loop
+            else {},
             last_action,
         )
 

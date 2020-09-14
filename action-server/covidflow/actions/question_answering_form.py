@@ -5,17 +5,30 @@ from typing import Any, Dict, List, Optional, Text, Union
 import structlog
 from aiohttp import ClientSession
 from rasa_sdk import Tracker
-from rasa_sdk.events import ActionExecuted, ActiveLoop, EventType, SlotSet, UserUttered
+from rasa_sdk.events import (
+    ActionExecuted,
+    ActiveLoop,
+    BotUttered,
+    EventType,
+    SlotSet,
+    UserUttered,
+)
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import REQUESTED_SLOT, FormAction
 
-from covidflow.constants import LANGUAGE_SLOT, QA_TEST_PROFILE_ATTRIBUTE
+from covidflow.constants import (
+    ACTION_LISTEN_NAME,
+    FALLBACK_INTENT,
+    LANGUAGE_SLOT,
+    QA_TEST_PROFILE_ATTRIBUTE,
+)
 
 from .answers import (
     QuestionAnsweringProtocol,
     QuestionAnsweringResponse,
     QuestionAnsweringStatus,
 )
+from .lib.action_utils import get_intent
 from .lib.form_helper import request_next_slot, yes_no_nlu_mapping
 from .lib.log_util import bind_logger
 
@@ -75,10 +88,10 @@ class QuestionAnsweringForm(FormAction):
         if tracker.active_loop.get("name") == FORM_NAME:
             return await super()._activate_if_required(dispatcher, tracker, domain)
 
-        intent = _get_intent(tracker)
+        intent = get_intent(tracker)
 
         # Fallback QA
-        if intent == "nlu_fallback":
+        if intent == FALLBACK_INTENT:
             question = tracker.latest_message.get("text", "")
 
             result = await self.validate_active_question(
@@ -237,10 +250,6 @@ def _get_stub_qa_result(tracker: Tracker):
     return TEST_PROFILES_RESPONSE[profile]
 
 
-def _get_intent(tracker: Tracker) -> str:
-    return tracker.latest_message.get("intent", {}).get("name", "")
-
-
 def _carry_user_utterance(tracker: Tracker) -> List[EventType]:
     return [
         ActiveLoop(
@@ -248,7 +257,8 @@ def _carry_user_utterance(tracker: Tracker) -> List[EventType]:
         ),  # Ending it manually to have events in correct order to fit stories
         SlotSet(REQUESTED_SLOT, None),
         ActionExecuted("utter_ask_another_question"),
-        ActionExecuted("action_listen"),
+        BotUttered(metadata={"template_name": "utter_ask_another_question"}),
+        ActionExecuted(ACTION_LISTEN_NAME),
         UserUttered(
             tracker.latest_message.get("text", ""),
             parse_data={

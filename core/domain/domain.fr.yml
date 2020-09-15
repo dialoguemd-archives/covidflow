@@ -790,19 +790,19 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_dont_leave_home:
+  utter_lives_alone_true:
     - text: "Dans ce cas, je vous conseille de ne pas quitter votre domicile, à part si vous avez un rendez-vous chez le médecin, ou si vous devez vous rendre à l’hôpital"
 
-  utter_stay_separate_room:
+  utter_lives_alone_false_1:
     - text: "Dans ce cas, vous devriez, autant que possible, rester dans une pièce à part et utiliser une salle de bain séparée"
 
-  utter_distance_clean_surfaces:
+  utter_lives_alone_false_2:
     - text: "Si ce n’est pas possible, assurez-vous de toujours garder une distance d’au moins 2 mètres, ou six pieds, entre vous et les autres en tout temps. Lavez-vous les mains souvent, et nettoyez bien les surfaces et les objets après les avoir touchés"
 
-  utter_wear_mask_same_room:
+  utter_lives_alone_false_3:
     - text: "Vous devriez aussi porter un masque à chaque fois qu’il y a quelqu’un d’autre dans la même pièce que vous"
 
-  utter_self_isolation_link:
+  utter_self_isolation_final:
     - text: "Pour plus d’information, et pour en savoir davantage sur les façons de protéger les autres, rendez-vous au [canada.ca](https://www.canada.ca/fr/sante-publique/services/publications/maladies-et-affections/covid-19-comment-isoler-chez-soi.html)"
 
   ## action home-assistance
@@ -821,22 +821,22 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_remind_delivery_services:
+  utter_home_assistance_offer_211_false:
     - text: "N’oubliez pas que la plupart des pharmacies et plusieurs épiceries offrent la livraison. Renseignez-vous auprès de votre pharmacie ou de votre épicerie pour savoir s’ils offrent ce service"
 
-  utter_check_delivery_services:
+  utter_home_assistance_offer_211_true_1:
     - text: "La plupart des pharmacies et plusieurs épiceries offrent la livraison. Renseignez-vous auprès de votre pharmacie ou de votre épicerie pour savoir s’ils offrent ce service"
 
-  utter_may_call_211_qc:
+  utter_home_assistance_offer_211_true_2_qc:
     - text: "Si cela n'est pas possible, et si vous vivez dans la grande région de Montréal ou à Québec, vous pouvez appeler au 211 ou consulter [211.quebec](http://www.211quebecregions.ca/), ou [211.montreal](https://www.211qc.ca/), pour de l'assistance"
 
-  utter_may_call_211_other_provinces:
+  utter_home_assistance_offer_211_true_2_other:
     - text: "Si cela n’est pas possible, vous pouvez appeler au 211 ou visiter le [211.ca](https://211.ca/fr/) pour de l’assistance"
 
-  utter_explain_211:
+  utter_home_assistance_offer_211_true_3:
     - text: "Le service 211 peut vous diriger vers une variété de ressources dans votre région pour de l’assistance alimentaire, des services de santé ou communautaires"
 
-  utter_remind_pharmacist_services:
+  utter_home_assistance_final:
     - text: "Votre pharmacien(ne) peut également vous offrir des conseils pour soulager vos symptômes, et vous indiquer quels médicaments en vente libre sont indiqués et sécuritaires pour vous"
 
   ## Daily check-in

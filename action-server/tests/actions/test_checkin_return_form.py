@@ -340,7 +340,7 @@ class TestCheckinReturnForm(FormTestCase):
                 "utter_contact_healthcare_professional_options",
                 "utter_symptoms_worsen_emergency",
                 "utter_returning_self_isolate",
-                "utter_self_isolation_link",
+                "utter_self_isolation_final",
             ]
         )
 
@@ -380,7 +380,7 @@ class TestCheckinReturnForm(FormTestCase):
             [
                 "utter_symptoms_worsen_emergency",
                 "utter_returning_self_isolate",
-                "utter_self_isolation_link",
+                "utter_self_isolation_final",
             ]
         )
 
@@ -474,7 +474,7 @@ class TestCheckinReturnForm(FormTestCase):
         )
 
         self.assert_templates(
-            ["utter_returning_self_isolate", "utter_self_isolation_link"]
+            ["utter_returning_self_isolate", "utter_self_isolation_final"]
         )
 
     def test_fever_no_cough(self):
@@ -504,7 +504,7 @@ class TestCheckinReturnForm(FormTestCase):
         )
 
         self.assert_templates(
-            ["utter_returning_self_isolate", "utter_self_isolation_link"]
+            ["utter_returning_self_isolate", "utter_self_isolation_final"]
         )
 
     def test_cough_error(self):

@@ -1,158 +1,122 @@
-from typing import Any, Dict, List, Optional, Text, Union
+from typing import Any, Dict, List, Text
 
-from rasa_sdk import Tracker
+import structlog
+from rasa_sdk import Action, Tracker
 from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.forms import FormAction
+from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.constants import (
-    CONTACT_SLOT,
-    HAS_CONTACT_RISK_SLOT,
+    AGE_OVER_65_SLOT,
     HAS_COUGH_SLOT,
     HAS_FEVER_SLOT,
-    LIVES_ALONE_SLOT,
+    MODERATE_SYMPTOMS_SLOT,
+    PROVINCE_SLOT,
+    PROVINCES,
+    PROVINCIAL_811_SLOT,
+    SELF_ASSESS_DONE_SLOT,
     SEVERE_SYMPTOMS_SLOT,
-    TRAVEL_SLOT,
+    SKIP_SLOT_PLACEHOLDER,
+    SYMPTOMS_SLOT,
+    Symptoms,
 )
 
-from .assessment_common import AssessmentCommon
-from .lib.form_helper import (
-    request_next_slot,
-    validate_boolean_slot,
-    yes_no_nlu_mapping,
-)
 from .lib.log_util import bind_logger
+from .lib.provincial_811 import get_provincial_811
+
+logger = structlog.get_logger()
 
 FORM_NAME = "assessment_form"
+VALIDATE_ACTION_NAME = f"validate_{FORM_NAME}"
+ASK_PROVINCE_ACTION_NAME = "action_ask_province_code"
+
+ORDERED_FORM_SLOTS = [
+    SEVERE_SYMPTOMS_SLOT,
+    PROVINCE_SLOT,
+    AGE_OVER_65_SLOT,
+    HAS_FEVER_SLOT,
+    MODERATE_SYMPTOMS_SLOT,
+    HAS_COUGH_SLOT,
+]
 
 
-class AssessmentForm(FormAction, AssessmentCommon):
+class ActionAskProvinceCode(Action):
     def name(self) -> Text:
+        return ASK_PROVINCE_ACTION_NAME
 
-        return FORM_NAME
-
-    async def run(
-        self, dispatcher, tracker, domain,
-    ):
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
         bind_logger(tracker)
-        return await super().run(dispatcher, tracker, domain)
+        dispatcher.utter_message(template="utter_pre_ask_province_code")
+        dispatcher.utter_message(template="utter_ask_province_code")
 
-    ## override to play initial message
-    async def _activate_if_required(
-        self,
-        dispatcher: "CollectingDispatcher",
-        tracker: "Tracker",
-        domain: Dict[Text, Any],
+        return []
+
+
+class ValidateNewAssessmentForm(Action):
+    def name(self) -> Text:
+        return VALIDATE_ACTION_NAME
+
+    def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[EventType]:
-        if tracker.active_loop.get("name") != FORM_NAME:
-            dispatcher.utter_message(template="utter_assessment_entry")
+        bind_logger(tracker)
 
-        return await super()._activate_if_required(dispatcher, tracker, domain)
+        extracted_slots: Dict[Text, Any] = tracker.form_slots_to_validate()
 
-    def request_next_slot(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Optional[List[EventType]]:
-        return request_next_slot(self, dispatcher, tracker, domain)
+        validation_events: List[EventType] = []
 
-    @staticmethod
-    def required_slots(tracker: Tracker) -> List[Text]:
-        base_assessment_slots = AssessmentCommon.base_required_slots(tracker)
+        for slot_name, slot_value in extracted_slots.items():
+            slot_events = [SlotSet(slot_name, slot_value)]
 
-        # When we don't display self-isolation messages
-        if (
-            tracker.get_slot(SEVERE_SYMPTOMS_SLOT) is True
-            or tracker.get_slot(TRAVEL_SLOT) is False
-        ):
-            return base_assessment_slots
+            if slot_name == PROVINCE_SLOT:
+                slot_events = validate_province(slot_value, domain)
+            elif slot_name == SEVERE_SYMPTOMS_SLOT and slot_value is True:
+                slot_events += set_symptoms(Symptoms.SEVERE, slot_name)
+            elif slot_name == MODERATE_SYMPTOMS_SLOT and slot_value is True:
+                slot_events += set_symptoms(Symptoms.MODERATE, slot_name)
+            elif slot_name == MODERATE_SYMPTOMS_SLOT:
+                dispatcher.utter_message(template="utter_moderate_symptoms_false")
+            elif slot_name == HAS_COUGH_SLOT and (
+                slot_value is True or tracker.get_slot(HAS_FEVER_SLOT) is True
+            ):
+                slot_events += set_symptoms(Symptoms.MILD, slot_name)
+            elif slot_name == HAS_COUGH_SLOT:
+                slot_events += set_symptoms(Symptoms.NONE, slot_name)
 
-        # conditional mild symptoms-contact-travel logic
-        if (
-            tracker.get_slot(HAS_COUGH_SLOT) is False
-            and tracker.get_slot(HAS_FEVER_SLOT) is False
-        ):
-            base_assessment_slots.append(CONTACT_SLOT)
-        if tracker.get_slot(CONTACT_SLOT) is False:
-            base_assessment_slots.append(TRAVEL_SLOT)
+            validation_events.extend(slot_events)
 
-        base_assessment_slots.append(LIVES_ALONE_SLOT)
-        return base_assessment_slots
+        return validation_events
 
-    def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
-        return {
-            **AssessmentCommon.base_slot_mappings(self),
-            CONTACT_SLOT: yes_no_nlu_mapping(self),
-            TRAVEL_SLOT: yes_no_nlu_mapping(self),
-        }
 
-    def validate_moderate_symptoms(
-        self,
-        value: Union[Text, bool],
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        result = super().validate_moderate_symptoms(value, dispatcher, tracker, domain)
+def validate_province(value: str, domain: Dict) -> List[EventType]:
+    if value not in PROVINCES:
+        return [SlotSet(PROVINCE_SLOT, None)]
+    else:
+        provincial_811 = get_provincial_811(value, domain)
 
-        if value is True:
-            dispatcher.utter_message(template="utter_moderate_symptoms_self_isolate")
+        return [
+            SlotSet(PROVINCE_SLOT, value),
+            SlotSet(PROVINCIAL_811_SLOT, provincial_811),
+        ]
 
-        return result
 
-    def validate_has_cough(
-        self,
-        value: Union[Text, bool],
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        if value is True or (
-            value is False and tracker.get_slot(HAS_FEVER_SLOT) is True
-        ):
-            dispatcher.utter_message(template="utter_mild_symptoms_self_isolate")
+def set_symptoms(symptoms_value: str, end_form_slot: str) -> List[EventType]:
+    return [
+        SlotSet(SYMPTOMS_SLOT, symptoms_value),
+        SlotSet(SELF_ASSESS_DONE_SLOT, True),
+        SlotSet(REQUESTED_SLOT, None),
+    ] + end_form_additional_events(end_form_slot)
 
-        return super().validate_has_cough(value, dispatcher, tracker, domain)
 
-    @validate_boolean_slot
-    def validate_contact(
-        self,
-        value: Text,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        if value is True:
-            dispatcher.utter_message(template="utter_contact_risk_self_isolate")
-
-        return {CONTACT_SLOT: value}
-
-    @validate_boolean_slot
-    def validate_travel(
-        self,
-        value: Text,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        if value is True:
-            dispatcher.utter_message(template="utter_contact_risk_self_isolate")
-
-        return {TRAVEL_SLOT: value}
-
-    def submit(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> List[Dict]:
-        if (
-            tracker.get_slot(CONTACT_SLOT) is True
-            or tracker.get_slot(TRAVEL_SLOT) is True
-        ):
-            return [
-                SlotSet(HAS_CONTACT_RISK_SLOT, True)
-            ] + AssessmentCommon.base_submit(self, dispatcher, tracker, domain)
-
-        return AssessmentCommon.base_submit(self, dispatcher, tracker, domain)
+# Fills all the slots that were not yet asked. Workaround for https://github.com/RasaHQ/rasa/issues/6569
+def end_form_additional_events(actual_slot: str) -> List[EventType]:
+    actual_slot_index = ORDERED_FORM_SLOTS.index(actual_slot)
+    return [
+        SlotSet(slot, SKIP_SLOT_PLACEHOLDER)
+        for slot in ORDERED_FORM_SLOTS[actual_slot_index + 1 :]
+    ]

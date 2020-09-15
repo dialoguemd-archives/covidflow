@@ -56,6 +56,8 @@ rules:
       - active_loop: null
       - slot_was_set:
           - symptoms: moderate
+      - action: utter_moderate_symptoms_self_isolate
+      - action: self_isolation_form
       - action: home_assistance_form
       - action: action_suspect_moderate_symptoms_recommendations
       - action: daily_ci_enroll_form
@@ -71,6 +73,8 @@ rules:
       - active_loop: null
       - slot_was_set:
           - symptoms: mild
+      - action: utter_mild_symptoms_self_isolate
+      - action: self_isolation_form
       - action: home_assistance_form
       - action: action_suspect_mild_symptoms_exposure_recommendations
       - action: daily_ci_enroll_form
@@ -86,8 +90,11 @@ rules:
       - active_loop: null
       - slot_was_set:
           - symptoms: nothing
+      - action: contact_risk_form
       - slot_was_set:
           - has_contact_risk: true
+      - action: utter_contact_risk_self_isolate
+      - action: self_isolation_form
       - action: home_assistance_form
       - action: action_suspect_mild_symptoms_exposure_recommendations
       - action: daily_ci_enroll_form
@@ -103,6 +110,9 @@ rules:
       - active_loop: null
       - slot_was_set:
           - symptoms: nothing
+      - action: contact_risk_form
+      - slot_was_set:
+          - has_contact_risk: false
       - action: action_suspect_no_symptoms_recommendations
       - action: action_visit_package
       - action: utter_ask_anything_else_without_test_navigation
@@ -577,6 +587,7 @@ rules:
     steps:
       - action: utter_ask_assess_to_answer
       - intent: affirm
+      - action: utter_assessment_entry
       - action: assessment_form
       - active_loop: assessment_form
     wait_for_user_input: false
@@ -607,6 +618,7 @@ rules:
     steps:
       - action: utter_ask_assess_after_error
       - intent: affirm
+      - action: utter_assessment_entry
       - action: assessment_form
       - active_loop: assessment_form
     wait_for_user_input: false
@@ -662,6 +674,7 @@ rules:
     steps:
       - action: utter_ask_daily_checkin__invalid_id__want_assessment
       - intent: affirm
+      - action: utter_assessment_entry
       - action: assessment_form
       - active_loop: assessment_form
     wait_for_user_input: false
@@ -673,13 +686,6 @@ rules:
       - intent: nlu_fallback
       - action: action_ask_test_navigation__continue_error
 
-  - rule: test
-    steps:
-      - intent: test_form
-      - action: new_assessment_form
-      - active_loop: new_assessment_form
-    wait_for_user_input: false
-
   ## "Main menu" generic rules
   - rule: Get assessment
     condition:
@@ -688,6 +694,7 @@ rules:
     steps:
       - intent: get_assessment
       - action: action_check_task_allowed
+      - action: utter_assessment_entry
       - action: assessment_form
       - active_loop: assessment_form
     wait_for_user_input: false

@@ -784,19 +784,19 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_dont_leave_home:
+  utter_lives_alone_true:
     - text: "In this case, I recommend that you don’t leave your home unless you have a doctor’s appointment, or if you need to go to the hospital"
 
-  utter_stay_separate_room:
+  utter_lives_alone_false_1:
     - text: "In this case, you should stay in a separate room and use a different bathroom from others, if possible"
 
-  utter_distance_clean_surfaces:
+  utter_lives_alone_false_2:
     - text: "If it’s not possible, ensure you stay at least 2 meters, or six feet, away from others in your home at all times, wash your hands often, and make sure every surface and object are cleaned after use"
 
-  utter_wear_mask_same_room:
+  utter_lives_alone_false_3:
     - text: "You should also wear a mask every time you are in the same room as others"
 
-  utter_self_isolation_link:
+  utter_self_isolation_final:
     - text: "For more information about self-isolation, and to learn what you can do to protect others, visit [canada.ca](https://www.canada.ca/en/public-health/services/publications/diseases-conditions/covid-19-how-to-isolate-at-home.html)"
 
   ## action home-assistance
@@ -815,22 +815,22 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_remind_delivery_services:
+  utter_home_assistance_offer_211_false:
     - text: "Don’t forget that most pharmacies and many grocery stores offer delivery services. Check with your local pharmacy or grocery store if they deliver"
 
-  utter_check_delivery_services:
+  utter_home_assistance_offer_211_true_1:
     - text: "Most pharmacies and many grocery stores offer delivery services. You can check with your local pharmacy or grocery store if they offer this service"
 
-  utter_may_call_211_qc:
+  utter_home_assistance_offer_211_true_2_qc:
     - text: "If that's not possible for you, and if you live in the greater Montreal area or in Quebec City, you may call 211, or visit [211.quebec](http://www.211quebecregions.ca/), or [211.montreal](https://www.211qc.ca/), for assistance"
 
-  utter_may_call_211_other_provinces:
+  utter_home_assistance_offer_211_true_2_other:
     - text: "If that’s not possible for you, you may call 211 or visit [211.ca](https://211.ca/) for assistance"
 
-  utter_explain_211:
+  utter_home_assistance_offer_211_true_3:
     - text: "The 211 service can direct you to a variety of local resources for assistance with food, health, or community services"
 
-  utter_remind_pharmacist_services:
+  utter_home_assistance_final:
     - text: "Your pharmacist can also provide recommendations and advice on how to relieve your symptoms and which over-the-counter medications you can safely take"
 
   ## Daily check-in

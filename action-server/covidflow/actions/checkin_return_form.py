@@ -113,6 +113,6 @@ class CheckinReturnForm(FormAction, AssessmentCommon):
             or tracker.get_slot(HAS_FEVER_SLOT) is True
         ):
             dispatcher.utter_message(template="utter_returning_self_isolate")
-            dispatcher.utter_message(template="utter_self_isolation_link")
+            dispatcher.utter_message(template="utter_self_isolation_final")
 
         return AssessmentCommon.base_submit(self, dispatcher, tracker, domain)

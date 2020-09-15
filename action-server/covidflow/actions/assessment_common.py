@@ -147,13 +147,13 @@ class AssessmentCommon:
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
         if value is True:
-            dispatcher.utter_message(template="utter_dont_leave_home")
+            dispatcher.utter_message(template="utter_lives_alone_true")
         else:
-            dispatcher.utter_message(template="utter_stay_separate_room")
-            dispatcher.utter_message(template="utter_distance_clean_surfaces")
-            dispatcher.utter_message(template="utter_wear_mask_same_room")
+            dispatcher.utter_message(template="utter_lives_alone_false_1")
+            dispatcher.utter_message(template="utter_lives_alone_false_2")
+            dispatcher.utter_message(template="utter_lives_alone_false_3")
 
-        dispatcher.utter_message(template="utter_self_isolation_link")
+        dispatcher.utter_message(template="utter_self_isolation_final")
 
         return {LIVES_ALONE_SLOT: value}
 

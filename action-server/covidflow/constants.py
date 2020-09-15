@@ -24,6 +24,8 @@ PROVINCES_WITH_211 = ["bc", "ab", "sk", "mb", "on", "qc", "ns"]
 
 END_CONVERSATION_MESSAGE = {"data": {"endOfConversation": True}}
 
+SKIP_SLOT_PLACEHOLDER = "skip"
+
 # Slots
 
 ## Slots used by DB

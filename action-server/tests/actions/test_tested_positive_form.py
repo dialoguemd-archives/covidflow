@@ -76,8 +76,8 @@ class TestTestedPositiveForm(FormTestCase):
 
         self.assert_templates(
             [
-                "utter_dont_leave_home",
-                "utter_self_isolation_link",
+                "utter_lives_alone_true",
+                "utter_self_isolation_final",
                 "utter_assess_symptoms",
                 "utter_ask_severe_symptoms",
             ]
@@ -99,10 +99,10 @@ class TestTestedPositiveForm(FormTestCase):
 
         self.assert_templates(
             [
-                "utter_stay_separate_room",
-                "utter_distance_clean_surfaces",
-                "utter_wear_mask_same_room",
-                "utter_self_isolation_link",
+                "utter_lives_alone_false_1",
+                "utter_lives_alone_false_2",
+                "utter_lives_alone_false_3",
+                "utter_self_isolation_final",
                 "utter_assess_symptoms",
                 "utter_ask_severe_symptoms",
             ]

@@ -1,126 +1,65 @@
-from rasa_sdk.events import ActiveLoop, SlotSet
+from rasa_sdk.events import SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
-from covidflow.actions.home_assistance_form import FORM_NAME, HomeAssistanceForm
-from covidflow.constants import HAS_ASSISTANCE_SLOT, PROVINCE_SLOT
+from covidflow.actions.home_assistance_form import FORM_NAME, ValidateHomeAssistanceForm
+from covidflow.constants import (
+    HAS_ASSISTANCE_SLOT,
+    PROVINCE_SLOT,
+    SKIP_SLOT_PLACEHOLDER,
+)
 
-from .form_test_helper import FormTestCase
-
-DOMAIN = {"responses": {"utter_ask_has_assistance_error": [{"text": ""}],}}
+from .validate_action_test_helper import ValidateActionTestCase
 
 
-class TestHomeAssistanceForm(FormTestCase):
+class ValidateHomeAssistanceFormTest(ValidateActionTestCase):
     def setUp(self):
         super().setUp()
-        self.form = HomeAssistanceForm()
+        self.action = ValidateHomeAssistanceForm()
+        self.form_name = FORM_NAME
 
-    def test_not_has_211(self):
-        tracker = self.create_tracker(active_loop=False, slots={PROVINCE_SLOT: "nu"})
+    def test_activate_has_211(self):
+        slots = {PROVINCE_SLOT: "sk"}
+        self.check_activation(previous_slots=slots)
 
-        self.run_form(tracker, DOMAIN)
+    def test_activate_does_not_have_211(self):
+        slots = {PROVINCE_SLOT: "nl"}
+        events = [
+            SlotSet(REQUESTED_SLOT, None),
+            SlotSet(HAS_ASSISTANCE_SLOT, SKIP_SLOT_PLACEHOLDER),
+        ]
+        templates = [
+            "utter_home_assistance_offer_211_false",
+            "utter_home_assistance_final",
+        ]
+        self.check_activation(events=events, previous_slots=slots, templates=templates)
 
-        self.assert_events(
-            [ActiveLoop(FORM_NAME), ActiveLoop(None), SlotSet(REQUESTED_SLOT, None)]
+    def test_has_assistance(self):
+        templates = [
+            "utter_home_assistance_offer_211_false",
+            "utter_home_assistance_final",
+        ]
+        self.check_slot_value_accepted(HAS_ASSISTANCE_SLOT, True, templates=templates)
+
+    def test_does_not_have_assistance_qc(self):
+        slots = {PROVINCE_SLOT: "qc"}
+        templates = [
+            "utter_home_assistance_offer_211_true_1",
+            "utter_home_assistance_offer_211_true_2_qc",
+            "utter_home_assistance_offer_211_true_3",
+            "utter_home_assistance_final",
+        ]
+        self.check_slot_value_accepted(
+            HAS_ASSISTANCE_SLOT, False, templates=templates, previous_slots=slots
         )
 
-        self.assert_templates(
-            ["utter_remind_delivery_services", "utter_remind_pharmacist_services"]
+    def test_does_not_have_assistance_other(self):
+        slots = {PROVINCE_SLOT: "sk"}
+        templates = [
+            "utter_home_assistance_offer_211_true_1",
+            "utter_home_assistance_offer_211_true_2_other",
+            "utter_home_assistance_offer_211_true_3",
+            "utter_home_assistance_final",
+        ]
+        self.check_slot_value_accepted(
+            HAS_ASSISTANCE_SLOT, False, templates=templates, previous_slots=slots
         )
-
-    def test_has_211(self):
-        tracker = self.create_tracker(active_loop=False, slots={PROVINCE_SLOT: "qc"})
-
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [ActiveLoop(FORM_NAME), SlotSet(REQUESTED_SLOT, HAS_ASSISTANCE_SLOT)]
-        )
-
-        self.assert_templates(["utter_ask_has_assistance"])
-
-    def test_has_211_has_assistance(self):
-        tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: HAS_ASSISTANCE_SLOT, PROVINCE_SLOT: "qc"},
-            intent="affirm",
-        )
-
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [
-                SlotSet(HAS_ASSISTANCE_SLOT, True),
-                ActiveLoop(None),
-                SlotSet(REQUESTED_SLOT, None),
-            ]
-        )
-
-        self.assert_templates(
-            ["utter_remind_delivery_services", "utter_remind_pharmacist_services"]
-        )
-
-    def test_has_211_not_has_assistance_qc(self):
-        tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: HAS_ASSISTANCE_SLOT, PROVINCE_SLOT: "qc"},
-            intent="deny",
-        )
-
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [
-                SlotSet(HAS_ASSISTANCE_SLOT, False),
-                ActiveLoop(None),
-                SlotSet(REQUESTED_SLOT, None),
-            ]
-        )
-
-        self.assert_templates(
-            [
-                "utter_check_delivery_services",
-                "utter_may_call_211_qc",
-                "utter_explain_211",
-                "utter_remind_pharmacist_services",
-            ]
-        )
-
-    def test_has_211_not_has_assistance_other_province(self):
-        tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: HAS_ASSISTANCE_SLOT, PROVINCE_SLOT: "bc"},
-            intent="deny",
-        )
-
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [
-                SlotSet(HAS_ASSISTANCE_SLOT, False),
-                ActiveLoop(None),
-                SlotSet(REQUESTED_SLOT, None),
-            ]
-        )
-
-        self.assert_templates(
-            [
-                "utter_check_delivery_services",
-                "utter_may_call_211_other_provinces",
-                "utter_explain_211",
-                "utter_remind_pharmacist_services",
-            ]
-        )
-
-    def test_has_211_has_assistance_error(self):
-        tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: HAS_ASSISTANCE_SLOT, PROVINCE_SLOT: "bc"},
-            text="anything",
-        )
-
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [
-                SlotSet(HAS_ASSISTANCE_SLOT, None),
-                SlotSet(REQUESTED_SLOT, HAS_ASSISTANCE_SLOT),
-            ]
-        )
-
-        self.assert_templates(["utter_ask_has_assistance_error"])

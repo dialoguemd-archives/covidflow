@@ -76,11 +76,19 @@ actions:
   - action_test_navigation__anything_else
   - action_qa_goodbye
   - action_ask_province_code
-  - validate_new_assessment_form
+  - validate_assessment_form
+  - validate_home_assistance_form
+  - validate_self_isolation_form
+  - validate_contact_risk_form
 
 forms:
   - home_assistance_form:
-  - assessment_form:
+      has_assistance: *boolean
+  - self_isolation_form:
+      lives_alone: *boolean
+  - contact_risk_form:
+      contact: *boolean
+      travel: *boolean
   - tested_positive_form:
   - checkin_return_form:
   - daily_ci_enroll_form:
@@ -90,7 +98,7 @@ forms:
   - daily_ci_keep_or_cancel_form:
   - question_answering_form:
   - test_navigation_form:
-  - new_assessment_form:
+  - assessment_form:
       severe_symptoms: *boolean
       province_code:
         - type: from_entity

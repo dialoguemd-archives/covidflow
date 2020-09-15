@@ -44,6 +44,22 @@ class ValidateActionTestCase(ActionTestCase):
             last_action,
         )
 
+    def check_activation(
+        self,
+        events: List[EventType] = None,
+        previous_slots: dict = None,
+        templates: List[str] = None,
+    ) -> None:
+        tracker = self.create_tracker(
+            events=[ActionExecuted(self.form_name)], slots=previous_slots or {},
+        )
+
+        self.run_action(tracker, self.domain)
+
+        self.assert_events(events or [])
+
+        self.assert_templates((templates or []))
+
     def check_slot_value_accepted(
         self,
         slot_name: str,

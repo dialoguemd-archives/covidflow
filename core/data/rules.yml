@@ -21,23 +21,37 @@ rules:
       - action: action_greeting_messages
 
   ## Main menu rules
+  - rule: Generic assessment
+    steps:
+      - action: action_greeting_messages
+      - intent: get_assessment
+      - action: utter_assessment_entry
+      - action: assessment_form
+      - active_loop: assessment_form
+    wait_for_user_input: false
+
   - rule: Returning for check-in
     steps:
       - action: action_greeting_messages
       - intent: checkin_return
-      - action: checkin_return_form
-      - active_loop: checkin_return_form
+      - action: utter_returning_for_checkin
+      - action: assessment_form
+      - active_loop: assessment_form
     wait_for_user_input: false
 
   - rule: Tested positive
     steps:
       - action: action_greeting_messages
       - intent: tested_positive
-      - action: tested_positive_form
-      - active_loop: tested_positive_form
+      - action: utter_tested_positive_entry
+      - action: utter_tested_positive_self_isolate
+      - action: self_isolation_form
+      - action: utter_assess_symptoms
+      - action: assessment_form
+      - active_loop: assessment_form
     wait_for_user_input: false
 
-  ## Assessment rules
+  ## Any assessment, severe symptoms
   - rule: Assessment severe symptoms
     condition:
       - active_loop: assessment_form
@@ -48,9 +62,12 @@ rules:
           - symptoms: severe
       - action: action_severe_symptoms_recommendations
 
+  ## Generic assessment rules
   - rule: Assessment moderate symptoms
     condition:
       - active_loop: assessment_form
+      - slot_was_set:
+          - assessment_type: generic
     steps:
       - action: assessment_form
       - active_loop: null
@@ -68,6 +85,8 @@ rules:
   - rule: Assessment mild symptoms
     condition:
       - active_loop: assessment_form
+      - slot_was_set:
+          - assessment_type: generic
     steps:
       - action: assessment_form
       - active_loop: null
@@ -85,6 +104,8 @@ rules:
   - rule: Assessment contact risk
     condition:
       - active_loop: assessment_form
+      - slot_was_set:
+          - assessment_type: generic
     steps:
       - action: assessment_form
       - active_loop: null
@@ -105,6 +126,8 @@ rules:
   - rule: Assessment no symptoms
     condition:
       - active_loop: assessment_form
+      - slot_was_set:
+          - assessment_type: generic
     steps:
       - action: assessment_form
       - active_loop: null
@@ -118,24 +141,17 @@ rules:
       - action: utter_ask_anything_else_without_test_navigation
 
   ## Tested positive rules
-  - rule: Tested positive severe symptoms
-    condition:
-      - active_loop: tested_positive_form
-    steps:
-      - action: tested_positive_form
-      - active_loop: null
-      - slot_was_set:
-          - symptoms: severe
-      - action: action_severe_symptoms_recommendations
-
   - rule: Tested positive moderate symptoms
     condition:
-      - active_loop: tested_positive_form
+      - active_loop: assessment_form
+      - slot_was_set:
+          - assessment_type: tested_positive
     steps:
-      - action: tested_positive_form
+      - action: assessment_form
       - active_loop: null
       - slot_was_set:
           - symptoms: moderate
+      - action: utter_symptoms_worsen_emergency_assistance
       - action: daily_ci_enroll_form
       - action: action_tested_positive_not_cured_final_recommendations
       - action: home_assistance_form
@@ -144,12 +160,31 @@ rules:
 
   - rule: Tested positive mild symptoms
     condition:
-      - active_loop: tested_positive_form
+      - active_loop: assessment_form
+      - slot_was_set:
+          - assessment_type: tested_positive
     steps:
-      - action: tested_positive_form
+      - action: assessment_form
       - active_loop: null
       - slot_was_set:
           - symptoms: mild
+      - action: utter_ask_tested_positive__mild_symptoms_worsened
+
+  - rule: Tested positive mild symptoms worsened
+    steps:
+      - action: utter_ask_tested_positive__mild_symptoms_worsened
+      - intent: affirm
+      - action: utter_symptoms_worsen_emergency_assistance
+      - action: daily_ci_enroll_form
+      - action: action_tested_positive_not_cured_final_recommendations
+      - action: home_assistance_form
+      - action: action_visit_package
+      - action: utter_ask_anything_else_without_test_navigation
+
+  - rule: Tested positive mild symptoms not worsened
+    steps:
+      - action: utter_ask_tested_positive__mild_symptoms_worsened
+      - intent: deny
       - action: daily_ci_enroll_form
       - action: action_tested_positive_not_cured_final_recommendations
       - action: home_assistance_form
@@ -158,9 +193,11 @@ rules:
 
   - rule: Tested positive no symptoms
     condition:
-      - active_loop: tested_positive_form
+      - active_loop: assessment_form
+      - slot_was_set:
+          - assessment_type: tested_positive
     steps:
-      - action: tested_positive_form
+      - action: assessment_form
       - active_loop: null
       - slot_was_set:
           - symptoms: nothing
@@ -186,24 +223,40 @@ rules:
       - action: utter_ask_anything_else_without_test_navigation
 
   ## Return for check-in rules
-  - rule: Check-in return severe symptoms
-    condition:
-      - active_loop: checkin_return_form
-    steps:
-      - action: checkin_return_form
-      - active_loop: null
-      - slot_was_set:
-          - symptoms: severe
-      - action: action_severe_symptoms_recommendations
-
   - rule: Check-in return moderate symptoms
     condition:
-      - active_loop: checkin_return_form
+      - active_loop: assessment_form
+      - slot_was_set:
+          - assessment_type: checkin_return
     steps:
-      - action: checkin_return_form
+      - action: assessment_form
       - active_loop: null
       - slot_was_set:
           - symptoms: moderate
+      - action: utter_ask_checkin_return__moderate_symptoms_worsened
+
+  - rule: Check-in return moderate symptoms worsened
+    steps:
+      - action: utter_ask_checkin_return__moderate_symptoms_worsened
+      - intent: affirm
+      - action: utter_contact_healthcare_professional
+      - action: utter_contact_healthcare_professional_options
+      - action: utter_symptoms_worsen_emergency
+      - action: utter_returning_self_isolate
+      - action: utter_self_isolation_final
+      - action: daily_ci_enroll_form
+      - action: utter_remind_monitor_symptoms_temperature
+      - action: utter_remind_possible_checkin
+      - action: home_assistance_form
+      - action: utter_ask_anything_else_with_test_navigation
+
+  - rule: Check-in return moderate symptoms not worsened
+    steps:
+      - action: utter_ask_checkin_return__moderate_symptoms_worsened
+      - intent: deny
+      - action: utter_symptoms_worsen_emergency
+      - action: utter_returning_self_isolate
+      - action: utter_self_isolation_final
       - action: daily_ci_enroll_form
       - action: utter_remind_monitor_symptoms_temperature
       - action: utter_remind_possible_checkin
@@ -212,12 +265,16 @@ rules:
 
   - rule: Check-in return mild symptoms
     condition:
-      - active_loop: checkin_return_form
+      - active_loop: assessment_form
+      - slot_was_set:
+          - assessment_type: checkin_return
     steps:
-      - action: checkin_return_form
+      - action: assessment_form
       - active_loop: null
       - slot_was_set:
           - symptoms: mild
+      - action: utter_returning_self_isolate
+      - action: utter_self_isolation_final
       - action: daily_ci_enroll_form
       - action: utter_remind_monitor_symptoms_temperature
       - action: utter_remind_possible_checkin
@@ -226,9 +283,11 @@ rules:
 
   - rule: Check-in return no symptoms
     condition:
-      - active_loop: checkin_return_form
+      - active_loop: assessment_form
+      - slot_was_set:
+          - assessment_type: checkin_return
     steps:
-      - action: checkin_return_form
+      - action: assessment_form
       - active_loop: null
       - slot_was_set:
           - symptoms: nothing
@@ -587,7 +646,6 @@ rules:
     steps:
       - action: utter_ask_assess_to_answer
       - intent: affirm
-      - action: utter_assessment_entry
       - action: assessment_form
       - active_loop: assessment_form
     wait_for_user_input: false
@@ -618,7 +676,6 @@ rules:
     steps:
       - action: utter_ask_assess_after_error
       - intent: affirm
-      - action: utter_assessment_entry
       - action: assessment_form
       - active_loop: assessment_form
     wait_for_user_input: false
@@ -674,7 +731,6 @@ rules:
     steps:
       - action: utter_ask_daily_checkin__invalid_id__want_assessment
       - intent: affirm
-      - action: utter_assessment_entry
       - action: assessment_form
       - active_loop: assessment_form
     wait_for_user_input: false
@@ -694,7 +750,6 @@ rules:
     steps:
       - intent: get_assessment
       - action: action_check_task_allowed
-      - action: utter_assessment_entry
       - action: assessment_form
       - active_loop: assessment_form
     wait_for_user_input: false

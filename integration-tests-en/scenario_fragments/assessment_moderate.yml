@@ -1,5 +1,5 @@
 - user: get_assessment
-  bot: symptoms_severe
+  bot: symptoms_severe_entry
 - user: deny
   bot: select_province
 - user: province/qc

@@ -43,7 +43,6 @@ intents:
   - navigate_test_locations:
       use_entities: []
   - q_a
-  - test_form
 
 entities:
   - province
@@ -89,8 +88,6 @@ forms:
   - contact_risk_form:
       contact: *boolean
       travel: *boolean
-  - tested_positive_form:
-  - checkin_return_form:
   - daily_ci_enroll_form:
   - daily_ci_feel_no_change_form:
   - daily_ci_feel_better_form:
@@ -99,6 +96,16 @@ forms:
   - question_answering_form:
   - test_navigation_form:
   - assessment_form:
+      assessment_type:
+        - type: from_trigger_intent
+          intent: [tested_positive, deny]
+          value: tested_positive
+        - type: from_trigger_intent
+          intent: checkin_return
+          value: checkin_return
+        - type: from_trigger_intent
+          intent: [affirm, get_assessment]
+          value: generic
       severe_symptoms: *boolean
       province_code:
         - type: from_entity
@@ -107,6 +114,8 @@ forms:
       has_fever: *boolean
       moderate_symptoms: *boolean
       has_cough: *boolean
+
+
 
 slots:
   metadata:
@@ -133,6 +142,13 @@ slots:
 
   age_over_65:
     type: unfeaturized
+
+  assessment_type:
+    type: categorical
+    values:
+      - generic
+      - tested_positive
+      - checkin_return
 
   symptoms:
     type: categorical

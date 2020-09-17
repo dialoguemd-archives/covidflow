@@ -1,4 +1,4 @@
 - user: greet
   bot: welcome
 - user: get_assessment
-  bot: symptoms_severe
+  bot: symptoms_severe_entry

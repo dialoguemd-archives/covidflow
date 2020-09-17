@@ -45,8 +45,6 @@ class ActionDefaultFallback(Action):
         bind_logger(tracker)
 
         if get_intent(tracker) == FALLBACK_INTENT or tracker.active_loop != {}:
-            logger.warn(get_intent(tracker))
-            logger.warn(tracker.active_loop)
             return _replay_message_with_suffix(dispatcher, tracker)
 
         return _replace_user_input(tracker)

@@ -8,6 +8,7 @@ from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.constants import (
     AGE_OVER_65_SLOT,
+    ASSESSMENT_TYPE_SLOT,
     HAS_COUGH_SLOT,
     HAS_FEVER_SLOT,
     MODERATE_SYMPTOMS_SLOT,
@@ -18,9 +19,11 @@ from covidflow.constants import (
     SEVERE_SYMPTOMS_SLOT,
     SKIP_SLOT_PLACEHOLDER,
     SYMPTOMS_SLOT,
+    AssessmentType,
     Symptoms,
 )
 
+from .lib.form_helper import _form_slots_to_validate
 from .lib.log_util import bind_logger
 from .lib.provincial_811 import get_provincial_811
 
@@ -66,14 +69,18 @@ class ValidateNewAssessmentForm(Action):
     ) -> List[EventType]:
         bind_logger(tracker)
 
-        extracted_slots: Dict[Text, Any] = tracker.form_slots_to_validate()
+        extracted_slots: Dict[Text, Any] = _form_slots_to_validate(
+            tracker
+        )  # https://github.com/RasaHQ/rasa-sdk/issues/269
 
         validation_events: List[EventType] = []
 
         for slot_name, slot_value in extracted_slots.items():
             slot_events = [SlotSet(slot_name, slot_value)]
 
-            if slot_name == PROVINCE_SLOT:
+            if slot_name == ASSESSMENT_TYPE_SLOT:
+                slot_events = validate_assessment_type(slot_value, tracker)
+            elif slot_name == PROVINCE_SLOT:
                 slot_events = validate_province(slot_value, domain)
             elif slot_name == SEVERE_SYMPTOMS_SLOT and slot_value is True:
                 slot_events += set_symptoms(Symptoms.SEVERE, slot_name)
@@ -91,6 +98,18 @@ class ValidateNewAssessmentForm(Action):
             validation_events.extend(slot_events)
 
         return validation_events
+
+
+def validate_assessment_type(value: str, tracker: Tracker) -> List[EventType]:
+    applied_intents = [
+        event["parse_data"]["intent"]["name"]
+        for event in tracker.applied_events()
+        if event["event"] == "user"
+    ]
+
+    if applied_intents[-2:] == ["tested_positive", "affirm"]:
+        return [SlotSet(ASSESSMENT_TYPE_SLOT, AssessmentType.TESTED_POSITIVE)]
+    return [SlotSet(ASSESSMENT_TYPE_SLOT, value)]
 
 
 def validate_province(value: str, domain: Dict) -> List[EventType]:

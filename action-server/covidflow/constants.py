@@ -5,6 +5,12 @@ class Symptoms:  # Not using an enum to avoid persisting enum values
     SEVERE = "severe"
 
 
+class AssessmentType:
+    GENERIC = "generic"
+    TESTED_POSITIVE = "tested_positive"
+    CHECKIN_RETURN = "checkin_return"
+
+
 PROVINCES = [
     "bc",
     "ab",
@@ -71,6 +77,7 @@ MODERATE_SYMPTOMS_SLOT = "moderate_symptoms"
 CONTACT_SLOT = "contact"
 TRAVEL_SLOT = "travel"
 HAS_CONTACT_RISK_SLOT = "has_contact_risk"
+ASSESSMENT_TYPE_SLOT = "assessment_type"
 
 # Shared with core elements
 INVALID_REMINDER_ID_SLOT = "invalid_reminder_id"

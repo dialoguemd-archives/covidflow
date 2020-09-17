@@ -1,5 +1,5 @@
 import pytest
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import ActionExecuted, SlotSet, UserUttered
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.assessment_form import (
@@ -9,6 +9,7 @@ from covidflow.actions.assessment_form import (
 )
 from covidflow.constants import (
     AGE_OVER_65_SLOT,
+    ASSESSMENT_TYPE_SLOT,
     HAS_COUGH_SLOT,
     HAS_FEVER_SLOT,
     MODERATE_SYMPTOMS_SLOT,
@@ -18,6 +19,7 @@ from covidflow.constants import (
     SEVERE_SYMPTOMS_SLOT,
     SKIP_SLOT_PLACEHOLDER,
     SYMPTOMS_SLOT,
+    AssessmentType,
     Symptoms,
 )
 
@@ -53,6 +55,45 @@ class ValidateNewAssessmentFormTest(ValidateActionTestCase):
     @pytest.mark.asyncio
     async def test_activation(self):
         await self.check_activation()
+
+    @pytest.mark.asyncio
+    async def test_assessment_type_with_previous_tested_positive(self):
+        tracker = self.create_tracker(
+            events=[
+                UserUttered(
+                    "tested positive",
+                    parse_data={
+                        "text": "tested positive",
+                        "intent": {"name": "tested_positive", "confidence": 1.0},
+                        "entities": [],
+                    },
+                ),
+                UserUttered(
+                    "yes",
+                    parse_data={
+                        "text": "yes",
+                        "intent": {"name": "affirm", "confidence": 1.0},
+                        "entities": [],
+                    },
+                ),
+                ActionExecuted(self.form_name),
+                SlotSet(ASSESSMENT_TYPE_SLOT, AssessmentType.GENERIC),
+            ]
+        )
+
+        await self.run_action(tracker)
+
+        self.assert_events(
+            [SlotSet(ASSESSMENT_TYPE_SLOT, AssessmentType.TESTED_POSITIVE)]
+        )
+
+        self.assert_templates([])
+
+    @pytest.mark.asyncio
+    async def test_assessment_type_valid(self):
+        await self.check_slot_value_accepted(
+            ASSESSMENT_TYPE_SLOT, AssessmentType.CHECKIN_RETURN
+        )
 
     @pytest.mark.asyncio
     async def test_severe_symptoms(self):

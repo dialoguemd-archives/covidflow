@@ -10,7 +10,7 @@ class ActionTestedPositiveMaybeCuredFinalRecommendations(Action):
     def name(self) -> Text:
         return "action_tested_positive_maybe_cured_final_recommendations"
 
-    def run(
+    async def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,

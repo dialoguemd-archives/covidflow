@@ -36,7 +36,7 @@ class ActionDefaultFallback(Action):
     def name(self) -> Text:
         return ACTION_NAME
 
-    def run(
+    async def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,

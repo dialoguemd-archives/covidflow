@@ -1,3 +1,4 @@
+import pytest
 from rasa_sdk.events import ConversationPaused
 
 from covidflow.actions.action_goodbye import ActionGoodbye
@@ -10,10 +11,11 @@ class ActionGoodbyeTest(ActionTestCase):
         super().setUp()
         self.action = ActionGoodbye()
 
-    def test_goodbye(self):
+    @pytest.mark.asyncio
+    async def test_goodbye(self):
         tracker = self.create_tracker()
 
-        self.run_action(tracker)
+        await self.run_action(tracker)
 
         self.assert_events([ConversationPaused()])
 

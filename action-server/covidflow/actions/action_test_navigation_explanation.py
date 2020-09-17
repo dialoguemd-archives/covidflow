@@ -13,7 +13,7 @@ class ActionTestNavigationExplanations(Action):
     def name(self) -> Text:
         return "action_test_navigation_explanations"
 
-    def run(
+    async def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,

@@ -1,3 +1,4 @@
+import pytest
 from rasa_sdk.events import SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
@@ -17,11 +18,13 @@ class ValidateHomeAssistanceFormTest(ValidateActionTestCase):
         self.action = ValidateHomeAssistanceForm()
         self.form_name = FORM_NAME
 
-    def test_activate_has_211(self):
+    @pytest.mark.asyncio
+    async def test_activate_has_211(self):
         slots = {PROVINCE_SLOT: "sk"}
-        self.check_activation(previous_slots=slots)
+        await self.check_activation(previous_slots=slots)
 
-    def test_activate_does_not_have_211(self):
+    @pytest.mark.asyncio
+    async def test_activate_does_not_have_211(self):
         slots = {PROVINCE_SLOT: "nl"}
         events = [
             SlotSet(REQUESTED_SLOT, None),
@@ -31,16 +34,22 @@ class ValidateHomeAssistanceFormTest(ValidateActionTestCase):
             "utter_home_assistance_offer_211_false",
             "utter_home_assistance_final",
         ]
-        self.check_activation(events=events, previous_slots=slots, templates=templates)
+        await self.check_activation(
+            events=events, previous_slots=slots, templates=templates
+        )
 
-    def test_has_assistance(self):
+    @pytest.mark.asyncio
+    async def test_has_assistance(self):
         templates = [
             "utter_home_assistance_offer_211_false",
             "utter_home_assistance_final",
         ]
-        self.check_slot_value_accepted(HAS_ASSISTANCE_SLOT, True, templates=templates)
+        await self.check_slot_value_accepted(
+            HAS_ASSISTANCE_SLOT, True, templates=templates
+        )
 
-    def test_does_not_have_assistance_qc(self):
+    @pytest.mark.asyncio
+    async def test_does_not_have_assistance_qc(self):
         slots = {PROVINCE_SLOT: "qc"}
         templates = [
             "utter_home_assistance_offer_211_true_1",
@@ -48,11 +57,12 @@ class ValidateHomeAssistanceFormTest(ValidateActionTestCase):
             "utter_home_assistance_offer_211_true_3",
             "utter_home_assistance_final",
         ]
-        self.check_slot_value_accepted(
+        await self.check_slot_value_accepted(
             HAS_ASSISTANCE_SLOT, False, templates=templates, previous_slots=slots
         )
 
-    def test_does_not_have_assistance_other(self):
+    @pytest.mark.asyncio
+    async def test_does_not_have_assistance_other(self):
         slots = {PROVINCE_SLOT: "sk"}
         templates = [
             "utter_home_assistance_offer_211_true_1",
@@ -60,6 +70,6 @@ class ValidateHomeAssistanceFormTest(ValidateActionTestCase):
             "utter_home_assistance_offer_211_true_3",
             "utter_home_assistance_final",
         ]
-        self.check_slot_value_accepted(
+        await self.check_slot_value_accepted(
             HAS_ASSISTANCE_SLOT, False, templates=templates, previous_slots=slots
         )

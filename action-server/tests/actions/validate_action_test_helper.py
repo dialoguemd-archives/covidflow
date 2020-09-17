@@ -44,7 +44,7 @@ class ValidateActionTestCase(ActionTestCase):
             last_action,
         )
 
-    def check_activation(
+    async def check_activation(
         self,
         events: List[EventType] = None,
         previous_slots: dict = None,
@@ -54,13 +54,13 @@ class ValidateActionTestCase(ActionTestCase):
             events=[ActionExecuted(self.form_name)], slots=previous_slots or {},
         )
 
-        self.run_action(tracker, self.domain)
+        await self.run_action(tracker, self.domain)
 
         self.assert_events(events or [])
 
         self.assert_templates((templates or []))
 
-    def check_slot_value_accepted(
+    async def check_slot_value_accepted(
         self,
         slot_name: str,
         value: Any,
@@ -68,7 +68,7 @@ class ValidateActionTestCase(ActionTestCase):
         previous_slots: dict = None,
         templates: List[str] = None,
     ) -> None:
-        self.check_slot_value_stored(
+        await self.check_slot_value_stored(
             slot_name,
             value,
             value,
@@ -77,7 +77,7 @@ class ValidateActionTestCase(ActionTestCase):
             templates=templates,
         )
 
-    def check_slot_value_rejected(
+    async def check_slot_value_rejected(
         self,
         slot_name: str,
         value: Any,
@@ -85,7 +85,7 @@ class ValidateActionTestCase(ActionTestCase):
         previous_slots: dict = None,
         templates: List[str] = None,
     ) -> None:
-        self.check_slot_value_stored(
+        await self.check_slot_value_stored(
             slot_name,
             value,
             None,
@@ -94,7 +94,7 @@ class ValidateActionTestCase(ActionTestCase):
             templates=templates,
         )
 
-    def check_slot_value_stored(
+    async def check_slot_value_stored(
         self,
         slot_name: str,
         extracted_value: Any,
@@ -111,7 +111,7 @@ class ValidateActionTestCase(ActionTestCase):
             slots=previous_slots or {},
         )
 
-        self.run_action(tracker, self.domain)
+        await self.run_action(tracker, self.domain)
 
         self.assert_events([SlotSet(slot_name, stored_value)] + (extra_events or []))
 

@@ -1,3 +1,4 @@
+import pytest
 from rasa_sdk.events import (
     ActionExecuted,
     BotUttered,
@@ -26,10 +27,11 @@ class ActionDefaultFallbackTest(ActionTestCase):
         super().setUp()
         self.action = ActionDefaultFallback()
 
-    def test_in_form(self):
+    @pytest.mark.asyncio
+    async def test_in_form(self):
         tracker = self.create_tracker(active_loop=True, events=LATEST_EVENTS)
 
-        self.run_action(tracker)
+        await self.run_action(tracker)
 
         self.assert_events(
             [UserUtteranceReverted(), FollowupAction(ACTION_LISTEN_NAME)]
@@ -37,10 +39,11 @@ class ActionDefaultFallbackTest(ActionTestCase):
 
         self.assert_templates(["utter_dwarfs_song_error"])
 
-    def test_already_fallback_intent(self):
+    @pytest.mark.asyncio
+    async def test_already_fallback_intent(self):
         tracker = self.create_tracker(intent=FALLBACK_INTENT, events=LATEST_EVENTS)
 
-        self.run_action(tracker)
+        await self.run_action(tracker)
 
         self.assert_events(
             [UserUtteranceReverted(), FollowupAction(ACTION_LISTEN_NAME)]
@@ -48,10 +51,11 @@ class ActionDefaultFallbackTest(ActionTestCase):
 
         self.assert_templates(["utter_dwarfs_song_error"])
 
-    def test_other_intent(self):
+    @pytest.mark.asyncio
+    async def test_other_intent(self):
         tracker = self.create_tracker(intent="unrelated", events=LATEST_EVENTS)
 
-        self.run_action(tracker)
+        await self.run_action(tracker)
 
         self.assert_events(
             [

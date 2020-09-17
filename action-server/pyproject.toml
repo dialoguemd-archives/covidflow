@@ -7,10 +7,10 @@ authors = ["Nu Echo"]
 [tool.poetry.dependencies]
 aiohttp = "^3.6.2"
 pydantic = "^1.4"
-python = "^3.6"
+python = "^3.7"
 rasa-sdk = "2.0.0a4"
 alembic = "0.9.8"
-psycopg2-binary = "2.7.7"
+psycopg2-binary = "2.8.4"
 structlog = "^20.1.0"
 pytz = "^2020.1"
 sqlalchemy = "~1.3.3"
@@ -21,7 +21,7 @@ toolz = "^0.10.0"
 python-json-logger = "^0.1.11"
 sanic = "^19.12.2"
 googlemaps = "^4.4.0"
-geopy = "^1.22.0"
+geopy = "^2.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "5.4.1" # 5.4.2 breaks pytest-asyncio markers
@@ -32,7 +32,8 @@ isort = "^4.3.21"
 mypy = "0.770"
 pep8-naming = "0.10.0"
 pylama = "^7.7.1"
-pytest-asyncio = "^0.12.0"
+pytest-asyncio = "^0.14.0"
+asynctest = "^0.13.0" # Remove when Rasa image uses python 3.8 to use this fix: https://github.com/python/cpython/commit/436c2b0d67da68465e709a96daac7340af3a5238
 
 [build-system]
 requires = ["poetry>=0.12"]

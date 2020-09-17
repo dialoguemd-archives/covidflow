@@ -13,7 +13,7 @@ class ActionQaGoodbye(Action):
     def name(self) -> Text:
         return "action_qa_goodbye"
 
-    def run(
+    async def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,

@@ -50,7 +50,7 @@ class ActionSendDailyCheckInReminder(Action):
     def name(self) -> Text:
         return "action_send_daily_checkin_reminder"
 
-    def run(
+    async def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,

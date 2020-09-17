@@ -10,7 +10,7 @@ class ActionGreetingMessages(Action):
     def name(self) -> Text:
         return "action_greeting_messages"
 
-    def run(
+    async def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,

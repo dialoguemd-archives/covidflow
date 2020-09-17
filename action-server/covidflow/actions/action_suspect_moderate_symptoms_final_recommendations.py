@@ -10,7 +10,7 @@ class ActionSuspectModerateSymptomsFinalRecommendations(Action):
     def name(self) -> Text:
         return "action_suspect_moderate_symptoms_final_recommendations"
 
-    def run(
+    async def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,

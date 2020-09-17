@@ -19,7 +19,7 @@ class ActionSendValidationCode(Action):
     def name(self) -> Text:
         return "action_send_validation_code"
 
-    def run(
+    async def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,

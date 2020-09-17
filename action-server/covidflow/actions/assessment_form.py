@@ -44,7 +44,7 @@ class ActionAskProvinceCode(Action):
     def name(self) -> Text:
         return ASK_PROVINCE_ACTION_NAME
 
-    def run(
+    async def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
@@ -61,7 +61,7 @@ class ValidateNewAssessmentForm(Action):
     def name(self) -> Text:
         return VALIDATE_ACTION_NAME
 
-    def run(
+    async def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[EventType]:
         bind_logger(tracker)

@@ -1,3 +1,4 @@
+import pytest
 from rasa_sdk.events import ActionExecuted, ActionReverted, FollowupAction, UserUttered
 
 from covidflow.actions.action_check_task_allowed import ActionCheckTaskAllowed
@@ -20,33 +21,36 @@ class ActionCheckTaskAllowedTest(ActionTestCase):
         super().setUp()
         self.action = ActionCheckTaskAllowed()
 
-    def test_task_allowed(self):
+    @pytest.mark.asyncio
+    async def test_task_allowed(self):
         tracker = self.create_tracker(
             intent=ALLOWED_INTENT,
             events=LATEST_EVENTS
             + [UserUttered(text="text", parse_data={"intent": ALLOWED_INTENT})],
         )
 
-        self.run_action(tracker)
+        await self.run_action(tracker)
 
         self.assert_events([])
 
         self.assert_templates([])
 
-    def test_task_not_allowed(self):
+    @pytest.mark.asyncio
+    async def test_task_not_allowed(self):
         tracker = self.create_tracker(
             intent=FORBIDDEN_INTENT,
             events=LATEST_EVENTS
             + [UserUttered(text="text", parse_data={"intent": FORBIDDEN_INTENT})],
         )
 
-        self.run_action(tracker)
+        await self.run_action(tracker)
 
         self.assert_events([ActionReverted(), FollowupAction(FALLBACK_ACTION_NAME)])
 
         self.assert_templates([])
 
-    def test_action_not_in_list(self):
+    @pytest.mark.asyncio
+    async def test_action_not_in_list(self):
         tracker = self.create_tracker(
             intent=FORBIDDEN_INTENT,
             events=[
@@ -56,7 +60,7 @@ class ActionCheckTaskAllowedTest(ActionTestCase):
             ],
         )
 
-        self.run_action(tracker)
+        await self.run_action(tracker)
 
         self.assert_events([ActionReverted(), FollowupAction(FALLBACK_ACTION_NAME)])
 

@@ -1,5 +1,6 @@
 import unittest
 
+import pytest
 from rasa_sdk import Tracker
 from rasa_sdk.events import Restarted
 from rasa_sdk.executor import CollectingDispatcher
@@ -16,7 +17,8 @@ class ActionSendValidationCodeTest(unittest.TestCase):
     def test_action_name(self):
         assert ActionSendValidationCode().name() == "action_send_validation_code"
 
-    def test_send_validation_code(self):
+    @pytest.mark.asyncio
+    async def test_send_validation_code(self):
         first_name = "Bob"
         validation_code = "1234"
 
@@ -37,7 +39,7 @@ class ActionSendValidationCodeTest(unittest.TestCase):
         )
 
         dispatcher = CollectingDispatcher()
-        events = ActionSendValidationCode().run(dispatcher, tracker, {})
+        events = await ActionSendValidationCode().run(dispatcher, tracker, {})
 
         self.assertListEqual(events, [Restarted()])
         self.assertListEqual(

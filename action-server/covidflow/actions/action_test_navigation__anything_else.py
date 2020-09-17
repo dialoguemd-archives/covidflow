@@ -12,7 +12,7 @@ class ActionAskTestNavigationAnythingElse(Action):
     def name(self) -> Text:
         return "action_test_navigation__anything_else"
 
-    def run(
+    async def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,

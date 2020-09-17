@@ -3,6 +3,7 @@
 .mypy_cache
 .pytest_cache
 .venv
+.python-version
 
 __pycache__
 htmlcov

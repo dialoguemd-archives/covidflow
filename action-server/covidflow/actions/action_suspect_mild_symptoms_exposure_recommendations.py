@@ -10,7 +10,7 @@ class ActionSuspectMildSymptomsExposureRecommendations(Action):
     def name(self) -> Text:
         return "action_suspect_mild_symptoms_exposure_recommendations"
 
-    def run(
+    async def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,

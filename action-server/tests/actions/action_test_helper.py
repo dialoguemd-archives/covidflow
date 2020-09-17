@@ -55,9 +55,11 @@ class ActionTestCase(TestCase):
             last_action,
         )
 
-    def run_action(self, tracker: Tracker, domain: Optional[Dict[Text, Any]] = None):
+    async def run_action(
+        self, tracker: Tracker, domain: Optional[Dict[Text, Any]] = None
+    ):
         domain = domain or {}
-        self.events = self.action.run(
+        self.events = await self.action.run(
             dispatcher=self.dispatcher, tracker=tracker, domain=domain
         )
 

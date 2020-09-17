@@ -13,7 +13,7 @@ class ActionSevereSymptomsRecommendations(Action):
     def name(self) -> Text:
         return "action_severe_symptoms_recommendations"
 
-    def run(
+    async def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,

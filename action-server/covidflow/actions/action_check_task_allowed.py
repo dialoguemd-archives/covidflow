@@ -53,7 +53,7 @@ class ActionCheckTaskAllowed(Action):
     def name(self) -> Text:
         return ACTION_NAME  # We could call it otherwise when https://github.com/RasaHQ/rasa/issues/6516 will be solved
 
-    def run(
+    async def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,

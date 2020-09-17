@@ -1,3 +1,4 @@
+import pytest
 from rasa_sdk.events import ConversationPaused
 
 from covidflow.actions.action_qa_goodbye import ActionQaGoodbye
@@ -11,10 +12,11 @@ class ActionQAGoodbyeTest(ActionTestCase):
         super().setUp()
         self.action = ActionQaGoodbye()
 
-    def test_continue_ci_true(self):
+    @pytest.mark.asyncio
+    async def test_continue_ci_true(self):
         tracker = self.create_tracker(slots={CONTINUE_CI_SLOT: True})
 
-        self.run_action(tracker)
+        await self.run_action(tracker)
 
         self.assert_events([ConversationPaused()])
 
@@ -22,10 +24,11 @@ class ActionQAGoodbyeTest(ActionTestCase):
             ["utter_daily_ci__qa__will_contact_tomorrow", "utter_goodbye"]
         )
 
-    def test_continue_ci_false(self):
+    @pytest.mark.asyncio
+    async def test_continue_ci_false(self):
         tracker = self.create_tracker(slots={CONTINUE_CI_SLOT: False})
 
-        self.run_action(tracker)
+        await self.run_action(tracker)
 
         self.assert_events([ConversationPaused()])
 

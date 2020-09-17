@@ -1,7 +1,8 @@
 from datetime import datetime
 from unittest import TestCase
-from unittest.mock import patch
 
+import pytest
+from asynctest.mock import patch
 from hashids import Hashids
 from rasa_sdk import Tracker
 from rasa_sdk.executor import CollectingDispatcher
@@ -66,6 +67,8 @@ def _mock_reminder(mock_session_factory, phone_number):
 
 
 class TestActionSendDailyCheckinReminder(TestCase):
+    # TODO
+
     @patch.dict("os.environ", ENV)
     def test_action_name(self):
         self.assertEqual(
@@ -82,17 +85,18 @@ class TestActionSendDailyCheckinReminder(TestCase):
         with self.assertRaises(expected_exception=KeyError):
             ActionSendDailyCheckInReminder()
 
-    @patch.dict("os.environ", ENV)
+    @pytest.mark.asyncio
     @patch("covidflow.actions.action_send_daily_checkin_reminder.session_factory")
     @patch("covidflow.actions.action_send_daily_checkin_reminder.datetime")
-    def test_happy_path(self, mock_datetime, mock_session_factory):
+    async def test_happy_path(self, mock_datetime, mock_session_factory):
         reminder_mock = _mock_reminder(mock_session_factory, DEFAULT_PHONE_NUMBER)
         mock_datetime.utcnow.return_value = DEFAULT_NOW
 
         tracker = _create_tracker()
         dispatcher = CollectingDispatcher()
 
-        ActionSendDailyCheckInReminder().run(dispatcher, tracker, {})
+        with patch.dict("os.environ", ENV):
+            await ActionSendDailyCheckInReminder().run(dispatcher, tracker, {})
 
         self.assertEqual(len(dispatcher.messages), 1)
         message = dispatcher.messages[0]
@@ -110,46 +114,51 @@ class TestActionSendDailyCheckinReminder(TestCase):
         mock_session_factory.return_value.commit.assert_called()
         mock_session_factory.return_value.close.assert_called()
 
-    @patch.dict("os.environ", ENV)
+    @pytest.mark.asyncio
     @patch("covidflow.actions.action_send_daily_checkin_reminder.session_factory")
     @patch("covidflow.actions.action_send_daily_checkin_reminder.datetime")
-    def test_555_phone_number_no_reminder(self, mock_datetime, mock_session_factory):
+    async def test_555_phone_number_no_reminder(
+        self, mock_datetime, mock_session_factory
+    ):
         _mock_reminder(mock_session_factory, "12345556789")
         mock_datetime.utcnow.return_value = DEFAULT_NOW
 
         tracker = _create_tracker()
         dispatcher = CollectingDispatcher()
 
-        ActionSendDailyCheckInReminder().run(dispatcher, tracker, {})
+        with patch.dict("os.environ", ENV):
+            await ActionSendDailyCheckInReminder().run(dispatcher, tracker, {})
 
         self.assertListEqual(dispatcher.messages, [])
         mock_session_factory.return_value.commit.assert_called()
         mock_session_factory.return_value.close.assert_called()
 
-    @patch.dict("os.environ", ENV)
+    @pytest.mark.asyncio
     @patch("covidflow.actions.action_send_daily_checkin_reminder.session_factory")
-    def test_reminder_not_found(self, mock_session_factory):
+    async def test_reminder_not_found(self, mock_session_factory):
         mock_session_factory.return_value.query.return_value.get.return_value = None
 
         tracker = _create_tracker()
         dispatcher = CollectingDispatcher()
 
-        with self.assertRaises(expected_exception=ReminderNotFoundException):
-            ActionSendDailyCheckInReminder().run(dispatcher, tracker, {})
+        with patch.dict("os.environ", ENV):
+            with self.assertRaises(expected_exception=ReminderNotFoundException):
+                await ActionSendDailyCheckInReminder().run(dispatcher, tracker, {})
 
         mock_session_factory.return_value.rollback.assert_called()
         mock_session_factory.return_value.close.assert_called()
 
-    @patch.dict("os.environ", ENV)
+    @pytest.mark.asyncio
     @patch("covidflow.actions.action_send_daily_checkin_reminder.session_factory")
-    def test_phone_not_match(self, mock_session_factory):
+    async def test_phone_not_match(self, mock_session_factory):
         _mock_reminder(mock_session_factory, "99999999999")
 
         tracker = _create_tracker()
         dispatcher = CollectingDispatcher()
 
-        with self.assertRaises(expected_exception=InvalidExternalEventException):
-            ActionSendDailyCheckInReminder().run(dispatcher, tracker, {})
+        with patch.dict("os.environ", ENV):
+            with self.assertRaises(expected_exception=InvalidExternalEventException):
+                await ActionSendDailyCheckInReminder().run(dispatcher, tracker, {})
 
         mock_session_factory.return_value.rollback.assert_called()
         mock_session_factory.return_value.close.assert_called()

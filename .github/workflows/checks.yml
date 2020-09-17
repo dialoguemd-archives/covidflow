@@ -16,10 +16,10 @@ jobs:
         working-directory: ./core
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.6.8
+      - name: Set up Python 3.7.9
         uses: actions/setup-python@v2
         with:
-          python-version: 3.6.8
+          python-version: 3.7.9
       - name: Installing poetry 1.0.10
         uses: Gr1N/setup-poetry@v3
         with:
@@ -38,10 +38,10 @@ jobs:
         working-directory: ./action-server
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.6.8
+      - name: Set up Python 3.7.9
         uses: actions/setup-python@v2
         with:
-          python-version: 3.6.8
+          python-version: 3.7.9
       - name: Installing poetry 1.0.10
         uses: Gr1N/setup-poetry@v3
         with:

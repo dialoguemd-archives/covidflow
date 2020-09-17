@@ -1,6 +1,7 @@
 from collections import namedtuple
-from unittest.mock import patch
 
+import pytest
+from asynctest.mock import patch
 from hashids import Hashids
 from rasa_sdk import Tracker
 from rasa_sdk.events import SlotSet
@@ -142,9 +143,10 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
         self.assertEqual(_fill_symptoms(Symptoms.SEVERE), Symptoms.MODERATE)
         self.assertEqual(_fill_symptoms(None), Symptoms.MODERATE)
 
+    @pytest.mark.asyncio
     @patch("covidflow.actions.action_initialize_daily_checkin.get_reminder")
     @patch("covidflow.actions.action_initialize_daily_checkin.get_last_assessment")
-    def test_happy_path(self, mock_get_last_assessment, mock_get_reminder):
+    async def test_happy_path(self, mock_get_last_assessment, mock_get_reminder):
         mock_get_reminder.return_value = namedtuple(
             "Reminder", NON_DEFAULT_REMINDER_ATTRIBUTES.keys()
         )(*NON_DEFAULT_REMINDER_ATTRIBUTES.values())
@@ -154,7 +156,7 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
 
         tracker = _create_tracker()
 
-        self.run_action(tracker, DOMAIN)
+        await self.run_action(tracker, DOMAIN)
 
         self.assert_templates([])
 
@@ -168,19 +170,22 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
             [SlotSet(slot, value) for slot, value in expected_slots.items()]
         )
 
+    @pytest.mark.asyncio
     @patch(
         "covidflow.actions.action_initialize_daily_checkin.get_reminder",
         side_effect=Exception,
     )
     @patch("covidflow.actions.action_initialize_daily_checkin.get_last_assessment")
-    def test_reminder_not_found(self, mock_get_last_assessment, mock_get_reminder):
+    async def test_reminder_not_found(
+        self, mock_get_last_assessment, mock_get_reminder
+    ):
         mock_get_last_assessment.return_value = namedtuple(
             "Assessment", NON_DEFAULT_ASSESSMENT_ATTRIBUTES.keys()
         )(*NON_DEFAULT_ASSESSMENT_ATTRIBUTES.values())
 
         tracker = _create_tracker()
 
-        self.run_action(tracker, DOMAIN)
+        await self.run_action(tracker, DOMAIN)
 
         self.assert_templates(
             [
@@ -191,12 +196,13 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
 
         self.assert_events([SlotSet(INVALID_REMINDER_ID_SLOT, True)])
 
+    @pytest.mark.asyncio
     @patch("covidflow.actions.action_initialize_daily_checkin.get_reminder")
     @patch(
         "covidflow.actions.action_initialize_daily_checkin.get_last_assessment",
         side_effect=Exception,
     )
-    def test_assessment_not_found_default_values(
+    async def test_assessment_not_found_default_values(
         self, mock_get_last_assessment, mock_get_reminder
     ):
         mock_get_reminder.return_value = namedtuple(
@@ -205,7 +211,7 @@ class TestActionInitializeDailyCheckin(ActionTestCase):
 
         tracker = _create_tracker()
 
-        self.run_action(tracker, DOMAIN)
+        await self.run_action(tracker, DOMAIN)
 
         self.assert_templates([])
 

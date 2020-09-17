@@ -169,7 +169,9 @@ class TestTestNavigationForm(FormTestCase):
 
     def _set_geocode(self, geocode=USER_COORDINATES, exception=False):
         if exception:
-            self.mock_geocoding.return_value.get_from_posta_code.side_effect = Exception
+            self.mock_geocoding.return_value.get_from_postal_code.side_effect = (
+                Exception
+            )
         else:
             self.mock_geocoding.return_value.get_from_postal_code.return_value = geocode
 

@@ -1,3 +1,4 @@
+import pytest
 from rasa_sdk.events import ConversationPaused
 
 from covidflow.actions.action_severe_symptoms_recommendations import (
@@ -13,10 +14,11 @@ class ActionSevereSymptomsRecommendationsTest(ActionTestCase):
         super().setUp()
         self.action = ActionSevereSymptomsRecommendations()
 
-    def test_recommendations(self):
+    @pytest.mark.asyncio
+    async def test_recommendations(self):
         tracker = self.create_tracker()
 
-        self.run_action(tracker)
+        await self.run_action(tracker)
 
         self.assert_events([ConversationPaused()])
 

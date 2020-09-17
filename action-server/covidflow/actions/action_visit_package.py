@@ -22,7 +22,7 @@ class ActionVisitPackage(Action):
     def name(self) -> Text:
         return "action_visit_package"
 
-    def run(
+    async def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,

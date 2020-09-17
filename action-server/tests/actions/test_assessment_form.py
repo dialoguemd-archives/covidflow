@@ -1,3 +1,4 @@
+import pytest
 from rasa_sdk.events import SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
@@ -31,10 +32,11 @@ class ActionAskProvinceCodeTest(ActionTestCase):
         super().setUp()
         self.action = ActionAskProvinceCode()
 
-    def test_ask_province_code(self):
+    @pytest.mark.asyncio
+    async def test_ask_province_code(self):
         tracker = self.create_tracker()
 
-        self.run_action(tracker)
+        await self.run_action(tracker)
 
         self.assert_templates(
             ["utter_pre_ask_province_code", "utter_ask_province_code"]
@@ -48,10 +50,12 @@ class ValidateNewAssessmentFormTest(ValidateActionTestCase):
         self.form_name = FORM_NAME
         self.domain = DOMAIN
 
-    def test_activation(self):
-        self.check_activation()
+    @pytest.mark.asyncio
+    async def test_activation(self):
+        await self.check_activation()
 
-    def test_severe_symptoms(self):
+    @pytest.mark.asyncio
+    async def test_severe_symptoms(self):
         extra_events = [
             SlotSet(SYMPTOMS_SLOT, Symptoms.SEVERE),
             SlotSet(SELF_ASSESS_DONE_SLOT, True),
@@ -62,79 +66,95 @@ class ValidateNewAssessmentFormTest(ValidateActionTestCase):
             SlotSet(MODERATE_SYMPTOMS_SLOT, SKIP_SLOT_PLACEHOLDER),
             SlotSet(HAS_COUGH_SLOT, SKIP_SLOT_PLACEHOLDER),
         ]
-        self.check_slot_value_accepted(
+        await self.check_slot_value_accepted(
             SEVERE_SYMPTOMS_SLOT, True, extra_events=extra_events
         )
 
-    def test_no_severe_symptoms(self):
-        self.check_slot_value_accepted(SEVERE_SYMPTOMS_SLOT, False)
+    @pytest.mark.asyncio
+    async def test_no_severe_symptoms(self):
+        await self.check_slot_value_accepted(SEVERE_SYMPTOMS_SLOT, False)
 
-    def test_valid_province_code_default(self):
+    @pytest.mark.asyncio
+    async def test_valid_province_code_default(self):
         extra_events = [SlotSet(PROVINCIAL_811_SLOT, "811 default")]
-        self.check_slot_value_accepted(PROVINCE_SLOT, "bc", extra_events=extra_events)
+        await self.check_slot_value_accepted(
+            PROVINCE_SLOT, "bc", extra_events=extra_events
+        )
 
-    def test_invalid_province_code(self):
-        self.check_slot_value_rejected(PROVINCE_SLOT, "qg")
+    @pytest.mark.asyncio
+    async def test_invalid_province_code(self):
+        await self.check_slot_value_rejected(PROVINCE_SLOT, "qg")
 
-    def test_age_over_65_true(self):
-        self.check_slot_value_accepted(AGE_OVER_65_SLOT, True)
+    @pytest.mark.asyncio
+    async def test_age_over_65_true(self):
+        await self.check_slot_value_accepted(AGE_OVER_65_SLOT, True)
 
-    def test_age_over_65_false(self):
-        self.check_slot_value_accepted(AGE_OVER_65_SLOT, False)
+    @pytest.mark.asyncio
+    async def test_age_over_65_false(self):
+        await self.check_slot_value_accepted(AGE_OVER_65_SLOT, False)
 
-    def test_has_fever(self):
-        self.check_slot_value_accepted(HAS_FEVER_SLOT, True)
+    @pytest.mark.asyncio
+    async def test_has_fever(self):
+        await self.check_slot_value_accepted(HAS_FEVER_SLOT, True)
 
-    def test_has_no_fever(self):
-        self.check_slot_value_accepted(HAS_FEVER_SLOT, False)
+    @pytest.mark.asyncio
+    async def test_has_no_fever(self):
+        await self.check_slot_value_accepted(HAS_FEVER_SLOT, False)
 
-    def test_moderate_symptoms(self):
+    @pytest.mark.asyncio
+    async def test_moderate_symptoms(self):
         extra_events = [
             SlotSet(SYMPTOMS_SLOT, Symptoms.MODERATE),
             SlotSet(SELF_ASSESS_DONE_SLOT, True),
             SlotSet(REQUESTED_SLOT, None),
             SlotSet(HAS_COUGH_SLOT, SKIP_SLOT_PLACEHOLDER),
         ]
-        self.check_slot_value_accepted(
+        await self.check_slot_value_accepted(
             MODERATE_SYMPTOMS_SLOT, True, extra_events=extra_events
         )
 
-    def test_no_moderate_symptoms(self):
+    @pytest.mark.asyncio
+    async def test_no_moderate_symptoms(self):
         templates = ["utter_moderate_symptoms_false"]
-        self.check_slot_value_accepted(
+        await self.check_slot_value_accepted(
             MODERATE_SYMPTOMS_SLOT, False, templates=templates
         )
 
-    def test_has_cough(self):
+    @pytest.mark.asyncio
+    async def test_has_cough(self):
         extra_events = [
             SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
             SlotSet(SELF_ASSESS_DONE_SLOT, True),
             SlotSet(REQUESTED_SLOT, None),
         ]
-        self.check_slot_value_accepted(HAS_COUGH_SLOT, True, extra_events=extra_events)
+        await self.check_slot_value_accepted(
+            HAS_COUGH_SLOT, True, extra_events=extra_events
+        )
 
-    def test_has_no_cough_with_fever(self):
+    @pytest.mark.asyncio
+    async def test_has_no_cough_with_fever(self):
         previous_slots = {HAS_FEVER_SLOT: True}
         extra_events = [
             SlotSet(SYMPTOMS_SLOT, Symptoms.MILD),
             SlotSet(SELF_ASSESS_DONE_SLOT, True),
             SlotSet(REQUESTED_SLOT, None),
         ]
-        self.check_slot_value_accepted(
+        await self.check_slot_value_accepted(
             HAS_COUGH_SLOT,
             False,
             extra_events=extra_events,
             previous_slots=previous_slots,
         )
 
-    def test_has_no_cough_no_fever(self):
+    @pytest.mark.asyncio
+    async def test_has_no_cough_no_fever(self):
         previous_slots = {HAS_FEVER_SLOT: False}
         extra_events = [
             SlotSet(SYMPTOMS_SLOT, Symptoms.NONE),
             SlotSet(SELF_ASSESS_DONE_SLOT, True),
             SlotSet(REQUESTED_SLOT, None),
         ]
-        self.check_slot_value_accepted(
+        await self.check_slot_value_accepted(
             HAS_COUGH_SLOT,
             False,
             extra_events=extra_events,

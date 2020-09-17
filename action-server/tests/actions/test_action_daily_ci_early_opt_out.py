@@ -1,5 +1,5 @@
-from unittest.mock import patch
-
+import pytest
+from asynctest.mock import patch
 from rasa_sdk.events import SlotSet
 
 from covidflow.actions.action_daily_ci_early_opt_out import ActionDailyCiEarlyOptOut
@@ -13,11 +13,12 @@ class ActionDailyCiEarlyOptOutTest(ActionTestCase):
         super().setUp()
         self.action = ActionDailyCiEarlyOptOut()
 
+    @pytest.mark.asyncio
     @patch("covidflow.actions.action_daily_ci_early_opt_out.cancel_reminder")
-    def test_early_opt_out(self, mock_cancel_reminder):
+    async def test_early_opt_out(self, mock_cancel_reminder):
         tracker = self.create_tracker()
 
-        self.run_action(tracker)
+        await self.run_action(tracker)
 
         self.assert_events([SlotSet(CONTINUE_CI_SLOT, False)])
 

@@ -13,7 +13,7 @@ class ActionAskTestNavigationContinueError(Action):
     def name(self) -> Text:
         return "action_ask_test_navigation__continue_error"
 
-    def run(
+    async def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,

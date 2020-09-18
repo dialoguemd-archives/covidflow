@@ -1,28 +1,29 @@
 from typing import Any, Dict, List, Optional
-from unittest import TestCase
-from unittest.mock import MagicMock, patch
 
 import pytest
+from asynctest import TestCase
+from asynctest.mock import MagicMock, patch
 from geopy.point import Point
-from rasa_sdk.events import ActiveLoop, SlotSet
+from rasa_sdk.events import ActionExecuted, SlotSet
 from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.actions.test_navigation_form import (
-    CLEARED_SLOTS,
-    END_FORM_SLOT,
     FORM_NAME,
     INVALID_POSTAL_CODE_COUNTER_SLOT,
-    LOCATIONS_SLOT,
     POSTAL_CODE_SLOT,
     TRY_DIFFERENT_ADDRESS_SLOT,
-    TestNavigationForm,
+    ActionClearTestNavigationSlots,
+    ValidateTestNavigationForm,
     _generate_buttons,
     _generate_description,
+    _get_postal_code,
     _locations_carousel,
 )
+from covidflow.constants import SKIP_SLOT_PLACEHOLDER
 from covidflow.utils.testing_locations import TestingLocation
 
-from .form_test_helper import FormTestCase
+from .action_test_helper import ActionTestCase
+from .validate_action_test_helper import ValidateActionTestCase
 
 BUTTON_TITLES = {
     "call_button": "Click to call: ",
@@ -148,7 +149,7 @@ def AsyncMock(*args, **kwargs):
     return mock_coroutine
 
 
-class TestTestNavigationForm(FormTestCase):
+class TestValidateTestNavigationForm(ValidateActionTestCase):
     def setUp(self):
         super().setUp()
         self.geocoding_patcher = patch(
@@ -160,7 +161,9 @@ class TestTestNavigationForm(FormTestCase):
         )
         self.mock_geocoding = self.geocoding_patcher.start()
         self.testing_locations_patcher.start()
-        self.form = TestNavigationForm()
+        self.form_name = FORM_NAME
+        self.action = ValidateTestNavigationForm()
+        self.domain = DOMAIN
 
     def tearDown(self):
         super().tearDown()
@@ -176,321 +179,185 @@ class TestTestNavigationForm(FormTestCase):
             self.mock_geocoding.return_value.get_from_postal_code.return_value = geocode
 
     @pytest.mark.asyncio
-    async def test_validate_postal_code(self):
-        self._set_geocode()
-        slot_mapping = self.form.slot_mappings()[POSTAL_CODE_SLOT]
-        self.assertEqual(slot_mapping, self.form.from_text())
+    async def test_activation(self):
+        await self.check_activation()
 
-        await self._validate_postal_code("H0H 0H0", "H0H 0H0")
-        await self._validate_postal_code("H0H0H0", "H0H0H0")
-        await self._validate_postal_code("h0h 0h0", "h0h 0h0")
-        await self._validate_postal_code("h0h0h0", "h0h0h0")
-        await self._validate_postal_code("it's H0H 0H0!", "H0H 0H0")
-        await self._validate_postal_code("it's h0h0h0", "h0h0h0")
-        await self._validate_postal_code("0H0 H0H", None)
-        await self._validate_postal_code("h0h 000", None)
+    @pytest.mark.asyncio
+    async def test_postal_code_invalid_format(self):
+        extra_events = [SlotSet(INVALID_POSTAL_CODE_COUNTER_SLOT, 1)]
+        templates = ["utter_test_navigation__invalid_postal_code"]
 
-    async def _validate_postal_code(self, text: str, expected_postal_code: str):
-        tracker = self.create_tracker()
-        slot_values = await self.form.validate_test_navigation__postal_code(
-            text, self.dispatcher, tracker, None
+        await self.check_slot_value_rejected(
+            POSTAL_CODE_SLOT,
+            INVALID_POSTAL_CODE,
+            extra_events=extra_events,
+            templates=templates,
         )
 
-        self.assertEqual(expected_postal_code, slot_values.get(POSTAL_CODE_SLOT, None))
+    @pytest.mark.asyncio
+    async def test_postal_code_invalid_format_twice(self):
+        extra_events = [SlotSet(INVALID_POSTAL_CODE_COUNTER_SLOT, 2)]
+        templates = ["utter_test_navigation__invalid_postal_code"]
+        previous_slots = {INVALID_POSTAL_CODE_COUNTER_SLOT: 1}
 
-    def test_initialize(self):
-        tracker = self.create_tracker(active_loop=False)
-
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [ActiveLoop(FORM_NAME), SlotSet(REQUESTED_SLOT, POSTAL_CODE_SLOT),]
+        await self.check_slot_value_rejected(
+            POSTAL_CODE_SLOT,
+            INVALID_POSTAL_CODE,
+            extra_events=extra_events,
+            templates=templates,
+            previous_slots=previous_slots,
         )
 
-        self.assert_templates(["utter_ask_test_navigation__postal_code"])
+    @pytest.mark.asyncio
+    async def test_postal_code_invalid_format_thrice(self):
+        slots = {INVALID_POSTAL_CODE_COUNTER_SLOT: 2}
 
-    def test_postal_code_invalid_format(self):
         tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=INVALID_POSTAL_CODE
+            events=[
+                ActionExecuted(self.form_name),
+                SlotSet(POSTAL_CODE_SLOT, INVALID_POSTAL_CODE),
+            ],
+            slots=slots,
         )
 
-        self.run_form(tracker, DOMAIN)
+        await self.run_action(tracker, DOMAIN)
 
         self.assert_events(
             [
-                SlotSet(POSTAL_CODE_SLOT, None),
-                SlotSet(INVALID_POSTAL_CODE_COUNTER_SLOT, 1),
-                SlotSet(REQUESTED_SLOT, POSTAL_CODE_SLOT),
+                SlotSet(REQUESTED_SLOT, None),
+                SlotSet(POSTAL_CODE_SLOT, SKIP_SLOT_PLACEHOLDER),
+                SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, SKIP_SLOT_PLACEHOLDER),
             ]
-        )
-
-        self.assert_templates(
-            [
-                "utter_test_navigation__invalid_postal_code",
-                "utter_ask_test_navigation__postal_code",
-            ]
-        )
-
-    def test_postal_code_invalid_format_twice(self):
-        tracker = self.create_tracker(
-            slots={
-                REQUESTED_SLOT: POSTAL_CODE_SLOT,
-                INVALID_POSTAL_CODE_COUNTER_SLOT: 1,
-            },
-            text=INVALID_POSTAL_CODE,
-        )
-
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [
-                SlotSet(POSTAL_CODE_SLOT, None),
-                SlotSet(INVALID_POSTAL_CODE_COUNTER_SLOT, 2),
-                SlotSet(REQUESTED_SLOT, POSTAL_CODE_SLOT),
-            ]
-        )
-
-        self.assert_templates(
-            [
-                "utter_test_navigation__invalid_postal_code",
-                "utter_ask_test_navigation__postal_code",
-            ]
-        )
-
-    def test_postal_code_invalid_format_thrice(self):
-        tracker = self.create_tracker(
-            slots={
-                REQUESTED_SLOT: POSTAL_CODE_SLOT,
-                INVALID_POSTAL_CODE_COUNTER_SLOT: 2,
-            },
-            text=INVALID_POSTAL_CODE,
-        )
-
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [SlotSet(POSTAL_CODE_SLOT, None), SlotSet(END_FORM_SLOT, True),]
-            + CLEARED_SLOTS
-            + [ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),]
         )
 
         self.assert_templates(["utter_test_navigation__invalid_postal_code_max"])
 
-    def test_postal_code_geocoding_error(self):
+    @pytest.mark.asyncio
+    async def test_postal_code_geocoding_error(self):
         self._set_geocode(exception=True)
 
-        tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE
+        extra_events = [
+            SlotSet(REQUESTED_SLOT, None),
+            SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, SKIP_SLOT_PLACEHOLDER),
+        ]
+        templates = [
+            "utter_test_navigation__could_not_fetch_1",
+            "utter_test_navigation__could_not_fetch_2",
+        ]
+        await self.check_slot_value_accepted(
+            POSTAL_CODE_SLOT,
+            POSTAL_CODE,
+            extra_events=extra_events,
+            templates=templates,
         )
 
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE), SlotSet(END_FORM_SLOT, True),]
-            + CLEARED_SLOTS
-            + [ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),]
-        )
-
-        self.assert_templates(
-            [
-                "utter_test_navigation__could_not_fetch_1",
-                "utter_test_navigation__could_not_fetch_2",
-            ]
-        )
-
-    def test_postal_code_nonexistent(self):
+    @pytest.mark.asyncio
+    async def test_postal_code_nonexistent(self):
         self._set_geocode(None)
 
-        tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE
+        extra_events = [SlotSet(INVALID_POSTAL_CODE_COUNTER_SLOT, 1)]
+        templates = ["utter_test_navigation__invalid_postal_code"]
+
+        await self.check_slot_value_rejected(
+            POSTAL_CODE_SLOT,
+            INVALID_POSTAL_CODE,
+            extra_events=extra_events,
+            templates=templates,
         )
 
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [
-                SlotSet(POSTAL_CODE_SLOT, None),
-                SlotSet(INVALID_POSTAL_CODE_COUNTER_SLOT, 1),
-                SlotSet(REQUESTED_SLOT, POSTAL_CODE_SLOT),
-            ]
-        )
-
-        self.assert_templates(
-            [
-                "utter_test_navigation__invalid_postal_code",
-                "utter_ask_test_navigation__postal_code",
-            ]
-        )
-
-    def test_postal_code_nonexistent_twice(self):
+    @pytest.mark.asyncio
+    async def test_postal_code_nonexistent_twice(self):
         self._set_geocode(None)
 
-        tracker = self.create_tracker(
-            slots={
-                REQUESTED_SLOT: POSTAL_CODE_SLOT,
-                INVALID_POSTAL_CODE_COUNTER_SLOT: 1,
-            },
-            text=POSTAL_CODE,
+        extra_events = [SlotSet(INVALID_POSTAL_CODE_COUNTER_SLOT, 2)]
+        templates = ["utter_test_navigation__invalid_postal_code"]
+        previous_slots = {INVALID_POSTAL_CODE_COUNTER_SLOT: 1}
+
+        await self.check_slot_value_rejected(
+            POSTAL_CODE_SLOT,
+            POSTAL_CODE,
+            extra_events=extra_events,
+            templates=templates,
+            previous_slots=previous_slots,
         )
 
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [
-                SlotSet(POSTAL_CODE_SLOT, None),
-                SlotSet(INVALID_POSTAL_CODE_COUNTER_SLOT, 2),
-                SlotSet(REQUESTED_SLOT, POSTAL_CODE_SLOT),
-            ]
-        )
-
-        self.assert_templates(
-            [
-                "utter_test_navigation__invalid_postal_code",
-                "utter_ask_test_navigation__postal_code",
-            ]
-        )
-
-    def test_postal_code_nonexistent_thrice(self):
+    @pytest.mark.asyncio
+    async def test_postal_code_nonexistent_thrice(self):
         self._set_geocode(None)
 
+        slots = {INVALID_POSTAL_CODE_COUNTER_SLOT: 2}
+
         tracker = self.create_tracker(
-            slots={
-                REQUESTED_SLOT: POSTAL_CODE_SLOT,
-                INVALID_POSTAL_CODE_COUNTER_SLOT: 2,
-            },
-            text=POSTAL_CODE,
+            events=[
+                ActionExecuted(self.form_name),
+                SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE),
+            ],
+            slots=slots,
         )
 
-        self.run_form(tracker, DOMAIN)
+        await self.run_action(tracker, DOMAIN)
 
         self.assert_events(
-            [SlotSet(POSTAL_CODE_SLOT, None), SlotSet(END_FORM_SLOT, True),]
-            + CLEARED_SLOTS
-            + [ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),]
+            [
+                SlotSet(REQUESTED_SLOT, None),
+                SlotSet(POSTAL_CODE_SLOT, SKIP_SLOT_PLACEHOLDER),
+                SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, SKIP_SLOT_PLACEHOLDER),
+            ]
         )
 
         self.assert_templates(["utter_test_navigation__invalid_postal_code_max"])
 
+    @pytest.mark.asyncio
     @patch(
         "covidflow.actions.test_navigation_form.get_testing_locations",
         new=AsyncMock(side_effect=Exception),
     )
-    def test_postal_code_locations_error(self):
+    async def test_postal_code_locations_error(self):
         self._set_geocode()
 
-        tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE
+        extra_events = [
+            SlotSet(REQUESTED_SLOT, None),
+            SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, SKIP_SLOT_PLACEHOLDER),
+        ]
+        templates = [
+            "utter_test_navigation__could_not_fetch_1",
+            "utter_test_navigation__could_not_fetch_2",
+        ]
+        await self.check_slot_value_accepted(
+            POSTAL_CODE_SLOT,
+            POSTAL_CODE,
+            extra_events=extra_events,
+            templates=templates,
         )
 
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE), SlotSet(END_FORM_SLOT, True),]
-            + CLEARED_SLOTS
-            + [ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),]
-        )
-
-        self.assert_templates(
-            [
-                "utter_test_navigation__could_not_fetch_1",
-                "utter_test_navigation__could_not_fetch_2",
-            ]
-        )
-
+    @pytest.mark.asyncio
     @patch(
         "covidflow.actions.test_navigation_form.get_testing_locations",
         new=AsyncMock(return_value=[]),
     )
-    def test_postal_code_no_results(self):
+    async def test_postal_code_no_results(self):
         self._set_geocode(USER_COORDINATES)
 
-        tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE,
+        templates = ["utter_test_navigation__no_locations"]
+        await self.check_slot_value_accepted(
+            POSTAL_CODE_SLOT, POSTAL_CODE, templates=templates
         )
 
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [
-                SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE),
-                SlotSet(LOCATIONS_SLOT, []),
-                SlotSet(REQUESTED_SLOT, TRY_DIFFERENT_ADDRESS_SLOT),
-            ]
+    @pytest.mark.asyncio
+    async def test_try_different_address_affirm(self):
+        events = [SlotSet(POSTAL_CODE_SLOT, None)]
+        await self.check_slot_value_rejected(
+            TRY_DIFFERENT_ADDRESS_SLOT, True, extra_events=events
         )
 
-        self.assert_templates(
-            [
-                "utter_test_navigation__no_locations",
-                "utter_ask_test_navigation__try_different_address",
-            ]
+    @pytest.mark.asyncio
+    async def test_try_different_address_deny(self):
+        templates = ["utter_test_navigation__acknowledge"]
+        await self.check_slot_value_accepted(
+            TRY_DIFFERENT_ADDRESS_SLOT, False, templates=templates
         )
 
-    def test_try_different_address_affirm(self):
-        tracker = self.create_tracker(
-            slots={
-                REQUESTED_SLOT: TRY_DIFFERENT_ADDRESS_SLOT,
-                POSTAL_CODE_SLOT: POSTAL_CODE,
-                LOCATIONS_SLOT: [],
-            },
-            intent="affirm",
-        )
-
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [
-                SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, True),
-                SlotSet(POSTAL_CODE_SLOT, None),
-                SlotSet(LOCATIONS_SLOT, None),
-                SlotSet(REQUESTED_SLOT, POSTAL_CODE_SLOT),
-            ]
-        )
-
-        self.assert_templates(["utter_ask_test_navigation__postal_code"])
-
-    def test_try_different_address_deny(self):
-        tracker = self.create_tracker(
-            slots={
-                REQUESTED_SLOT: TRY_DIFFERENT_ADDRESS_SLOT,
-                POSTAL_CODE_SLOT: POSTAL_CODE,
-                LOCATIONS_SLOT: [],
-            },
-            intent="deny",
-        )
-
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, False),]
-            + CLEARED_SLOTS
-            + [ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),]
-        )
-
-        self.assert_templates(["utter_test_navigation__acknowledge"])
-
-    def test_try_different_address_error(self):
-        tracker = self.create_tracker(
-            slots={
-                REQUESTED_SLOT: TRY_DIFFERENT_ADDRESS_SLOT,
-                POSTAL_CODE_SLOT: POSTAL_CODE,
-                LOCATIONS_SLOT: [],
-            },
-            text="anything",
-        )
-
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [
-                SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, None),
-                SlotSet(REQUESTED_SLOT, TRY_DIFFERENT_ADDRESS_SLOT),
-            ]
-        )
-
-        self.assert_templates(
-            ["utter_ask_test_navigation__try_different_address_error"]
-        )
-
+    @pytest.mark.asyncio
     @patch(
         "covidflow.actions.test_navigation_form.get_static_map_url",
         return_value="some_url",
@@ -499,28 +366,24 @@ class TestTestNavigationForm(FormTestCase):
         "covidflow.actions.test_navigation_form.get_testing_locations",
         new=AsyncMock(return_value=[TESTING_LOCATION]),
     )
-    def test_postal_code_one_result(self, mock_maps):
+    async def test_postal_code_one_result(self, mock_maps):
         self._set_geocode(USER_COORDINATES)
 
-        tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE,
+        extra_events = [
+            SlotSet(REQUESTED_SLOT, None),
+            SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, SKIP_SLOT_PLACEHOLDER),
+        ]
+        templates = ["utter_test_navigation__one_location", None]
+        await self.check_slot_value_accepted(
+            POSTAL_CODE_SLOT,
+            POSTAL_CODE,
+            extra_events=extra_events,
+            templates=templates,
         )
-
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [
-                SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE),
-                SlotSet(LOCATIONS_SLOT, [TESTING_LOCATION_RAW]),
-            ]
-            + CLEARED_SLOTS
-            + [ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),]
-        )
-
-        self.assert_templates(["utter_test_navigation__one_location", None])
 
         self.assert_attachments([None, SINGLE_CAROUSEL_CONTENT])
 
+    @pytest.mark.asyncio
     @patch(
         "covidflow.actions.test_navigation_form.get_static_map_url",
         return_value="some_url",
@@ -529,34 +392,61 @@ class TestTestNavigationForm(FormTestCase):
         "covidflow.actions.test_navigation_form.get_testing_locations",
         new=AsyncMock(return_value=[TESTING_LOCATION, TESTING_LOCATION]),
     )
-    def test_postal_code_many_results(self, mock_maps):
+    async def test_postal_code_many_results(self, mock_maps):
         self._set_geocode(USER_COORDINATES)
 
-        tracker = self.create_tracker(
-            slots={REQUESTED_SLOT: POSTAL_CODE_SLOT}, text=POSTAL_CODE,
-        )
-
-        self.run_form(tracker, DOMAIN)
-
-        self.assert_events(
-            [
-                SlotSet(POSTAL_CODE_SLOT, POSTAL_CODE),
-                SlotSet(LOCATIONS_SLOT, [TESTING_LOCATION_RAW, TESTING_LOCATION_RAW]),
-            ]
-            + CLEARED_SLOTS
-            + [ActiveLoop(None), SlotSet(REQUESTED_SLOT, None),]
-        )
-
-        self.assert_templates(
-            [
-                "utter_test_navigation__many_locations_1",
-                "utter_test_navigation__many_locations_2",
-                "utter_test_navigation__many_locations_3",
-                None,
-            ]
+        extra_events = [
+            SlotSet(REQUESTED_SLOT, None),
+            SlotSet(TRY_DIFFERENT_ADDRESS_SLOT, SKIP_SLOT_PLACEHOLDER),
+        ]
+        templates = [
+            "utter_test_navigation__many_locations_1",
+            "utter_test_navigation__many_locations_2",
+            "utter_test_navigation__many_locations_3",
+            None,
+        ]
+        await self.check_slot_value_accepted(
+            POSTAL_CODE_SLOT,
+            POSTAL_CODE,
+            extra_events=extra_events,
+            templates=templates,
         )
 
         self.assert_attachments([None, None, None, DOUBLE_CAROUSEL_CONTENT])
+
+
+class TestActionClearTestNavigationSlots(ActionTestCase):
+    def setUp(self):
+        super().setUp()
+        self.action = ActionClearTestNavigationSlots()
+
+    @pytest.mark.asyncio
+    async def test_clear_slots(self):
+        tracker = self.create_tracker()
+
+        await self.run_action(tracker)
+
+        self.assert_events(
+            [
+                SlotSet(POSTAL_CODE_SLOT),
+                SlotSet(INVALID_POSTAL_CODE_COUNTER_SLOT, 0),
+                SlotSet(TRY_DIFFERENT_ADDRESS_SLOT),
+            ]
+        )
+
+        self.assert_templates([])
+
+
+class TestPostalCodeFormatting(TestCase):
+    def test_postal_code_extraction(self):
+        self.assertEqual(_get_postal_code("H0H 0H0"), "H0H 0H0")
+        self.assertEqual(_get_postal_code("H0H0H0"), "H0H0H0")
+        self.assertEqual(_get_postal_code("h0h 0h0"), "h0h 0h0")
+        self.assertEqual(_get_postal_code("h0h0h0"), "h0h0h0")
+        self.assertEqual(_get_postal_code("it's H0H 0H0!"), "H0H 0H0")
+        self.assertEqual(_get_postal_code("it's h0h0h0"), "h0h0h0")
+        self.assertEqual(_get_postal_code("0H0 H0H"), None)
+        self.assertEqual(_get_postal_code("h0h 000"), None)
 
 
 class TestLocationsCarousel(TestCase):

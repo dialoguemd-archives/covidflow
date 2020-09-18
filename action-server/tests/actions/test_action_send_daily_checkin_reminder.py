@@ -67,8 +67,6 @@ def _mock_reminder(mock_session_factory, phone_number):
 
 
 class TestActionSendDailyCheckinReminder(TestCase):
-    # TODO
-
     @patch.dict("os.environ", ENV)
     def test_action_name(self):
         self.assertEqual(

@@ -408,6 +408,7 @@ rules:
       - intent: affirm
       - action: utter_test_navigation__acknowledge_continue
       - action: test_navigation_form
+      - action: action_clear_test_navigation_slots # Necessary because of https://github.com/RasaHQ/rasa/issues/6569
       - action: action_test_navigation__anything_else
 
   - rule: Do test navigation continue
@@ -416,6 +417,7 @@ rules:
       - intent: continue
       - action: utter_test_navigation__acknowledge_continue
       - action: test_navigation_form
+      - action: action_clear_test_navigation_slots
       - action: action_test_navigation__anything_else
 
   - rule: Drop test navigation

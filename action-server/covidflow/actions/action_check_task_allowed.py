@@ -62,7 +62,6 @@ class ActionCheckTaskAllowed(Action):
         bind_logger(tracker)
 
         last_action = _get_last_action_name(tracker)
-        logger.warn(last_action)
         intent = get_intent(tracker)
         if (
             last_action in SUPPORTED_INTENTS_BY_ACTION

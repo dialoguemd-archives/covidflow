@@ -7,6 +7,20 @@ from covidflow.constants import ACTION_LISTEN_NAME
 
 from .action_test_helper import ActionTestCase
 
+PHONE_TRY_COUNTER_SLOT = "daily_ci_enroll__phone_number_error_counter"
+CODE_TRY_COUNTER_SLOT = "daily_ci_enroll__validation_code_error_counter"
+WANTS_CANCEL_SLOT = "daily_ci_enroll__wants_cancel"
+NO_CODE_SOLUTION_SLOT = "daily_ci_enroll__no_code_solution"
+INVALID_POSTAL_CODE_COUNTER_SLOT = "test_navigation__invalid_postal_code_counter"
+
+INITIAL_SLOT_VALUES = {
+    PHONE_TRY_COUNTER_SLOT: 0,
+    CODE_TRY_COUNTER_SLOT: 0,
+    WANTS_CANCEL_SLOT: False,
+    NO_CODE_SOLUTION_SLOT: "N/A",
+    INVALID_POSTAL_CODE_COUNTER_SLOT: 0,
+}
+
 
 class ValidateActionTestCase(ActionTestCase):
     def setUp(self):
@@ -27,9 +41,12 @@ class ValidateActionTestCase(ActionTestCase):
         active_loop: bool = True,
         last_action: str = ACTION_LISTEN_NAME,
     ) -> Tracker:
+        all_slots = {}
+        all_slots.update(INITIAL_SLOT_VALUES)
+        all_slots.update(slots or {})
         return Tracker(
             sender_id,
-            slots or {},
+            all_slots,
             {
                 "intent": {"name": intent or "none"},
                 "entities": entities or [],

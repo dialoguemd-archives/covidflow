@@ -79,6 +79,8 @@ actions:
   - validate_home_assistance_form
   - validate_self_isolation_form
   - validate_contact_risk_form
+  - validate_test_navigation_form
+  - action_clear_test_navigation_slots
 
 forms:
   - home_assistance_form:
@@ -95,6 +97,9 @@ forms:
   - daily_ci_keep_or_cancel_form:
   - question_answering_form:
   - test_navigation_form:
+      test_navigation__postal_code:
+        - type: from_text
+      test_navigation__try_different_address: *boolean # Only asked if no results
   - assessment_form:
       assessment_type:
         - type: from_trigger_intent
@@ -303,11 +308,6 @@ slots:
   test_navigation__try_different_address:
     type: unfeaturized
 
-  test_navigation__locations:
-    type: unfeaturized
-
-  test_navigation__end_form:
-    type: unfeaturized
 
 session_config:
   session_expiration_time: 0 # value in minutes - 0 means session never expires

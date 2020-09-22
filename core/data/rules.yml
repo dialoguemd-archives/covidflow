@@ -317,6 +317,7 @@ rules:
       - active_loop: null
       - slot_was_set:
           - question_answering_status: success
+      - action: action_submit_question_answering_form
       - action: utter_ask_another_question
 
   - rule: greet QA out_of_distribution
@@ -325,9 +326,11 @@ rules:
       - intent: greet
       - action: action_greeting_messages
       - intent: nlu_fallback
+      - action: action_activate_fallback_question_answering_form
       - action: question_answering_form
       - slot_was_set:
           - question_answering_status: out_of_distribution
+      - action: action_submit_question_answering_form
       - action: utter_ask_how_may_i_help_fallback
 
   - rule: QA out_of_distribution
@@ -338,6 +341,7 @@ rules:
       - active_loop: null
       - slot_was_set:
           - question_answering_status: out_of_distribution
+      - action: action_submit_question_answering_form
       - action: utter_cant_answer
       - action: utter_ask_different_question
 
@@ -347,9 +351,11 @@ rules:
       - intent: greet
       - action: action_greeting_messages
       - intent: nlu_fallback
+      - action: action_activate_fallback_question_answering_form
       - action: question_answering_form
       - slot_was_set:
           - question_answering_status: failure
+      - action: action_submit_question_answering_form
       - action: utter_ask_how_may_i_help_fallback
 
   - rule: assessment QA failure
@@ -362,6 +368,7 @@ rules:
       - active_loop: null
       - slot_was_set:
           - question_answering_status: failure
+      - action: action_submit_question_answering_form
       - action: utter_question_answering_error
       - action: utter_try_again_later
       - action: action_qa_goodbye
@@ -374,6 +381,7 @@ rules:
       - active_loop: null
       - slot_was_set:
           - question_answering_status: failure
+      - action: action_submit_question_answering_form
       - action: utter_question_answering_error
       - action: utter_ask_assess_after_error
 
@@ -387,6 +395,7 @@ rules:
       - active_loop: null
       - slot_was_set:
           - question_answering_status: need_assessment
+      - action: action_submit_question_answering_form
       - action: utter_need_assessment_already_done
       - action: utter_ask_another_question
 
@@ -398,6 +407,7 @@ rules:
       - active_loop: null
       - slot_was_set:
           - question_answering_status: need_assessment
+      - action: action_submit_question_answering_form
       - action: utter_need_assessment
       - action: utter_ask_assess_to_answer
 
@@ -775,6 +785,7 @@ rules:
     steps:
       - intent: nlu_fallback
       - action: action_check_task_allowed
+      - action: action_activate_fallback_question_answering_form
       - action: question_answering_form
       - active_loop: question_answering_form
     wait_for_user_input: false

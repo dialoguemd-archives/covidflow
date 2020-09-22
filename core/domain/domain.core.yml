@@ -81,6 +81,10 @@ actions:
   - validate_contact_risk_form
   - validate_test_navigation_form
   - action_clear_test_navigation_slots
+  - validate_question_answering_form
+  - action_activate_fallback_question_answering_form
+  - action_ask_active_question
+  - action_submit_question_answering_form
 
 forms:
   - home_assistance_form:
@@ -96,6 +100,16 @@ forms:
   - daily_ci_feel_worse_form:
   - daily_ci_keep_or_cancel_form:
   - question_answering_form:
+      active_question:
+        - type: from_text
+      feedback:
+        - type: from_intent
+          intent: affirm
+          value: true
+        - type: from_intent
+          intent: deny
+          value: false
+        - type: from_text
   - test_navigation_form:
       test_navigation__postal_code:
         - type: from_text

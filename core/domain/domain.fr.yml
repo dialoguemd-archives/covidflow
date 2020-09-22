@@ -594,7 +594,8 @@ responses:
     - text: "Je peux répondre à vos questions sur une variété de sujets entourant la Covid-19"
 
   utter_qa_disclaimer:
-    - text: "Veuillez noter que pour le moment, je suis en mesure de répondre à un
+    - text:
+        "Veuillez noter que pour le moment, je suis en mesure de répondre à un
         nombre limité de questions, mais je m'améliore constamment et j'apprends
         à l'aide des questions que vous me posez"
 
@@ -611,7 +612,8 @@ responses:
   utter_qa_sample_contagion:
     - text: "Si nous avons Covid-19, combien de temp sommes-nous contagieux?"
     - text: "Combien de temps sommes-nous contagieux quand nous avons Covid-19?"
-    - text: "Après la disparition des symptômes, combien de temps une personne reste
+    - text:
+        "Après la disparition des symptômes, combien de temps une personne reste
         contagieuse?"
     - text: "Combien de temps une personne est-elle contagieuse?"
     - text: "Suis-je contagieux longtemps après que j'ai contracté le virus?"
@@ -621,9 +623,11 @@ responses:
     - text: "Combien de temp le virus vit-il sur des surfaces?"
     - text: "Pour combien de temps COVID19 peut rester en vie sur des surfaces
         différentes?"
-    - text: "Est-il vrai que Covid-19 peut survivre jusqu'à quelques jours sur les
+    - text:
+        "Est-il vrai que Covid-19 peut survivre jusqu'à quelques jours sur les
         surfaces dures?"
-    - text: "Combien de temps le virus survit-il sur une surface comme une poignée
+    - text:
+        "Combien de temps le virus survit-il sur une surface comme une poignée
         de porte?"
     - text: "Combien de temps est-ce que la Covid 19 peut rester sur des surfaces?"
 
@@ -703,7 +707,8 @@ responses:
     - text: "Combien de cas au Québec?"
     - text: "Combien de personnes sont infectées au Québec?"
     - text: "Combien de cas sont aux États-Unis?"
-    - text: "De la population infectée dans le monde entier quel sera le rapport des
+    - text:
+        "De la population infectée dans le monde entier quel sera le rapport des
         personnes asymptomatiques?"
 
   utter_ask_active_question:
@@ -712,18 +717,7 @@ responses:
   utter_ask_feedback:
     - text: "Est-ce que cette réponse était utile?"
 
-  utter_ask_feedback_error:
-    - text: "Désolée, veuillez me dire si cette réponse était utile ou non"
-      buttons:
-        - title: Oui
-          payload: "/affirm"
-        - title: Non
-          payload: "/deny"
-      custom:
-        data:
-          disableTextField: "true"
-
-  utter_post_feedback:
+  utter_feedback_false:
     - text: "Je suis désolée, c'est noté! J'apprends constamment, alors votre opinion me permettra de m'améliorer et de vous donner de meilleures réponses"
 
   utter_question_answering_error:
@@ -1129,8 +1123,8 @@ responses:
   utter_daily_ci__feel_better__has_other_mild_symptoms_recommendation:
     - text: D'accord. Puisque vous avez encore certains symptômes, je vous conseille de continuer à vous isoler et à vous reposer
 
-  utter_daily_ci__feel_better__has_other_mild_symptoms_still_sick_recommendation:
-    - text: C'est noté. Puisque vous êtes encore malade, je vous conseille de continuer à vous isoler et à vous reposer
+  ? utter_daily_ci__feel_better__has_other_mild_symptoms_still_sick_recommendation
+  : - text: C'est noté. Puisque vous êtes encore malade, je vous conseille de continuer à vous isoler et à vous reposer
 
   utter_daily_checkin_validation_code:
     - text: "Bonjour {first_name}, voici le code de validation pour l’inscription au suivi quotidien : {validation_code}. Si vous n’avez pas demandé à vous inscrire au suivi quotidien, veuillez ignorer ce message"

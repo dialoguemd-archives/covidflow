@@ -1,26 +1,19 @@
 import os
 import random
-from typing import Any, Dict, List, Optional, Text, Union
+from typing import Any, Dict, List, Text
 
 import structlog
 from aiohttp import ClientSession
-from rasa_sdk import Tracker
-from rasa_sdk.events import (
-    ActionExecuted,
-    ActiveLoop,
-    BotUttered,
-    EventType,
-    SlotSet,
-    UserUttered,
-)
+from rasa_sdk import Action, Tracker
+from rasa_sdk.events import ActionExecuted, BotUttered, EventType, SlotSet, UserUttered
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.forms import REQUESTED_SLOT, FormAction
+from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.constants import (
     ACTION_LISTEN_NAME,
-    FALLBACK_INTENT,
     LANGUAGE_SLOT,
     QA_TEST_PROFILE_ATTRIBUTE,
+    SKIP_SLOT_PLACEHOLDER,
 )
 
 from .answers import (
@@ -28,8 +21,7 @@ from .answers import (
     QuestionAnsweringResponse,
     QuestionAnsweringStatus,
 )
-from .lib.action_utils import get_intent
-from .lib.form_helper import request_next_slot, yes_no_nlu_mapping
+from .lib.form_helper import _form_slots_to_validate
 from .lib.log_util import bind_logger
 
 logger = structlog.get_logger()
@@ -52,6 +44,10 @@ QUESTION_KEY = "question"
 FEEDBACK_NOT_GIVEN = "not_given"
 
 FORM_NAME = "question_answering_form"
+ASK_QUESTION_ACTION_NAME = f"action_ask_{QUESTION_SLOT}"
+VALIDATE_ACTION_NAME = f"validate_{FORM_NAME}"
+SUBMIT_ACTION_NAME = f"action_submit_question_answering_form"
+FALLBACK_ACTIVATE_ACTION_NAME = "action_activate_fallback_question_answering_form"
 
 TEST_PROFILES_RESPONSE = {
     "success": QuestionAnsweringResponse(
@@ -67,128 +63,107 @@ TEST_PROFILES_RESPONSE = {
 }
 
 
-class QuestionAnsweringForm(FormAction):
+class ActionActivateFallbackQuestionAnswering(Action):
     def name(self) -> Text:
-
-        return FORM_NAME
+        return FALLBACK_ACTIVATE_ACTION_NAME
 
     async def run(
-        self, dispatcher, tracker, domain,
-    ):
-        bind_logger(tracker)
-        return await super().run(dispatcher, tracker, domain)
-
-    ## override to play initial messages or prefill slots
-    async def _activate_if_required(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[EventType]:
-        if tracker.active_loop.get("name") == FORM_NAME:
-            return await super()._activate_if_required(dispatcher, tracker, domain)
+        bind_logger(tracker)
 
-        intent = get_intent(tracker)
+        question = tracker.latest_message.get("text", "")
 
-        # Fallback QA
-        if intent == FALLBACK_INTENT:
-            question = tracker.latest_message.get("text", "")
+        # Slot will be validated on form activation
+        return [SlotSet(QUESTION_SLOT, question)]
 
-            result = await self.validate_active_question(
-                question, dispatcher, tracker, domain
+
+class ActionAskActiveQuestion(Action):
+    def name(self) -> Text:
+        return ASK_QUESTION_ACTION_NAME
+
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[EventType]:
+        bind_logger(tracker)
+
+        events = []
+
+        if not (tracker.get_slot(SKIP_QA_INTRO_SLOT) is True):
+
+            dispatcher.utter_message(template="utter_can_help_with_questions")
+            dispatcher.utter_message(template="utter_qa_disclaimer")
+
+            random_qa_samples = (
+                _get_fixed_questions_samples()
+                if _must_stub_result(tracker)
+                else _get_random_question_samples(domain)
             )
 
-            return await super()._activate_if_required(dispatcher, tracker, domain) + [
-                SlotSet(QUESTION_SLOT, question),
-                SlotSet(STATUS_SLOT, result[STATUS_SLOT]),
-                SlotSet(ANSWERS_SLOT, result[ANSWERS_SLOT]),
-            ]
+            if len(random_qa_samples) > 0:
+                dispatcher.utter_message(
+                    template="utter_qa_sample",
+                    sample_questions="\n".join(random_qa_samples),
+                )
+            events = [SlotSet(SKIP_QA_INTRO_SLOT, True)]
 
-        # Regular QA
-        # Messages are only played for the first question
-        if tracker.get_slot(SKIP_QA_INTRO_SLOT) == True or intent != "ask_question":
-            return await super()._activate_if_required(dispatcher, tracker, domain)
+        dispatcher.utter_message(template="utter_ask_active_question")
+        return events
 
-        dispatcher.utter_message(template="utter_can_help_with_questions")
-        dispatcher.utter_message(template="utter_qa_disclaimer")
 
-        random_qa_samples = (
-            _get_fixed_questions_samples()
-            if _must_stub_result(tracker)
-            else _get_random_question_samples(domain)
-        )
+class ValidateQuestionAnsweringForm(Action):
+    def name(self) -> Text:
+        return VALIDATE_ACTION_NAME
 
-        if len(random_qa_samples) > 0:
-            dispatcher.utter_message(
-                template="utter_qa_sample",
-                sample_questions="\n".join(random_qa_samples),
-            )
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[EventType]:
+        bind_logger(tracker)
 
-        return await super()._activate_if_required(dispatcher, tracker, domain) + [
-            SlotSet(SKIP_QA_INTRO_SLOT, True)
-        ]
+        extracted_slots: Dict[Text, Any] = _form_slots_to_validate(tracker)
 
-    @staticmethod
-    def required_slots(tracker: Tracker) -> List[Text]:
-        status = tracker.get_slot(STATUS_SLOT)
-        if status == QuestionAnsweringStatus.SUCCESS:
-            return [QUESTION_SLOT, FEEDBACK_SLOT]
+        validation_events: List[EventType] = []
 
-        return [QUESTION_SLOT]
+        for slot_name, slot_value in extracted_slots.items():
+            slot_events = [SlotSet(slot_name, slot_value)]
 
-    def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
-        return {
-            QUESTION_SLOT: self.from_text(),
-            FEEDBACK_SLOT: yes_no_nlu_mapping(self),
-        }
+            if slot_name == FEEDBACK_SLOT:
+                if slot_value is False:
+                    dispatcher.utter_message(template="utter_feedback_false")
+                elif not isinstance(slot_value, bool):
+                    slot_events = [SlotSet(FEEDBACK_SLOT, FEEDBACK_NOT_GIVEN)]
+            elif slot_name == QUESTION_SLOT:
+                result = (
+                    _get_stub_qa_result(tracker)
+                    if _must_stub_result(tracker)
+                    else await _fetch_qa(slot_value, tracker)
+                )
 
-    def request_next_slot(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Optional[List[EventType]]:
-        return request_next_slot(self, dispatcher, tracker, domain)
+                slot_events += [SlotSet(STATUS_SLOT, result.status)]
 
-    async def validate_active_question(
-        self,
-        value: Text,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        result = (
-            _get_stub_qa_result(tracker)
-            if _must_stub_result(tracker)
-            else await _fetch_qa(value, tracker)
-        )
+                if result.status == QuestionAnsweringStatus.SUCCESS:
+                    dispatcher.utter_message(result.answers[0])
+                    slot_events += [SlotSet(ANSWERS_SLOT, result.answers)]
+                else:
+                    slot_events += [
+                        SlotSet(REQUESTED_SLOT, None),
+                        SlotSet(FEEDBACK_SLOT, SKIP_SLOT_PLACEHOLDER),
+                    ]
 
-        if result.status == QuestionAnsweringStatus.SUCCESS and result.answers:
-            dispatcher.utter_message(result.answers[0])
+            validation_events.extend(slot_events)
 
-        return {STATUS_SLOT: result.status, ANSWERS_SLOT: result.answers}
+        return validation_events
 
-    def validate_feedback(
-        self,
-        value: Text,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        if value is False:
-            dispatcher.utter_message(template="utter_post_feedback")
 
-        if not isinstance(value, bool):
-            return {FEEDBACK_SLOT: FEEDBACK_NOT_GIVEN}
+class ActionSubmitQuestionAnsweringForm(Action):
+    def name(self) -> Text:
+        return SUBMIT_ACTION_NAME
 
-        return {}
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[EventType]:
+        bind_logger(tracker)
 
-    def submit(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> List[Dict]:
         feedback = tracker.get_slot(FEEDBACK_SLOT)
         full_question_result = {
             QUESTION_KEY: tracker.get_slot(QUESTION_SLOT),
@@ -252,10 +227,6 @@ def _get_stub_qa_result(tracker: Tracker):
 
 def _carry_user_utterance(tracker: Tracker) -> List[EventType]:
     return [
-        ActiveLoop(
-            None
-        ),  # Ending it manually to have events in correct order to fit stories
-        SlotSet(REQUESTED_SLOT, None),
         ActionExecuted("utter_ask_another_question"),
         BotUttered(metadata={"template_name": "utter_ask_another_question"}),
         ActionExecuted(ACTION_LISTEN_NAME),

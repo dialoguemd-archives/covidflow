@@ -706,18 +706,7 @@ responses:
   utter_ask_feedback:
     - text: "Was this answer useful?"
 
-  utter_ask_feedback_error:
-    - text: "Sorry, please tell me whether this answer was useful or not"
-      buttons:
-        - title: Yes
-          payload: "/affirm"
-        - title: No
-          payload: "/deny"
-      custom:
-        data:
-          disableTextField: "true"
-
-  utter_post_feedback:
+  utter_feedback_false:
     - text: "Got it, sorry about that! I’m still learning so your feedback helps me improve and provide better answers"
 
   utter_question_answering_error:
@@ -1123,8 +1112,8 @@ responses:
   utter_daily_ci__feel_better__has_other_mild_symptoms_recommendation:
     - text: OK, since you still have some symptoms, I recommend that you stay isolated and that you continue to rest
 
-  utter_daily_ci__feel_better__has_other_mild_symptoms_still_sick_recommendation:
-    - text: OK, since you still feel sick, I recommend that you stay isolated and that you continue to rest
+  ? utter_daily_ci__feel_better__has_other_mild_symptoms_still_sick_recommendation
+  : - text: OK, since you still feel sick, I recommend that you stay isolated and that you continue to rest
 
   utter_daily_checkin_validation_code:
     - text: "Hi {first_name}, this is the validation code for your daily check-in enrollment: {validation_code}. If you did not request to enroll in the daily check-in, please ignore this text message"

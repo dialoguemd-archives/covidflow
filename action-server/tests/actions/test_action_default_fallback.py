@@ -13,13 +13,16 @@ from covidflow.constants import ACTION_LISTEN_NAME, FALLBACK_INTENT
 from .action_test_helper import ActionTestCase
 
 USER_TEXT = "It's home from work we go"
-LATEST_EVENTS = [
-    BotUttered(
-        text="Heigh ho, heigh ho", metadata={"template_name": "utter_dwarfs_song"}
-    ),
-    ActionExecuted(ACTION_LISTEN_NAME),
-    UserUttered(USER_TEXT),
-]
+
+
+def latest_events(template_name):
+    return [
+        BotUttered(
+            text="Heigh ho, heigh ho", metadata={"template_name": template_name}
+        ),
+        ActionExecuted(ACTION_LISTEN_NAME),
+        UserUttered(USER_TEXT),
+    ]
 
 
 class ActionDefaultFallbackTest(ActionTestCase):
@@ -29,7 +32,9 @@ class ActionDefaultFallbackTest(ActionTestCase):
 
     @pytest.mark.asyncio
     async def test_in_form(self):
-        tracker = self.create_tracker(active_loop=True, events=LATEST_EVENTS)
+        tracker = self.create_tracker(
+            active_loop=True, events=latest_events("utter_dwarfs_song")
+        )
 
         await self.run_action(tracker)
 
@@ -41,7 +46,38 @@ class ActionDefaultFallbackTest(ActionTestCase):
 
     @pytest.mark.asyncio
     async def test_already_fallback_intent(self):
-        tracker = self.create_tracker(intent=FALLBACK_INTENT, events=LATEST_EVENTS)
+        tracker = self.create_tracker(
+            intent=FALLBACK_INTENT, events=latest_events("utter_dwarfs_song")
+        )
+
+        await self.run_action(tracker)
+
+        self.assert_events(
+            [UserUtteranceReverted(), FollowupAction(ACTION_LISTEN_NAME)]
+        )
+
+        self.assert_templates(["utter_dwarfs_song_error"])
+
+    @pytest.mark.asyncio
+    async def test_already_message_with_variation(self):
+        tracker = self.create_tracker(
+            intent=FALLBACK_INTENT,
+            events=latest_events("utter_dwarfs_song___some_variation"),
+        )
+
+        await self.run_action(tracker)
+
+        self.assert_events(
+            [UserUtteranceReverted(), FollowupAction(ACTION_LISTEN_NAME)]
+        )
+
+        self.assert_templates(["utter_dwarfs_song_error"])
+
+    @pytest.mark.asyncio
+    async def test_already_error_message(self):
+        tracker = self.create_tracker(
+            intent=FALLBACK_INTENT, events=latest_events("utter_dwarfs_song_error")
+        )
 
         await self.run_action(tracker)
 
@@ -53,7 +89,9 @@ class ActionDefaultFallbackTest(ActionTestCase):
 
     @pytest.mark.asyncio
     async def test_other_intent(self):
-        tracker = self.create_tracker(intent="unrelated", events=LATEST_EVENTS)
+        tracker = self.create_tracker(
+            intent="unrelated", events=latest_events("utter_dwarfs_song")
+        )
 
         await self.run_action(tracker)
 

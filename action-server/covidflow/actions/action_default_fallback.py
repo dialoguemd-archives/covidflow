@@ -1,4 +1,5 @@
 import copy
+import re
 from typing import Any, Dict, List, Text
 
 import structlog
@@ -20,6 +21,8 @@ from .lib.log_util import bind_logger
 logger = structlog.get_logger()
 
 ERROR_SUFFIX = "_error"
+
+VARIATION_REGEX = r"___.*$"
 
 ACTION_NAME = "action_default_fallback"  # We could call it otherwise when https://github.com/RasaHQ/rasa/issues/6516 will be solved
 
@@ -54,6 +57,7 @@ def _with_error_suffix(template_name: str) -> str:
     if template_name.endswith(ERROR_SUFFIX):
         return template_name
     else:
+        template_name = re.sub(VARIATION_REGEX, "", template_name)
         return f"{template_name}{ERROR_SUFFIX}"
 
 

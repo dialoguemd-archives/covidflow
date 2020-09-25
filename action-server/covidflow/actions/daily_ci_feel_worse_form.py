@@ -1,207 +1,205 @@
-from typing import Any, Dict, List, Optional, Text, Union
+from typing import Any, Dict, List, Text
 
-from rasa_sdk import Tracker
+from rasa_sdk import Action, Tracker
 from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.forms import REQUESTED_SLOT, FormAction
+from rasa_sdk.forms import REQUESTED_SLOT
 
 from covidflow.constants import (
     FEEL_WORSE_SLOT,
     HAS_COUGH_SLOT,
     HAS_DIFF_BREATHING_SLOT,
     HAS_FEVER_SLOT,
+    LAST_HAS_COUGH_SLOT,
+    LAST_HAS_DIFF_BREATHING_SLOT,
     SEVERE_SYMPTOMS_SLOT,
+    SKIP_SLOT_PLACEHOLDER,
     SYMPTOMS_SLOT,
     Symptoms,
 )
 
-from .daily_ci_assessment_common import submit_daily_ci_assessment
-from .lib.form_helper import (
-    request_next_slot,
-    validate_boolean_slot,
-    yes_no_nlu_mapping,
-)
+from .lib.form_helper import end_form_additional_events
 from .lib.log_util import bind_logger
 
 FORM_NAME = "daily_ci_feel_worse_form"
+VALIDATE_ACTION_NAME = f"validate_{FORM_NAME}"
 
-HAS_DIFF_BREATHING_WORSENED_SLOT = "daily_ci__feel_worse__has_diff_breathing_worsened"
+HAS_DIFF_BREATHING_WORSENED_SLOT = (
+    "daily_ci_feel_worse_form_has_diff_breathing_worsened"
+)
+
+ASK_HAS_COUGH_ACTION_NAME = f"action_ask_{FORM_NAME}_{HAS_COUGH_SLOT}"
+ASK_HAS_DIFF_BREATHING_ACTION_NAME = f"action_ask_{FORM_NAME}_{HAS_DIFF_BREATHING_SLOT}"
+
+ORDERED_FORM_SLOTS = [
+    SEVERE_SYMPTOMS_SLOT,
+    HAS_FEVER_SLOT,
+    HAS_DIFF_BREATHING_SLOT,
+    HAS_DIFF_BREATHING_WORSENED_SLOT,
+    HAS_COUGH_SLOT,
+]
 
 
-class DailyCiFeelWorseForm(FormAction):
+class ActionAskDailyCiFeelWorseFormHasDiffBreathing(Action):
     def name(self) -> Text:
 
-        return FORM_NAME
+        return ASK_HAS_DIFF_BREATHING_ACTION_NAME
 
     async def run(
-        self, dispatcher, tracker, domain,
-    ):
-        bind_logger(tracker)
-        return await super().run(dispatcher, tracker, domain)
-
-    ## override to set feel_worse slot
-    async def _activate_if_required(
-        self,
-        dispatcher: "CollectingDispatcher",
-        tracker: "Tracker",
-        domain: Dict[Text, Any],
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[EventType]:
-        events = []
+        bind_logger(tracker)
 
-        if tracker.active_loop.get("name") != FORM_NAME:
-            events.append(SlotSet(FEEL_WORSE_SLOT, True))
+        template_name = f"utter_ask_{FORM_NAME}_{HAS_DIFF_BREATHING_SLOT}"
 
-        return await super()._activate_if_required(dispatcher, tracker, domain) + events
-
-    @staticmethod
-    def required_slots(tracker: Tracker) -> List[Text]:
-        """A list of required slots that the form has to fill"""
-
-        slots = [SEVERE_SYMPTOMS_SLOT]
-
-        if tracker.get_slot(SEVERE_SYMPTOMS_SLOT) is True:
-            return slots
-
-        slots += [HAS_FEVER_SLOT, HAS_DIFF_BREATHING_SLOT]
-
-        if tracker.get_slot(HAS_DIFF_BREATHING_SLOT) is True:
-            slots.append(HAS_DIFF_BREATHING_WORSENED_SLOT)
+        if tracker.get_slot(LAST_HAS_DIFF_BREATHING_SLOT) is True:
+            dispatcher.utter_message(template=f"{template_name}___still")
         else:
-            slots.append(HAS_COUGH_SLOT)
+            dispatcher.utter_message(template=template_name)
 
-        return slots
+        return []
 
-    def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
-        return {
-            SEVERE_SYMPTOMS_SLOT: yes_no_nlu_mapping(self),
-            HAS_FEVER_SLOT: yes_no_nlu_mapping(self),
-            HAS_DIFF_BREATHING_SLOT: yes_no_nlu_mapping(self),
-            HAS_DIFF_BREATHING_WORSENED_SLOT: yes_no_nlu_mapping(self),
-            HAS_COUGH_SLOT: yes_no_nlu_mapping(self),
-        }
 
-    def request_next_slot(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Optional[List[EventType]]:
-        return request_next_slot(
-            self, dispatcher, tracker, domain, self._utter_ask_slot_template
-        )
+class ActionAskDailyCiFeelWorseFormHasCough(Action):
+    def name(self) -> Text:
 
-    def _utter_ask_slot_template(self, slot: str, tracker: Tracker) -> Optional[str]:
-        if slot in [
-            SEVERE_SYMPTOMS_SLOT,
-            HAS_FEVER_SLOT,
-            HAS_DIFF_BREATHING_SLOT,
-            HAS_COUGH_SLOT,
-        ]:
-            if tracker.get_slot(REQUESTED_SLOT) == slot:
-                return f"utter_ask_daily_ci__feel_worse__{slot}_error"
-            return f"utter_ask_daily_ci__feel_worse__{slot}"
+        return ASK_HAS_COUGH_ACTION_NAME
 
-        return None
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[EventType]:
+        bind_logger(tracker)
 
-    @validate_boolean_slot
-    def validate_severe_symptoms(
-        self,
-        value: Union[bool, Text],
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        if value is True:
-            return {SEVERE_SYMPTOMS_SLOT: value, SYMPTOMS_SLOT: Symptoms.SEVERE}
+        template_name = f"utter_ask_{FORM_NAME}_{HAS_COUGH_SLOT}"
 
+        if tracker.get_slot(LAST_HAS_COUGH_SLOT) is True:
+            dispatcher.utter_message(template=f"{template_name}___still")
+        else:
+            dispatcher.utter_message(template=template_name)
+
+        return []
+
+
+class ActionSetFeelWorseTrue(Action):
+    def name(self) -> Text:
+
+        return "action_set_feel_worse_true"
+
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[EventType]:
+        bind_logger(tracker)
+
+        return [SlotSet(FEEL_WORSE_SLOT, True)]
+
+
+class ValidateDailyCiFeelWorseForm(Action):
+    def name(self) -> Text:
+
+        return VALIDATE_ACTION_NAME
+
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[EventType]:
+        bind_logger(tracker)
+
+        extracted_slots: Dict[Text, Any] = tracker.form_slots_to_validate()
+
+        validation_events: List[EventType] = []
+        for slot_name, slot_value in extracted_slots.items():
+            slot_events = [SlotSet(slot_name, slot_value)]
+
+            if slot_name == SEVERE_SYMPTOMS_SLOT:
+                slot_events += _validate_severe_symptoms(slot_value, dispatcher)
+            elif slot_name == HAS_FEVER_SLOT:
+                slot_events += _validate_has_fever(slot_value, dispatcher)
+            elif slot_name == HAS_DIFF_BREATHING_SLOT:
+                slot_events += _validate_has_diff_breathing(slot_value, dispatcher)
+            elif slot_name == HAS_DIFF_BREATHING_WORSENED_SLOT:
+                slot_events += _validate_has_diff_breathing_worsened(
+                    slot_value, dispatcher
+                )
+            elif slot_name == HAS_COUGH_SLOT:
+                slot_events += _validate_has_cough(slot_value, dispatcher)
+
+            validation_events.extend(slot_events)
+
+        return validation_events
+
+
+def _validate_severe_symptoms(
+    value: bool, dispatcher: CollectingDispatcher,
+) -> List[EventType]:
+    if value is True:
+        return [
+            SlotSet(SYMPTOMS_SLOT, Symptoms.SEVERE),
+            SlotSet(REQUESTED_SLOT, None),
+        ] + end_form_additional_events(SEVERE_SYMPTOMS_SLOT, ORDERED_FORM_SLOTS)
+
+    dispatcher.utter_message(
+        template="utter_daily_ci_feel_worse_acknowledge_no_severe_symptoms"
+    )
+    return []
+
+
+def _validate_has_fever(
+    value: bool, dispatcher: CollectingDispatcher,
+) -> List[EventType]:
+    if value is True:
+        dispatcher.utter_message(template="utter_daily_ci__acknowledge_fever")
+        dispatcher.utter_message(template="utter_daily_ci__take_acetaminophen")
+        dispatcher.utter_message(template="utter_daily_ci__avoid_ibuprofen")
+    else:
         dispatcher.utter_message(
-            template="utter_daily_ci__feel_worse__acknowledge_no_severe_symptoms"
+            template="utter_daily_ci_feel_worse_acknowledge_no_fever"
         )
-        return {SEVERE_SYMPTOMS_SLOT: value}
 
-    @validate_boolean_slot
-    def validate_has_fever(
-        self,
-        value: Union[bool, Text],
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        if value is True:
-            dispatcher.utter_message(template="utter_daily_ci__acknowledge_fever")
-            dispatcher.utter_message(template="utter_daily_ci__take_acetaminophen")
-            dispatcher.utter_message(template="utter_daily_ci__avoid_ibuprofen")
-        else:
-            dispatcher.utter_message(
-                template="utter_daily_ci__feel_worse__acknowledge_no_fever"
-            )
+    return []
 
-        return {HAS_FEVER_SLOT: value}
 
-    @validate_boolean_slot
-    def validate_has_diff_breathing(
-        self,
-        value: Union[bool, Text],
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        if value == False:
-            dispatcher.utter_message(
-                template="utter_daily_ci__feel_worse__acknowledge_no_diff_breathing"
-            )
+def _validate_has_diff_breathing(
+    value: bool, dispatcher: CollectingDispatcher,
+) -> List[EventType]:
+    if value == False:
+        dispatcher.utter_message(
+            template="utter_daily_ci_feel_worse_acknowledge_no_diff_breathing"
+        )
+        return [SlotSet(HAS_DIFF_BREATHING_WORSENED_SLOT, SKIP_SLOT_PLACEHOLDER)]
 
-        return {HAS_DIFF_BREATHING_SLOT: value}
+    return [SlotSet(HAS_COUGH_SLOT, SKIP_SLOT_PLACEHOLDER)]
 
-    @validate_boolean_slot
-    def validate_daily_ci__feel_worse__has_diff_breathing_worsened(
-        self,
-        value: Union[bool, Text],
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        if value is True:
-            dispatcher.utter_message(
-                template="utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_1"
-            )
-            dispatcher.utter_message(
-                template="utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_2"
-            )
-        else:
-            dispatcher.utter_message(
-                template="utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_1"
-            )
-            dispatcher.utter_message(
-                template="utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_2"
-            )
 
-        return {HAS_DIFF_BREATHING_WORSENED_SLOT: value}
+def _validate_has_diff_breathing_worsened(
+    value: bool, dispatcher: CollectingDispatcher,
+) -> List[EventType]:
+    if value is True:
+        dispatcher.utter_message(
+            template="utter_daily_ci_feel_worse_diff_breathing_worsened_recommendation_1"
+        )
+        dispatcher.utter_message(
+            template="utter_daily_ci_feel_worse_diff_breathing_worsened_recommendation_2"
+        )
+    else:
+        dispatcher.utter_message(
+            template="utter_daily_ci_feel_worse_diff_breathing_not_worsened_recommendation_1"
+        )
+        dispatcher.utter_message(
+            template="utter_daily_ci_feel_worse_diff_breathing_not_worsened_recommendation_2"
+        )
 
-    @validate_boolean_slot
-    def validate_has_cough(
-        self,
-        value: Union[bool, Text],
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> Dict[Text, Any]:
-        if value is True:
-            dispatcher.utter_message(template="utter_daily_ci__cough_syrup_may_help")
-            dispatcher.utter_message(template="utter_daily_ci__cough_syrup_pharmacist")
-        else:
-            dispatcher.utter_message(template="utter_daily_ci__acknowledge_no_cough")
-            dispatcher.utter_message(
-                template="utter_daily_ci__feel_worse__no_cough_recommendation"
-            )
+    return []
 
-        return {HAS_COUGH_SLOT: value}
 
-    def submit(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> List[Dict]:
+def _validate_has_cough(
+    value: bool, dispatcher: CollectingDispatcher,
+) -> List[EventType]:
+    if value is True:
+        dispatcher.utter_message(template="utter_daily_ci__cough_syrup_may_help")
+        dispatcher.utter_message(template="utter_daily_ci__cough_syrup_pharmacist")
+    else:
+        dispatcher.utter_message(template="utter_daily_ci__acknowledge_no_cough")
+        dispatcher.utter_message(
+            template="utter_daily_ci_feel_worse_no_cough_recommendation"
+        )
 
-        return submit_daily_ci_assessment(tracker)
+    return []

@@ -85,6 +85,17 @@ actions:
   - action_activate_fallback_question_answering_form
   - action_ask_active_question
   - action_submit_question_answering_form
+  - action_submit_daily_ci_assessment
+  - validate_daily_ci_feel_better_form
+  - action_ask_daily_ci_feel_better_form_has_other_mild_symptoms
+  - action_ask_daily_ci_feel_better_form_has_cough
+  - validate_daily_ci_feel_worse_form
+  - action_ask_daily_ci_feel_worse_form_has_cough
+  - action_ask_daily_ci_feel_worse_form_has_diff_breathing
+  - action_set_feel_worse_true
+  - validate_daily_ci_feel_no_change_form
+  - action_ask_daily_ci_feel_no_change_form_has_cough
+  - action_ask_daily_ci_feel_no_change_form_has_fever
 
 forms:
   - home_assistance_form:
@@ -96,8 +107,21 @@ forms:
       travel: *boolean
   - daily_ci_enroll_form:
   - daily_ci_feel_no_change_form:
+      has_fever: *boolean
+      has_cough: *boolean
+      has_diff_breathing: *boolean
   - daily_ci_feel_better_form:
+      has_fever: *boolean
+      has_cough: *boolean
+      has_diff_breathing: *boolean
+      daily_ci_feel_better_form_has_other_mild_symptoms: *boolean
+      daily_ci_feel_better_form_is_symptom_free: *boolean
   - daily_ci_feel_worse_form:
+      severe_symptoms: *boolean
+      has_fever: *boolean
+      has_diff_breathing: *boolean
+      daily_ci_feel_worse_form_has_diff_breathing_worsened: *boolean
+      has_cough: *boolean
   - daily_ci_keep_or_cancel_form:
   - question_answering_form:
       active_question:
@@ -303,13 +327,13 @@ slots:
   daily_ci_enroll__preconditions_examples:
     type: unfeaturized
 
-  daily_ci__feel_worse__has_diff_breathing_worsened:
+  daily_ci_feel_worse_form_has_diff_breathing_worsened:
     type: unfeaturized
 
-  daily_ci__feel_better__has_other_mild_symptoms:
+  daily_ci_feel_better_form_has_other_mild_symptoms:
     type: unfeaturized
 
-  daily_ci__feel_better__is_symptom_free:
+  daily_ci_feel_better_form_is_symptom_free:
     type: unfeaturized
 
   test_navigation__postal_code:

@@ -594,8 +594,7 @@ responses:
     - text: "Je peux répondre à vos questions sur une variété de sujets entourant la Covid-19"
 
   utter_qa_disclaimer:
-    - text:
-        "Veuillez noter que pour le moment, je suis en mesure de répondre à un
+    - text: "Veuillez noter que pour le moment, je suis en mesure de répondre à un
         nombre limité de questions, mais je m'améliore constamment et j'apprends
         à l'aide des questions que vous me posez"
 
@@ -612,8 +611,7 @@ responses:
   utter_qa_sample_contagion:
     - text: "Si nous avons Covid-19, combien de temp sommes-nous contagieux?"
     - text: "Combien de temps sommes-nous contagieux quand nous avons Covid-19?"
-    - text:
-        "Après la disparition des symptômes, combien de temps une personne reste
+    - text: "Après la disparition des symptômes, combien de temps une personne reste
         contagieuse?"
     - text: "Combien de temps une personne est-elle contagieuse?"
     - text: "Suis-je contagieux longtemps après que j'ai contracté le virus?"
@@ -623,11 +621,9 @@ responses:
     - text: "Combien de temp le virus vit-il sur des surfaces?"
     - text: "Pour combien de temps COVID19 peut rester en vie sur des surfaces
         différentes?"
-    - text:
-        "Est-il vrai que Covid-19 peut survivre jusqu'à quelques jours sur les
+    - text: "Est-il vrai que Covid-19 peut survivre jusqu'à quelques jours sur les
         surfaces dures?"
-    - text:
-        "Combien de temps le virus survit-il sur une surface comme une poignée
+    - text: "Combien de temps le virus survit-il sur une surface comme une poignée
         de porte?"
     - text: "Combien de temps est-ce que la Covid 19 peut rester sur des surfaces?"
 
@@ -707,8 +703,7 @@ responses:
     - text: "Combien de cas au Québec?"
     - text: "Combien de personnes sont infectées au Québec?"
     - text: "Combien de cas sont aux États-Unis?"
-    - text:
-        "De la population infectée dans le monde entier quel sera le rapport des
+    - text: "De la population infectée dans le monde entier quel sera le rapport des
         personnes asymptomatiques?"
 
   utter_ask_active_question:
@@ -877,10 +872,10 @@ responses:
 
   ## Daily check-in - feel worse
 
-  utter_ask_daily_ci__feel_worse__severe_symptoms:
+  utter_ask_daily_ci_feel_worse_form_severe_symptoms:
     - text: "Avez-vous un ou plusieurs des symptômes suivants: des difficultés respiratoires graves, de fortes douleurs à la poitrine, beaucoup de mal à vous réveiller, de la confusion ou des pertes de conscience?"
 
-  utter_ask_daily_ci__feel_worse__severe_symptoms_error:
+  utter_ask_daily_ci_feel_worse_form_severe_symptoms_error:
     - text: "Désolée, avez-vous un ou plusieurs des symptômes suivants:\n- Difficultés respiratoires graves\n- De fortes douleurs à la poitrine\n- Beaucoup de mal à se réveiller\n- Confusion\n- Perte de conscience"
       buttons:
         - title: Oui
@@ -891,13 +886,13 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_daily_ci__feel_worse__acknowledge_no_severe_symptoms:
+  utter_daily_ci_feel_worse_acknowledge_no_severe_symptoms:
     - text: D'accord, voyons voir vos symptômes
 
-  utter_ask_daily_ci__feel_worse__has_fever:
+  utter_ask_daily_ci_feel_worse_form_has_fever:
     - text: Est-ce que vous faites de la fièvre? (plus de 38°C or 100.4°F) (Prenez votre température si vous ne savez pas)
 
-  utter_ask_daily_ci__feel_worse__has_fever_error:
+  utter_ask_daily_ci_feel_worse_form_has_fever_error:
     - text: Désolée, est-ce que votre température est plus élevée que 38C ou 100,4F?
       buttons:
         - title: Oui
@@ -908,13 +903,16 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_daily_ci__feel_worse__acknowledge_no_fever:
+  utter_daily_ci_feel_worse_acknowledge_no_fever:
     - text: D'accord, je note que vous ne faites pas de fièvre aujourd'hui
 
-  utter_ask_daily_ci__feel_worse__has_diff_breathing:
+  utter_ask_daily_ci_feel_worse_form_has_diff_breathing:
     - text: Avez-vous de l'essoufflement ou de la difficulté à respirer?
 
-  utter_ask_daily_ci__feel_worse__has_diff_breathing_error:
+  utter_ask_daily_ci_feel_worse_form_has_diff_breathing___still:
+    - text: Avez-vous encore de l'essoufflement ou de la difficulté à respirer?
+
+  utter_ask_daily_ci_feel_worse_form_has_diff_breathing_error:
     - text: Désolée, dites-moi si vous avez de l'essoufflement ou de la difficulté à respirer
       buttons:
         - title: Oui
@@ -925,13 +923,16 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_daily_ci__feel_worse__acknowledge_no_diff_breathing:
+  utter_daily_ci_feel_worse_acknowledge_no_diff_breathing:
     - text: Tant mieux
 
-  utter_ask_daily_ci__feel_worse__has_cough:
+  utter_ask_daily_ci_feel_worse_form_has_cough:
     - text: Est-ce que vous toussez?
 
-  utter_ask_daily_ci__feel_worse__has_cough_error:
+  utter_ask_daily_ci_feel_worse_form_has_cough___still:
+    - text: Est-ce que vous toussez encore?
+
+  utter_ask_daily_ci_feel_worse_form_has_cough_error:
     - text: Désolée, dites-moi si vous toussez aujourd'hui
       buttons:
         - title: Oui
@@ -942,13 +943,13 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_daily_ci__feel_worse__no_cough_recommendation:
+  utter_daily_ci_feel_worse_no_cough_recommendation:
     - text: Mais puisque vous vous sentez encore malade, je vous conseille de continuer à vous isoler et à vous reposer
 
-  utter_ask_daily_ci__feel_worse__has_diff_breathing_worsened:
+  utter_ask_daily_ci_feel_worse_form_has_diff_breathing_worsened:
     - text: Est-ce que ça a empiré depuis hier?
 
-  utter_ask_daily_ci__feel_worse__has_diff_breathing_worsened_error:
+  utter_ask_daily_ci_feel_worse_form_has_diff_breathing_worsened_error:
     - text: Désolée, est-ce que ces symptômes ont empiré depuis hier?
       buttons:
         - title: Oui
@@ -959,24 +960,27 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_1:
+  utter_daily_ci_feel_worse_diff_breathing_worsened_recommendation_1:
     - text: Vous devriez peut-être en discuter avec votre médecin, si c'est possible, ou appeler au {provincial_811}
 
-  utter_daily_ci__feel_worse__diff_breathing_worsened_recommendation_2:
+  utter_daily_ci_feel_worse_diff_breathing_worsened_recommendation_2:
     - text: Si vos symptômes empirent, vous pourriez devoir vous rendre à l'urgence ou appeler le 911
 
-  utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_1:
+  utter_daily_ci_feel_worse_diff_breathing_not_worsened_recommendation_1:
     - text: C’est noté. Si cela empire, je vous conseille de contacter votre médecin, si possible, ou d'appeler le {provincial_811} pour discuter de vos symptômes
 
-  utter_daily_ci__feel_worse__diff_breathing_not_worsened_recommendation_2:
+  utter_daily_ci_feel_worse_diff_breathing_not_worsened_recommendation_2:
     - text: Dans tous les cas, assurez-vous de continuer à vous isoler et à vous reposer
 
   ## Daily check-in - feel no change
 
-  utter_ask_daily_ci__feel_no_change__has_fever:
+  utter_ask_daily_ci_feel_no_change_form_has_fever:
     - text: Et est-ce que vous faites de la fièvre? (plus de 38°C ou 100,4°F) (Prenez votre température si vous ne le savez pas)
 
-  utter_ask_daily_ci__feel_no_change__has_fever_error:
+  utter_ask_daily_ci_feel_no_change_form_has_fever___still:
+    - text: Et est-ce que vous faites encore de la fièvre? (plus de 38°C ou 100,4°F) (Prenez votre température si vous ne le savez pas)
+
+  utter_ask_daily_ci_feel_no_change_form_has_fever_error:
     - text: Désolée, est-ce que votre température est plus élevée que 38C ou 100,4F?
       buttons:
         - title: Oui
@@ -987,13 +991,16 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_daily_ci__feel_no_change__acknowledge_no_fever:
+  utter_daily_ci_feel_no_change_form_acknowledge_no_fever:
     - text: Très bien, je note que vous ne faites pas de fièvre aujourd'hui
 
-  utter_ask_daily_ci__feel_no_change__has_cough:
+  utter_ask_daily_ci_feel_no_change_form_has_cough:
     - text: Est-ce que vous toussez?
 
-  utter_ask_daily_ci__feel_no_change__has_cough_error:
+  utter_ask_daily_ci_feel_no_change_form_has_cough___still:
+    - text: Est-ce que vous toussez encore?
+
+  utter_ask_daily_ci_feel_no_change_form_has_cough_error:
     - text: Désolée, dites-moi si vous toussez aujourd'hui
       buttons:
         - title: Oui
@@ -1004,10 +1011,10 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_ask_daily_ci__feel_no_change__has_diff_breathing:
+  utter_ask_daily_ci_feel_no_change_form_has_diff_breathing:
     - text: Avez-vous encore de l'essoufflement ou de la difficulté à respirer?
 
-  utter_ask_daily_ci__feel_no_change__has_diff_breathing_error:
+  utter_ask_daily_ci_feel_no_change_form_has_diff_breathing_error:
     - text: Désolée, dites-moi si vous avez encore de l'essoufflement ou de la difficulté à respirer
       buttons:
         - title: Oui
@@ -1018,30 +1025,30 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_daily_ci__feel_no_change__acknowledge_diff_breathing:
+  utter_daily_ci_feel_no_change_form_acknowledge_diff_breathing:
     - text: Je suis désolée que ce soit encore le cas
 
-  utter_daily_ci__feel_no_change__diff_breathing_recommendation:
+  utter_daily_ci_feel_no_change_form_diff_breathing_recommendation:
     - text: "Si vos symptômes empirent, vous pourriez devoir vous rendre à l'urgence. Pour de l'assistance, vous devriez: \n- Soit appeler votre médecin de famille, si c'est possible, ou \n- Appeler au {provincial_811}\n Et assurez-vous de fournir les informations sur votre condition"
 
-  utter_daily_ci__feel_no_change__acknowledge_no_diff_breathing:
+  utter_daily_ci_feel_no_change_form_acknowledge_no_diff_breathing:
     - text: Bonne nouvelle, je suis heureuse de l'apprendre
 
-  utter_daily_ci__feel_no_change__no_diff_breathing_recommendation:
+  utter_daily_ci_feel_no_change_form_no_diff_breathing_recommendation:
     - text: Je vous conseille de continuer à vous reposer, à vous isoler et à surveiller vos symptômes
 
-  utter_daily_ci__feel_no_change__mild_last_symptoms_recommendation:
+  utter_daily_ci_feel_no_change_form_mild_last_symptoms_recommendation:
     - text: Puisque vous êtes encore malade, je vous conseille de continuer à vous reposer, à vous isoler et à surveiller vos symptômes
 
   ## Daily check-in - feel better
 
-  utter_daily_ci__feel_better__acknowledge:
+  utter_daily_ci_feel_better_acknowledge:
     - text: Je suis heureuse d'apprendre que vous allez mieux
 
-  utter_ask_daily_ci__feel_better__has_fever:
+  utter_ask_daily_ci_feel_better_form_has_fever:
     - text: Est-ce que vous faites de la fièvre? (plus de 38°C ou 100,4°F) (Prenez votre température si vous ne savez pas)
 
-  utter_ask_daily_ci__feel_better__has_fever_error:
+  utter_ask_daily_ci_feel_better_form_has_fever_error:
     - text: Désolée, est-ce que votre température est plus élevée que 38C ou 100,4F?
       buttons:
         - title: Oui
@@ -1052,13 +1059,16 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_daily_ci__feel_better__acknowledge_no_fever:
+  utter_daily_ci_feel_better_acknowledge_no_fever:
     - text: Très bien, je note que vous ne faites pas de fièvre aujourd'hui
 
-  utter_ask_daily_ci__feel_better__has_cough:
+  utter_ask_daily_ci_feel_better_form_has_cough:
     - text: Est-ce que vous toussez?
 
-  utter_ask_daily_ci__feel_better__has_cough_error:
+  utter_ask_daily_ci_feel_better_form_has_cough___still:
+    - text: Est-ce que vous toussez encore?
+
+  utter_ask_daily_ci_feel_better_form_has_cough_error:
     - text: Désolée, dites-moi si vous toussez aujourd'hui
       buttons:
         - title: Oui
@@ -1069,13 +1079,10 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_ask_daily_ci__feel_better__has_diff_breathing:
+  utter_ask_daily_ci_feel_better_form_has_diff_breathing:
     - text: Avez-vous encore d'autres symptômes, comme de l'essoufflement ou de la difficulté à respirer?
 
-  utter_ask_daily_ci__feel_better__has_other_mild_symptoms_with_acknowledge:
-    - text: Très bien, et avez-vous encore d'autres symptômes, comme des maux de gorge ou de la fatigue inhabituelle?
-
-  utter_ask_daily_ci__feel_better__has_diff_breathing_error:
+  utter_ask_daily_ci_feel_better_form_has_diff_breathing_error:
     - text: Désolée, dites-moi si vous avez encore d'autres symptômes comme de l'essoufflement ou de la difficulté à respirer
       buttons:
         - title: Oui
@@ -1086,10 +1093,13 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_ask_daily_ci__feel_better__has_other_mild_symptoms:
+  utter_ask_daily_ci_feel_better_form_has_other_mild_symptoms:
     - text: Avez-vous encore d'autres symptômes, comme des maux de gorge ou de la fatigue inhabituelle?
 
-  utter_ask_daily_ci__feel_better__has_other_mild_symptoms_error:
+  utter_ask_daily_ci_feel_better_form_has_other_mild_symptoms___with_acknowledge:
+    - text: Très bien, et avez-vous encore d'autres symptômes, comme des maux de gorge ou de la fatigue inhabituelle?
+
+  utter_ask_daily_ci_feel_better_form_has_other_mild_symptoms_error:
     - text: Désolée, dites-moi si vous avez encore d'autres symptômes comme des maux de gorge ou de la fatigue inhabituelle
       buttons:
         - title: Oui
@@ -1100,10 +1110,10 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_ask_daily_ci__feel_better__is_symptom_free:
+  utter_ask_daily_ci_feel_better_form_is_symptom_free:
     - text: Bonne nouvelle! Diriez-vous que vous êtes tout à fait guéri(e)?
 
-  utter_ask_daily_ci__feel_better__is_symptom_free_error:
+  utter_ask_daily_ci_feel_better_form_is_symptom_free_error:
     - text: Désolée, vous sentez-vous tout à fait guéri(e) ou êtes-vous encore un peu malade?
       buttons:
         - title: Oui tout à fait guéri(e)
@@ -1114,17 +1124,17 @@ responses:
         data:
           disableTextField: "true"
 
-  utter_daily_ci__feel_better__breathing_difficulty_recommendation_1:
+  utter_daily_ci_feel_better_breathing_difficulty_recommendation_1:
     - text: Désolée de l'apprendre. Si cela empire, je vous conseille de contacter votre médecin, si c'est possible, ou d'appeler le {provincial_811} pour discuter de vos symptômes
 
-  utter_daily_ci__feel_better__breathing_difficulty_recommendation_2:
+  utter_daily_ci_feel_better_breathing_difficulty_recommendation_2:
     - text: Puisque vous êtes encore malade, je vous conseille de continuer à vous isoler et à vous reposer
 
-  utter_daily_ci__feel_better__has_other_mild_symptoms_recommendation:
+  utter_daily_ci_feel_better_form_has_other_mild_symptoms_recommendation:
     - text: D'accord. Puisque vous avez encore certains symptômes, je vous conseille de continuer à vous isoler et à vous reposer
 
-  ? utter_daily_ci__feel_better__has_other_mild_symptoms_still_sick_recommendation
-  : - text: C'est noté. Puisque vous êtes encore malade, je vous conseille de continuer à vous isoler et à vous reposer
+  utter_daily_ci_feel_better_form_has_other_mild_symptoms_still_sick_recommendation:
+    - text: C'est noté. Puisque vous êtes encore malade, je vous conseille de continuer à vous isoler et à vous reposer
 
   utter_daily_checkin_validation_code:
     - text: "Bonjour {first_name}, voici le code de validation pour l’inscription au suivi quotidien : {validation_code}. Si vous n’avez pas demandé à vous inscrire au suivi quotidien, veuillez ignorer ce message"

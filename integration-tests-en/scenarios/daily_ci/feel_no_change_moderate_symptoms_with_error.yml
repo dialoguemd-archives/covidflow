@@ -5,7 +5,7 @@
 - user: invalid_input
   bot: daily_ci/ask_feel_error
 - user: daily_ci/no_change
-  bot: daily_ci/feel_no_change/ask_fever
+  bot: daily_ci/feel_no_change/ask_fever_still
 - user: affirm
   bot: daily_ci/feel_no_change/ask_cough_fever
 - user: affirm

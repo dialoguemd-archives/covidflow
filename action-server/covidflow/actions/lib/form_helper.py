@@ -6,6 +6,8 @@ from rasa_sdk.events import EventType, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.forms import REQUESTED_SLOT, FormAction
 
+from covidflow.constants import SKIP_SLOT_PLACEHOLDER
+
 logger = structlog.get_logger()
 
 
@@ -111,3 +113,14 @@ def _form_slots_to_validate(tracker: Tracker) -> Dict[Text, Any]:
             break
 
     return slots_to_validate
+
+
+# Fills all the slots that were not yet asked. Workaround for https://github.com/RasaHQ/rasa/issues/6569
+def end_form_additional_events(
+    actual_slot: str, ordered_form_slots: List[str]
+) -> List[EventType]:
+    actual_slot_index = ordered_form_slots.index(actual_slot)
+    return [
+        SlotSet(slot, SKIP_SLOT_PLACEHOLDER)
+        for slot in ordered_form_slots[actual_slot_index + 1 :]
+    ]

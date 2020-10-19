@@ -3,8 +3,10 @@
 language: en
 
 pipeline:
-  - name: ConveRTTokenizer
+  - name: ConveRTTokenizer # hack, see https://github.com/RasaHQ/rasa/issues/6806
+    model_url: https://github.com/connorbrinton/polyai-models/releases/download/v1.0/model.tar.gz
   - name: ConveRTFeaturizer
+    model_url: https://github.com/connorbrinton/polyai-models/releases/download/v1.0/model.tar.gz
   - name: RegexFeaturizer
   - name: LexicalSyntacticFeaturizer
   - name: CountVectorsFeaturizer

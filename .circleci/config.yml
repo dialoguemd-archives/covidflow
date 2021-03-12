@@ -328,13 +328,12 @@ jobs:
             apt update && apt install git -y
             mkdir -p ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
+            rm -rf /app/*
             git clone ${CIRCLE_REPOSITORY_URL} /app
       - run:
           name: Git checkout
           command: |
             git checkout ${CIRCLE_BRANCH}
-      - checkout:
-          path: /app
       - run:
           name: Prepare NLU training files
           command: |

@@ -316,16 +316,27 @@ jobs:
     executor: large-python-executor
     environment:
       COMPONENT_PATH: /app/core-<<parameters.language>>
-    working_directory: /app/core
+    working_directory: /app
     docker:
       - image: rasa/rasa:1.9.4-full
         entrypoint: ["/bin/bash"]
+        user: root
     steps:
-      - checkout:
-          path: /app
+      - run:
+          name: Git clone
+          command: |
+            apt update && apt install git -y
+            mkdir -p ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+            git clone ${CIRCLE_REPOSITORY_URL} .
+      - run:
+          name: Git checkout
+          command: |
+            git checkout ${CIRCLE_BRANCH}
       - run:
           name: Prepare NLU training files
           command: |
+            cd core
             mkdir ${COMPONENT_PATH}
             cp poetry.lock ${COMPONENT_PATH}
             cp pyproject.toml ${COMPONENT_PATH}
@@ -336,6 +347,7 @@ jobs:
       - run:
           name: Train the NLU model
           command: |
+            cd core
             sh scripts/prepare-training-data.sh <<parameters.language>>
             rasa train --augmentation 0 --out ${COMPONENT_PATH}/models
       - persist_to_workspace:

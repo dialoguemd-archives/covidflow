@@ -324,7 +324,7 @@ jobs:
     steps:
       - run:
           name: Install git
-          command: apt update & apt install git -y
+          command: apt update && apt install git -y
       - checkout:
           path: /app
       - run:

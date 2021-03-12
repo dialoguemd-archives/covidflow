@@ -325,7 +325,7 @@ jobs:
       - run:
           name: Install git
           command: | 
-            apt update && sudo apt install git -y
+            apt update && apt install git -y
             rm -rf core
       - checkout:
           path: /app

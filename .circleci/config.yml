@@ -328,8 +328,7 @@ jobs:
             apt update && apt install git -y
             mkdir -p ~/.ssh
             ssh-keyscan github.com >> ~/.ssh/known_hosts
-            rm -rf core
-            git clone ${CIRCLE_REPOSITORY_URL} /app
+            git clone ${CIRCLE_REPOSITORY_URL} .
       - run:
           name: Git checkout
           command: |
@@ -337,6 +336,7 @@ jobs:
       - run:
           name: Prepare NLU training files
           command: |
+            cd core
             mkdir ${COMPONENT_PATH}
             cp poetry.lock ${COMPONENT_PATH}
             cp pyproject.toml ${COMPONENT_PATH}
@@ -347,6 +347,7 @@ jobs:
       - run:
           name: Train the NLU model
           command: |
+            cd core
             sh scripts/prepare-training-data.sh <<parameters.language>>
             rasa train --augmentation 0 --out ${COMPONENT_PATH}/models
       - persist_to_workspace:

@@ -320,11 +320,10 @@ jobs:
     docker:
       - image: rasa/rasa:1.9.4-full
         entrypoint: ["/bin/bash"]
-        user: root
     steps:
       - run:
           name: Install git
-          command: apt update && apt install git -y
+          command: sudo -u root apt update && sudo apt install git -y
       - checkout:
           path: /app
       - run:

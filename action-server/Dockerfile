@@ -5,7 +5,7 @@ COPY poetry.lock poetry.lock
 COPY pyproject.toml pyproject.toml
 
 USER root
-ARG POETRY_VERSION="1.0.0"
+ARG POETRY_VERSION="1.1.5"
 ENV \
   PYTHONFAULTHANDLER=TRUE \
   PYTHONUNBUFFERED=TRUE \

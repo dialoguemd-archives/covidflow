@@ -7,5 +7,3 @@ tracker_store:
   db: ${SQL_TRACKER_STORE_DB}
   username: ${SQL_TRACKER_STORE_USER}
   password: ${SQL_TRACKER_STORE_PASSWORD}
-event_broker:
-  type: core.event_broker.segment.SegmentSource

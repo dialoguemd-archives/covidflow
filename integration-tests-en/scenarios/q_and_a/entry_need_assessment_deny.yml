@@ -1,8 +1,0 @@
-- user: q_and_a/greet_profile_need_assessment
-  bot: welcome
-- user: ask_question
-  bot: q_and_a/entry_first_time
-- user: q_and_a/submit_question
-  bot: q_and_a/need_assessment_self_assessment_not_done
-- user: done
-  bot: q_and_a/done

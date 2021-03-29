@@ -1237,8 +1237,6 @@ responses:
       buttons:
         - title: Non merci
           payload: "/deny"
-        - title: J'ai d'autres questions
-          payload: "/ask_question"
         - title: J’aimerais savoir où je peux me faire tester
           payload: "/navigate_test_locations"
 
@@ -1271,8 +1269,6 @@ responses:
           payload: /done
         - title: Non mais je veux évaluer mes symptômes
           payload: /get_assessment
-        - title: Non mais j’ai d’autres questions
-          payload: /ask_question
 
   utter_ask_test_navigation__continue_error_no_assessment:
     - text: Désolée, voulez-vous que je cherche des cliniques de dépistage maintenant?
@@ -1281,8 +1277,6 @@ responses:
           payload: /affirm
         - title: Non je vais revenir plus tard
           payload: /done
-        - title: Non mais j’ai d’autres questions
-          payload: /ask_question
 
   utter_test_navigation__come_back:
     - text: D’accord. Quand vous serez prêt(e), revenez me voir (https://covid19.dialogue.co/#/chat) et je pourrai vous aider
@@ -1395,13 +1389,9 @@ responses:
           payload: /deny
         - title: J'aimerais évaluer mes symptômes
           payload: /get_assessment
-        - title: J'ai d'autres questions
-          payload: "/ask_question"
 
   utter_test_navigation__anything_else_no_assessment:
     - text: Puis-je faire autre chose pour vous aider?
       buttons:
         - title: Non merci
           payload: /deny
-        - title: J'ai d'autres questions
-          payload: "/ask_question"

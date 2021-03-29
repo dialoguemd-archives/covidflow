@@ -1,9 +1,0 @@
-- user: q_and_a/greet_profile_out_of_distribution
-  bot: welcome
-- assessment_moderate
-- user: ask_question
-  bot: q_and_a/entry_first_time
-- user: q_and_a/submit_question
-  bot: q_and_a/out_of_distribution
-- user: done
-  bot: q_and_a/done

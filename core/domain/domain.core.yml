@@ -8,7 +8,6 @@ intents:
   - checkin_return
   - get_assessment
   - tested_positive
-  - ask_question
   - inform
   - help_preconditions
   - done

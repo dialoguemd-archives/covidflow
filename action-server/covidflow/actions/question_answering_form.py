@@ -96,7 +96,6 @@ class QuestionAnsweringForm(FormAction):
         if tracker.get_slot(SKIP_QA_INTRO_SLOT) == True or intent != "ask_question":
             return await super()._activate_if_required(dispatcher, tracker, domain)
 
-        dispatcher.utter_message(template="utter_can_help_with_questions")
         dispatcher.utter_message(template="utter_qa_disclaimer")
 
         random_qa_samples = (

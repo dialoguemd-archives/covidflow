@@ -374,16 +374,6 @@
 - i'll come back later
 - that's it for today
 
-## intent:ask_question
-- i have a question
-- i have questions about covid-19
-- i have questions
-- questions about covid-19
-- queries about covid-19
-- ask about covid-19
-- faq
-- covid-19 faq
-
 ## intent:cancel
 - cancel
 - stop enrollment

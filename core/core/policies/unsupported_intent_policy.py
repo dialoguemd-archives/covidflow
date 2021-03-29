@@ -37,8 +37,7 @@ SUPPORTED_INTENTS_BY_ACTION = {
     + AFFIRM_DENY_INTENTS,
     "action_test_navigation__anything_else": ["done", "get_assessment"]
     + AFFIRM_DENY_INTENTS,
-    "utter_ask_assess_to_answer": ["done", "get_assessment",]
-    + AFFIRM_DENY_INTENTS,
+    "utter_ask_assess_to_answer": ["done", "get_assessment",] + AFFIRM_DENY_INTENTS,
     "utter_ask_assess_after_error": [
         "done",
         "get_assessment",

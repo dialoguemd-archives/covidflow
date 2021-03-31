@@ -360,10 +360,6 @@ commands:
       - base/setup
       - python/setup
       - python/install_deps
-      - run:
-          name: Force port-forward
-          command:
-            cci-export USE_PORT_FORWARD "true"
   run-integration-tests:
     parameters:
       <<: *param__language

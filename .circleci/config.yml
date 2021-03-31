@@ -373,5 +373,6 @@ commands:
             source $BASH_ENV
             poetry run python -m rasa_integration_testing ../integration-tests-<<parameters.language>>
           environment:
+            USE_PORT_FORWARD: "true"
             INTEGRATION_TESTS_REMINDER_ID_PROFILE_1: NLBAvWPZ
             INTEGRATION_TESTS_REMINDER_ID_PROFILE_2: qVQGKQKm

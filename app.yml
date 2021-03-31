@@ -3,6 +3,7 @@
     port: 8080
     public:
       ingress:
+        path: /socket.io
         websocket: true
     scale:
       horizontal: 3-12
@@ -15,7 +16,7 @@
       readiness:
         initialDelaySeconds: 60
 
-engine: ~2
+engine: 0.0.0-84205ce
 name: covidflow
 scope: ops
 mesh: false

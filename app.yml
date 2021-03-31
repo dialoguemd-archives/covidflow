@@ -3,6 +3,8 @@
     port: 8080
     public:
       ingress:
+        paths:
+          - /socket.io
         websocket: true
     scale:
       horizontal: 3-12
@@ -14,6 +16,12 @@
         timeoutSeconds: 30
       readiness:
         initialDelaySeconds: 60
+  ingressDev: &ingressDev
+    public:
+      ingress:
+        paths:
+          - /socket.io
+          - /webhooks/rest/webhook
 
 engine: ~2
 name: covidflow
@@ -52,6 +60,11 @@ environments:
   dev-ca2:
     environment:
       TWILIO_NUMBER: "+14382996778"
+    components:
+      core-en:
+        <<: *ingressDev
+      core-fr:
+        <<: *ingressDev
   prod-ca:
     components:
       core-en:

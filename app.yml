@@ -23,7 +23,7 @@
           - /socket.io
           - /webhooks/rest/webhook
 
-engine: 0.0.0-77fe571
+engine: ~2
 name: covidflow
 scope: ops
 mesh: false

@@ -360,6 +360,10 @@ commands:
       - base/setup
       - python/setup
       - python/install_deps
+      - run:
+          name: Force port-forward
+          command:
+            cci-export USE_PORT_FORWARD "true"
   run-integration-tests:
     parameters:
       <<: *param__language
@@ -373,6 +377,5 @@ commands:
             source $BASH_ENV
             poetry run python -m rasa_integration_testing ../integration-tests-<<parameters.language>>
           environment:
-            USE_PORT_FORWARD: "true"
             INTEGRATION_TESTS_REMINDER_ID_PROFILE_1: NLBAvWPZ
             INTEGRATION_TESTS_REMINDER_ID_PROFILE_2: qVQGKQKm

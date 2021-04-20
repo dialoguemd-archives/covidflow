@@ -26,7 +26,7 @@
 engine: ~2
 name: covidflow
 scope: ops
-
+mesh: false
 components:
   core-en:
     <<: *core

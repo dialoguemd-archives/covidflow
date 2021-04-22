@@ -15,7 +15,6 @@ logger = logging.getLogger(__name__)
 MAIN_INTENTS = [
     "done",
     "get_assessment",
-    "ask_question",
     "navigate_test_locations",
     "fallback",
 ]
@@ -29,20 +28,16 @@ FALLBACK_INTENT = "fallback"
 
 SUPPORTED_INTENTS_BY_ACTION = {
     "action_greeting_messages": [
-        "ask_question",
         "checkin_return",
         "get_assessment",
         "tested_positive",
         "navigate_test_locations",
     ],
-    "utter_ask_test_navigation__continue": ["done", "get_assessment", "ask_question"]
+    "utter_ask_test_navigation__continue": ["done", "get_assessment"]
     + AFFIRM_DENY_INTENTS,
-    "action_test_navigation__anything_else": ["done", "get_assessment", "ask_question"]
+    "action_test_navigation__anything_else": ["done", "get_assessment"]
     + AFFIRM_DENY_INTENTS,
-    "utter_ask_another_question": MAIN_INTENTS + AFFIRM_DENY_INTENTS,
-    "utter_ask_different_question": MAIN_INTENTS + AFFIRM_DENY_INTENTS,
-    "utter_ask_assess_to_answer": ["done", "get_assessment", "ask_question",]
-    + AFFIRM_DENY_INTENTS,
+    "utter_ask_assess_to_answer": ["done", "get_assessment",] + AFFIRM_DENY_INTENTS,
     "utter_ask_assess_after_error": [
         "done",
         "get_assessment",
@@ -54,8 +49,6 @@ SUPPORTED_INTENTS_BY_ACTION = {
     "utter_ask_daily_checkin__invalid_id__anything_else": MAIN_INTENTS
     + AFFIRM_DENY_INTENTS,
     "utter_ask_anything_else_with_test_navigation": MAIN_INTENTS + AFFIRM_DENY_INTENTS,
-    "utter_ask_anything_else_without_test_navigation": MAIN_INTENTS
-    + AFFIRM_DENY_INTENTS,
     "utter_ask_daily_ci__feel": ["better", "worse", "no_change"],
     "utter_ask_when_tested": AFFIRM_DENY_INTENTS,
     "utter_ask_when_first_symptoms": AFFIRM_DENY_INTENTS,

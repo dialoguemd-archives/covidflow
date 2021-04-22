@@ -20,8 +20,6 @@ responses:
           payload: "/get_assessment"
         - title: "I have been tested positive for Covid-19"
           payload: "/tested_positive"
-        - title: "I have a question about Covid-19"
-          payload: "/ask_question"
         - title: "I’d like to know where to get tested"
           payload: "/navigate_test_locations"
       custom:
@@ -577,21 +575,8 @@ responses:
       buttons:
         - title: No thanks
           payload: "/deny"
-        - title: I have other questions
-          payload: "/ask_question"
         - title: I’d like to know where to get tested
           payload: /navigate_test_locations
-
-  utter_ask_anything_else_without_test_navigation:
-    - text: "Is there anything else I can help you with?"
-      buttons:
-        - title: No thanks
-          payload: "/deny"
-        - title: I have other questions
-          payload: "/ask_question"
-
-  utter_can_help_with_questions:
-    - text: "I can help answer your questions about Covid-19, on many different topics"
 
   utter_qa_disclaimer:
     - text: "Please note that at the moment, I can provide answers to a limited
@@ -731,9 +716,6 @@ responses:
 
   utter_cant_answer:
     - text: "I’m sorry, I can’t answer your question"
-
-  utter_ask_different_question:
-    - text: Would you like to ask a different question?
 
   utter_need_assessment:
     - text: "It seems like you need help with your symptoms"
@@ -1249,8 +1231,6 @@ responses:
       buttons:
         - title: No thanks
           payload: "/deny"
-        - title: I have other questions
-          payload: "/ask_question"
         - title: I’d like to know where to get tested
           payload: /navigate_test_locations
 
@@ -1283,8 +1263,6 @@ responses:
           payload: /done
         - title: No but I want to assess my symptoms
           payload: "/get_assessment"
-        - title: No but I have other questions
-          payload: "/ask_question"
 
   utter_ask_test_navigation__continue_error_no_assessment:
     - text: Sorry, do you want to continue and search for a testing site?
@@ -1293,8 +1271,6 @@ responses:
           payload: "/affirm"
         - title: No I will come back later
           payload: /done
-        - title: No but I have other questions
-          payload: "/ask_question"
 
   utter_test_navigation__come_back:
     - text: OK, when you’re ready, come back here (https://covid19.dialogue.co/#/chat) and I’ll help you
@@ -1407,13 +1383,9 @@ responses:
           payload: /deny
         - title: I want to assess my symptoms
           payload: "/get_assessment"
-        - title: I have other questions
-          payload: "/ask_question"
 
   utter_test_navigation__anything_else_no_assessment:
     - text: Is there anything else I can help you with?
       buttons:
         - title: No thanks
           payload: /deny
-        - title: I have other questions
-          payload: "/ask_question"

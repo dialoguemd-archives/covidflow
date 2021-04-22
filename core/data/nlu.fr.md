@@ -332,19 +332,6 @@
 - c'est tout pour aujourd'hui
 - non je vais revenir
 
-## intent:ask_question
-- j'ai une question
-- j'ai des questions
-- questions sur la covid-19
-- questions au sujet de la covid-19
-- je me pose des questions
-- faq covid-19
-- foire aux questions
-- faq
-- covid-19 faq
-- poser une question
-- demander une question
-
 ## intent:cancel
 - j'ai changé d'idée
 - je ne veux pas m'inscrire

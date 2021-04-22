@@ -20,8 +20,6 @@ responses:
           payload: "/get_assessment"
         - title: "J’ai eu un résultat positif au test de Covid-19"
           payload: "/tested_positive"
-        - title: "J’ai des questions à propos de la Covid-19"
-          payload: "/ask_question"
         - title: "J’aimerais savoir où je peux me faire tester"
           payload: "/navigate_test_locations"
       custom:
@@ -577,21 +575,8 @@ responses:
       buttons:
         - title: Non merci
           payload: "/deny"
-        - title: J'ai d'autres questions
-          payload: "/ask_question"
         - title: J’aimerais savoir où je peux me faire tester
           payload: "/navigate_test_locations"
-
-  utter_ask_anything_else_without_test_navigation:
-    - text: "Puis-je faire autre chose pour vous aider?"
-      buttons:
-        - title: Non merci
-          payload: "/deny"
-        - title: J'ai d'autres questions
-          payload: "/ask_question"
-
-  utter_can_help_with_questions:
-    - text: "Je peux répondre à vos questions sur une variété de sujets entourant la Covid-19"
 
   utter_qa_disclaimer:
     - text: "Veuillez noter que pour le moment, je suis en mesure de répondre à un
@@ -737,9 +722,6 @@ responses:
 
   utter_cant_answer:
     - text: "Je suis désolée, je ne peux pas répondre à votre question"
-
-  utter_ask_different_question:
-    - text: "Aimeriez-vous poser une autre question?"
 
   utter_need_assessment:
     - text: "Il semble que vous ayez besoin d’aide pour évaluer vos symptômes"
@@ -1255,8 +1237,6 @@ responses:
       buttons:
         - title: Non merci
           payload: "/deny"
-        - title: J'ai d'autres questions
-          payload: "/ask_question"
         - title: J’aimerais savoir où je peux me faire tester
           payload: "/navigate_test_locations"
 
@@ -1289,8 +1269,6 @@ responses:
           payload: /done
         - title: Non mais je veux évaluer mes symptômes
           payload: /get_assessment
-        - title: Non mais j’ai d’autres questions
-          payload: /ask_question
 
   utter_ask_test_navigation__continue_error_no_assessment:
     - text: Désolée, voulez-vous que je cherche des cliniques de dépistage maintenant?
@@ -1299,8 +1277,6 @@ responses:
           payload: /affirm
         - title: Non je vais revenir plus tard
           payload: /done
-        - title: Non mais j’ai d’autres questions
-          payload: /ask_question
 
   utter_test_navigation__come_back:
     - text: D’accord. Quand vous serez prêt(e), revenez me voir (https://covid19.dialogue.co/#/chat) et je pourrai vous aider
@@ -1413,13 +1389,9 @@ responses:
           payload: /deny
         - title: J'aimerais évaluer mes symptômes
           payload: /get_assessment
-        - title: J'ai d'autres questions
-          payload: "/ask_question"
 
   utter_test_navigation__anything_else_no_assessment:
     - text: Puis-je faire autre chose pour vous aider?
       buttons:
         - title: Non merci
           payload: /deny
-        - title: J'ai d'autres questions
-          payload: "/ask_question"

@@ -8,7 +8,6 @@ intents:
   - checkin_return
   - get_assessment
   - tested_positive
-  - ask_question
   - inform
   - help_preconditions
   - done
@@ -75,7 +74,6 @@ forms:
   - daily_ci_feel_better_form
   - daily_ci_feel_worse_form
   - daily_ci_keep_or_cancel_form
-  - question_answering_form
   - home_assistance_form
   - test_navigation_form
 

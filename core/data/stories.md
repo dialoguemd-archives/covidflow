@@ -28,13 +28,6 @@
   - action_suspect_moderate_symptoms_final_recommendations
   - action_visit_package
   - utter_ask_anything_else_with_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "out_of_distribution"}
-  - utter_cant_answer
-  - utter_ask_different_question
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -76,14 +69,6 @@
   - action_suspect_mild_symptoms_exposure_final_recommendations
   - action_visit_package
   - utter_ask_anything_else_with_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_try_again_later
-  - action_qa_goodbye
 
 ## suspect - no symptoms contact risk
 * get_assessment
@@ -140,15 +125,6 @@
   - slot{"symptoms": "none"}
   - action_suspect_no_symptoms_recommendations
   - action_visit_package
-  - utter_ask_anything_else_without_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "need_assessment"}
-  - utter_need_assessment_already_done
-  - utter_ask_another_question
-* done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
 
@@ -176,15 +152,6 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - action_visit_package
-  - utter_ask_anything_else_without_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "out_of_distribution"}
-  - utter_cant_answer
-  - utter_ask_different_question
-* done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
 
@@ -203,8 +170,6 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - action_visit_package
-  - utter_ask_anything_else_without_test_navigation
-* done OR deny
   - action_goodbye
 
 ## tested positive - mild symptoms two questions
@@ -222,21 +187,6 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - action_visit_package
-  - utter_ask_anything_else_without_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "need_assessment"}
-  - utter_need_assessment_already_done
-  - utter_ask_another_question
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "out_of_distribution"}
-  - utter_cant_answer
-  - utter_ask_different_question
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue
@@ -261,8 +211,6 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - action_visit_package
-  - utter_ask_anything_else_without_test_navigation
-* done OR deny
   - action_goodbye
 
 ## tested positive - mild symptoms no check-in one question
@@ -280,14 +228,6 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - action_visit_package
-  - utter_ask_anything_else_without_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_try_again_later
   - action_qa_goodbye
 
 ## tested positive - no symptoms tested less than 14 days no check-in
@@ -309,14 +249,6 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - action_visit_package
-  - utter_ask_anything_else_without_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_try_again_later
   - action_qa_goodbye
 
 ## tested positive - no symptoms tested less than 14 days error
@@ -340,8 +272,6 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - action_visit_package
-  - utter_ask_anything_else_without_test_navigation
-* done OR deny
   - action_goodbye
 
 ## tested positive - cured
@@ -355,8 +285,6 @@
   - utter_ask_when_tested
 * affirm
   - action_tested_positive_maybe_cured_final_recommendations
-  - utter_ask_anything_else_without_test_navigation
-* done OR deny
   - action_goodbye
 
 ## tested positive - cured - error
@@ -372,21 +300,6 @@
   - utter_ask_when_tested_error
 * affirm
   - action_tested_positive_maybe_cured_final_recommendations
-  - utter_ask_anything_else_without_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "need_assessment"}
-  - utter_need_assessment_already_done
-  - utter_ask_another_question
-* done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
 
@@ -415,13 +328,6 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - utter_ask_anything_else_with_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "need_assessment"}
-  - utter_need_assessment_already_done
-  - utter_ask_another_question
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -489,12 +395,6 @@
   - form{"name": "home_assistance_form"}
   - form{"name": null}
   - utter_ask_anything_else_with_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -510,8 +410,6 @@
   - utter_ask_when_first_symptoms
 * affirm
   - utter_social_distancing_leave_home
-  - utter_ask_anything_else_without_test_navigation
-* done OR deny
   - action_goodbye
 
 ## return for check-in - no symptoms - first symptoms >= 14 days ago error
@@ -527,15 +425,6 @@
   - utter_ask_when_first_symptoms_error
 * affirm
   - utter_social_distancing_leave_home
-  - utter_ask_anything_else_without_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "out_of_distribution"}
-  - utter_cant_answer
-  - utter_ask_different_question
-* done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
 
@@ -550,14 +439,6 @@
   - utter_ask_when_first_symptoms
 * deny
   - utter_self_isolate_symptom_free
-  - utter_ask_anything_else_without_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_try_again_later
   - action_qa_goodbye
 
 ## return for check-in - no symptoms - first symptoms < 14 days ago error
@@ -573,20 +454,11 @@
   - utter_ask_when_first_symptoms_error
 * deny
   - utter_self_isolate_symptom_free
-  - utter_ask_anything_else_without_test_navigation
-* done OR deny
   - action_goodbye
 
 ## QA - failure - no assessment after
 * greet{"metadata":{}}
   - action_greeting_messages
-* ask_question
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_ask_assess_after_error
 * deny OR done OR fallback
   - utter_try_again_later
   - action_qa_goodbye
@@ -594,13 +466,6 @@
 ## QA - failure - assessment after
 * greet{"metadata":{}}
   - action_greeting_messages
-* ask_question
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_ask_assess_after_error
 * affirm OR get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
@@ -623,13 +488,6 @@
 ## QA - failure - test navigation
 * greet{"metadata":{}}
   - action_greeting_messages
-* ask_question
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_ask_assess_after_error
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue
@@ -645,12 +503,6 @@
 ## QA - success
 * greet{"metadata":{}}
   - action_greeting_messages
-* ask_question
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -658,13 +510,6 @@
 ## QA - out of distribution
 * greet{"metadata":{}}
   - action_greeting_messages
-* ask_question
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "out_of_distribution"}
-  - utter_cant_answer
-  - utter_ask_different_question
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -672,18 +517,6 @@
 ## QA - success - another question
 * greet{"metadata":{}}
   - action_greeting_messages
-* ask_question
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -691,12 +524,6 @@
 ## QA - success - assessment after
 * greet{"metadata":{}}
   - action_greeting_messages
-* ask_question
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
 * get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
@@ -720,20 +547,6 @@
 ## QA - out of distribution - another question - test navigation
 * greet{"metadata":{}}
   - action_greeting_messages
-* ask_question
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "out_of_distribution"}
-  - utter_cant_answer
-  - utter_ask_different_question
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "out_of_distribution"}
-  - utter_cant_answer
-  - utter_ask_different_question
 * navigate_test_locations
   - action_test_navigation_explanations
   - utter_ask_test_navigation__continue
@@ -744,13 +557,6 @@
 ## QA - need assessment - no assessment after
 * greet{"metadata":{}}
   - action_greeting_messages
-* ask_question
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "need_assessment"}
-  - utter_need_assessment
-  - utter_ask_assess_to_answer
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -758,13 +564,6 @@
 ## QA - need assessment - assessment after
 * greet{"metadata":{}}
   - action_greeting_messages
-* ask_question
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "need_assessment"}
-  - utter_need_assessment
-  - utter_ask_assess_to_answer
 * affirm OR get_assessment
   - assessment_form
   - form{"name": "assessment_form"}
@@ -788,21 +587,11 @@
 * greet{"metadata":{}}
   - action_greeting_messages
 * fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
   - utter_ask_how_may_i_help_fallback
 
 ## fallback QA - success
 * greet{"metadata":{}}
   - action_greeting_messages
-* fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -811,22 +600,11 @@
 * greet{"metadata":{}}
   - action_greeting_messages
 * fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "out_of_distribution"}
   - utter_ask_how_may_i_help_fallback
 
 ## fallback QA - no assessment after
 * greet{"metadata":{}}
   - action_greeting_messages
-* fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "need_assessment"}
-  - utter_need_assessment
-  - utter_ask_assess_to_answer
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -838,8 +616,6 @@
   - utter_ask_daily_ci__early_opt_out__continue_ci
 * opt_out
   - action_daily_ci_early_opt_out
-  - utter_ask_anything_else_without_test_navigation
-* done OR deny
   - action_goodbye
 
 ## daily check-in - early opt out - QA
@@ -849,14 +625,6 @@
   - utter_ask_daily_ci__early_opt_out__continue_ci
 * opt_out
   - action_daily_ci_early_opt_out
-  - utter_ask_anything_else_without_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
-* done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
 
@@ -912,12 +680,6 @@
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
   - utter_ask_anything_else_with_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -940,13 +702,6 @@
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
   - utter_ask_anything_else_with_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "need_assessment"}
-  - utter_need_assessment_already_done
-  - utter_ask_another_question
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -968,15 +723,6 @@
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
-  - utter_ask_anything_else_without_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "out_of_distribution"}
-  - utter_cant_answer
-  - utter_ask_different_question
-* done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
 
@@ -1028,20 +774,6 @@
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
   - utter_ask_anything_else_with_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "out_of_distribution"}
-  - utter_cant_answer
-  - utter_ask_different_question
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "need_assessment"}
-  - utter_need_assessment_already_done
-  - utter_ask_another_question
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -1086,15 +818,6 @@
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
-  - utter_ask_anything_else_without_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "out_of_distribution"}
-  - utter_cant_answer
-  - utter_ask_different_question
-* done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
 
@@ -1116,14 +839,6 @@
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
   - utter_ask_anything_else_with_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_try_again_later
-  - action_qa_goodbye
 
 ## daily check-in - feel better - mild symptoms
 * daily_checkin{"metadata":{}}
@@ -1163,14 +878,6 @@
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
-  - utter_ask_anything_else_without_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_try_again_later
   - action_qa_goodbye
 
 ## daily check-in - feel better - error - no symptoms
@@ -1192,15 +899,6 @@
   - daily_ci_keep_or_cancel_form
   - form{"name": "daily_ci_keep_or_cancel_form"}
   - form{"name": null}
-  - utter_ask_anything_else_without_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "out_of_distribution"}
-  - utter_cant_answer
-  - utter_ask_different_question
-* done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
 
@@ -1277,12 +975,6 @@
   - action_suspect_moderate_symptoms_final_recommendations
   - action_visit_package
   - utter_ask_anything_else_with_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -1324,15 +1016,6 @@
   - slot{"symptoms": "none"}
   - action_suspect_no_symptoms_recommendations
   - action_visit_package
-  - utter_ask_anything_else_without_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "need_assessment"}
-  - utter_need_assessment_already_done
-  - utter_ask_another_question
-* done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
 
@@ -1349,14 +1032,6 @@
   - slot{"symptoms": "none"}
   - action_suspect_no_symptoms_recommendations
   - action_visit_package
-  - utter_ask_anything_else_without_test_navigation
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_try_again_later
   - action_qa_goodbye
 
 ## daily check-in - invalid ID - wants assessment - no symptoms contact risk
@@ -1397,13 +1072,6 @@
   - utter_ask_daily_checkin__invalid_id__want_assessment
 * deny
   - utter_ask_daily_checkin__invalid_id__anything_else
-* ask_question
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_ask_assess_after_error
 * deny
   - utter_try_again_later
   - action_qa_goodbye
@@ -1415,21 +1083,6 @@
   - utter_ask_daily_checkin__invalid_id__want_assessment
 * deny
   - utter_ask_daily_checkin__invalid_id__anything_else
-* ask_question
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "out_of_distribution"}
-  - utter_cant_answer
-  - utter_ask_different_question
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_try_again_later
-  - action_qa_goodbye
 
 ## daily check-in - invalid ID - ask question - need assessment
 * daily_checkin{"metadata":{}}
@@ -1438,13 +1091,6 @@
   - utter_ask_daily_checkin__invalid_id__want_assessment
 * deny
   - utter_ask_daily_checkin__invalid_id__anything_else
-* ask_question
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "need_assessment"}
-  - utter_need_assessment
-  - utter_ask_assess_to_answer
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -1479,13 +1125,6 @@
   - utter_ask_test_navigation__continue
 * deny
   - action_test_navigation__anything_else
-* affirm OR ask_question OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "out_of_distribution"}
-  - utter_cant_answer
-  - utter_ask_different_question
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -1510,13 +1149,6 @@
   - utter_ask_test_navigation__continue
 * fallback
   - action_ask_test_navigation__continue_error
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_ask_assess_after_error
 * deny OR done OR fallback
   - utter_try_again_later
   - action_qa_goodbye
@@ -1529,13 +1161,6 @@
   - utter_ask_test_navigation__continue
 * fallback
   - action_ask_test_navigation__continue_error
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "need_assessment"}
-  - utter_need_assessment
-  - utter_ask_assess_to_answer
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -1548,12 +1173,6 @@
   - utter_ask_test_navigation__continue
 * fallback
   - action_ask_test_navigation__continue_error
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
 * done OR deny
   - utter_please_visit_again
   - action_qa_goodbye
@@ -1566,19 +1185,6 @@
   - utter_ask_test_navigation__continue
 * fallback
   - action_ask_test_navigation__continue_error
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "success"}
-  - utter_ask_another_question
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_ask_assess_after_error
 * deny OR done OR fallback
   - utter_try_again_later
   - action_qa_goodbye
@@ -1610,13 +1216,6 @@
   - form{"name": "test_navigation_form"}
   - form{"name": null}
   - action_test_navigation__anything_else
-* ask_question OR affirm OR fallback
-  - question_answering_form
-  - form{"name": "question_answering_form"}
-  - form{"name": null}
-  - slot{"question_answering_status": "failure"}
-  - utter_question_answering_error
-  - utter_ask_assess_after_error
 * deny OR done OR fallback
   - utter_try_again_later
   - action_qa_goodbye

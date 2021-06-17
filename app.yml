@@ -63,14 +63,14 @@ environments:
         public:
           ingress:
             <<: *ingressPaths
-          additionalHostnames:
-            - covidflow-core-en.dev.dialogue.co
+            additionalHostnames:
+              - covidflow-core-en.dev.dialogue.co
       core-fr:
         public:
           ingress:
             <<: *ingressPaths
-          additionalHostnames:
-            - covidflow-core-fr.dev.dialogue.co
+            additionalHostnames:
+              - covidflow-core-fr.dev.dialogue.co
   prod-ca:
     components:
       core-en:
